@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.mapsforge:mapsforge-core:0.3.1-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/mapsforge/mapsforge-core/0.3.1-SNAPSHOT/mapsforge-core-0.3.1-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/mapsforge/mapsforge-core/0.3.1-SNAPSHOT/mapsforge-core-0.3.1-SNAPSHOT-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/mapsforge/mapsforge-core/0.3.1-SNAPSHOT/mapsforge-core-0.3.1-SNAPSHOT-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

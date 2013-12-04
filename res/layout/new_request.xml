@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/newReqLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="0px"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="20dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/price"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Тарифа"
+                    android:textColor="#ffffff"
+                    android:layout_weight=".3"
+                    android:gravity="right"
+                    android:layout_marginRight="20dp"/>
+
+                <Spinner
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/pricesPicker"
+                    android:layout_weight=".7"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="20dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/region"
+                    android:text="Регион"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="#ffffff"
+                    android:layout_weight=".3"
+                    android:gravity="right"
+                    android:layout_marginRight="20dp"/>
+
+                <Spinner
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/regionsPicker"
+                    android:layout_weight=".7"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="20dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/address"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Адрес"
+                    android:textColor="#ffffff"
+                    android:layout_weight=".2"
+                    android:gravity="right"
+                    android:layout_marginRight="20dp"/>
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/addressText"
+                    android:layout_weight=".6"/>
+
+                <Button
+                    android:id="@+id/addressChange"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:text="Промени"
+                    android:layout_weight=".2"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/filters"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Нуждая се още от:"
+                android:textColor="@color/label_color"
+                android:layout_marginLeft="20dp"/>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@id/llFilters"
+                android:paddingTop="5.0px"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"/>
+            <!--<CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Фактура"
+                android:id="@+id/checkInvoice"
+                android:textColor="#ffffff"
+                android:layout_marginLeft="20dp"/>
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Автомобил с голям багажник"
+                android:id="@+id/checkBigBag"
+                android:textColor="#ffffff"
+                android:layout_marginLeft="20dp"/>
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Доставка до адрес"
+                android:id="@+id/checkDelivery"
+                android:textColor="#ffffff"
+                android:layout_marginLeft="20dp"/>-->
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/reqInfoButtonContainer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="90dp"
+        android:orientation="horizontal"
+        android:layout_margin="10dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".3"/>
+
+        <Button
+            android:id="@+id/requestSend"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Повикай ТАКСИ"
+            android:layout_weight=".3"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".3"/>
+    </LinearLayout>
+    <ProgressBar
+        android:id="@+id/pbProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        style="@android:style/Widget.ProgressBar.Large">
+    </ProgressBar>
+</LinearLayout>

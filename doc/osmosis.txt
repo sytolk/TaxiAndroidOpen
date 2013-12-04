@@ -1,0 +1,11 @@
+http://download.geofabrik.de/openstreetmap/europe/
+
+vim /etc/osmosis/plexus.conf
+load /usr/share/java/xalan2.jar
+
+osmosis --read-xml file=/home/stanimir/Downloads/bulgaria_map/bulgaria.osm --mw file=/home/stanimir/Downloads/bulgaria_map/bulgaria.map bbox=39.86759,20.97290,45.25169,29.87183 map-start-position=42.5,27.468 map-start-zoom=17 type=hd
+
+bbox=42.48830,23.02734,43.40505,27.88330
+
+osmosis -plugin org.mapsforge.map.writer.osmosis.MapFileWriterPluginLoader --read-xml file=bulgaria.osm --mapfile-writer file=bulgaria.map type=hd map-start-position=42.5,27.468
+bin/./osmosis --read-xml --mapfile-writer file=/home/stanimir/Downloads/bulgaria_map/bulgaria.osm file=/home/stanimir/Downloads/bulgaria_map/bulgaria.map type=hd position=42.5,27.468

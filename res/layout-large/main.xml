@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--<GridView xmlns:android="http://schemas.android.com/apk/res/android"
+          android:id="@+id/MainView"
+          android:layout_width="fill_parent"
+          android:layout_height="fill_parent"
+          android:fadingEdge="vertical"
+          android:fadingEdgeLength="30dip"
+          android:columnWidth="100dip"
+          android:numColumns="auto_fit"/> todo-->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+    <LinearLayout
+        android:id="@+id/mainLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/user"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="right"
+            android:textSize="30dp"
+            android:textStyle="bold"/>
+
+        <LinearLayout
+            android:id="@+id/FirstRowLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp">
+
+            <Button
+                android:id="@+id/mapButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:minHeight="80dp"
+                android:text="@string/show_map_text"
+                android:drawableLeft="@drawable/globe"
+                android:layout_weight=".3"
+                android:textSize="30dp"/>
+
+            <Button
+                android:id="@+id/requestButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:minHeight="80dp"
+                android:text="@string/request"
+                android:layout_weight=".3"
+                android:textSize="30dp"/>
+
+            <Button
+                android:id="@+id/exitButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:minHeight="80dp"
+                android:text="@string/exit"
+                android:layout_weight=".3"
+                android:textSize="30dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/settings"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="10dp"
+        android:gravity="bottom"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:id="@+id/txt_version"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white_color"
+            android:layout_weight=".5"
+            android:gravity="left"
+            />
+
+        <TextView
+            android:id="@+id/bandwidth"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white_color"
+            android:layout_weight=".5"
+            android:gravity="right"
+            />
+    </LinearLayout>
+</RelativeLayout>

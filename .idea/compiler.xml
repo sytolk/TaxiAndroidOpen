@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <option name="DEFAULT_COMPILER" value="Javac" />
+    <excludeFromCompile>
+      <directory url="file://$PROJECT_DIR$/gen/com/opentaxi/android/BuildConfig.java" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/target/generated-sources/annotations" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/target/generated-test-sources/test-annotations" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/../DRIVER_APP_GIT/RESTfulXmlBeans/target/generated-sources/annotations" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/../DRIVER_APP_GIT/RESTfulXmlBeans/target/generated-test-sources/test-annotations" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/gen" includeSubdirectories="true" />
+    </excludeFromCompile>
+    <resourceExtensions />
+    <wildcardResourcePatterns>
+      <entry name="?*.properties" />
+      <entry name="?*.xml" />
+      <entry name="?*.gif" />
+      <entry name="?*.png" />
+      <entry name="?*.jpeg" />
+      <entry name="?*.jpg" />
+      <entry name="?*.html" />
+      <entry name="?*.dtd" />
+      <entry name="?*.tld" />
+      <entry name="?*.ftl" />
+    </wildcardResourcePatterns>
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true">
+          <entry name="$MAVEN_REPOSITORY$/com/googlecode/androidannotations/androidannotations/2.7.1/androidannotations-2.7.1.jar" />
+        </processorPath>
+      </profile>
+      <profile default="false" name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true">
+          <entry name="$MAVEN_REPOSITORY$/com/googlecode/androidannotations/androidannotations/2.7.1/androidannotations-2.7.1.jar" />
+        </processorPath>
+        <module name="RESTfulXmlBeans" />
+        <module name="StilAndroid" />
+        <module name="StilAndroidOpen" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="StilAndroidOpen" target="1.7" />
+      <module name="StilRestClient" target="1.7" />
+      <module name="TaxiAndroidOpen" target="1.7" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
+

@@ -1,0 +1,205 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.opentaxi.android</groupId>
+    <artifactId>taxi-android-open</artifactId>
+    <version>1.0.0.BUILD-SNAPSHOT</version>
+    <packaging>apk</packaging>
+    <name>taxi-android-open</name>
+    <url>http://taxi-bulgaria.com</url>
+    <organization>
+        <name>Taxi-Bulgaria</name>
+        <url>http://taxi-bulgaria.com</url>
+    </organization>
+
+    <properties>
+        <android-platform>17</android-platform>
+        <android-emulator>8</android-emulator>
+        <!--<maven-android-plugin-version>2.8.4</maven-android-plugin-version>
+        <maven-compiler-plugin-version>2.3.2</maven-compiler-plugin-version>-->
+        <!-- <android-version>2.3.1</android-version>
+        <jackson-version>1.7.2</jackson-version>
+        <simple-version>2.4.1</simple-version>-->
+        <java.version>1.7</java.version>
+    </properties>
+    <build>
+        <sourceDirectory>src</sourceDirectory>
+        <finalName>${project.artifactId}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.0</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                <artifactId>android-maven-plugin</artifactId>
+                <version>3.6.0</version>
+                <configuration>
+                    <sdk>
+                        <platform>${android-platform}</platform>
+                        <path>/home/stanimir/android-sdk-linux</path>
+                    </sdk>
+                    <emulator>
+                        <avd>${android-emulator}</avd>
+                    </emulator>
+                    <!--<deleteConflictingFiles>true</deleteConflictingFiles>-->
+                    <undeployBeforeDeploy>true</undeployBeforeDeploy>
+                </configuration>
+                <extensions>true</extensions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+
+        <!--<dependency>
+            <groupId>stilTakBase</groupId>
+            <artifactId>StilTakBase</artifactId>
+            <version>2.0.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>-->
+
+        <dependency>
+            <groupId>com.opentaxi.rest</groupId>
+            <artifactId>open-rest-client</artifactId>
+            <version>1.0.39.BUILD-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>android</groupId>
+            <artifactId>android</artifactId>
+            <!--<version>2.2_r3</version>-->
+            <version>4.4_r1</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>xpp3</groupId>
+                    <artifactId>xpp3</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.android.gms</groupId>
+            <artifactId>google-play-services</artifactId>
+            <version>12.0.0</version>
+            <type>apklib</type>
+        </dependency>
+        <dependency>
+            <groupId>com.google.android.gms</groupId>
+            <artifactId>google-play-services</artifactId>
+            <version>12.0.0</version>
+            <type>jar</type>
+        </dependency>
+
+        <dependency>
+            <groupId>android.support</groupId>
+            <artifactId>compatibility-v4</artifactId>
+            <version>19</version>
+        </dependency>
+        <!--<dependency>
+            <groupId>com.google.android.gcm</groupId>
+            <artifactId>gcm-client</artifactId>
+            <version>4</version>
+        </dependency>-->
+
+        <dependency>
+            <groupId>org.mapsforge</groupId>
+            <artifactId>mapsforge-map</artifactId>
+            <version>0.3.1-SNAPSHOT</version>
+        </dependency>
+
+        <!-- LittleFluffyLocationLibrary -->
+        <!-- not in maven central -->
+        <!-- http://code.google.com/p/little-fluffy-location-library/ -->
+        <dependency>
+            <groupId>com.littlefluffytoys.littlefluffylocationlibrary</groupId>
+            <artifactId>littlefluffylocationlibrary</artifactId>
+            <version>r15</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/libs/littlefluffylocationlibrary_r15.jar</systemPath>
+        </dependency>
+
+        <!--https://github.com/ragunathjawahar/android-saripaar-->
+        <!--form validation framework-->
+        <!--<dependency>
+            <groupId>com.mobsandgeeks.saripaar</groupId>
+            <artifactId>saripaar</artifactId>
+            <version>11242012</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/libs/saripaar-11242012.jar</systemPath>
+        </dependency>-->
+        <dependency>
+            <groupId>com.mobsandgeeks</groupId>
+            <artifactId>android-saripaar</artifactId>
+            <version>1.0.7-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.androidannotations</groupId>
+            <artifactId>androidannotations</artifactId>
+            <version>3.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.androidannotations</groupId>
+            <artifactId>androidannotations-api</artifactId>
+            <version>3.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.acra</groupId>
+            <artifactId>acra</artifactId>
+            <version>4.5.0</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.madgag</groupId>
+            <artifactId>org.eclipse.jgit</artifactId>
+            <version>2.3.1.1.0-UNOFFICIAL-ROBERTO-RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>com.madgag</groupId>
+            <artifactId>ssh-android</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>net.schmizz</groupId>
+            <artifactId>sshj</artifactId>
+            <version>0.8.1</version>
+        </dependency>
+
+        <!--<dependency>
+            <groupId>com.github.ignition</groupId>
+            <artifactId>ignition-core</artifactId>
+            <version>0.1</version>
+            <type>apklib</type>
+        </dependency>-->
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>snapshots-repository</id>
+            <name>Sonatype oss snapshot repo</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
+        <!--<repository>
+            <id>ignition-releases</id>
+            <url>http://nexus.qype.com/content/repositories/releases</url>
+        </repository>-->
+    </repositories>
+
+</project> 

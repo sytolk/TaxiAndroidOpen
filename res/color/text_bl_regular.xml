@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<!-- Disabled views -->
+	<item android:state_enabled="false" android:color="#888"/>
+	
+	<!-- Pressing down on a view -->
+	<item android:state_pressed="true" android:color="#FFF"/>
+	
+	<!-- A view is highlighted, such as in a list -->
+    <item android:state_selected="true" android:color="#CCC"/>
+
+	<!-- You wouldn't believe it, but there is a difference between focused 
+	     and selected. -->
+    <item android:state_focused="true" android:color="#CCC"/>
+    
+    <!-- This value should be same as not selected -->
+﻿	<item android:state_window_focused="false" android:color="#AAA"/>
+
+	<!-- Regular text (not selected) -->
+    <item android:color="#AAA"/>
+    
+</selector>
+

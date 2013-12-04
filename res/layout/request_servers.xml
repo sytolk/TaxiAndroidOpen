@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/serversLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@id/serversContent"
+        android:paddingTop="5.0px"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:id="@+id/reqInfoButtonContainer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="90dp"
+        android:orientation="horizontal"
+        android:layout_margin="10dp"
+        android:gravity="center_vertical">
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="0dp"
+            android:layout_height="65dp"
+            android:text="НАЗАД"
+            android:layout_weight=".3"/>
+        <Button
+            android:id="@+id/refreshButton"
+            android:layout_width="0dp"
+            android:layout_height="65dp"
+            android:text="ИЗТЕГЛИ"
+            android:layout_weight=".3"/>
+    </LinearLayout>
+</LinearLayout>

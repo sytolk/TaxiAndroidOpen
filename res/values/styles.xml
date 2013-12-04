@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- =============================================================== -->
+    <!-- Generic Styles -->
+    <!-- =============================================================== -->
+
+    <style name="list_divider">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">1dip</item>
+        <item name="android:layout_marginTop">4dip</item>
+        <item name="android:layout_marginBottom">4dip</item>
+    </style>
+
+    <!-- =============================================================== -->
+    <!-- Blue styles -->
+    <!-- =============================================================== -->
+
+    <dimen name="page_margin_bl">2sp</dimen>
+    <dimen name="content_left_margin_bl">8sp</dimen>
+
+    <style name="page_background_bl">
+        <item name="android:background">#000</item>
+        <item name="android:padding">@dimen/page_margin_bl</item>
+        <!--
+        <item name="android:layout_marginTop">8dip</item>
+        <item name="android:layout_marginBottom">20dip</item>
+         -->
+    </style>
+
+    <style name="page_padding_layout_bl">
+        <item name="android:padding">@dimen/page_margin_bl</item>
+    </style>
+
+    <style name="text_title_bl">
+        <item name="android:textColor">#FFF</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:gravity">center_vertical|left</item>
+        <item name="android:paddingLeft">5sp</item>
+        <item name="android:shadowDx">1.0</item>
+        <item name="android:shadowDy">1.0</item>
+        <item name="android:shadowRadius">1</item>
+        <item name="android:shadowColor">#DDD</item>
+        <item name="android:background">#FF004488</item>
+    </style>
+
+    <style name="text_title_hidden_bl">
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="text_subheader_bl">
+        <item name="android:textColor">#08C</item>
+        <item name="android:paddingLeft">5sp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowDy">1.0</item>
+        <item name="android:shadowRadius">1</item>
+        <item name="android:shadowColor">#666</item>
+    </style>
+
+    <style name="text_large_bl">
+        <item name="android:textColor">#FFF</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="text_regular_bl">
+        <item name="android:textColor">@color/text_bl_regular</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="white_background_bl">
+        <item name="android:background">@drawable/white_container_bl</item>
+        <item name="android:padding">5sp</item>
+    </style>
+
+    <style name="button_bl">
+        <item name="android:background">@drawable/button_bl</item>-->
+        <item name="android:textColor">#000</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_margin">3sp</item>
+        <item name="android:paddingTop">11sp</item>
+        <item name="android:paddingBottom">11sp</item>
+    </style>
+
+    <style name="list_bl">
+        <item name="android:background">#000</item>
+        <item name="android:paddingTop">15sp</item>
+        <item name="android:paddingBottom">15sp</item>
+        <item name="android:listSelector">@drawable/list_item_bl</item>
+        <item name="android:cacheColorHint">#00000000</item>
+        <item name="android:divider">@drawable/list_divider_bl</item>
+        <item name="android:dividerHeight">1dip</item>
+        <item name="android:footerDividersEnabled">false</item>
+        <item name="android:scrollbarAlwaysDrawVerticalTrack">true</item>
+        <item name="android:scrollbarAlwaysDrawHorizontalTrack">true</item>
+        <item name="android:scrollbars">vertical</item>
+    </style>
+
+    <style name="list_item_bl" parent="text_large_bl">
+        <item name="android:background">@drawable/list_item_bl</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="list_divider_bl" parent="list_divider">
+        <item name="android:background">@drawable/list_divider_bl</item>
+    </style>
+
+    <!-- =============================================================== -->
+    <!-- White styles                                                    -->
+    <!-- =============================================================== -->
+
+    <dimen name="page_margin_wh">5sp</dimen>
+    <dimen name="content_left_margin_wh">8sp</dimen>
+
+    <style name="page_background_wh">
+        <item name="android:background">@drawable/gray_gradient_background</item>
+        <item name="android:padding">@dimen/page_margin_wh</item>
+    </style>
+
+    <style name="page_padding_layout_wh">
+        <item name="android:padding">@dimen/page_margin_wh</item>
+    </style>
+
+    <style name="text_title_wh">
+        <item name="android:background">@drawable/title_bar_wh</item>
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+        <item name="android:textColor">#FFF</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:shadowDx">1.0</item>
+        <item name="android:shadowDy">1.0</item>
+        <item name="android:shadowRadius">3</item>
+        <item name="android:shadowColor">#888</item>
+    </style>
+
+    <style name="text_title_hidden_wh" parent="text_title_wh">
+    </style>
+
+    <style name="text_subheader_wh">
+        <item name="android:textColor">#FFF</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowDy">1.0</item>
+        <item name="android:shadowRadius">1</item>
+        <item name="android:shadowColor">#000</item>
+    </style>
+
+    <style name="text_large_wh">
+        <item name="android:textColor">@color/text_wh_large</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:shadowDy">1.0</item>
+        <item name="android:shadowRadius">1</item>
+        <item name="android:shadowColor">#888</item>
+    </style>
+
+    <style name="text_regular_wh">
+        <item name="android:textColor">@color/text_wh_regular</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="text_check_box_wh">
+        <item name="android:textColor">@color/text_wh_regular</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="text_current_activity_green_wh" parent="text_large_wh">
+    </style>
+
+    <style name="white_background_wh">
+        <item name="android:background">@drawable/white_container_wh</item>
+        <item name="android:padding">10sp</item>
+    </style>
+
+    <style name="button_wh" parent="text_large_wh">
+        <item name="android:background">@drawable/button_wh</item>
+        <item name="android:layout_margin">3sp</item>
+    </style>
+
+    <style name="list_wh">
+        <item name="android:background">@drawable/white_container_wh</item>
+        <item name="android:paddingTop">15sp</item>
+        <item name="android:paddingBottom">15sp</item>
+        <item name="android:paddingLeft">5sp</item>
+        <item name="android:paddingRight">5sp</item>
+        <item name="android:listSelector">@drawable/list_item_wh</item>
+        <item name="android:cacheColorHint">#00000000</item>
+        <item name="android:divider">@drawable/list_divider_wh</item>
+        <item name="android:dividerHeight">1dip</item>
+        <item name="android:footerDividersEnabled">false</item>
+        <item name="android:scrollbarAlwaysDrawVerticalTrack">true</item>
+        <item name="android:scrollbars">vertical</item>
+    </style>
+
+    <style name="list_item_wh" parent="text_large_wh">
+        <item name="android:background">@drawable/list_item_wh</item>
+        <item name="android:paddingTop">15sp</item>
+        <item name="android:paddingBottom">15sp</item>
+        <item name="android:paddingLeft">5sp</item>
+        <item name="android:paddingRight">5sp</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="list_divider_wh" parent="list_divider">
+        <item name="android:background">@drawable/list_divider_wh</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">2sp</item>
+    </style>
+
+    <!--Old Taxi Vasilen styles-->
+    <style name="OmegaTheme">
+        <item name="android:textSize">20.0sp</item>
+        <item name="android:typeface">serif</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="font_24px_normal">
+        <item name="android:textSize">24.0px</item>
+        <item name="android:textColor">#ff000000</item>
+    </style>
+
+    <style name="font_18px_normal">
+        <item name="android:textSize">18.0px</item>
+        <item name="android:textColor">#ff000000</item>
+    </style>
+
+    <style name="font_30px_bold">
+        <item name="android:textSize">30.0px</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#ff000000</item>
+    </style>
+
+    <style name="font_48_bold_gray">
+        <item name="android:textSize">48.0px</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#ffc1c1c1</item>
+    </style>
+
+    <style name="font_40_bold_red">
+        <item name="android:textSize">40.0px</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#fffe0000</item>
+    </style>
+
+    <style name="font_18px_normal_gray">
+        <item name="android:textSize">18.0px</item>
+        <item name="android:textColor">#ffc1c1c1</item>
+    </style>
+
+    <style name="font_14px_normal_gray">
+        <item name="android:textSize">14.0px</item>
+        <item name="android:textColor">#ff999896</item>
+    </style>
+
+    <style name="font_18px_normal_white">
+        <item name="android:textSize">18.0px</item>
+        <item name="android:textColor">#fffffdff</item>
+    </style>
+
+    <style name="font_11px_normal_white">
+        <item name="android:textSize">11.0px</item>
+        <item name="android:textColor">#fffffdff</item>
+    </style>
+
+    <style name="font_40_bold_white_gray">
+        <item name="android:textSize">40.0px</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#fffffdff</item>
+    </style>
+
+    <style name="menu_font_big">
+        <item name="android:textSize">20.0px</item>
+        <item name="android:textColor">#fffffdff</item>
+    </style>
+
+    <style name="menu_font_small">
+        <item name="android:textSize">14.0px</item>
+        <item name="android:textColor">#fffffdff</item>
+    </style>
+
+    <style name="map_title_font">
+        <item name="android:textSize">30.0px</item>
+        <item name="android:textColor">#ff000000</item>
+    </style>
+
+    <style name="Theme.Transparent" parent="android:Theme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+</resources>

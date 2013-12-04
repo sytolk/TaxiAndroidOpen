@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/confirmLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ff000000">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="0px"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textSize="40dp"
+                android:textColor="#ffffffff"
+                android:id="@id/confirmText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:textSize="25dp"
+                android:textColor="#ffffffff"
+                android:id="@id/confirmTowardText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:textSize="25dp"
+                android:textColor="#ffff0000"
+                android:id="@id/confirmStatusText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30.0px"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:textSize="35dp"
+        android:gravity="center"
+        android:id="@id/confirmOkButton"
+        android:layout_width="250dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="10dp"
+        android:text="OK"
+        android:onClick="confirmOkClick"
+        android:layout_alignParentLeft="true"
+        android:layout_gravity="center_horizontal"/>
+
+</LinearLayout>

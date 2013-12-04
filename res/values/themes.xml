@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<style name="Theme" parent="android:Theme">
+		<item name="pageMargin">2sp</item>
+		<item name="android:windowTitleSize">20dip</item>
+	</style>
+
+	<style name="Theme.White">
+		<item name="pageBackground">@style/page_background_wh</item>
+		<item name="pagePaddingLayout">@style/page_padding_layout_wh</item>		
+		<item name="textTitle">@style/text_title_wh</item>
+		<item name="textTitleHidden">@style/text_title_hidden_wh</item>
+		<item name="textSubheader">@style/text_subheader_wh</item>
+		<item name="textLarge">@style/text_large_wh</item>
+		<item name="textRegular">@style/text_regular_wh</item>
+		<item name="textCheckBox">@style/text_check_box_wh</item>
+		<item name="textCurrentActivityGreen">@style/text_current_activity_green_wh</item>
+		<item name="whiteBackground">@style/white_background_wh</item>
+		<item name="button">@style/button_wh</item>
+		<item name="list">@style/list_wh</item>
+		<item name="listItem">@style/list_item_wh</item>
+		<item name="listDivider">@style/list_divider_wh</item>
+		<item name="pageMargin">@dimen/page_margin_wh</item>
+	</style>
+	
+	<style name="Theme.Blue">
+		<item name="pageBackground">@style/page_background_bl</item>
+		<item name="pagePaddingLayout">@style/page_padding_layout_bl</item>		
+		<item name="textTitle">@style/text_title_bl</item>
+		<item name="textTitleHidden">@style/text_title_hidden_bl</item>
+		<item name="textSubheader">@style/text_subheader_bl</item>
+		<item name="textLarge">@style/text_large_bl</item>
+		<item name="textRegular">@style/text_regular_bl</item>
+		<item name="textCheckBox">@style/text_regular_bl</item>
+		<item name="whiteBackground">@style/white_background_bl</item>
+		<item name="button">@style/button_bl</item>
+		<item name="list">@style/list_bl</item>
+		<item name="listItem">@style/list_item_bl</item>
+		<item name="listDivider">@style/list_divider_bl</item>
+		<item name="pageMargin">@dimen/page_margin_bl</item>
+	</style>
+
+</resources>

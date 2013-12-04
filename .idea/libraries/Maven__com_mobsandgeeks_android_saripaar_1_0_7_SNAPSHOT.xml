@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.mobsandgeeks:android-saripaar:1.0.7-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/mobsandgeeks/android-saripaar/1.0.7-SNAPSHOT/android-saripaar-1.0.7-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/mobsandgeeks/android-saripaar/1.0.7-SNAPSHOT/android-saripaar-1.0.7-SNAPSHOT-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/mobsandgeeks/android-saripaar/1.0.7-SNAPSHOT/android-saripaar-1.0.7-SNAPSHOT-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
