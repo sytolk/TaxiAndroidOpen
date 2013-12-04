@@ -16,11 +16,6 @@
     <properties>
         <android-platform>17</android-platform>
         <android-emulator>8</android-emulator>
-        <!--<maven-android-plugin-version>2.8.4</maven-android-plugin-version>
-        <maven-compiler-plugin-version>2.3.2</maven-compiler-plugin-version>-->
-        <!-- <android-version>2.3.1</android-version>
-        <jackson-version>1.7.2</jackson-version>
-        <simple-version>2.4.1</simple-version>-->
         <java.version>1.7</java.version>
     </properties>
     <build>
@@ -57,19 +52,6 @@
     </build>
 
     <dependencies>
-
-        <!--<dependency>
-            <groupId>stilTakBase</groupId>
-            <artifactId>StilTakBase</artifactId>
-            <version>2.0.0-SNAPSHOT</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>-->
-
         <dependency>
             <groupId>com.opentaxi.rest</groupId>
             <artifactId>open-rest-client</artifactId>
@@ -131,15 +113,6 @@
             <systemPath>${basedir}/libs/littlefluffylocationlibrary_r15.jar</systemPath>
         </dependency>
 
-        <!--https://github.com/ragunathjawahar/android-saripaar-->
-        <!--form validation framework-->
-        <!--<dependency>
-            <groupId>com.mobsandgeeks.saripaar</groupId>
-            <artifactId>saripaar</artifactId>
-            <version>11242012</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/libs/saripaar-11242012.jar</systemPath>
-        </dependency>-->
         <dependency>
             <groupId>com.mobsandgeeks</groupId>
             <artifactId>android-saripaar</artifactId>
