@@ -83,20 +83,8 @@ public final class MainActivity_
     @Override
     public void onViewChanged(HasViews hasViews) {
         bandwidth = ((TextView) hasViews.findViewById(id.bandwidth));
-        version = ((TextView) hasViews.findViewById(id.txt_version));
         user = ((TextView) hasViews.findViewById(id.user));
-        if (hasViews.findViewById(id.mapButton)!= null) {
-            hasViews.findViewById(id.mapButton).setOnClickListener(new OnClickListener() {
-
-
-                @Override
-                public void onClick(View view) {
-                    MainActivity_.this.mapButton();
-                }
-
-            }
-            );
-        }
+        version = ((TextView) hasViews.findViewById(id.txt_version));
         if (hasViews.findViewById(id.requestButton)!= null) {
             hasViews.findViewById(id.requestButton).setOnClickListener(new OnClickListener() {
 
@@ -116,6 +104,18 @@ public final class MainActivity_
                 @Override
                 public void onClick(View view) {
                     MainActivity_.this.exitButton();
+                }
+
+            }
+            );
+        }
+        if (hasViews.findViewById(id.mapButton)!= null) {
+            hasViews.findViewById(id.mapButton).setOnClickListener(new OnClickListener() {
+
+
+                @Override
+                public void onClick(View view) {
+                    MainActivity_.this.mapButton();
                 }
 
             }
@@ -157,14 +157,14 @@ public final class MainActivity_
     }
 
     @Override
-    public void sendVersion(final String version) {
+    public void gcmRegister() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    MainActivity_.super.sendVersion(version);
+                    MainActivity_.super.gcmRegister();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -175,14 +175,14 @@ public final class MainActivity_
     }
 
     @Override
-    public void gcmRegister() {
+    public void sendVersion(final String version) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    MainActivity_.super.gcmRegister();
+                    MainActivity_.super.sendVersion(version);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

@@ -95,16 +95,16 @@ public final class EditRequestActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
-        address = ((TextView) hasViews.findViewById(id.address));
+        regionsPicker = ((Spinner) hasViews.findViewById(id.regionsPicker));
         reqInfoButtonContainer = ((LinearLayout) hasViews.findViewById(id.reqInfoButtonContainer));
-        region = ((TextView) hasViews.findViewById(id.region));
-        addressChange = ((Button) hasViews.findViewById(id.addressChange));
-        llFilters = ((LinearLayout) hasViews.findViewById(id.llFilters));
-        addressText = ((EditText) hasViews.findViewById(id.addressText));
         pricesPicker = ((Spinner) hasViews.findViewById(id.pricesPicker));
         requestSend = ((Button) hasViews.findViewById(id.requestSend));
-        regionsPicker = ((Spinner) hasViews.findViewById(id.regionsPicker));
+        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
+        address = ((TextView) hasViews.findViewById(id.address));
+        llFilters = ((LinearLayout) hasViews.findViewById(id.llFilters));
+        region = ((TextView) hasViews.findViewById(id.region));
+        addressText = ((EditText) hasViews.findViewById(id.addressText));
+        addressChange = ((Button) hasViews.findViewById(id.addressChange));
         if (hasViews.findViewById(id.addressChange)!= null) {
             hasViews.findViewById(id.addressChange).setOnClickListener(new OnClickListener() {
 
@@ -158,6 +158,20 @@ public final class EditRequestActivity_
     }
 
     @Override
+    public void showRegions(final Regions[] regions) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                EditRequestActivity_.super.showRegions(regions);
+            }
+
+        }
+        );
+    }
+
+    @Override
     public void showPrices(final Groups[] prices) {
         handler_.post(new Runnable() {
 
@@ -165,6 +179,20 @@ public final class EditRequestActivity_
             @Override
             public void run() {
                 EditRequestActivity_.super.showPrices(prices);
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void showGroups(final Groups[] groups) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                EditRequestActivity_.super.showGroups(groups);
             }
 
         }
@@ -186,27 +214,17 @@ public final class EditRequestActivity_
     }
 
     @Override
-    public void showRegions(final Regions[] regions) {
-        handler_.post(new Runnable() {
+    public void setGroups() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
-            public void run() {
-                EditRequestActivity_.super.showRegions(regions);
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void showGroups(final Groups[] groups) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                EditRequestActivity_.super.showGroups(groups);
+            public void execute() {
+                try {
+                    EditRequestActivity_.super.setGroups();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
             }
 
         }
@@ -258,24 +276,6 @@ public final class EditRequestActivity_
             public void execute() {
                 try {
                     EditRequestActivity_.super.setRegions();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void setGroups() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    EditRequestActivity_.super.setGroups();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

@@ -75,8 +75,20 @@ public final class RequestsActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        requests_table = ((TableLayout) hasViews.findViewById(id.requests_table));
         pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
+        requests_table = ((TableLayout) hasViews.findViewById(id.requests_table));
+        if (hasViews.findViewById(id.requestsHistory)!= null) {
+            hasViews.findViewById(id.requestsHistory).setOnClickListener(new OnClickListener() {
+
+
+                @Override
+                public void onClick(View view) {
+                    RequestsActivity_.this.requestsHistory();
+                }
+
+            }
+            );
+        }
         if (hasViews.findViewById(id.newRequests)!= null) {
             hasViews.findViewById(id.newRequests).setOnClickListener(new OnClickListener() {
 
@@ -101,18 +113,6 @@ public final class RequestsActivity_
             }
             );
         }
-        if (hasViews.findViewById(id.requestsHistory)!= null) {
-            hasViews.findViewById(id.requestsHistory).setOnClickListener(new OnClickListener() {
-
-
-                @Override
-                public void onClick(View view) {
-                    RequestsActivity_.this.requestsHistory();
-                }
-
-            }
-            );
-        }
         afterRequestsActivity();
     }
 
@@ -131,14 +131,14 @@ public final class RequestsActivity_
     }
 
     @Override
-    public void getRequests() {
+    public void getRequestHistory() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    RequestsActivity_.super.getRequests();
+                    RequestsActivity_.super.getRequestHistory();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -149,14 +149,14 @@ public final class RequestsActivity_
     }
 
     @Override
-    public void getRequestHistory() {
+    public void getRequests() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    RequestsActivity_.super.getRequestHistory();
+                    RequestsActivity_.super.getRequests();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

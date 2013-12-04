@@ -1,1 +1,2 @@
 This open source application is for clients of taxi companies. It using Taxi web services for communication with cars. It send request, show status and can help clients easy to find taxi.
+Supported Android from 2.2 to 4.3
