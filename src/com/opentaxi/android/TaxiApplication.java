@@ -15,13 +15,33 @@ import org.acra.annotation.ReportsCrashes;
  */
 @ReportsCrashes(formKey = "dF8wOUJYbFhCeDVlMG1JT3FkN2xXM0E6MQ", logcatFilterByPid = true)
 public class TaxiApplication extends Application {
-    public int CURRENT_STATE = 0;
-    public boolean autoAccept = false;
-    public boolean developerMode = false;
-    public String deviceId = "";
-    public boolean isConnected;
-    public boolean isOnline;
-    public boolean isPosition = false;
+
+    private static boolean requestsVisible=false;
+    private static boolean requestsDetailsVisible=false;
+
+    public static boolean isRequestsVisible() {
+        return requestsVisible;
+    }
+
+    public static void requestsResumed() {
+        requestsVisible = true;
+    }
+
+    public static void requestsPaused() {
+        requestsVisible = false;
+    }
+
+    public static boolean isRequestsDetailsVisible() {
+        return requestsDetailsVisible;
+    }
+
+    public static void requestsDetailsResumed() {
+        requestsDetailsVisible = true;
+    }
+
+    public static void requestsDetailsPaused() {
+        requestsDetailsVisible = false;
+    }
 
     @Override
     public void onCreate() {
@@ -48,21 +68,9 @@ public class TaxiApplication extends Application {
         //
         // however for the purposes of the test app, we will request unrealistically frequent location broadcasts
         // every 1 minute, and force a location update if there hasn't been one for 2 minutes.
-        LocationLibrary.initialiseLibrary(getBaseContext(), 60 * 1000, 2 * 60 * 1000, "com.opentaxi.android");
+        LocationLibrary.initialiseLibrary(getBaseContext(), 30 * 1000, 60 * 1000, "com.opentaxi.android");
         LocationLibrary.useFineAccuracyForRequests(true);
         //LocationLibrary.forceLocationUpdate(getBaseContext());
         LocationLibrary.startAlarmAndListener(getBaseContext());
-    }
-
-    public boolean isConnected() {
-        return this.isConnected;
-    }
-
-    public void setAutoConnect(boolean paramBoolean) {
-        this.autoAccept = paramBoolean;
-    }
-
-    public void setIsConnected(boolean paramBoolean) {
-        this.isConnected = paramBoolean;
     }
 }

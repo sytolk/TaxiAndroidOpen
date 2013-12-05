@@ -75,64 +75,94 @@ public class RequestDetailsActivity extends FragmentActivity {
     @ViewById
     TextView state;
 
+    public void onPause() {
+        super.onPause();
+        TaxiApplication.requestsDetailsPaused();
+        finish();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        TaxiApplication.requestsDetailsResumed();
+    }
+
     @AfterViews
     void afterRequestsActivity() {
-        if (newCRequest != null) {
+        showDetails();
+    }
 
-            requestNumber.setText(newCRequest.getRequestsId().toString());
-            datecreated.setText(DateFormat.getDateInstance(DateFormat.SHORT).format(newCRequest.getDatecreated()));
-            Regions regions = RestClient.getInstance().getRegionById(newCRequest.getRegionId());
-            if (regions != null) {
-                address.setText(regions.getDescription() + " " + newCRequest.getFullAddress());
-            } else address.setText(newCRequest.getFullAddress());
-            Map<String, List<Groups>> groupsMap = newCRequest.getRequestGroups();
-            if (groupsMap.containsKey("PRICE_GROUPS")) {
-                List<Groups> priceGroups = groupsMap.get("PRICE_GROUPS");
-                if (priceGroups.size() > 0) {
-                    Groups priceGroup = priceGroups.get(0);
-                    if (priceGroup != null)
-                        price_group.setText(priceGroup.getDescription());
-                }
-            }
-            StringBuilder groupChosen = new StringBuilder();
-            for (Map.Entry<String, List<Groups>> groups : groupsMap.entrySet()) {
-                List<Groups> priceGroups = groups.getValue();
-                if (priceGroups != null) {
-                    Groups priceGroup = priceGroups.get(0);
-                    if (priceGroup != null) {
-                        if (groups.getKey().equals("PRICE_GROUPS")) {
+    @Background(delay = 10000)
+    void scheduleChanges() {
+        if (TaxiApplication.isRequestsDetailsVisible()) {
+            newCRequest = RestClient.getInstance().getRequestDetails(newCRequest.getRequestsId());
+            showDetails();
+        }
+    }
+
+    @UiThread
+    void showDetails() {
+        if (TaxiApplication.isRequestsDetailsVisible()) {
+            if (newCRequest != null && newCRequest.getRequestsId() != null) {
+
+                requestNumber.setText(newCRequest.getRequestsId().toString());
+                datecreated.setText(DateFormat.getDateInstance(DateFormat.SHORT).format(newCRequest.getDatecreated()));
+                Regions regions = RestClient.getInstance().getRegionById(newCRequest.getRegionId());
+                if (regions != null) {
+                    address.setText(regions.getDescription() + " " + newCRequest.getFullAddress());
+                } else address.setText(newCRequest.getFullAddress());
+                Map<String, List<Groups>> groupsMap = newCRequest.getRequestGroups();
+                if (groupsMap.containsKey("PRICE_GROUPS")) {
+                    List<Groups> priceGroups = groupsMap.get("PRICE_GROUPS");
+                    if (priceGroups.size() > 0) {
+                        Groups priceGroup = priceGroups.get(0);
+                        if (priceGroup != null)
                             price_group.setText(priceGroup.getDescription());
-                        } else {
-                            groupChosen.append(priceGroup.getDescription()).append(",");
+                    }
+                }
+                StringBuilder groupChosen = new StringBuilder();
+                for (Map.Entry<String, List<Groups>> groups : groupsMap.entrySet()) {
+                    List<Groups> priceGroups = groups.getValue();
+                    if (priceGroups != null) {
+                        Groups priceGroup = priceGroups.get(0);
+                        if (priceGroup != null) {
+                            if (groups.getKey().equals("PRICE_GROUPS")) {
+                                price_group.setText(priceGroup.getDescription());
+                            } else {
+                                groupChosen.append(priceGroup.getDescription()).append(",");
+                            }
                         }
                     }
                 }
-            }
-            chosen_group.setText(groupChosen.toString());
+                chosen_group.setText(groupChosen.toString());
 
-            arrive_time.setText(newCRequest.getDispTime() + " min");
-            remaining_time.setText(newCRequest.getExecTime());
-            state.setText(RequestStatus.getByCode(newCRequest.getStatus()).toString());
+                if (newCRequest.getDispTime() != null && newCRequest.getDispTime() > 0)
+                    arrive_time.setText(newCRequest.getDispTime() + " min");
+                else arrive_time.setText("не е определено");
 
-            if (newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_BEGIN.getCode()) || newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_DONE.getCode())) {
-                rejectButton.setVisibility(View.GONE);
-                editButton.setVisibility(View.GONE);
-                feedBackButton.setVisibility(View.VISIBLE);
+                remaining_time.setText(newCRequest.getExecTime());
+                state.setText(RequestStatus.getByCode(newCRequest.getStatus()).toString());
+
+                if (newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_BEGIN.getCode()) || newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_DONE.getCode())) {
+                    rejectButton.setVisibility(View.GONE);
+                    editButton.setVisibility(View.GONE);
+                    feedBackButton.setVisibility(View.VISIBLE);
+                } else {
+                    rejectButton.setVisibility(View.VISIBLE);
+                    editButton.setVisibility(View.VISIBLE);
+                    feedBackButton.setVisibility(View.GONE);
+                    scheduleChanges();
+                }
             } else {
-                rejectButton.setVisibility(View.VISIBLE);
-                editButton.setVisibility(View.VISIBLE);
-                feedBackButton.setVisibility(View.GONE);
+                Log.e(TAG, "No newCRequest or newCRequest.getRequestsId=null");
+                finish();
             }
         }
     }
 
-    public void onPause() {
-        super.onPause();
-        finish();
-    }
-
     @Click
     void okButton() {
+        TaxiApplication.requestsDetailsPaused();
         finish();
     }
 
@@ -182,11 +212,13 @@ public class RequestDetailsActivity extends FragmentActivity {
 
     @Background
     void rejectRequest(String reason) {
+        TaxiApplication.requestsDetailsPaused();
         RestClient.getInstance().rejectRequest(newCRequest.getRequestsId(), reason);
     }
 
     @Click
     void editButton() {
+        TaxiApplication.requestsDetailsPaused();
         Intent requestsIntent = new Intent(RequestDetailsActivity.this, EditRequestActivity_.class);
         requestsIntent.putExtra("newCRequest", newCRequest);
         // proposalIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

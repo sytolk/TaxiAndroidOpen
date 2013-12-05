@@ -139,14 +139,14 @@ public final class MainActivity_
     }
 
     @Override
-    public void setServers() {
+    public void sendVersion(final String version) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    MainActivity_.super.setServers();
+                    MainActivity_.super.sendVersion(version);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -175,14 +175,14 @@ public final class MainActivity_
     }
 
     @Override
-    public void sendVersion(final String version) {
+    public void setServers() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    MainActivity_.super.sendVersion(version);
+                    MainActivity_.super.setServers();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

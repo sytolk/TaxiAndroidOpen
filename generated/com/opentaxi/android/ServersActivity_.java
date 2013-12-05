@@ -77,18 +77,6 @@ public final class ServersActivity_
     public void onViewChanged(HasViews hasViews) {
         serversContent = ((LinearLayout) hasViews.findViewById(id.serversContent));
         cancelButton = ((Button) hasViews.findViewById(id.cancelButton));
-        if (hasViews.findViewById(id.cancelButton)!= null) {
-            hasViews.findViewById(id.cancelButton).setOnClickListener(new OnClickListener() {
-
-
-                @Override
-                public void onClick(View view) {
-                    ServersActivity_.this.cancelButton();
-                }
-
-            }
-            );
-        }
         if (hasViews.findViewById(id.refreshButton)!= null) {
             hasViews.findViewById(id.refreshButton).setOnClickListener(new OnClickListener() {
 
@@ -101,21 +89,19 @@ public final class ServersActivity_
             }
             );
         }
-        afterServers();
-    }
-
-    @Override
-    public void showServers(final boolean testing) {
-        handler_.post(new Runnable() {
+        if (hasViews.findViewById(id.cancelButton)!= null) {
+            hasViews.findViewById(id.cancelButton).setOnClickListener(new OnClickListener() {
 
 
-            @Override
-            public void run() {
-                ServersActivity_.super.showServers(testing);
+                @Override
+                public void onClick(View view) {
+                    ServersActivity_.this.cancelButton();
+                }
+
             }
-
+            );
         }
-        );
+        afterServers();
     }
 
     @Override
@@ -133,14 +119,28 @@ public final class ServersActivity_
     }
 
     @Override
-    public void updateServers() {
+    public void showServers(final boolean testing) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                ServersActivity_.super.showServers(testing);
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void testServer(final String socket) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    ServersActivity_.super.updateServers();
+                    ServersActivity_.super.testServer(socket);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -169,14 +169,14 @@ public final class ServersActivity_
     }
 
     @Override
-    public void testServer(final String socket) {
+    public void updateServers() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    ServersActivity_.super.testServer(socket);
+                    ServersActivity_.super.updateServers();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

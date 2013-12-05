@@ -95,16 +95,16 @@ public final class EditRequestActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        regionsPicker = ((Spinner) hasViews.findViewById(id.regionsPicker));
         reqInfoButtonContainer = ((LinearLayout) hasViews.findViewById(id.reqInfoButtonContainer));
-        pricesPicker = ((Spinner) hasViews.findViewById(id.pricesPicker));
-        requestSend = ((Button) hasViews.findViewById(id.requestSend));
-        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
         address = ((TextView) hasViews.findViewById(id.address));
-        llFilters = ((LinearLayout) hasViews.findViewById(id.llFilters));
+        pricesPicker = ((Spinner) hasViews.findViewById(id.pricesPicker));
         region = ((TextView) hasViews.findViewById(id.region));
-        addressText = ((EditText) hasViews.findViewById(id.addressText));
+        regionsPicker = ((Spinner) hasViews.findViewById(id.regionsPicker));
+        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
         addressChange = ((Button) hasViews.findViewById(id.addressChange));
+        llFilters = ((LinearLayout) hasViews.findViewById(id.llFilters));
+        requestSend = ((Button) hasViews.findViewById(id.requestSend));
+        addressText = ((EditText) hasViews.findViewById(id.addressText));
         if (hasViews.findViewById(id.addressChange)!= null) {
             hasViews.findViewById(id.addressChange).setOnClickListener(new OnClickListener() {
 
@@ -158,20 +158,6 @@ public final class EditRequestActivity_
     }
 
     @Override
-    public void showRegions(final Regions[] regions) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                EditRequestActivity_.super.showRegions(regions);
-            }
-
-        }
-        );
-    }
-
-    @Override
     public void showPrices(final Groups[] prices) {
         handler_.post(new Runnable() {
 
@@ -200,6 +186,20 @@ public final class EditRequestActivity_
     }
 
     @Override
+    public void showRegions(final Regions[] regions) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                EditRequestActivity_.super.showRegions(regions);
+            }
+
+        }
+        );
+    }
+
+    @Override
     public void SuccessDialog() {
         handler_.post(new Runnable() {
 
@@ -207,6 +207,24 @@ public final class EditRequestActivity_
             @Override
             public void run() {
                 EditRequestActivity_.super.SuccessDialog();
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void setRegions() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    EditRequestActivity_.super.setRegions();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
             }
 
         }
@@ -222,24 +240,6 @@ public final class EditRequestActivity_
             public void execute() {
                 try {
                     EditRequestActivity_.super.setGroups();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void sendRequest(final NewRequest newRequest) {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    EditRequestActivity_.super.sendRequest(newRequest);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -268,14 +268,14 @@ public final class EditRequestActivity_
     }
 
     @Override
-    public void setRegions() {
+    public void sendRequest(final NewRequest newRequest) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    EditRequestActivity_.super.setRegions();
+                    EditRequestActivity_.super.sendRequest(newRequest);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
