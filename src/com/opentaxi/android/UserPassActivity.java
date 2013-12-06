@@ -26,6 +26,7 @@ import org.androidannotations.annotations.*;
 public class UserPassActivity extends Activity implements Validator.ValidationListener {
 
     private static final int RESULT_NEW_CLIENT = 1;
+    private static final int RESULT_LOST_PASSWORD = 2;
 
     @ViewById(R.id.clientLoginButton)
     Button submitButton;
@@ -84,6 +85,8 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
     @Click
     void lostPassword() {
         Log.i("lostPassword", "lostPassword");
+
+        LostPasswordActivity_.intent(this).startForResult(RESULT_LOST_PASSWORD);
     }
 
     @Background

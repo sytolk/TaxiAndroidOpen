@@ -53,9 +53,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.opentaxi.rest</groupId>
+            <groupId>com.taxi-bulgaria.rest</groupId>
             <artifactId>open-rest-client</artifactId>
-            <version>1.0.39.BUILD-SNAPSHOT</version>
+            <version>1.0.1.BUILD-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -136,23 +136,6 @@
             <groupId>ch.acra</groupId>
             <artifactId>acra</artifactId>
             <version>4.5.0</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>com.madgag</groupId>
-            <artifactId>org.eclipse.jgit</artifactId>
-            <version>2.3.1.1.0-UNOFFICIAL-ROBERTO-RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>com.madgag</groupId>
-            <artifactId>ssh-android</artifactId>
-            <version>1.2</version>
-        </dependency>
-        <dependency>
-            <groupId>net.schmizz</groupId>
-            <artifactId>sshj</artifactId>
-            <version>0.8.1</version>
         </dependency>
 
         <!--<dependency>

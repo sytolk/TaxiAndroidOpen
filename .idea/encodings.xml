@@ -1,29 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
-    <file url="file://$PROJECT_DIR$/install/installGCM.sh" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/res/menu/options_menu.xml" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/res/xml/preferences.xml" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/git/AgitTransportConfig.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/git/CancellationSignaller.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/git/Clone.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/git/Fetch.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/git/GUICredentialsProvider.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/git/GitFetchService.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/git/GitOperation.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/git/GitOperationExecutor.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/git/HarmonyFixInflater.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/git/HasLatestCommit.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/git/MessagingProgressMonitor.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/git/Progress.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/git/ProgressListener.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/git/Pull.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/git/Repos.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/git/jsch/AndroidAuthAgentProvider.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/git/jsch/AndroidSshSessionFactory.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/git/jsch/CuriousHostKeyRepository.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/git/jsch/GUIUserInfo.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/git/jsch/SSHAgentIdentity.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/map/AdvancedMapViewer.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/map/FileUtils.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/map/InfoView.java" charset="UTF-8" />
@@ -39,7 +18,6 @@
     <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/map/preferences/EditPreferences.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/map/preferences/MoveSpeedPreference.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/map/preferences/SeekBarPreference.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/utils/CashAppData.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/utils/GISTool.java" charset="UTF-8" />
   </component>
 </project>

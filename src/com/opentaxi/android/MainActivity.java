@@ -561,6 +561,11 @@ public class MainActivity extends FragmentActivity {
         MainActivity.this.startActivityForResult(intent, MAP_VIEW);
     }
 
+    @Click
+    void newRequestButton() {
+        NewRequestActivity_.intent(this).start();
+    }
+
     /*if (network) {
         if (bandwidth > 16) {
             // Code for large items

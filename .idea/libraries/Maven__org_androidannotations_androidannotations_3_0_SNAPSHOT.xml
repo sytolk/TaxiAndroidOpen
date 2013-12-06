@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: org.androidannotations:androidannotations:3.0-SNAPSHOT">
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/org/androidannotations/androidannotations/3.0-SNAPSHOT/androidannotations-3.0-20131127.220853-108.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/androidannotations/androidannotations/3.0-SNAPSHOT/androidannotations-3.0-20131206.091249-109.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$MAVEN_REPOSITORY$/org/androidannotations/androidannotations/3.0-SNAPSHOT/androidannotations-3.0-20131127.220853-108-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/androidannotations/androidannotations/3.0-SNAPSHOT/androidannotations-3.0-20131206.091249-109-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$MAVEN_REPOSITORY$/org/androidannotations/androidannotations/3.0-SNAPSHOT/androidannotations-3.0-20131127.220853-108-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/androidannotations/androidannotations/3.0-SNAPSHOT/androidannotations-3.0-20131206.091249-109-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

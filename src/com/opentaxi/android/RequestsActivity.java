@@ -44,10 +44,15 @@ public class RequestsActivity extends Activity {
 
     @AfterViews
     void afterRequestsActivity() {
-        isFromHistory = false;
-        requests_table.setVisibility(View.INVISIBLE);
-        pbProgress.setVisibility(View.VISIBLE);
-        getRequests();
+        if (requests_table != null) {
+            isFromHistory = false;
+            requests_table.setVisibility(View.INVISIBLE);
+            pbProgress.setVisibility(View.VISIBLE);
+            getRequests();
+        } else {
+            Log.e(TAG, "requests_table=null");
+            finish();
+        }
     }
 
     @Override

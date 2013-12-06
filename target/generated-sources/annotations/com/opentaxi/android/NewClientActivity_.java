@@ -12,17 +12,20 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import com.opentaxi.android.R.id;
 import com.opentaxi.android.R.layout;
-import com.opentaxi.models.Users;
+import com.opentaxi.models.NewUsers;
 import org.androidannotations.api.BackgroundExecutor;
+import org.androidannotations.api.SdkVersionHelper;
 import org.androidannotations.api.view.HasViews;
 import org.androidannotations.api.view.OnViewChangedListener;
 import org.androidannotations.api.view.OnViewChangedNotifier;
@@ -67,6 +70,14 @@ public final class NewClientActivity_
         onViewChangedNotifier_.notifyViewChanged(this);
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (((SdkVersionHelper.getSdkInt()< 5)&&(keyCode == KeyEvent.KEYCODE_BACK))&&(event.getRepeatCount() == 0)) {
+            onBackPressed();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
     public static NewClientActivity_.IntentBuilder_ intent(Context context) {
         return new NewClientActivity_.IntentBuilder_(context);
     }
@@ -77,16 +88,17 @@ public final class NewClientActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        userName = ((EditText) hasViews.findViewById(id.userNameField));
-        email = ((EditText) hasViews.findViewById(id.emailField));
-        pass2 = ((EditText) hasViews.findViewById(id.password2Field));
-        nameField = ((EditText) hasViews.findViewById(id.nameField));
         pass = ((EditText) hasViews.findViewById(id.passwordField));
-        sendButton = ((Button) hasViews.findViewById(id.sendButton));
-        lastName = ((EditText) hasViews.findViewById(id.lastName));
         iAgreeCheckBox = ((CheckBox) hasViews.findViewById(id.iAgreeCheckBox));
-        passwordHint = ((EditText) hasViews.findViewById(id.passwordHint));
+        nameField = ((EditText) hasViews.findViewById(id.nameField));
         middleName = ((EditText) hasViews.findViewById(id.middleName));
+        email = ((EditText) hasViews.findViewById(id.emailField));
+        lastName = ((EditText) hasViews.findViewById(id.lastName));
+        sendButton = ((Button) hasViews.findViewById(id.sendButton));
+        passwordHint = ((EditText) hasViews.findViewById(id.passwordHint));
+        cityName = ((AutoCompleteTextView) hasViews.findViewById(id.cityName));
+        userName = ((EditText) hasViews.findViewById(id.userNameField));
+        pass2 = ((EditText) hasViews.findViewById(id.password2Field));
         if (hasViews.findViewById(id.sendButton)!= null) {
             hasViews.findViewById(id.sendButton).setOnClickListener(new OnClickListener() {
 
@@ -139,6 +151,20 @@ public final class NewClientActivity_
     }
 
     @Override
+    public void setEmailError(final String error) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                NewClientActivity_.super.setEmailError(error);
+            }
+
+        }
+        );
+    }
+
+    @Override
     public void setUserError(final String error) {
         handler_.post(new Runnable() {
 
@@ -153,13 +179,13 @@ public final class NewClientActivity_
     }
 
     @Override
-    public void setEmailError(final String error) {
+    public void ActivationDialog() {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                NewClientActivity_.super.setEmailError(error);
+                NewClientActivity_.super.ActivationDialog();
             }
 
         }
@@ -185,7 +211,7 @@ public final class NewClientActivity_
     }
 
     @Override
-    public void createNewUser(final Users users) {
+    public void createNewUser(final NewUsers users) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 

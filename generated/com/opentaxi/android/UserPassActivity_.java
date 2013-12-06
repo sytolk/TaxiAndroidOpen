@@ -73,16 +73,16 @@ public final class UserPassActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
+        pass = ((EditText) hasViews.findViewById(id.passwordField));
         userName = ((EditText) hasViews.findViewById(id.userNameField));
         submitButton = ((Button) hasViews.findViewById(id.clientLoginButton));
-        pass = ((EditText) hasViews.findViewById(id.passwordField));
-        if (hasViews.findViewById(id.lostPassword)!= null) {
-            hasViews.findViewById(id.lostPassword).setOnClickListener(new OnClickListener() {
+        if (hasViews.findViewById(id.newClient)!= null) {
+            hasViews.findViewById(id.newClient).setOnClickListener(new OnClickListener() {
 
 
                 @Override
                 public void onClick(View view) {
-                    UserPassActivity_.this.lostPassword();
+                    UserPassActivity_.this.newClient();
                 }
 
             }
@@ -100,13 +100,13 @@ public final class UserPassActivity_
             }
             );
         }
-        if (hasViews.findViewById(id.newClient)!= null) {
-            hasViews.findViewById(id.newClient).setOnClickListener(new OnClickListener() {
+        if (hasViews.findViewById(id.lostPassword)!= null) {
+            hasViews.findViewById(id.lostPassword).setOnClickListener(new OnClickListener() {
 
 
                 @Override
                 public void onClick(View view) {
-                    UserPassActivity_.this.newClient();
+                    UserPassActivity_.this.lostPassword();
                 }
 
             }

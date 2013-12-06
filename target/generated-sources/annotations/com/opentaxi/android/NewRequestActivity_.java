@@ -12,12 +12,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import com.opentaxi.android.R.id;
@@ -25,6 +27,7 @@ import com.opentaxi.android.R.layout;
 import com.opentaxi.generated.mysql.tables.pojos.Groups;
 import com.opentaxi.generated.mysql.tables.pojos.Regions;
 import org.androidannotations.api.BackgroundExecutor;
+import org.androidannotations.api.SdkVersionHelper;
 import org.androidannotations.api.view.HasViews;
 import org.androidannotations.api.view.OnViewChangedListener;
 import org.androidannotations.api.view.OnViewChangedNotifier;
@@ -68,6 +71,14 @@ public final class NewRequestActivity_
         onViewChangedNotifier_.notifyViewChanged(this);
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (((SdkVersionHelper.getSdkInt()< 5)&&(keyCode == KeyEvent.KEYCODE_BACK))&&(event.getRepeatCount() == 0)) {
+            onBackPressed();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
     public static NewRequestActivity_.IntentBuilder_ intent(Context context) {
         return new NewRequestActivity_.IntentBuilder_(context);
     }
@@ -78,13 +89,15 @@ public final class NewRequestActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        addressChange = ((Button) hasViews.findViewById(id.addressChange));
-        address = ((TextView) hasViews.findViewById(id.address));
-        llFilters = ((LinearLayout) hasViews.findViewById(id.llFilters));
-        addressText = ((EditText) hasViews.findViewById(id.addressText));
-        region = ((TextView) hasViews.findViewById(id.region));
-        pricesPicker = ((Spinner) hasViews.findViewById(id.pricesPicker));
         regionsPicker = ((Spinner) hasViews.findViewById(id.regionsPicker));
+        region = ((TextView) hasViews.findViewById(id.region));
+        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
+        address = ((TextView) hasViews.findViewById(id.address));
+        addressText = ((EditText) hasViews.findViewById(id.addressText));
+        addressChange = ((Button) hasViews.findViewById(id.addressChange));
+        reqInfoButtonContainer = ((LinearLayout) hasViews.findViewById(id.reqInfoButtonContainer));
+        pricesPicker = ((Spinner) hasViews.findViewById(id.pricesPicker));
+        llFilters = ((LinearLayout) hasViews.findViewById(id.llFilters));
         if (hasViews.findViewById(id.addressChange)!= null) {
             hasViews.findViewById(id.addressChange).setOnClickListener(new OnClickListener() {
 
@@ -113,20 +126,6 @@ public final class NewRequestActivity_
     }
 
     @Override
-    public void showPrices(final Groups[] prices) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                NewRequestActivity_.super.showPrices(prices);
-            }
-
-        }
-        );
-    }
-
-    @Override
     public void showRegions(final Regions[] regions) {
         handler_.post(new Runnable() {
 
@@ -141,20 +140,6 @@ public final class NewRequestActivity_
     }
 
     @Override
-    public void showAddress(final com.opentaxi.generated.mysql.tables.pojos.NewRequest adr) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                NewRequestActivity_.super.showAddress(adr);
-            }
-
-        }
-        );
-    }
-
-    @Override
     public void showGroups(final Groups[] groups) {
         handler_.post(new Runnable() {
 
@@ -162,6 +147,48 @@ public final class NewRequestActivity_
             @Override
             public void run() {
                 NewRequestActivity_.super.showGroups(groups);
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void showPrices(final Groups[] prices) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                NewRequestActivity_.super.showPrices(prices);
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void SuccessDialog() {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                NewRequestActivity_.super.SuccessDialog();
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void showAddress(final com.opentaxi.generated.mysql.tables.pojos.NewRequest adr) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                NewRequestActivity_.super.showAddress(adr);
             }
 
         }
@@ -223,14 +250,14 @@ public final class NewRequestActivity_
     }
 
     @Override
-    public void setGroups() {
+    public void setPrices() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    NewRequestActivity_.super.setGroups();
+                    NewRequestActivity_.super.setPrices();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -241,14 +268,14 @@ public final class NewRequestActivity_
     }
 
     @Override
-    public void setPrices() {
+    public void setGroups() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    NewRequestActivity_.super.setPrices();
+                    NewRequestActivity_.super.setGroups();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

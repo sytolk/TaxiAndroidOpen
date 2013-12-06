@@ -5,6 +5,7 @@
     <string name="show_map_text">Карта</string>
     <string name="exit">Изход</string>
     <string name="request">Заявки</string>
+    <string name="newRequest">Повикай Такси</string>
 
     <string name="options_update">Обновяване</string>
     <string name="options_exit">Изход</string>
