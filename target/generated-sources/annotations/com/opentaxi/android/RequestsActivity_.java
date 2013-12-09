@@ -12,28 +12,21 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.TableLayout;
 import com.opentaxi.android.R.id;
 import com.opentaxi.android.R.layout;
-import com.opentaxi.generated.mysql.tables.pojos.Groups;
-import com.opentaxi.generated.mysql.tables.pojos.Regions;
+import com.opentaxi.models.RequestCView;
 import org.androidannotations.api.BackgroundExecutor;
-import org.androidannotations.api.SdkVersionHelper;
 import org.androidannotations.api.view.HasViews;
 import org.androidannotations.api.view.OnViewChangedListener;
 import org.androidannotations.api.view.OnViewChangedNotifier;
 
-public final class NewRequestActivity_
-    extends NewRequestActivity
+public final class RequestsActivity_
+    extends RequestsActivity
     implements HasViews, OnViewChangedListener
 {
 
@@ -42,6 +35,7 @@ public final class NewRequestActivity_
 
     private void init_(Bundle savedInstanceState) {
         OnViewChangedNotifier.registerOnViewChangedListener(this);
+        requestWindowFeature(1);
     }
 
     @Override
@@ -50,7 +44,7 @@ public final class NewRequestActivity_
         init_(savedInstanceState);
         super.onCreate(savedInstanceState);
         OnViewChangedNotifier.replaceNotifier(previousNotifier);
-        setContentView(layout.new_request);
+        setContentView(layout.requests);
     }
 
     @Override
@@ -71,68 +65,65 @@ public final class NewRequestActivity_
         onViewChangedNotifier_.notifyViewChanged(this);
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (((SdkVersionHelper.getSdkInt()< 5)&&(keyCode == KeyEvent.KEYCODE_BACK))&&(event.getRepeatCount() == 0)) {
-            onBackPressed();
-        }
-        return super.onKeyDown(keyCode, event);
+    public static RequestsActivity_.IntentBuilder_ intent(Context context) {
+        return new RequestsActivity_.IntentBuilder_(context);
     }
 
-    public static NewRequestActivity_.IntentBuilder_ intent(Context context) {
-        return new NewRequestActivity_.IntentBuilder_(context);
-    }
-
-    public static NewRequestActivity_.IntentBuilder_ intent(Fragment supportFragment) {
-        return new NewRequestActivity_.IntentBuilder_(supportFragment);
+    public static RequestsActivity_.IntentBuilder_ intent(Fragment supportFragment) {
+        return new RequestsActivity_.IntentBuilder_(supportFragment);
     }
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        address = ((TextView) hasViews.findViewById(id.address));
-        addressText = ((EditText) hasViews.findViewById(id.addressText));
-        region = ((TextView) hasViews.findViewById(id.region));
-        llFilters = ((LinearLayout) hasViews.findViewById(id.llFilters));
-        addressChange = ((Button) hasViews.findViewById(id.addressChange));
         pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
-        regionsPicker = ((Spinner) hasViews.findViewById(id.regionsPicker));
-        pricesPicker = ((Spinner) hasViews.findViewById(id.pricesPicker));
-        reqInfoButtonContainer = ((LinearLayout) hasViews.findViewById(id.reqInfoButtonContainer));
-        if (hasViews.findViewById(id.addressChange)!= null) {
-            hasViews.findViewById(id.addressChange).setOnClickListener(new OnClickListener() {
+        requests_table = ((TableLayout) hasViews.findViewById(id.requests_table));
+        if (hasViews.findViewById(id.backButton)!= null) {
+            hasViews.findViewById(id.backButton).setOnClickListener(new OnClickListener() {
 
 
                 @Override
                 public void onClick(View view) {
-                    NewRequestActivity_.this.addressChange();
+                    RequestsActivity_.this.backButton();
                 }
 
             }
             );
         }
-        if (hasViews.findViewById(id.requestSend)!= null) {
-            hasViews.findViewById(id.requestSend).setOnClickListener(new OnClickListener() {
+        if (hasViews.findViewById(id.requestsHistory)!= null) {
+            hasViews.findViewById(id.requestsHistory).setOnClickListener(new OnClickListener() {
 
 
                 @Override
                 public void onClick(View view) {
-                    NewRequestActivity_.this.requestSend();
+                    RequestsActivity_.this.requestsHistory();
                 }
 
             }
             );
         }
-        afterActivity();
+        if (hasViews.findViewById(id.newRequests)!= null) {
+            hasViews.findViewById(id.newRequests).setOnClickListener(new OnClickListener() {
+
+
+                @Override
+                public void onClick(View view) {
+                    RequestsActivity_.this.newRequests();
+                }
+
+            }
+            );
+        }
+        afterRequestsActivity();
     }
 
     @Override
-    public void showPrices(final Groups[] prices) {
+    public void showRequests(final RequestCView requests) {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                NewRequestActivity_.super.showPrices(prices);
+                RequestsActivity_.super.showRequests(requests);
             }
 
         }
@@ -140,70 +131,14 @@ public final class NewRequestActivity_
     }
 
     @Override
-    public void SuccessDialog() {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                NewRequestActivity_.super.SuccessDialog();
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void showAddress(final com.opentaxi.generated.mysql.tables.pojos.NewRequest adr) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                NewRequestActivity_.super.showAddress(adr);
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void showRegions(final Regions[] regions) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                NewRequestActivity_.super.showRegions(regions);
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void showGroups(final Groups[] groups) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                NewRequestActivity_.super.showGroups(groups);
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void setPrices() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+    public void scheduleRequest() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 10000, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    NewRequestActivity_.super.setPrices();
+                    RequestsActivity_.super.scheduleRequest();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -214,14 +149,14 @@ public final class NewRequestActivity_
     }
 
     @Override
-    public void setGroups() {
+    public void getRequests() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    NewRequestActivity_.super.setGroups();
+                    RequestsActivity_.super.getRequests();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -232,14 +167,14 @@ public final class NewRequestActivity_
     }
 
     @Override
-    public void sendRequest(final com.opentaxi.models.NewRequest newRequest) {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+    public void scheduleRequestSec() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 1000, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    NewRequestActivity_.super.sendRequest(newRequest);
+                    RequestsActivity_.super.scheduleRequestSec();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -250,14 +185,14 @@ public final class NewRequestActivity_
     }
 
     @Override
-    public void setRegions() {
+    public void getRequestHistory() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    NewRequestActivity_.super.setRegions();
+                    RequestsActivity_.super.getRequestHistory();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -268,21 +203,13 @@ public final class NewRequestActivity_
     }
 
     @Override
-    public void setAddress() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    NewRequestActivity_.super.setAddress();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        RequestsActivity_.super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case  100 :
+                RequestsActivity_.this.onResult();
+                break;
         }
-        );
     }
 
     public static class IntentBuilder_ {
@@ -293,20 +220,20 @@ public final class NewRequestActivity_
 
         public IntentBuilder_(Context context) {
             context_ = context;
-            intent_ = new Intent(context, NewRequestActivity_.class);
+            intent_ = new Intent(context, RequestsActivity_.class);
         }
 
         public IntentBuilder_(Fragment fragment) {
             fragmentSupport_ = fragment;
             context_ = fragment.getActivity();
-            intent_ = new Intent(context_, NewRequestActivity_.class);
+            intent_ = new Intent(context_, RequestsActivity_.class);
         }
 
         public Intent get() {
             return intent_;
         }
 
-        public NewRequestActivity_.IntentBuilder_ flags(int flags) {
+        public RequestsActivity_.IntentBuilder_ flags(int flags) {
             intent_.setFlags(flags);
             return this;
         }

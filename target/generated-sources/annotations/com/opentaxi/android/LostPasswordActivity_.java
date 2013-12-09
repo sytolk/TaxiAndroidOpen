@@ -13,9 +13,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.Button;
 import android.widget.EditText;
 import com.opentaxi.android.R.id;
 import com.opentaxi.android.R.layout;
@@ -24,8 +22,8 @@ import org.androidannotations.api.view.HasViews;
 import org.androidannotations.api.view.OnViewChangedListener;
 import org.androidannotations.api.view.OnViewChangedNotifier;
 
-public final class UserPassActivity_
-    extends UserPassActivity
+public final class LostPasswordActivity_
+    extends LostPasswordActivity
     implements HasViews, OnViewChangedListener
 {
 
@@ -42,7 +40,7 @@ public final class UserPassActivity_
         init_(savedInstanceState);
         super.onCreate(savedInstanceState);
         OnViewChangedNotifier.replaceNotifier(previousNotifier);
-        setContentView(layout.login);
+        setContentView(layout.lostpassword);
     }
 
     @Override
@@ -63,66 +61,28 @@ public final class UserPassActivity_
         onViewChangedNotifier_.notifyViewChanged(this);
     }
 
-    public static UserPassActivity_.IntentBuilder_ intent(Context context) {
-        return new UserPassActivity_.IntentBuilder_(context);
+    public static LostPasswordActivity_.IntentBuilder_ intent(Context context) {
+        return new LostPasswordActivity_.IntentBuilder_(context);
     }
 
-    public static UserPassActivity_.IntentBuilder_ intent(Fragment supportFragment) {
-        return new UserPassActivity_.IntentBuilder_(supportFragment);
+    public static LostPasswordActivity_.IntentBuilder_ intent(Fragment supportFragment) {
+        return new LostPasswordActivity_.IntentBuilder_(supportFragment);
     }
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        submitButton = ((Button) hasViews.findViewById(id.clientLoginButton));
-        pass = ((EditText) hasViews.findViewById(id.passwordField));
-        userName = ((EditText) hasViews.findViewById(id.userNameField));
-        if (hasViews.findViewById(id.newClient)!= null) {
-            hasViews.findViewById(id.newClient).setOnClickListener(new OnClickListener() {
-
-
-                @Override
-                public void onClick(View view) {
-                    UserPassActivity_.this.newClient();
-                }
-
-            }
-            );
-        }
-        if (hasViews.findViewById(id.clientLoginButton)!= null) {
-            hasViews.findViewById(id.clientLoginButton).setOnClickListener(new OnClickListener() {
-
-
-                @Override
-                public void onClick(View view) {
-                    UserPassActivity_.this.clientLoginButton();
-                }
-
-            }
-            );
-        }
-        if (hasViews.findViewById(id.lostPassword)!= null) {
-            hasViews.findViewById(id.lostPassword).setOnClickListener(new OnClickListener() {
-
-
-                @Override
-                public void onClick(View view) {
-                    UserPassActivity_.this.lostPassword();
-                }
-
-            }
-            );
-        }
+        userEmailField = ((EditText) hasViews.findViewById(id.userEmailField));
         afterLoad();
     }
 
     @Override
-    public void setError(final String error) {
+    public void result(final Boolean result) {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                UserPassActivity_.super.setError(error);
+                LostPasswordActivity_.super.result(result);
             }
 
         }
@@ -130,14 +90,14 @@ public final class UserPassActivity_
     }
 
     @Override
-    public void login(final String username, final String password) {
+    public void lostPass(final String email) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    UserPassActivity_.super.login(username, password);
+                    LostPasswordActivity_.super.lostPass(email);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -145,16 +105,6 @@ public final class UserPassActivity_
 
         }
         );
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        UserPassActivity_.super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case  1 :
-                UserPassActivity_.this.onResult(resultCode, data);
-                break;
-        }
     }
 
     public static class IntentBuilder_ {
@@ -165,20 +115,20 @@ public final class UserPassActivity_
 
         public IntentBuilder_(Context context) {
             context_ = context;
-            intent_ = new Intent(context, UserPassActivity_.class);
+            intent_ = new Intent(context, LostPasswordActivity_.class);
         }
 
         public IntentBuilder_(Fragment fragment) {
             fragmentSupport_ = fragment;
             context_ = fragment.getActivity();
-            intent_ = new Intent(context_, UserPassActivity_.class);
+            intent_ = new Intent(context_, LostPasswordActivity_.class);
         }
 
         public Intent get() {
             return intent_;
         }
 
-        public UserPassActivity_.IntentBuilder_ flags(int flags) {
+        public LostPasswordActivity_.IntentBuilder_ flags(int flags) {
             intent_.setFlags(flags);
             return this;
         }

@@ -82,21 +82,9 @@ public final class MainActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        bandwidth = ((TextView) hasViews.findViewById(id.bandwidth));
-        version = ((TextView) hasViews.findViewById(id.txt_version));
         user = ((TextView) hasViews.findViewById(id.user));
-        if (hasViews.findViewById(id.requestButton)!= null) {
-            hasViews.findViewById(id.requestButton).setOnClickListener(new OnClickListener() {
-
-
-                @Override
-                public void onClick(View view) {
-                    MainActivity_.this.requestButton();
-                }
-
-            }
-            );
-        }
+        version = ((TextView) hasViews.findViewById(id.txt_version));
+        bandwidth = ((TextView) hasViews.findViewById(id.bandwidth));
         if (hasViews.findViewById(id.newRequestButton)!= null) {
             hasViews.findViewById(id.newRequestButton).setOnClickListener(new OnClickListener() {
 
@@ -104,6 +92,18 @@ public final class MainActivity_
                 @Override
                 public void onClick(View view) {
                     MainActivity_.this.newRequestButton();
+                }
+
+            }
+            );
+        }
+        if (hasViews.findViewById(id.requestButton)!= null) {
+            hasViews.findViewById(id.requestButton).setOnClickListener(new OnClickListener() {
+
+
+                @Override
+                public void onClick(View view) {
+                    MainActivity_.this.requestButton();
                 }
 
             }
@@ -151,6 +151,24 @@ public final class MainActivity_
     }
 
     @Override
+    public void sendVersion(final String version) {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    MainActivity_.super.sendVersion(version);
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
     public void gcmRegister() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
@@ -177,24 +195,6 @@ public final class MainActivity_
             public void execute() {
                 try {
                     MainActivity_.super.setServers();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void sendVersion(final String version) {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    MainActivity_.super.sendVersion(version);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

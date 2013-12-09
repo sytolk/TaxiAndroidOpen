@@ -5,6 +5,7 @@
 
 package com.opentaxi.android;
 
+import java.io.Serializable;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,22 +28,26 @@ import com.opentaxi.android.R.id;
 import com.opentaxi.android.R.layout;
 import com.opentaxi.generated.mysql.tables.pojos.Groups;
 import com.opentaxi.generated.mysql.tables.pojos.Regions;
+import com.opentaxi.models.NewCRequest;
+import com.opentaxi.models.NewRequest;
 import org.androidannotations.api.BackgroundExecutor;
 import org.androidannotations.api.SdkVersionHelper;
 import org.androidannotations.api.view.HasViews;
 import org.androidannotations.api.view.OnViewChangedListener;
 import org.androidannotations.api.view.OnViewChangedNotifier;
 
-public final class NewRequestActivity_
-    extends NewRequestActivity
+public final class EditRequestActivity_
+    extends EditRequestActivity
     implements HasViews, OnViewChangedListener
 {
 
     private final OnViewChangedNotifier onViewChangedNotifier_ = new OnViewChangedNotifier();
+    public final static String NEW_C_REQUEST_EXTRA = "newCRequest";
     private Handler handler_ = new Handler(Looper.getMainLooper());
 
     private void init_(Bundle savedInstanceState) {
         OnViewChangedNotifier.registerOnViewChangedListener(this);
+        injectExtras_();
     }
 
     @Override
@@ -79,50 +85,76 @@ public final class NewRequestActivity_
         return super.onKeyDown(keyCode, event);
     }
 
-    public static NewRequestActivity_.IntentBuilder_ intent(Context context) {
-        return new NewRequestActivity_.IntentBuilder_(context);
+    public static EditRequestActivity_.IntentBuilder_ intent(Context context) {
+        return new EditRequestActivity_.IntentBuilder_(context);
     }
 
-    public static NewRequestActivity_.IntentBuilder_ intent(Fragment supportFragment) {
-        return new NewRequestActivity_.IntentBuilder_(supportFragment);
+    public static EditRequestActivity_.IntentBuilder_ intent(Fragment supportFragment) {
+        return new EditRequestActivity_.IntentBuilder_(supportFragment);
     }
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        address = ((TextView) hasViews.findViewById(id.address));
-        addressText = ((EditText) hasViews.findViewById(id.addressText));
-        region = ((TextView) hasViews.findViewById(id.region));
-        llFilters = ((LinearLayout) hasViews.findViewById(id.llFilters));
-        addressChange = ((Button) hasViews.findViewById(id.addressChange));
-        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
-        regionsPicker = ((Spinner) hasViews.findViewById(id.regionsPicker));
         pricesPicker = ((Spinner) hasViews.findViewById(id.pricesPicker));
+        addressChange = ((Button) hasViews.findViewById(id.addressChange));
+        llFilters = ((LinearLayout) hasViews.findViewById(id.llFilters));
         reqInfoButtonContainer = ((LinearLayout) hasViews.findViewById(id.reqInfoButtonContainer));
-        if (hasViews.findViewById(id.addressChange)!= null) {
-            hasViews.findViewById(id.addressChange).setOnClickListener(new OnClickListener() {
-
-
-                @Override
-                public void onClick(View view) {
-                    NewRequestActivity_.this.addressChange();
-                }
-
-            }
-            );
-        }
+        region = ((TextView) hasViews.findViewById(id.region));
+        requestSend = ((Button) hasViews.findViewById(id.requestSend));
+        addressText = ((EditText) hasViews.findViewById(id.addressText));
+        address = ((TextView) hasViews.findViewById(id.address));
+        regionsPicker = ((Spinner) hasViews.findViewById(id.regionsPicker));
+        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
         if (hasViews.findViewById(id.requestSend)!= null) {
             hasViews.findViewById(id.requestSend).setOnClickListener(new OnClickListener() {
 
 
                 @Override
                 public void onClick(View view) {
-                    NewRequestActivity_.this.requestSend();
+                    EditRequestActivity_.this.requestSend();
+                }
+
+            }
+            );
+        }
+        if (hasViews.findViewById(id.addressChange)!= null) {
+            hasViews.findViewById(id.addressChange).setOnClickListener(new OnClickListener() {
+
+
+                @Override
+                public void onClick(View view) {
+                    EditRequestActivity_.this.addressChange();
                 }
 
             }
             );
         }
         afterActivity();
+    }
+
+    @SuppressWarnings("unchecked")
+    private<T >T cast_(Object object) {
+        return ((T) object);
+    }
+
+    private void injectExtras_() {
+        Intent intent_ = getIntent();
+        Bundle extras_ = intent_.getExtras();
+        if (extras_!= null) {
+            if (extras_.containsKey(NEW_C_REQUEST_EXTRA)) {
+                try {
+                    newCRequest = cast_(extras_.get(NEW_C_REQUEST_EXTRA));
+                } catch (ClassCastException e) {
+                    Log.e("EditRequestActivity_", "Could not cast extra to expected type, the field is left to its default value", e);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void setIntent(Intent newIntent) {
+        super.setIntent(newIntent);
+        injectExtras_();
     }
 
     @Override
@@ -132,7 +164,7 @@ public final class NewRequestActivity_
 
             @Override
             public void run() {
-                NewRequestActivity_.super.showPrices(prices);
+                EditRequestActivity_.super.showPrices(prices);
             }
 
         }
@@ -146,21 +178,7 @@ public final class NewRequestActivity_
 
             @Override
             public void run() {
-                NewRequestActivity_.super.SuccessDialog();
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void showAddress(final com.opentaxi.generated.mysql.tables.pojos.NewRequest adr) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                NewRequestActivity_.super.showAddress(adr);
+                EditRequestActivity_.super.SuccessDialog();
             }
 
         }
@@ -174,7 +192,7 @@ public final class NewRequestActivity_
 
             @Override
             public void run() {
-                NewRequestActivity_.super.showRegions(regions);
+                EditRequestActivity_.super.showRegions(regions);
             }
 
         }
@@ -188,7 +206,7 @@ public final class NewRequestActivity_
 
             @Override
             public void run() {
-                NewRequestActivity_.super.showGroups(groups);
+                EditRequestActivity_.super.showGroups(groups);
             }
 
         }
@@ -203,7 +221,7 @@ public final class NewRequestActivity_
             @Override
             public void execute() {
                 try {
-                    NewRequestActivity_.super.setPrices();
+                    EditRequestActivity_.super.setPrices();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -214,32 +232,14 @@ public final class NewRequestActivity_
     }
 
     @Override
-    public void setGroups() {
+    public void sendRequest(final NewRequest newRequest) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    NewRequestActivity_.super.setGroups();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void sendRequest(final com.opentaxi.models.NewRequest newRequest) {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    NewRequestActivity_.super.sendRequest(newRequest);
+                    EditRequestActivity_.super.sendRequest(newRequest);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -257,7 +257,7 @@ public final class NewRequestActivity_
             @Override
             public void execute() {
                 try {
-                    NewRequestActivity_.super.setRegions();
+                    EditRequestActivity_.super.setRegions();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -268,14 +268,14 @@ public final class NewRequestActivity_
     }
 
     @Override
-    public void setAddress() {
+    public void setGroups() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    NewRequestActivity_.super.setAddress();
+                    EditRequestActivity_.super.setGroups();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -293,20 +293,20 @@ public final class NewRequestActivity_
 
         public IntentBuilder_(Context context) {
             context_ = context;
-            intent_ = new Intent(context, NewRequestActivity_.class);
+            intent_ = new Intent(context, EditRequestActivity_.class);
         }
 
         public IntentBuilder_(Fragment fragment) {
             fragmentSupport_ = fragment;
             context_ = fragment.getActivity();
-            intent_ = new Intent(context_, NewRequestActivity_.class);
+            intent_ = new Intent(context_, EditRequestActivity_.class);
         }
 
         public Intent get() {
             return intent_;
         }
 
-        public NewRequestActivity_.IntentBuilder_ flags(int flags) {
+        public EditRequestActivity_.IntentBuilder_ flags(int flags) {
             intent_.setFlags(flags);
             return this;
         }
@@ -325,6 +325,11 @@ public final class NewRequestActivity_
                     context_.startActivity(intent_);
                 }
             }
+        }
+
+        public EditRequestActivity_.IntentBuilder_ newCRequest(NewCRequest newCRequest) {
+            intent_.putExtra(NEW_C_REQUEST_EXTRA, ((Serializable) newCRequest));
+            return this;
         }
 
     }

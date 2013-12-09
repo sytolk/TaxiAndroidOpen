@@ -82,21 +82,9 @@ public final class MainActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        version = ((TextView) hasViews.findViewById(id.txt_version));
         bandwidth = ((TextView) hasViews.findViewById(id.bandwidth));
         user = ((TextView) hasViews.findViewById(id.user));
-        if (hasViews.findViewById(id.mapButton)!= null) {
-            hasViews.findViewById(id.mapButton).setOnClickListener(new OnClickListener() {
-
-
-                @Override
-                public void onClick(View view) {
-                    MainActivity_.this.mapButton();
-                }
-
-            }
-            );
-        }
+        version = ((TextView) hasViews.findViewById(id.txt_version));
         if (hasViews.findViewById(id.requestButton)!= null) {
             hasViews.findViewById(id.requestButton).setOnClickListener(new OnClickListener() {
 
@@ -109,13 +97,13 @@ public final class MainActivity_
             }
             );
         }
-        if (hasViews.findViewById(id.exitButton)!= null) {
-            hasViews.findViewById(id.exitButton).setOnClickListener(new OnClickListener() {
+        if (hasViews.findViewById(id.mapButton)!= null) {
+            hasViews.findViewById(id.mapButton).setOnClickListener(new OnClickListener() {
 
 
                 @Override
                 public void onClick(View view) {
-                    MainActivity_.this.exitButton();
+                    MainActivity_.this.mapButton();
                 }
 
             }
@@ -128,6 +116,18 @@ public final class MainActivity_
                 @Override
                 public void onClick(View view) {
                     MainActivity_.this.newRequestButton();
+                }
+
+            }
+            );
+        }
+        if (hasViews.findViewById(id.exitButton)!= null) {
+            hasViews.findViewById(id.exitButton).setOnClickListener(new OnClickListener() {
+
+
+                @Override
+                public void onClick(View view) {
+                    MainActivity_.this.exitButton();
                 }
 
             }
@@ -151,14 +151,14 @@ public final class MainActivity_
     }
 
     @Override
-    public void sendVersion(final String version) {
+    public void setServers() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    MainActivity_.super.sendVersion(version);
+                    MainActivity_.super.setServers();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -187,14 +187,14 @@ public final class MainActivity_
     }
 
     @Override
-    public void setServers() {
+    public void sendVersion(final String version) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    MainActivity_.super.setServers();
+                    MainActivity_.super.sendVersion(version);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

@@ -88,17 +88,17 @@ public final class NewClientActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        pass = ((EditText) hasViews.findViewById(id.passwordField));
+        pass2 = ((EditText) hasViews.findViewById(id.password2Field));
         iAgreeCheckBox = ((CheckBox) hasViews.findViewById(id.iAgreeCheckBox));
         nameField = ((EditText) hasViews.findViewById(id.nameField));
         middleName = ((EditText) hasViews.findViewById(id.middleName));
+        pass = ((EditText) hasViews.findViewById(id.passwordField));
         email = ((EditText) hasViews.findViewById(id.emailField));
+        cityName = ((AutoCompleteTextView) hasViews.findViewById(id.cityName));
         lastName = ((EditText) hasViews.findViewById(id.lastName));
         sendButton = ((Button) hasViews.findViewById(id.sendButton));
         passwordHint = ((EditText) hasViews.findViewById(id.passwordHint));
-        cityName = ((AutoCompleteTextView) hasViews.findViewById(id.cityName));
         userName = ((EditText) hasViews.findViewById(id.userNameField));
-        pass2 = ((EditText) hasViews.findViewById(id.password2Field));
         if (hasViews.findViewById(id.sendButton)!= null) {
             hasViews.findViewById(id.sendButton).setOnClickListener(new OnClickListener() {
 
@@ -123,18 +123,6 @@ public final class NewClientActivity_
             }
             );
         }
-        if (hasViews.findViewById(id.emailField)!= null) {
-            hasViews.findViewById(id.emailField).setOnFocusChangeListener(new OnFocusChangeListener() {
-
-
-                @Override
-                public void onFocusChange(View view, boolean hasFocus) {
-                    NewClientActivity_.this.focusChangedOnEmailField(view, hasFocus);
-                }
-
-            }
-            );
-        }
         if (hasViews.findViewById(id.userNameField)!= null) {
             hasViews.findViewById(id.userNameField).setOnFocusChangeListener(new OnFocusChangeListener() {
 
@@ -147,7 +135,33 @@ public final class NewClientActivity_
             }
             );
         }
+        if (hasViews.findViewById(id.emailField)!= null) {
+            hasViews.findViewById(id.emailField).setOnFocusChangeListener(new OnFocusChangeListener() {
+
+
+                @Override
+                public void onFocusChange(View view, boolean hasFocus) {
+                    NewClientActivity_.this.focusChangedOnEmailField(view, hasFocus);
+                }
+
+            }
+            );
+        }
         afterLoad();
+    }
+
+    @Override
+    public void ActivationDialog() {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                NewClientActivity_.super.ActivationDialog();
+            }
+
+        }
+        );
     }
 
     @Override
@@ -172,20 +186,6 @@ public final class NewClientActivity_
             @Override
             public void run() {
                 NewClientActivity_.super.setUserError(error);
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void ActivationDialog() {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                NewClientActivity_.super.ActivationDialog();
             }
 
         }
