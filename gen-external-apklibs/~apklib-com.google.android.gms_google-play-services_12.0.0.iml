@@ -23,9 +23,9 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$/com.google.android.gms_google-play-services_12.0.0">
       <sourceFolder url="file://$MODULE_DIR$/com.google.android.gms_google-play-services_12.0.0/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/com.google.android.gms_google-play-services_12.0.0/gen" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/com.google.android.gms_google-play-services_12.0.0/gen" isTestSource="false" generated="true" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="Maven Android 4.4 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

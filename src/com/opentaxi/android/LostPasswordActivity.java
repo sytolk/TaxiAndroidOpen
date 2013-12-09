@@ -1,12 +1,11 @@
 package com.opentaxi.android;
 
 import android.app.Activity;
+import android.view.KeyEvent;
+import android.view.View;
 import android.widget.EditText;
 import com.opentaxi.rest.RestClient;
-import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,14 +20,32 @@ public class LostPasswordActivity extends Activity {
     @ViewById
     EditText userEmailField;
 
-    @Click
-    void lostPassButton(){
-        lostPass(userEmailField.getText().toString());
+    @AfterViews
+    void afterLoad() {
+
+        userEmailField.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(final View v, final int keyCode, final KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_ENTER) {
+                    lostPass(userEmailField.getText().toString());
+
+                    //return true; //this will keep keyboard open
+                }
+
+                return false;
+            }
+        });
     }
 
     @Background
     void lostPass(String email) {
-        RestClient.getInstance().lostPassword(email);
+        result(RestClient.getInstance().lostPassword(email));
     }
 
+    @UiThread
+    void result(Boolean result) {
+        if (result == null) userEmailField.setError("Проверете интернет връзката");
+        else if (result) finish();
+        else userEmailField.setError("Потребител с имаил:" + userEmailField.getText().toString() + " не съществува.");
+    }
 }

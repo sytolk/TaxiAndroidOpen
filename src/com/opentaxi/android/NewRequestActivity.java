@@ -14,11 +14,11 @@ import android.widget.*;
 import com.opentaxi.android.adapters.GroupsAdapter;
 import com.opentaxi.android.adapters.RegionsAdapter;
 import com.opentaxi.android.utils.AppPreferences;
-import com.opentaxi.enums.RequestSource;
 import com.opentaxi.generated.mysql.tables.pojos.Groups;
 import com.opentaxi.generated.mysql.tables.pojos.Regions;
 import com.opentaxi.models.NewRequest;
 import com.opentaxi.rest.RestClient;
+import com.taxibulgaria.enums.RequestSource;
 import org.androidannotations.annotations.*;
 
 import java.util.ArrayList;

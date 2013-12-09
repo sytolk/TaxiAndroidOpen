@@ -13,12 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.*;
-import com.opentaxi.enums.RequestStatus;
 import com.opentaxi.generated.mysql.tables.pojos.Feedback;
 import com.opentaxi.generated.mysql.tables.pojos.Groups;
 import com.opentaxi.generated.mysql.tables.pojos.Regions;
 import com.opentaxi.models.NewCRequest;
 import com.opentaxi.rest.RestClient;
+import com.taxibulgaria.enums.RequestStatus;
 import org.androidannotations.annotations.*;
 
 import java.text.DateFormat;
@@ -85,11 +85,20 @@ public class RequestDetailsActivity extends FragmentActivity {
     public void onResume() {
         super.onResume();
         TaxiApplication.requestsDetailsResumed();
+        scheduleChangesSec();
     }
 
     @AfterViews
     void afterRequestsActivity() {
         showDetails();
+    }
+
+    @Background(delay = 1000)
+    void scheduleChangesSec() {
+        if (TaxiApplication.isRequestsDetailsVisible()) {
+            newCRequest = RestClient.getInstance().getRequestDetails(newCRequest.getRequestsId());
+            showDetails();
+        }
     }
 
     @Background(delay = 10000)

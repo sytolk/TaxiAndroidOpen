@@ -88,29 +88,17 @@ public final class NewClientActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        nameField = ((EditText) hasViews.findViewById(id.nameField));
-        sendButton = ((Button) hasViews.findViewById(id.sendButton));
-        lastName = ((EditText) hasViews.findViewById(id.lastName));
         iAgreeCheckBox = ((CheckBox) hasViews.findViewById(id.iAgreeCheckBox));
-        email = ((EditText) hasViews.findViewById(id.emailField));
-        pass2 = ((EditText) hasViews.findViewById(id.password2Field));
-        passwordHint = ((EditText) hasViews.findViewById(id.passwordHint));
-        userName = ((EditText) hasViews.findViewById(id.userNameField));
-        middleName = ((EditText) hasViews.findViewById(id.middleName));
         pass = ((EditText) hasViews.findViewById(id.passwordField));
+        passwordHint = ((EditText) hasViews.findViewById(id.passwordHint));
+        sendButton = ((Button) hasViews.findViewById(id.sendButton));
+        email = ((EditText) hasViews.findViewById(id.emailField));
+        middleName = ((EditText) hasViews.findViewById(id.middleName));
+        lastName = ((EditText) hasViews.findViewById(id.lastName));
+        userName = ((EditText) hasViews.findViewById(id.userNameField));
         cityName = ((AutoCompleteTextView) hasViews.findViewById(id.cityName));
-        if (hasViews.findViewById(id.userAgreement)!= null) {
-            hasViews.findViewById(id.userAgreement).setOnClickListener(new OnClickListener() {
-
-
-                @Override
-                public void onClick(View view) {
-                    NewClientActivity_.this.userAgreement();
-                }
-
-            }
-            );
-        }
+        nameField = ((EditText) hasViews.findViewById(id.nameField));
+        pass2 = ((EditText) hasViews.findViewById(id.password2Field));
         if (hasViews.findViewById(id.sendButton)!= null) {
             hasViews.findViewById(id.sendButton).setOnClickListener(new OnClickListener() {
 
@@ -118,6 +106,18 @@ public final class NewClientActivity_
                 @Override
                 public void onClick(View view) {
                     NewClientActivity_.this.sendButton();
+                }
+
+            }
+            );
+        }
+        if (hasViews.findViewById(id.userAgreement)!= null) {
+            hasViews.findViewById(id.userAgreement).setOnClickListener(new OnClickListener() {
+
+
+                @Override
+                public void onClick(View view) {
+                    NewClientActivity_.this.userAgreement();
                 }
 
             }

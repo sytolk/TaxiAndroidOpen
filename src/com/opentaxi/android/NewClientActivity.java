@@ -15,11 +15,11 @@ import android.widget.*;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.*;
-import com.opentaxi.enums.CommunicationMethod;
 import com.opentaxi.generated.mysql.tables.pojos.Contact;
 import com.opentaxi.generated.mysql.tables.pojos.Contactaddress;
 import com.opentaxi.models.NewUsers;
 import com.opentaxi.rest.RestClient;
+import com.taxibulgaria.enums.CommunicationMethod;
 import org.androidannotations.annotations.*;
 
 /**

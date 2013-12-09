@@ -9,11 +9,11 @@ import android.view.Window;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import com.opentaxi.enums.RequestStatus;
 import com.opentaxi.generated.mysql.tables.pojos.Regions;
 import com.opentaxi.models.NewCRequest;
 import com.opentaxi.models.RequestCView;
 import com.opentaxi.rest.RestClient;
+import com.taxibulgaria.enums.RequestStatus;
 import org.androidannotations.annotations.*;
 
 import java.util.Date;
@@ -65,10 +65,19 @@ public class RequestsActivity extends Activity {
     public void onResume() {
         super.onResume();
         TaxiApplication.requestsResumed();
+        scheduleRequestSec();
     }
 
     @OnActivityResult(REQUEST_DETAILS)
     void onResult() {
+    }
+
+    @Background(delay = 1000)
+    void scheduleRequestSec() {
+        if (TaxiApplication.isRequestsVisible()) {
+            if (isFromHistory) getRequestHistory();
+            else getRequests();
+        }
     }
 
     @Background(delay = 10000)

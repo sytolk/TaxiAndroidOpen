@@ -11,13 +11,13 @@ import android.os.AsyncTask;
 import android.util.Log;
 import com.opentaxi.android.MessageActivity;
 import com.opentaxi.android.utils.AppPreferences;
-import com.opentaxi.enums.RequestAcceptStatus;
-import com.opentaxi.enums.RequestStatus;
 import com.opentaxi.generated.mysql.tables.pojos.Advertisement;
 import com.opentaxi.generated.mysql.tables.pojos.CloudMessages;
 import com.opentaxi.generated.mysql.tables.pojos.Messages;
 import com.opentaxi.models.NewRequest;
 import com.opentaxi.rest.RestClient;
+import com.taxibulgaria.enums.RequestAcceptStatus;
+import com.taxibulgaria.enums.RequestStatus;
 
 import java.io.IOException;
 
