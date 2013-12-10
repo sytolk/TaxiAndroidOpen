@@ -97,18 +97,6 @@ public final class MainActivity_
             }
             );
         }
-        if (hasViews.findViewById(id.mapButton)!= null) {
-            hasViews.findViewById(id.mapButton).setOnClickListener(new OnClickListener() {
-
-
-                @Override
-                public void onClick(View view) {
-                    MainActivity_.this.mapButton();
-                }
-
-            }
-            );
-        }
         if (hasViews.findViewById(id.newRequestButton)!= null) {
             hasViews.findViewById(id.newRequestButton).setOnClickListener(new OnClickListener() {
 
@@ -116,6 +104,18 @@ public final class MainActivity_
                 @Override
                 public void onClick(View view) {
                     MainActivity_.this.newRequestButton();
+                }
+
+            }
+            );
+        }
+        if (hasViews.findViewById(id.mapButton)!= null) {
+            hasViews.findViewById(id.mapButton).setOnClickListener(new OnClickListener() {
+
+
+                @Override
+                public void onClick(View view) {
+                    MainActivity_.this.mapButton();
                 }
 
             }
@@ -151,14 +151,14 @@ public final class MainActivity_
     }
 
     @Override
-    public void setServers() {
+    public void gcmRegister() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    MainActivity_.super.setServers();
+                    MainActivity_.super.gcmRegister();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -169,14 +169,14 @@ public final class MainActivity_
     }
 
     @Override
-    public void gcmRegister() {
+    public void setServers() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    MainActivity_.super.gcmRegister();
+                    MainActivity_.super.setServers();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

@@ -18,6 +18,7 @@ import java.util.Map;
  * Time: 3:22 PM
  * developer STANIMIR MARINOV
  */
+@Deprecated
 public class GoogleAPIClientTask extends AsyncTask<Context, Void, NewRequest> {
 
     private static final String TAG = "GoogleAPIClientTask";

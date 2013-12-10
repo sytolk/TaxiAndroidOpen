@@ -63,6 +63,7 @@ public class NewClientActivity extends FragmentActivity implements Validator.Val
     @ViewById
     EditText lastName;
 
+    @TextRule(order = 5, minLength = 1, message = "Града е задължително поле.")
     @ViewById
     AutoCompleteTextView cityName;
 

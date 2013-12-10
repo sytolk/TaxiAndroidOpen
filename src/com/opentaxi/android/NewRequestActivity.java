@@ -64,6 +64,9 @@ public class NewRequestActivity extends FragmentActivity {
     @ViewById(R.id.pbProgress)
     ProgressBar pbProgress;
 
+    @ViewById(R.id.requestSend)
+    Button requestSend;
+
     @AfterViews
     protected void afterActivity() {
 
@@ -120,18 +123,28 @@ public class NewRequestActivity extends FragmentActivity {
 
     @UiThread
     void showPrices(Groups[] prices) {
+        GroupsAdapter[] groupsAdapters;
         if (prices != null && prices.length > 0) {
-            GroupsAdapter[] groupsAdapters = new GroupsAdapter[prices.length];
+            groupsAdapters = new GroupsAdapter[prices.length];
             int i = 0;
             for (Groups group : prices) {
                 groupsAdapters[i] = new GroupsAdapter(group);
                 i++;
             }
+            requestSend.setVisibility(View.VISIBLE);
+        } else {
+            Log.e(TAG, "prices=null");
+            groupsAdapters = new GroupsAdapter[1];
+            Groups group = new Groups();
+            group.setGroupsId(0);
+            group.setDescription("Няма свободни коли. Моля опитайте по късно");
+            groupsAdapters[0] = new GroupsAdapter(group);
+            requestSend.setVisibility(View.GONE);
+        }
 
-            ArrayAdapter<GroupsAdapter> adapter2 = new ArrayAdapter<GroupsAdapter>(this, R.layout.spinner_layout, groupsAdapters);
-            adapter2.setDropDownViewResource(R.layout.spinner_layout);
-            pricesPicker.setAdapter(adapter2);
-        } else Log.e(TAG, "prices=null");
+        ArrayAdapter<GroupsAdapter> adapter2 = new ArrayAdapter<GroupsAdapter>(this, R.layout.spinner_layout, groupsAdapters);
+        adapter2.setDropDownViewResource(R.layout.spinner_layout);
+        pricesPicker.setAdapter(adapter2);
     }
 
     @Background

@@ -73,9 +73,9 @@ public final class UserPassActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
+        userName = ((EditText) hasViews.findViewById(id.userNameField));
         submitButton = ((Button) hasViews.findViewById(id.clientLoginButton));
         pass = ((EditText) hasViews.findViewById(id.passwordField));
-        userName = ((EditText) hasViews.findViewById(id.userNameField));
         if (hasViews.findViewById(id.newClient)!= null) {
             hasViews.findViewById(id.newClient).setOnClickListener(new OnClickListener() {
 

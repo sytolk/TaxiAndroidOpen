@@ -15,7 +15,6 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import com.opentaxi.android.R.id;
@@ -35,7 +34,7 @@ public final class ServersActivity_
 
     private void init_(Bundle savedInstanceState) {
         OnViewChangedNotifier.registerOnViewChangedListener(this);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        requestWindowFeature(1);
     }
 
     @Override
@@ -75,20 +74,8 @@ public final class ServersActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        serversContent = ((LinearLayout) hasViews.findViewById(id.serversContent));
         cancelButton = ((Button) hasViews.findViewById(id.cancelButton));
-        if (hasViews.findViewById(id.cancelButton)!= null) {
-            hasViews.findViewById(id.cancelButton).setOnClickListener(new OnClickListener() {
-
-
-                @Override
-                public void onClick(View view) {
-                    ServersActivity_.this.cancelButton();
-                }
-
-            }
-            );
-        }
+        serversContent = ((LinearLayout) hasViews.findViewById(id.serversContent));
         if (hasViews.findViewById(id.refreshButton)!= null) {
             hasViews.findViewById(id.refreshButton).setOnClickListener(new OnClickListener() {
 
@@ -96,6 +83,18 @@ public final class ServersActivity_
                 @Override
                 public void onClick(View view) {
                     ServersActivity_.this.refreshButton();
+                }
+
+            }
+            );
+        }
+        if (hasViews.findViewById(id.cancelButton)!= null) {
+            hasViews.findViewById(id.cancelButton).setOnClickListener(new OnClickListener() {
+
+
+                @Override
+                public void onClick(View view) {
+                    ServersActivity_.this.cancelButton();
                 }
 
             }
@@ -133,14 +132,14 @@ public final class ServersActivity_
     }
 
     @Override
-    public void login() {
+    public void testServer(final String socket) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    ServersActivity_.super.login();
+                    ServersActivity_.super.testServer(socket);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -169,14 +168,14 @@ public final class ServersActivity_
     }
 
     @Override
-    public void testServer(final String socket) {
+    public void login() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    ServersActivity_.super.testServer(socket);
+                    ServersActivity_.super.login();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

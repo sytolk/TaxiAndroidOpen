@@ -3,6 +3,7 @@ package com.opentaxi.android;
 import android.app.Activity;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.*;
 import org.androidannotations.annotations.*;
 import com.opentaxi.android.utils.AppPreferences;
@@ -22,7 +23,7 @@ import java.util.concurrent.TimeUnit;
  * Time: 10:18 AM
  * developer STANIMIR MARINOV
  */
-@NoTitle
+@WindowFeature(Window.FEATURE_NO_TITLE)
 @EActivity(R.layout.request_servers)
 public class ServersActivity extends Activity {
 

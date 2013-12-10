@@ -7,9 +7,7 @@ import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
 import com.opentaxi.android.asynctask.RegionsTask;
-import com.opentaxi.generated.mysql.tables.pojos.Courses;
 import com.opentaxi.models.NewRequest;
-import com.opentaxi.models.Users;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import javax.crypto.Cipher;
@@ -17,7 +15,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
-import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -35,49 +32,30 @@ public class AppPreferences {
 
     ObjectMapper mapper = new ObjectMapper();
 
-    private static final String SOCKET = "SOCKET";
     private static final String SOCKET_TYPE = "SOCKET_TYPE";
-    private static final String LAST_PLAYED_ITEM = "LAST_PLAYED_ITEM";
-    private static final String APP_LAST_MODIFIED = "APP_LAST_MODIFIED";
     private static final String APP_VERSION = "APP_VERSION";
-    private static final String PROPERTY_REG_ID = "registration_id";
-    //private static String JSON_USERS = "jsonUsers";
-    //private static String CLOUD_MESSAGE_ID = "cloudMessageId";
 
     /**
      * Singleton reference to this class.
      */
     private static AppPreferences instance;
     private static final Object mutex = new Object();
-    private Users users;
     private Map<Integer, String> regionsMap;
     private Integer cloudMessageId;
     private NewRequest currentRequest;
     private NewRequest nextRequest;
-    private Courses course;
-    private boolean track = false;
     private Double north;
     private Double east;
     private long currentLocationTime; //datetime received from GPS
     private long gpsLastTime = 0; //local Android datetime of last received coordinates
 
-    private int gpsRun = 0; //in Meters
-    private int gpsSpeedSum = 0;
-    private int gpsSpeedCount = 0;
-    private String currentSocket;
-    private int lastPlayedItem = 0;
-    private long appModified = 0;
     private String appVersion;
-    private String GCMRegId;
     private Integer socketType;
     private Context context;
-    //private boolean enableProcessMsg = false;
 
     public AppPreferences(Context context) {
         this.appSharedPrefs = context.getSharedPreferences(APP_SHARED_PREFS, Activity.MODE_PRIVATE);
         this.context = context;
-        //this.prefsEditor = appSharedPrefs.edit();
-        //if (appSharedPrefs.getInt("car_number", 0) == 0) loadPreferences();
     }
 
     public static synchronized AppPreferences getInstance() {
@@ -108,7 +86,6 @@ public class AppPreferences {
                 return ret;
 
             } catch (Exception e) {
-                //throw new RuntimeException(e);
                 if (e.getMessage() != null) Log.e("encrypt:" + value + " salt:" + salt, e.getMessage());
             }
         }
@@ -128,7 +105,6 @@ public class AppPreferences {
                 return ret;
 
             } catch (Exception e) {
-                //throw new RuntimeException(e);
                 if (e.getMessage() != null) Log.e("decrypt:" + value + " salt:" + salt, e.getMessage());
             }
         }
@@ -173,42 +149,6 @@ public class AppPreferences {
         return regionsMap;
     }
 
-    /*public void registerGCM(Context context) {
-        final String regId = GCMRegistrar.getRegistrationId(context);
-
-        if (regId.equals("")) {
-            // Automatically registers application on startup.
-            GCMRegistrar.register(context, "767228808037"); //todo move project id to configuration
-        } else { //if (!GCMRegistrar.isRegisteredOnServer(context)) {
-            new GCMregisterTask(regId).execute(context);
-        }
-    }*/
-
-
-    /*public boolean saveCarsList(List<Cars> array) {
-        if (array != null && array.size() > 0) {
-            prefsEditor = appSharedPrefs.edit();
-            prefsEditor.putInt(CAR_LIST + "_size", array.size());
-            for (int i = 0; i < array.size(); i++)
-                prefsEditor.putString(CAR_LIST + "_" + i, array.get(i).getNumber());
-            return prefsEditor.commit();
-        }
-        return false;
-    }
-
-    public String[] loadServerCarsList() {
-        setServerConfiguration();
-        return loadCarsList();
-    }
-
-    public String[] loadCarsList() {
-        int size = appSharedPrefs.getInt(CAR_LIST + "_size", 0);
-        String array[] = new String[size];
-        for (int i = 0; i < size; i++)
-            array[i] = appSharedPrefs.getString(CAR_LIST + "_" + i, "");
-        return array;
-    }*/
-
     public NewRequest getCurrentRequest() {
         return this.currentRequest;
     }
@@ -247,41 +187,6 @@ public class AppPreferences {
         return mapper;
     }
 
-    public Courses getCourse() {
-        if (course == null) {
-            try {
-                String courseJson = appSharedPrefs.getString(Courses.class.getName(), "");
-                if (!courseJson.equals("")) course = mapper.readValue(courseJson, Courses.class);
-            } catch (IOException e) {
-                Log.e("getCourse", e.getMessage());
-            }
-        }
-        return course;
-    }
-
-    public void setCourse(Courses course) {
-
-        this.course = course;
-        try {
-            String json = "";
-            if (this.course != null) json = mapper.writeValueAsString(course);
-
-            this.prefsEditor = appSharedPrefs.edit();
-            prefsEditor.putString(Courses.class.getName(), json);
-            prefsEditor.commit();
-        } catch (IOException e) {
-            Log.e("setCourse", e.getMessage());
-        }
-    }
-
-    public boolean getTrack() {
-        return track;
-    }
-
-    public void setTrack(boolean track) {
-        this.track = track;
-    }
-
     public Double getNorth() {
         return north;
     }
@@ -298,22 +203,6 @@ public class AppPreferences {
         this.east = east;
     }
 
-    public int getGpsSpeedCount() {
-        return gpsSpeedCount;
-    }
-
-    public void setGpsSpeedCount(int gpsSpeedCount) {
-        this.gpsSpeedCount = gpsSpeedCount;
-    }
-
-    public int getGpsSpeedSum() {
-        return gpsSpeedSum;
-    }
-
-    public void setGpsSpeedSum(int gpsSpeedSum) {
-        this.gpsSpeedSum = gpsSpeedSum;
-    }
-
     public long getGpsLastTime() {
         return gpsLastTime;
     }
@@ -322,78 +211,8 @@ public class AppPreferences {
         this.gpsLastTime = gpsLastTime;
     }
 
-    public synchronized int getGpsRun() {
-        return gpsRun;
-    }
-
-    public void setGpsRun(int gpsRun) {
-        this.gpsRun = gpsRun;
-    }
-
-    public void startTrack() {
-        track = true;
-        gpsRun = 0;
-        gpsSpeedSum = 0;
-        gpsSpeedCount = 0;
-    }
-
-    public void endTrack() {
-        track = false;
-        gpsRun = 0;
-        gpsSpeedSum = 0;
-        gpsSpeedCount = 0;
-    }
-
     public void setCurrentLocationTime(long currentLocationTime) {
         this.currentLocationTime = currentLocationTime;
-    }
-
-    public long getCurrentLocationTime() {
-        return currentLocationTime;
-    }
-
-    public String getCurrentSocket() {
-        if (currentSocket == null || currentSocket.equals("")) {
-            currentSocket = appSharedPrefs.getString(SOCKET, "");
-        }
-        return currentSocket;
-    }
-
-    public void setCurrentSocket(String currentSocket) {
-        if (currentSocket != null && !currentSocket.equals("")) {
-            this.currentSocket = currentSocket;
-            this.prefsEditor = appSharedPrefs.edit();
-            prefsEditor.putString(SOCKET, currentSocket);
-            prefsEditor.commit();
-        }
-    }
-
-    public int getLastPlayedItem() {
-        if (lastPlayedItem == 0) {
-            lastPlayedItem = appSharedPrefs.getInt(LAST_PLAYED_ITEM, 0);
-        }
-        return lastPlayedItem;
-    }
-
-    public void setLastPlayedItem(int lastPlayedItem) {
-        this.lastPlayedItem = lastPlayedItem;
-        this.prefsEditor = appSharedPrefs.edit();
-        prefsEditor.putInt(LAST_PLAYED_ITEM, lastPlayedItem);
-        prefsEditor.commit();
-    }
-
-    public long getAppModified() {
-        if (appModified == 0) {
-            appModified = appSharedPrefs.getLong(APP_LAST_MODIFIED, 0);
-        }
-        return appModified;
-    }
-
-    public void setAppModified(long appModified) {
-        this.appModified = appModified;
-        this.prefsEditor = appSharedPrefs.edit();
-        prefsEditor.putLong(APP_LAST_MODIFIED, appModified);
-        prefsEditor.commit();
     }
 
     public String getAppVersion() {
@@ -409,20 +228,6 @@ public class AppPreferences {
         prefsEditor.putString(APP_VERSION, version);
         prefsEditor.commit();
     }
-
-    /*public String getGCMRegId() {
-        if (GCMRegId == null) {
-            GCMRegId = appSharedPrefs.getString(PROPERTY_REG_ID, "");
-        }
-        return GCMRegId;
-    }
-
-    public void setGCMRegId(String reg_id) {
-        this.GCMRegId = reg_id;
-        this.prefsEditor = appSharedPrefs.edit();
-        prefsEditor.putString(PROPERTY_REG_ID, reg_id);
-        prefsEditor.commit();
-    }*/
 
     public Integer getSocketType() {
         if (socketType == null) {

@@ -91,24 +91,24 @@ public final class RequestDetailsActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        chosen_group = ((TextView) hasViews.findViewById(id.chosen_group));
-        price_group = ((TextView) hasViews.findViewById(id.price_group));
-        rejectButton = ((Button) hasViews.findViewById(id.rejectButton));
+        address = ((TextView) hasViews.findViewById(id.address));
         state = ((TextView) hasViews.findViewById(id.state));
-        arrive_time = ((TextView) hasViews.findViewById(id.arrive_time));
+        datecreated = ((TextView) hasViews.findViewById(id.datecreated));
+        price_group = ((TextView) hasViews.findViewById(id.price_group));
         requestNumber = ((TextView) hasViews.findViewById(id.requestNumber));
         editButton = ((Button) hasViews.findViewById(id.editButton));
-        datecreated = ((TextView) hasViews.findViewById(id.datecreated));
         remaining_time = ((TextView) hasViews.findViewById(id.remaining_time));
-        address = ((TextView) hasViews.findViewById(id.address));
         feedBackButton = ((Button) hasViews.findViewById(id.feedBackButton));
-        if (hasViews.findViewById(id.rejectButton)!= null) {
-            hasViews.findViewById(id.rejectButton).setOnClickListener(new OnClickListener() {
+        arrive_time = ((TextView) hasViews.findViewById(id.arrive_time));
+        rejectButton = ((Button) hasViews.findViewById(id.rejectButton));
+        chosen_group = ((TextView) hasViews.findViewById(id.chosen_group));
+        if (hasViews.findViewById(id.okButton)!= null) {
+            hasViews.findViewById(id.okButton).setOnClickListener(new OnClickListener() {
 
 
                 @Override
                 public void onClick(View view) {
-                    RequestDetailsActivity_.this.rejectButton();
+                    RequestDetailsActivity_.this.okButton();
                 }
 
             }
@@ -126,13 +126,13 @@ public final class RequestDetailsActivity_
             }
             );
         }
-        if (hasViews.findViewById(id.okButton)!= null) {
-            hasViews.findViewById(id.okButton).setOnClickListener(new OnClickListener() {
+        if (hasViews.findViewById(id.rejectButton)!= null) {
+            hasViews.findViewById(id.rejectButton).setOnClickListener(new OnClickListener() {
 
 
                 @Override
                 public void onClick(View view) {
-                    RequestDetailsActivity_.this.okButton();
+                    RequestDetailsActivity_.this.rejectButton();
                 }
 
             }
@@ -243,14 +243,14 @@ public final class RequestDetailsActivity_
     }
 
     @Override
-    public void scheduleChanges() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 10000, "") {
+    public void scheduleChangesSec() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 1000, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    RequestDetailsActivity_.super.scheduleChanges();
+                    RequestDetailsActivity_.super.scheduleChangesSec();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -261,14 +261,14 @@ public final class RequestDetailsActivity_
     }
 
     @Override
-    public void scheduleChangesSec() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 1000, "") {
+    public void scheduleChanges() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 10000, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    RequestDetailsActivity_.super.scheduleChangesSec();
+                    RequestDetailsActivity_.super.scheduleChanges();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
