@@ -5,6 +5,7 @@
 
 package com.opentaxi.android;
 
+import java.io.Serializable;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,10 +38,12 @@ public final class NewClientActivity_
 {
 
     private final OnViewChangedNotifier onViewChangedNotifier_ = new OnViewChangedNotifier();
+    public final static String NEW_USERS_EXTRA = "newUsers";
     private Handler handler_ = new Handler(Looper.getMainLooper());
 
     private void init_(Bundle savedInstanceState) {
         OnViewChangedNotifier.registerOnViewChangedListener(this);
+        injectExtras_();
         requestWindowFeature(1);
     }
 
@@ -88,17 +92,17 @@ public final class NewClientActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        lastName = ((EditText) hasViews.findViewById(id.lastName));
+        sendButton = ((Button) hasViews.findViewById(id.sendButton));
         iAgreeCheckBox = ((CheckBox) hasViews.findViewById(id.iAgreeCheckBox));
-        passwordHint = ((EditText) hasViews.findViewById(id.passwordHint));
         userName = ((EditText) hasViews.findViewById(id.userNameField));
+        nameField = ((EditText) hasViews.findViewById(id.nameField));
         email = ((EditText) hasViews.findViewById(id.emailField));
+        middleName = ((EditText) hasViews.findViewById(id.middleName));
         pass = ((EditText) hasViews.findViewById(id.passwordField));
         cityName = ((AutoCompleteTextView) hasViews.findViewById(id.cityName));
-        sendButton = ((Button) hasViews.findViewById(id.sendButton));
+        passwordHint = ((EditText) hasViews.findViewById(id.passwordHint));
         pass2 = ((EditText) hasViews.findViewById(id.password2Field));
-        middleName = ((EditText) hasViews.findViewById(id.middleName));
-        nameField = ((EditText) hasViews.findViewById(id.nameField));
+        lastName = ((EditText) hasViews.findViewById(id.lastName));
         if (hasViews.findViewById(id.userAgreement)!= null) {
             hasViews.findViewById(id.userAgreement).setOnClickListener(new OnClickListener() {
 
@@ -123,18 +127,6 @@ public final class NewClientActivity_
             }
             );
         }
-        if (hasViews.findViewById(id.userNameField)!= null) {
-            hasViews.findViewById(id.userNameField).setOnFocusChangeListener(new OnFocusChangeListener() {
-
-
-                @Override
-                public void onFocusChange(View view, boolean hasFocus) {
-                    NewClientActivity_.this.focusChangedOnUserNameField(view, hasFocus);
-                }
-
-            }
-            );
-        }
         if (hasViews.findViewById(id.emailField)!= null) {
             hasViews.findViewById(id.emailField).setOnFocusChangeListener(new OnFocusChangeListener() {
 
@@ -147,7 +139,58 @@ public final class NewClientActivity_
             }
             );
         }
+        if (hasViews.findViewById(id.userNameField)!= null) {
+            hasViews.findViewById(id.userNameField).setOnFocusChangeListener(new OnFocusChangeListener() {
+
+
+                @Override
+                public void onFocusChange(View view, boolean hasFocus) {
+                    NewClientActivity_.this.focusChangedOnUserNameField(view, hasFocus);
+                }
+
+            }
+            );
+        }
         afterLoad();
+    }
+
+    @SuppressWarnings("unchecked")
+    private<T >T cast_(Object object) {
+        return ((T) object);
+    }
+
+    private void injectExtras_() {
+        Intent intent_ = getIntent();
+        Bundle extras_ = intent_.getExtras();
+        if (extras_!= null) {
+            if (extras_.containsKey(NEW_USERS_EXTRA)) {
+                try {
+                    newUsers = cast_(extras_.get(NEW_USERS_EXTRA));
+                } catch (ClassCastException e) {
+                    Log.e("NewClientActivity_", "Could not cast extra to expected type, the field is left to its default value", e);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void setIntent(Intent newIntent) {
+        super.setIntent(newIntent);
+        injectExtras_();
+    }
+
+    @Override
+    public void ActivationDialog() {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                NewClientActivity_.super.ActivationDialog();
+            }
+
+        }
+        );
     }
 
     @Override
@@ -165,13 +208,13 @@ public final class NewClientActivity_
     }
 
     @Override
-    public void ActivationDialog() {
+    public void finishThis() {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                NewClientActivity_.super.ActivationDialog();
+                NewClientActivity_.super.finishThis();
             }
 
         }
@@ -286,6 +329,11 @@ public final class NewClientActivity_
                     context_.startActivity(intent_);
                 }
             }
+        }
+
+        public NewClientActivity_.IntentBuilder_ newUsers(NewUsers newUsers) {
+            intent_.putExtra(NEW_USERS_EXTRA, ((Serializable) newUsers));
+            return this;
         }
 
     }

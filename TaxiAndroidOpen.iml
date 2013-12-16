@@ -62,6 +62,7 @@
     <orderEntry type="library" name="Maven: ch.acra:acra:4.5.0" level="project" />
     <orderEntry type="library" name="Maven: org.json:json:20080701" level="project" />
     <orderEntry type="module" module-name="~apklib-com.google.android.gms_google-play-services_12.0.0" />
+    <orderEntry type="module" module-name="~apklib-com.facebook.android_facebook-android-sdk_3.6.0-SNAPSHOT" />
   </component>
 </module>
 

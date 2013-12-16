@@ -91,29 +91,17 @@ public final class RequestDetailsActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        state = ((TextView) hasViews.findViewById(id.state));
         requestNumber = ((TextView) hasViews.findViewById(id.requestNumber));
-        rejectButton = ((Button) hasViews.findViewById(id.rejectButton));
-        datecreated = ((TextView) hasViews.findViewById(id.datecreated));
-        editButton = ((Button) hasViews.findViewById(id.editButton));
-        feedBackButton = ((Button) hasViews.findViewById(id.feedBackButton));
-        chosen_group = ((TextView) hasViews.findViewById(id.chosen_group));
-        remaining_time = ((TextView) hasViews.findViewById(id.remaining_time));
         arrive_time = ((TextView) hasViews.findViewById(id.arrive_time));
         price_group = ((TextView) hasViews.findViewById(id.price_group));
+        editButton = ((Button) hasViews.findViewById(id.editButton));
+        state = ((TextView) hasViews.findViewById(id.state));
+        feedBackButton = ((Button) hasViews.findViewById(id.feedBackButton));
+        remaining_time = ((TextView) hasViews.findViewById(id.remaining_time));
+        rejectButton = ((Button) hasViews.findViewById(id.rejectButton));
         address = ((TextView) hasViews.findViewById(id.address));
-        if (hasViews.findViewById(id.editButton)!= null) {
-            hasViews.findViewById(id.editButton).setOnClickListener(new OnClickListener() {
-
-
-                @Override
-                public void onClick(View view) {
-                    RequestDetailsActivity_.this.editButton();
-                }
-
-            }
-            );
-        }
+        chosen_group = ((TextView) hasViews.findViewById(id.chosen_group));
+        datecreated = ((TextView) hasViews.findViewById(id.datecreated));
         if (hasViews.findViewById(id.rejectButton)!= null) {
             hasViews.findViewById(id.rejectButton).setOnClickListener(new OnClickListener() {
 
@@ -126,13 +114,13 @@ public final class RequestDetailsActivity_
             }
             );
         }
-        if (hasViews.findViewById(id.okButton)!= null) {
-            hasViews.findViewById(id.okButton).setOnClickListener(new OnClickListener() {
+        if (hasViews.findViewById(id.editButton)!= null) {
+            hasViews.findViewById(id.editButton).setOnClickListener(new OnClickListener() {
 
 
                 @Override
                 public void onClick(View view) {
-                    RequestDetailsActivity_.this.okButton();
+                    RequestDetailsActivity_.this.editButton();
                 }
 
             }
@@ -145,6 +133,18 @@ public final class RequestDetailsActivity_
                 @Override
                 public void onClick(View view) {
                     RequestDetailsActivity_.this.feedBackButton();
+                }
+
+            }
+            );
+        }
+        if (hasViews.findViewById(id.okButton)!= null) {
+            hasViews.findViewById(id.okButton).setOnClickListener(new OnClickListener() {
+
+
+                @Override
+                public void onClick(View view) {
+                    RequestDetailsActivity_.this.okButton();
                 }
 
             }
@@ -207,14 +207,32 @@ public final class RequestDetailsActivity_
     }
 
     @Override
-    public void scheduleChangesSec() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 1000, "") {
+    public void rejectRequest(final String reason) {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    RequestDetailsActivity_.super.scheduleChangesSec();
+                    RequestDetailsActivity_.super.rejectRequest(reason);
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void scheduleChanges() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 10000, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    RequestDetailsActivity_.super.scheduleChanges();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -243,14 +261,14 @@ public final class RequestDetailsActivity_
     }
 
     @Override
-    public void rejectRequest(final String reason) {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+    public void scheduleChangesSec() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 1000, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    RequestDetailsActivity_.super.rejectRequest(reason);
+                    RequestDetailsActivity_.super.scheduleChangesSec();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -269,24 +287,6 @@ public final class RequestDetailsActivity_
             public void execute() {
                 try {
                     RequestDetailsActivity_.super.setFeedBack();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void scheduleChanges() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 10000, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    RequestDetailsActivity_.super.scheduleChanges();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

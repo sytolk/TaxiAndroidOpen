@@ -8,6 +8,7 @@ import android.util.Base64;
 import android.util.Log;
 import com.opentaxi.android.asynctask.RegionsTask;
 import com.opentaxi.models.NewRequest;
+import com.opentaxi.models.Users;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import javax.crypto.Cipher;
@@ -34,6 +35,7 @@ public class AppPreferences {
 
     private static final String SOCKET_TYPE = "SOCKET_TYPE";
     private static final String APP_VERSION = "APP_VERSION";
+    private static final String ACCESS_TOKEN = "ACCESS_TOKEN";
 
     /**
      * Singleton reference to this class.
@@ -50,8 +52,10 @@ public class AppPreferences {
     private long gpsLastTime = 0; //local Android datetime of last received coordinates
 
     private String appVersion;
+    private String token;
     private Integer socketType;
     private Context context;
+    private Users users;
 
     public AppPreferences(Context context) {
         this.appSharedPrefs = context.getSharedPreferences(APP_SHARED_PREFS, Activity.MODE_PRIVATE);
@@ -71,6 +75,14 @@ public class AppPreferences {
         }
 
         return instance;
+    }
+
+    public Users getUsers() {
+        return users;
+    }
+
+    public void setUsers(Users users) {
+        this.users = users;
     }
 
     public String encrypt(String value, String salt) {
@@ -226,6 +238,20 @@ public class AppPreferences {
         this.appVersion = version;
         this.prefsEditor = appSharedPrefs.edit();
         prefsEditor.putString(APP_VERSION, version);
+        prefsEditor.commit();
+    }
+
+    public String getAccessToken() {
+        if (token == null) {
+            token = appSharedPrefs.getString(ACCESS_TOKEN, "");
+        }
+        return token;
+    }
+
+    public void setAccessToken(String token) {
+        this.token = token;
+        this.prefsEditor = appSharedPrefs.edit();
+        prefsEditor.putString(ACCESS_TOKEN, token);
         prefsEditor.commit();
     }
 

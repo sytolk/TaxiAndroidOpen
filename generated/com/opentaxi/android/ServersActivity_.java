@@ -74,8 +74,8 @@ public final class ServersActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        cancelButton = ((Button) hasViews.findViewById(id.cancelButton));
         serversContent = ((LinearLayout) hasViews.findViewById(id.serversContent));
+        cancelButton = ((Button) hasViews.findViewById(id.cancelButton));
         if (hasViews.findViewById(id.refreshButton)!= null) {
             hasViews.findViewById(id.refreshButton).setOnClickListener(new OnClickListener() {
 
@@ -132,24 +132,6 @@ public final class ServersActivity_
     }
 
     @Override
-    public void testServer(final String socket) {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    ServersActivity_.super.testServer(socket);
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
     public void updateServers() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
@@ -176,6 +158,24 @@ public final class ServersActivity_
             public void execute() {
                 try {
                     ServersActivity_.super.login();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void testServer(final String socket) {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    ServersActivity_.super.testServer(socket);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

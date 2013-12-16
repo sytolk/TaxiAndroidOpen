@@ -4,7 +4,7 @@
 
     <string name="show_map_text">Карта</string>
     <string name="exit">Изход</string>
-    <string name="request">Заявки</string>
+    <string name="request">Поръчки</string>
     <string name="newRequest">Повикай Такси</string>
 
     <string name="options_update">Обновяване</string>
@@ -93,4 +93,6 @@
     <string name="unit_symbol_kilometer">&#160;km</string>
     <string name="unit_symbol_meter">&#160;m</string>
     <string name="zoomLevel">Zoom level</string>
+
+    <string name="app_id">550947981660612</string>
 </resources>

@@ -44,8 +44,7 @@
             android:layout_height="wrap_content"
             android:minHeight="80dp"
             android:text="Връщане"
-            android:layout_weight=".3"
-            android:textSize="25dp"/>
+            android:layout_weight=".3"/>
 
         <Button
             android:id="@+id/newRequests"
@@ -53,8 +52,7 @@
             android:layout_height="wrap_content"
             android:minHeight="80dp"
             android:text="Повикай такси"
-            android:layout_weight=".3"
-            android:textSize="25dp"/>
+            android:layout_weight=".3"/>
 
         <Button
             android:id="@+id/requestsHistory"
@@ -62,7 +60,6 @@
             android:layout_height="wrap_content"
             android:minHeight="80dp"
             android:text="История"
-            android:layout_weight=".3"
-            android:textSize="25dp"/>
+            android:layout_weight=".3"/>
     </LinearLayout>
 </LinearLayout>

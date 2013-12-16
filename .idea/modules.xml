@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/TaxiAndroidOpen.iml" filepath="$PROJECT_DIR$/TaxiAndroidOpen.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gen-external-apklibs/~apklib-com.facebook.android_facebook-android-sdk_3.6.0-SNAPSHOT.iml" filepath="$PROJECT_DIR$/gen-external-apklibs/~apklib-com.facebook.android_facebook-android-sdk_3.6.0-SNAPSHOT.iml" />
       <module fileurl="file://$PROJECT_DIR$/gen-external-apklibs/~apklib-com.google.android.gms_google-play-services_12.0.0.iml" filepath="$PROJECT_DIR$/gen-external-apklibs/~apklib-com.google.android.gms_google-play-services_12.0.0.iml" />
     </modules>
   </component>

@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import com.opentaxi.android.R.id;
 import com.opentaxi.android.R.layout;
+import com.opentaxi.models.Users;
 import org.androidannotations.api.BackgroundExecutor;
 import org.androidannotations.api.view.HasViews;
 import org.androidannotations.api.view.OnViewChangedListener;
@@ -88,18 +89,6 @@ public final class UserPassActivity_
             }
             );
         }
-        if (hasViews.findViewById(id.clientLoginButton)!= null) {
-            hasViews.findViewById(id.clientLoginButton).setOnClickListener(new OnClickListener() {
-
-
-                @Override
-                public void onClick(View view) {
-                    UserPassActivity_.this.clientLoginButton();
-                }
-
-            }
-            );
-        }
         if (hasViews.findViewById(id.lostPassword)!= null) {
             hasViews.findViewById(id.lostPassword).setOnClickListener(new OnClickListener() {
 
@@ -112,7 +101,45 @@ public final class UserPassActivity_
             }
             );
         }
+        if (hasViews.findViewById(id.facebookButton)!= null) {
+            hasViews.findViewById(id.facebookButton).setOnClickListener(new OnClickListener() {
+
+
+                @Override
+                public void onClick(View view) {
+                    UserPassActivity_.this.facebookButton();
+                }
+
+            }
+            );
+        }
+        if (hasViews.findViewById(id.clientLoginButton)!= null) {
+            hasViews.findViewById(id.clientLoginButton).setOnClickListener(new OnClickListener() {
+
+
+                @Override
+                public void onClick(View view) {
+                    UserPassActivity_.this.clientLoginButton();
+                }
+
+            }
+            );
+        }
         afterLoad();
+    }
+
+    @Override
+    public void facebookUser(final Users user) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                UserPassActivity_.super.facebookUser(user);
+            }
+
+        }
+        );
     }
 
     @Override
@@ -123,6 +150,24 @@ public final class UserPassActivity_
             @Override
             public void run() {
                 UserPassActivity_.super.setError(error);
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void facebookLogout() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    UserPassActivity_.super.facebookLogout();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
             }
 
         }
@@ -148,13 +193,21 @@ public final class UserPassActivity_
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        UserPassActivity_.super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case  1 :
-                UserPassActivity_.this.onResult(resultCode, data);
-                break;
+    public void checkFacebook(final String token) {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    UserPassActivity_.super.checkFacebook(token);
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
         }
+        );
     }
 
     public static class IntentBuilder_ {

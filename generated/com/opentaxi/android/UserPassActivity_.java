@@ -15,10 +15,10 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.Button;
 import android.widget.EditText;
 import com.opentaxi.android.R.id;
 import com.opentaxi.android.R.layout;
+import com.opentaxi.models.Users;
 import org.androidannotations.api.BackgroundExecutor;
 import org.androidannotations.api.view.HasViews;
 import org.androidannotations.api.view.OnViewChangedListener;
@@ -73,21 +73,8 @@ public final class UserPassActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        submitButton = ((Button) hasViews.findViewById(id.clientLoginButton));
-        pass = ((EditText) hasViews.findViewById(id.passwordField));
         userName = ((EditText) hasViews.findViewById(id.userNameField));
-        if (hasViews.findViewById(id.clientLoginButton)!= null) {
-            hasViews.findViewById(id.clientLoginButton).setOnClickListener(new OnClickListener() {
-
-
-                @Override
-                public void onClick(View view) {
-                    UserPassActivity_.this.clientLoginButton();
-                }
-
-            }
-            );
-        }
+        pass = ((EditText) hasViews.findViewById(id.passwordField));
         if (hasViews.findViewById(id.lostPassword)!= null) {
             hasViews.findViewById(id.lostPassword).setOnClickListener(new OnClickListener() {
 
@@ -95,6 +82,18 @@ public final class UserPassActivity_
                 @Override
                 public void onClick(View view) {
                     UserPassActivity_.this.lostPassword();
+                }
+
+            }
+            );
+        }
+        if (hasViews.findViewById(id.facebookButton)!= null) {
+            hasViews.findViewById(id.facebookButton).setOnClickListener(new OnClickListener() {
+
+
+                @Override
+                public void onClick(View view) {
+                    UserPassActivity_.this.facebookButton();
                 }
 
             }
@@ -130,6 +129,56 @@ public final class UserPassActivity_
     }
 
     @Override
+    public void facebookUser(final Users user) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                UserPassActivity_.super.facebookUser(user);
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void facebookLogout() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    UserPassActivity_.super.facebookLogout();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void checkFacebook(final String token) {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    UserPassActivity_.super.checkFacebook(token);
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
     public void login(final String username, final String password) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
@@ -145,16 +194,6 @@ public final class UserPassActivity_
 
         }
         );
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        UserPassActivity_.super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case  1 :
-                UserPassActivity_.this.onResult(resultCode, data);
-                break;
-        }
     }
 
     public static class IntentBuilder_ {

@@ -82,9 +82,21 @@ public final class MainActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        bandwidth = ((TextView) hasViews.findViewById(id.bandwidth));
-        user = ((TextView) hasViews.findViewById(id.user));
         version = ((TextView) hasViews.findViewById(id.txt_version));
+        user = ((TextView) hasViews.findViewById(id.user));
+        bandwidth = ((TextView) hasViews.findViewById(id.bandwidth));
+        if (hasViews.findViewById(id.requestButton)!= null) {
+            hasViews.findViewById(id.requestButton).setOnClickListener(new OnClickListener() {
+
+
+                @Override
+                public void onClick(View view) {
+                    MainActivity_.this.requestButton();
+                }
+
+            }
+            );
+        }
         if (hasViews.findViewById(id.exitButton)!= null) {
             hasViews.findViewById(id.exitButton).setOnClickListener(new OnClickListener() {
 
@@ -121,19 +133,21 @@ public final class MainActivity_
             }
             );
         }
-        if (hasViews.findViewById(id.requestButton)!= null) {
-            hasViews.findViewById(id.requestButton).setOnClickListener(new OnClickListener() {
-
-
-                @Override
-                public void onClick(View view) {
-                    MainActivity_.this.requestButton();
-                }
-
-            }
-            );
-        }
         afterMain();
+    }
+
+    @Override
+    public void afterLogin(final String username) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                MainActivity_.super.afterLogin(username);
+            }
+
+        }
+        );
     }
 
     @Override
@@ -151,17 +165,13 @@ public final class MainActivity_
     }
 
     @Override
-    public void setServers() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+    public void startUserPass() {
+        handler_.post(new Runnable() {
 
 
             @Override
-            public void execute() {
-                try {
-                    MainActivity_.super.setServers();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
+            public void run() {
+                MainActivity_.super.startUserPass();
             }
 
         }
@@ -187,6 +197,24 @@ public final class MainActivity_
     }
 
     @Override
+    public void beforeStartUserPass() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    MainActivity_.super.beforeStartUserPass();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
     public void gcmRegister() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
@@ -195,6 +223,24 @@ public final class MainActivity_
             public void execute() {
                 try {
                     MainActivity_.super.gcmRegister();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void setServers() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    MainActivity_.super.setServers();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

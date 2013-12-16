@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.opentaxi.android"
-          android:versionName="1.0.1"
-          android:versionCode="2"
+          android:versionName="1.0.2"
+          android:versionCode="3"
           android:installLocation="auto">
 
     <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="19"/>
+        android:minSdkVersion="8"/>
+    <!--android:targetSdkVersion="19"-->
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -32,11 +32,11 @@
     <uses-permission android:name="android.permission.READ_SYNC_STATS"/>
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
 
-    <uses-permission android:name="android.permission.INSTALL_PACKAGES"/>
-    <uses-permission android:name="android.permission.RESTART_PACKAGES"/>
+    <!--<uses-permission android:name="android.permission.INSTALL_PACKAGES"/>-->
+    <!--<uses-permission android:name="android.permission.RESTART_PACKAGES"/>-->
 
     <!--Permission Denial: can't dump meminfo from from pid=2322, uid=10106 without permission android.permission.DUMP-->
-    <uses-permission android:name="android.permission.DUMP"/>
+    <!--<uses-permission android:name="android.permission.DUMP"/>-->
 
     <uses-feature
         android:name="android.hardware.location"
@@ -71,6 +71,9 @@
         android:persistent="true">
 
         <!--<meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />-->
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/app_id"/>
 
         <activity
             android:name=".MainActivity_"
@@ -88,7 +91,7 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
             </intent-filter>
         </activity>
 
@@ -98,6 +101,10 @@
             android:taskAffinity=""
             android:excludeFromRecents="true">
         </activity>
+        <activity
+            android:name="com.facebook.LoginActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name"/>
         <activity
             android:name=".NewClientActivity_"
             android:allowTaskReparenting="false"
@@ -115,7 +122,8 @@
             android:name=".MessageActivity"
             android:allowTaskReparenting="false"
             android:taskAffinity=""
-            android:excludeFromRecents="true">
+            android:excludeFromRecents="true"
+            android:noHistory="true">
         </activity>
 
         <activity
@@ -158,7 +166,8 @@
             android:taskAffinity=""
             android:excludeFromRecents="true"
             android:launchMode="singleTop"
-            android:finishOnTaskLaunch="true">
+            android:finishOnTaskLaunch="true"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -190,18 +199,19 @@
         -->
         <receiver
             android:name=".GcmBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <!-- Receives the actual messages. -->
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-                <category android:name="com.opentaxi.android" />
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
+
+                <category android:name="com.opentaxi.android"/>
             </intent-filter>
         </receiver>
 
         <receiver android:name=".NetworkStateReceiver">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
             </intent-filter>
         </receiver>
 

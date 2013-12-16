@@ -245,7 +245,7 @@ public class RequestsActivity extends Activity {
                     TextView txt = new TextView(this);
                     txt.setPadding(2, 2, 2, 2);
                     txt.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
-                    txt.setText("Нямате заявки.");
+                    txt.setText("Нямате поръчки.");
                     row.addView(txt);
                     requests_table.addView(row, new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                 }

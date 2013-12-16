@@ -26,6 +26,7 @@ import com.opentaxi.android.map.AdvancedMapViewer;
 import com.opentaxi.android.utils.AppPreferences;
 import com.opentaxi.android.utils.Network;
 import com.opentaxi.generated.mysql.tables.pojos.Servers;
+import com.opentaxi.models.Users;
 import com.opentaxi.rest.RestClient;
 import org.androidannotations.annotations.*;
 import org.mapsforge.android.AndroidUtils;
@@ -66,6 +67,25 @@ public class MainActivity extends FragmentActivity {
     @AfterViews
     void afterMain() {
 
+       /* PackageInfo info;
+        try {
+            info = getPackageManager().getPackageInfo("com.opentaxi.android", PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md;
+                md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                String something = new String(Base64.encode(md.digest(), 0));
+                //String something = new String(Base64.encodeBytes(md.digest()));
+                Log.e("hash key", something);
+            }
+        } catch (PackageManager.NameNotFoundException e1) {
+            Log.e("name not found", e1.toString());
+        } catch (NoSuchAlgorithmException e) {
+            Log.e("no such an algorithm", e.toString());
+        } catch (Exception e) {
+            Log.e("exception", e.toString());
+        }*/
+
         AppPreferences appPreferences = AppPreferences.getInstance(this);
         RestClient.getInstance().setSocketsType(appPreferences.getSocketType());
         checkUser();
@@ -77,7 +97,7 @@ public class MainActivity extends FragmentActivity {
             String pass = RestClient.getInstance().getPassword();
 
             if (user == null || user.equals("") || pass == null || pass.equals("")) {
-                UserPassActivity_.intent(this).startForResult(REQUEST_USER_PASS_CODE);
+                beforeStartUserPass();
             } else {
                 String username = AppPreferences.getInstance().decrypt(user, "user_salt");
                 String password = AppPreferences.getInstance().decrypt(pass, username);
@@ -85,35 +105,66 @@ public class MainActivity extends FragmentActivity {
                 Log.i(TAG, "checkUser username:" + username + " password:" + password);
 
                 if (username == null || password == null) {
-                    UserPassActivity_.intent(this).startForResult(REQUEST_USER_PASS_CODE);
+                    beforeStartUserPass();
                 } else {
                     RestClient.getInstance().setAuthHeaders(username, password);
 
-                    this.user.setText(username);
-                    AppPreferences.getInstance().setRegions();
-
-                    setVersion();
-                    //appPreferences.registerGCM(getBaseContext());
-
-                    if (!oneTime) {
-                        Log.i(TAG, "Updating servers");
-                        oneTime = true;
-                        setServers();
-                    }
-
-                    if (servicesConnected()) {
-                        gcm = GoogleCloudMessaging.getInstance(this);
-                        String regid = RestClient.getInstance().getGCMRegistrationId(); //AppPreferences.getInstance().getGCMRegId();
-
-                        if (regid == null || regid.equals("")) {
-                            gcmRegister();
-                        } //else sendRegistration(regid);
-                    } else {
-                        Log.i(TAG, "No valid Google Play Services APK found.");
-                    }
+                    afterLogin(username);
                 }
             }
         }
+    }
+
+    @UiThread
+    void afterLogin(String username) {
+        this.user.setText(username);
+        AppPreferences.getInstance().setRegions();
+
+        setVersion();
+        //appPreferences.registerGCM(getBaseContext());
+
+        if (!oneTime) {
+            Log.i(TAG, "Updating servers");
+            oneTime = true;
+            setServers();
+        }
+
+        if (servicesConnected()) {
+            gcm = GoogleCloudMessaging.getInstance(this);
+            String regid = RestClient.getInstance().getGCMRegistrationId(); //AppPreferences.getInstance().getGCMRegId();
+
+            if (regid == null || regid.equals("")) {
+                gcmRegister();
+            } //else sendRegistration(regid);
+        } else {
+            Log.i(TAG, "No valid Google Play Services APK found.");
+        }
+    }
+
+    @Background
+    void beforeStartUserPass() {
+        String token = AppPreferences.getInstance().getAccessToken();
+        if (token != null && !token.equals("")) {
+            if (!RestClient.getInstance().haveAuthorization()) {
+                //Log.i(TAG, "AppPreferences.getInstance().getAccessToken=" + token);
+                Users user = RestClient.getInstance().FacebookLogin(token);
+                if (user != null) { //user already exist
+                    if (user.getId() != null && user.getId() > 0) {
+                        RestClient.getInstance().setAuthHeadersEncoded(user.getUsername(), user.getPassword());
+                        afterLogin(user.getUsername());
+                    } else startUserPass();
+                } else startUserPass();
+            } else {
+                Users user = AppPreferences.getInstance().getUsers();
+                if (user != null) afterLogin(user.getUsername());
+                Log.e(TAG, "already authorized token=" + token);
+            }
+        } else startUserPass();
+    }
+
+    @UiThread
+    void startUserPass() {
+        UserPassActivity_.intent(this).startForResult(REQUEST_USER_PASS_CODE);
     }
 
     @Background
@@ -397,6 +448,7 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 new LogoutTask().execute();
+                AppPreferences.getInstance().setAccessToken("");
                 AppPreferences.getInstance().setLastCloudMessage(null);
                 finish();
             }

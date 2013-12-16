@@ -17,6 +17,7 @@ import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.*;
 import com.opentaxi.generated.mysql.tables.pojos.Contact;
 import com.opentaxi.generated.mysql.tables.pojos.Contactaddress;
+import com.opentaxi.generated.mysql.tables.pojos.Users;
 import com.opentaxi.models.NewUsers;
 import com.opentaxi.rest.RestClient;
 import com.taxibulgaria.enums.CommunicationMethod;
@@ -77,6 +78,8 @@ public class NewClientActivity extends FragmentActivity implements Validator.Val
     @ViewById
     CheckBox iAgreeCheckBox;
 
+    @Extra
+    NewUsers newUsers;
     //private Users users;
     Validator validator;
 
@@ -85,18 +88,24 @@ public class NewClientActivity extends FragmentActivity implements Validator.Val
     @AfterViews
     void afterLoad() {
 
-        validator = new Validator(this);
-        //validator.put();
-        validator.setValidationListener(this);
+        if (newUsers != null) {
+            userName.setText(newUsers.getUsername());
+            email.setText(newUsers.getEmail());
+            createNewUser(newUsers);
+        } else {
+            validator = new Validator(this);
+            //validator.put();
+            validator.setValidationListener(this);
 
-        String[] cities = new String[]{
-                "Бургас", "София", "Варна", "Пловдив", "Burgas", "Sofia", "Varna", "Plovdiv"
-        };
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, cities);
-        adapter.setDropDownViewResource(R.layout.spinner_layout);
-        cityName.setAdapter(adapter);
+            String[] cities = new String[]{
+                    "Бургас", "София", "Варна", "Пловдив", "Burgas", "Sofia", "Varna", "Plovdiv"
+            };
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, cities);
+            adapter.setDropDownViewResource(R.layout.spinner_layout);
+            cityName.setAdapter(adapter);
 
-        haveErrors = false;
+            haveErrors = false;
+        }
     }
 
     @Click
@@ -140,9 +149,18 @@ public class NewClientActivity extends FragmentActivity implements Validator.Val
     @Background
     void createNewUser(NewUsers users) {
         Log.i(TAG, "createNewUser:" + users.getUsername());
-        Integer usersId = RestClient.getInstance().createNewUser(users);
-        if (usersId != null && usersId > 0) ActivationDialog();
-        else setUserError("Error, check you internet connection and try again.");
+        Users userPojo = RestClient.getInstance().createNewUser(users);
+        if (userPojo != null) {
+            if (userPojo.getRecordstatus() != null && userPojo.getRecordstatus()) {  //account is already active
+                RestClient.getInstance().setAuthHeadersEncoded(userPojo.getUsername(), userPojo.getPassword());
+                finishThis();
+            } else ActivationDialog();
+        } else setUserError("Error, check you internet connection and try again.");
+    }
+
+    @UiThread
+    void finishThis() {
+        finish();
     }
 
     @UiThread

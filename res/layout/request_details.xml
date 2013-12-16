@@ -75,7 +75,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
-                    android:text="Ценова група:"/>
+                    android:text="Тарифа лв/км:"/>
                 <TextView
                     android:id="@+id/price_group"
                     android:layout_width="0dp"

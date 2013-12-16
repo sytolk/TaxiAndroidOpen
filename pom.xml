@@ -138,6 +138,19 @@
             <version>4.5.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.facebook.android</groupId>
+            <artifactId>facebook-android-sdk</artifactId>
+            <version>3.6.0-SNAPSHOT</version>
+            <type>apklib</type>
+            <exclusions>
+                <exclusion>
+                    <artifactId>support-v4</artifactId>
+                    <groupId>com.google.android</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
         <!--<dependency>
             <groupId>com.github.ignition</groupId>
             <artifactId>ignition-core</artifactId>
@@ -152,6 +165,10 @@
             <name>Sonatype oss snapshot repo</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </repository>
+        <!--<repository>
+            <id>The mavenized Facebook Android API</id>
+            <url>http://avianey.github.io/facebook-api-android-maven/</url>
+        </repository>-->
         <!--<repository>
             <id>ignition-releases</id>
             <url>http://nexus.qype.com/content/repositories/releases</url>

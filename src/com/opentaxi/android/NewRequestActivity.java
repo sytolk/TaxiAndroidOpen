@@ -285,7 +285,7 @@ public class NewRequestActivity extends FragmentActivity {
         alertDialogBuilder.setTitle("Изпратена заявка");
         String txt = addressText.getText().toString();
         if (txt.length() == 0) txt = address.getText().toString();
-        alertDialogBuilder.setMessage("Заявката " + txt + " беше изпратена успешно! Можете да видите актуалния и статус да я промените или откажете след като затворите този диалог или от бутона ЗАЯВКИ на главната страница");
+        alertDialogBuilder.setMessage("Заявката " + txt + " беше изпратена успешно! Можете да видите актуалния и статус да я промените или откажете след като затворите този диалог или от бутона ПОРЪЧКИ на главната страница");
 
         alertDialogBuilder.setNeutralButton("ОК", new DialogInterface.OnClickListener() {
 

@@ -96,7 +96,8 @@ public class RequestDetailsActivity extends FragmentActivity {
     @Background(delay = 1000)
     void scheduleChangesSec() {
         if (TaxiApplication.isRequestsDetailsVisible()) {
-            newCRequest = RestClient.getInstance().getRequestDetails(newCRequest.getRequestsId());
+            NewCRequest cRequest = RestClient.getInstance().getRequestDetails(newCRequest.getRequestsId());
+            if (cRequest != null) newCRequest = cRequest;
             showDetails();
         }
     }
@@ -104,7 +105,8 @@ public class RequestDetailsActivity extends FragmentActivity {
     @Background(delay = 10000)
     void scheduleChanges() {
         if (TaxiApplication.isRequestsDetailsVisible()) {
-            newCRequest = RestClient.getInstance().getRequestDetails(newCRequest.getRequestsId());
+            NewCRequest cRequest = RestClient.getInstance().getRequestDetails(newCRequest.getRequestsId());
+            if (cRequest != null) newCRequest = cRequest;
             showDetails();
         }
     }
@@ -152,7 +154,11 @@ public class RequestDetailsActivity extends FragmentActivity {
                 remaining_time.setText(newCRequest.getExecTime());
                 state.setText(RequestStatus.getByCode(newCRequest.getStatus()).toString());
 
-                if (newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_BEGIN.getCode()) || newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_DONE.getCode())) {
+                if (newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_DELETE.getCode())) {
+                    rejectButton.setVisibility(View.GONE);
+                    editButton.setVisibility(View.GONE);
+                    feedBackButton.setVisibility(View.GONE);
+                } else if (newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_BEGIN.getCode()) || newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_DONE.getCode())) {
                     rejectButton.setVisibility(View.GONE);
                     editButton.setVisibility(View.GONE);
                     feedBackButton.setVisibility(View.VISIBLE);
@@ -164,7 +170,7 @@ public class RequestDetailsActivity extends FragmentActivity {
                 }
             } else {
                 Log.e(TAG, "No newCRequest or newCRequest.getRequestsId=null");
-                finish();
+                //finish(); its close after server error
             }
         }
     }
@@ -247,7 +253,7 @@ public class RequestDetailsActivity extends FragmentActivity {
 
     @UiThread
     void showFeedBack(final Feedback[] feedbacks) {
-        if (feedbacks != null) {
+        if (feedbacks != null && newCRequest != null) {
             final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setTitle("Обратна връзка");
             alertDialogBuilder.setMessage("Как оценявате вашете пътуване от \"" + newCRequest.getFullAddress() + "\"");

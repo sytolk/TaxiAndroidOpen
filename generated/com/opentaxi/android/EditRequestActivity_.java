@@ -95,28 +95,16 @@ public final class EditRequestActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        reqInfoButtonContainer = ((LinearLayout) hasViews.findViewById(id.reqInfoButtonContainer));
-        requestSend = ((Button) hasViews.findViewById(id.requestSend));
+        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
+        region = ((TextView) hasViews.findViewById(id.region));
         pricesPicker = ((Spinner) hasViews.findViewById(id.pricesPicker));
         addressText = ((EditText) hasViews.findViewById(id.addressText));
-        addressChange = ((Button) hasViews.findViewById(id.addressChange));
-        region = ((TextView) hasViews.findViewById(id.region));
-        address = ((TextView) hasViews.findViewById(id.address));
-        regionsPicker = ((Spinner) hasViews.findViewById(id.regionsPicker));
         llFilters = ((LinearLayout) hasViews.findViewById(id.llFilters));
-        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
-        if (hasViews.findViewById(id.requestSend)!= null) {
-            hasViews.findViewById(id.requestSend).setOnClickListener(new OnClickListener() {
-
-
-                @Override
-                public void onClick(View view) {
-                    EditRequestActivity_.this.requestSend();
-                }
-
-            }
-            );
-        }
+        addressChange = ((Button) hasViews.findViewById(id.addressChange));
+        reqInfoButtonContainer = ((LinearLayout) hasViews.findViewById(id.reqInfoButtonContainer));
+        regionsPicker = ((Spinner) hasViews.findViewById(id.regionsPicker));
+        requestSend = ((Button) hasViews.findViewById(id.requestSend));
+        address = ((TextView) hasViews.findViewById(id.address));
         if (hasViews.findViewById(id.addressChange)!= null) {
             hasViews.findViewById(id.addressChange).setOnClickListener(new OnClickListener() {
 
@@ -124,6 +112,18 @@ public final class EditRequestActivity_
                 @Override
                 public void onClick(View view) {
                     EditRequestActivity_.this.addressChange();
+                }
+
+            }
+            );
+        }
+        if (hasViews.findViewById(id.requestSend)!= null) {
+            hasViews.findViewById(id.requestSend).setOnClickListener(new OnClickListener() {
+
+
+                @Override
+                public void onClick(View view) {
+                    EditRequestActivity_.this.requestSend();
                 }
 
             }
@@ -155,6 +155,20 @@ public final class EditRequestActivity_
     public void setIntent(Intent newIntent) {
         super.setIntent(newIntent);
         injectExtras_();
+    }
+
+    @Override
+    public void showPrices(final Groups[] prices) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                EditRequestActivity_.super.showPrices(prices);
+            }
+
+        }
+        );
     }
 
     @Override
@@ -193,20 +207,6 @@ public final class EditRequestActivity_
             @Override
             public void run() {
                 EditRequestActivity_.super.showRegions(regions);
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void showPrices(final Groups[] prices) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                EditRequestActivity_.super.showPrices(prices);
             }
 
         }
