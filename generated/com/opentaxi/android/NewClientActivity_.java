@@ -92,29 +92,17 @@ public final class NewClientActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        cityName = ((AutoCompleteTextView) hasViews.findViewById(id.cityName));
-        pass = ((EditText) hasViews.findViewById(id.passwordField));
         passwordHint = ((EditText) hasViews.findViewById(id.passwordHint));
+        cityName = ((AutoCompleteTextView) hasViews.findViewById(id.cityName));
+        userName = ((EditText) hasViews.findViewById(id.userNameField));
         nameField = ((EditText) hasViews.findViewById(id.nameField));
+        lastName = ((EditText) hasViews.findViewById(id.lastName));
         email = ((EditText) hasViews.findViewById(id.emailField));
+        pass = ((EditText) hasViews.findViewById(id.passwordField));
         middleName = ((EditText) hasViews.findViewById(id.middleName));
         iAgreeCheckBox = ((CheckBox) hasViews.findViewById(id.iAgreeCheckBox));
         pass2 = ((EditText) hasViews.findViewById(id.password2Field));
-        userName = ((EditText) hasViews.findViewById(id.userNameField));
-        lastName = ((EditText) hasViews.findViewById(id.lastName));
         sendButton = ((Button) hasViews.findViewById(id.sendButton));
-        if (hasViews.findViewById(id.userAgreement)!= null) {
-            hasViews.findViewById(id.userAgreement).setOnClickListener(new OnClickListener() {
-
-
-                @Override
-                public void onClick(View view) {
-                    NewClientActivity_.this.userAgreement();
-                }
-
-            }
-            );
-        }
         if (hasViews.findViewById(id.sendButton)!= null) {
             hasViews.findViewById(id.sendButton).setOnClickListener(new OnClickListener() {
 
@@ -127,13 +115,13 @@ public final class NewClientActivity_
             }
             );
         }
-        if (hasViews.findViewById(id.userNameField)!= null) {
-            hasViews.findViewById(id.userNameField).setOnFocusChangeListener(new OnFocusChangeListener() {
+        if (hasViews.findViewById(id.userAgreement)!= null) {
+            hasViews.findViewById(id.userAgreement).setOnClickListener(new OnClickListener() {
 
 
                 @Override
-                public void onFocusChange(View view, boolean hasFocus) {
-                    NewClientActivity_.this.focusChangedOnUserNameField(view, hasFocus);
+                public void onClick(View view) {
+                    NewClientActivity_.this.userAgreement();
                 }
 
             }
@@ -146,6 +134,18 @@ public final class NewClientActivity_
                 @Override
                 public void onFocusChange(View view, boolean hasFocus) {
                     NewClientActivity_.this.focusChangedOnEmailField(view, hasFocus);
+                }
+
+            }
+            );
+        }
+        if (hasViews.findViewById(id.userNameField)!= null) {
+            hasViews.findViewById(id.userNameField).setOnFocusChangeListener(new OnFocusChangeListener() {
+
+
+                @Override
+                public void onFocusChange(View view, boolean hasFocus) {
+                    NewClientActivity_.this.focusChangedOnUserNameField(view, hasFocus);
                 }
 
             }
@@ -194,20 +194,6 @@ public final class NewClientActivity_
     }
 
     @Override
-    public void setEmailError(final String error) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                NewClientActivity_.super.setEmailError(error);
-            }
-
-        }
-        );
-    }
-
-    @Override
     public void setUserError(final String error) {
         handler_.post(new Runnable() {
 
@@ -236,17 +222,13 @@ public final class NewClientActivity_
     }
 
     @Override
-    public void checkEmail(final String email) {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+    public void setEmailError(final String error) {
+        handler_.post(new Runnable() {
 
 
             @Override
-            public void execute() {
-                try {
-                    NewClientActivity_.super.checkEmail(email);
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
+            public void run() {
+                NewClientActivity_.super.setEmailError(error);
             }
 
         }
@@ -262,6 +244,24 @@ public final class NewClientActivity_
             public void execute() {
                 try {
                     NewClientActivity_.super.createNewUser(users);
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void checkEmail(final String email) {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    NewClientActivity_.super.checkEmail(email);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

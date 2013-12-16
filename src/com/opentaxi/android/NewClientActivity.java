@@ -115,7 +115,8 @@ public class NewClientActivity extends FragmentActivity implements Validator.Val
 
     @Click
     void sendButton() {
-        validator.validate();
+        if (validator != null)
+            validator.validate();
     }
 
     @FocusChange({R.id.userNameField})

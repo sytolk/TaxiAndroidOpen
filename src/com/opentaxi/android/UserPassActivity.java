@@ -163,7 +163,8 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
             public void onLogin() {
 
                 //Log.e(TAG, "onLogin");
-                AppPreferences.getInstance().setAccessToken(mSimpleFacebook.getAccessToken());
+                if (AppPreferences.getInstance() != null)
+                    AppPreferences.getInstance().setAccessToken(mSimpleFacebook.getAccessToken());  //todo move this to disk cache
                 checkFacebook(mSimpleFacebook.getAccessToken());
             }
 
