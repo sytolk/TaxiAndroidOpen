@@ -58,9 +58,26 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
     Validator validator;
 
     SimpleFacebook mSimpleFacebook;
+    private int result = Activity.RESULT_OK;
 
     private static final int SERVER_CHANGE = 12;
 
+    @Override
+    public void onBackPressed() {
+        result = Activity.RESULT_CANCELED;
+        super.onBackPressed();
+    }
+
+    @Override
+    public void finish() {
+        if (result != Activity.RESULT_CANCELED) result = Activity.RESULT_OK;
+        if (getParent() == null) {
+            setResult(result);
+        } else {
+            getParent().setResult(result);
+        }
+        super.finish();
+    }
     /*@InstanceState
     Bundle savedInstanceState;
 
@@ -96,7 +113,7 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
     @AfterViews
     void afterLoad() {
         //submitButton.setClickable(true);
-
+        result = Activity.RESULT_OK;
         validator = new Validator(this);
         validator.setValidationListener(this);
 
@@ -382,9 +399,15 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
             if (user.getId() != null && user.getId() > 0) {
                 //users = user;
                 //AppPreferences.getInstance().setUsers(user);
-                String userEncrypt = AppPreferences.getInstance().encrypt(username, "user_salt");
-                String passEncrypt = AppPreferences.getInstance().encrypt(password, username);
-                RestClient.getInstance().saveAuthorization(userEncrypt, passEncrypt);
+                if (AppPreferences.getInstance() != null) {
+                    try {
+                        String userEncrypt = AppPreferences.getInstance().encrypt(username, "user_salt");
+                        String passEncrypt = AppPreferences.getInstance().encrypt(password, username);
+                        RestClient.getInstance().saveAuthorization(userEncrypt, passEncrypt);
+                    } catch (Exception e) {
+                        if (e.getMessage() != null) Log.e(TAG, "Exception:" + e.getMessage());
+                    }
+                }
                 //Toast.makeText(UserPassActivity.this, "Влязохте в системата успешно!", Toast.LENGTH_LONG).show();
                 finish();
             } else setError("Грешно потребителско име или парола!");

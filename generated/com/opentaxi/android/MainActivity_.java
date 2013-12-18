@@ -82,39 +82,9 @@ public final class MainActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        bandwidth = ((TextView) hasViews.findViewById(id.bandwidth));
-        user = ((TextView) hasViews.findViewById(id.user));
         version = ((TextView) hasViews.findViewById(id.txt_version));
-        {
-            View view = hasViews.findViewById(id.exitButton);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        MainActivity_.this.exitButton();
-                    }
-
-                }
-                );
-            }
-        }
-        {
-            View view = hasViews.findViewById(id.newRequestButton);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        MainActivity_.this.newRequestButton();
-                    }
-
-                }
-                );
-            }
-        }
+        user = ((TextView) hasViews.findViewById(id.user));
+        bandwidth = ((TextView) hasViews.findViewById(id.bandwidth));
         {
             View view = hasViews.findViewById(id.requestButton);
             if (view!= null) {
@@ -139,6 +109,36 @@ public final class MainActivity_
                     @Override
                     public void onClick(View view) {
                         MainActivity_.this.mapButton();
+                    }
+
+                }
+                );
+            }
+        }
+        {
+            View view = hasViews.findViewById(id.exitButton);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        MainActivity_.this.exitButton();
+                    }
+
+                }
+                );
+            }
+        }
+        {
+            View view = hasViews.findViewById(id.newRequestButton);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        MainActivity_.this.newRequestButton();
                     }
 
                 }
@@ -191,14 +191,14 @@ public final class MainActivity_
     }
 
     @Override
-    public void beforeStartUserPass() {
+    public void gcmRegister() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    MainActivity_.super.beforeStartUserPass();
+                    MainActivity_.super.gcmRegister();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -209,14 +209,32 @@ public final class MainActivity_
     }
 
     @Override
-    public void gcmRegister() {
+    public void sendVersion(final String version) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    MainActivity_.super.gcmRegister();
+                    MainActivity_.super.sendVersion(version);
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void beforeStartUserPass() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    MainActivity_.super.beforeStartUserPass();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -245,14 +263,14 @@ public final class MainActivity_
     }
 
     @Override
-    public void sendVersion(final String version) {
+    public void facebookLogout() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    MainActivity_.super.sendVersion(version);
+                    MainActivity_.super.facebookLogout();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

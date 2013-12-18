@@ -90,17 +90,17 @@ public final class RequestDetailsActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        arrive_time = ((TextView) hasViews.findViewById(id.arrive_time));
-        datecreated = ((TextView) hasViews.findViewById(id.datecreated));
-        requestNumber = ((TextView) hasViews.findViewById(id.requestNumber));
-        feedBackButton = ((Button) hasViews.findViewById(id.feedBackButton));
-        remaining_time = ((TextView) hasViews.findViewById(id.remaining_time));
-        price_group = ((TextView) hasViews.findViewById(id.price_group));
+        chosen_group = ((TextView) hasViews.findViewById(id.chosen_group));
         editButton = ((Button) hasViews.findViewById(id.editButton));
+        arrive_time = ((TextView) hasViews.findViewById(id.arrive_time));
+        remaining_time = ((TextView) hasViews.findViewById(id.remaining_time));
+        requestNumber = ((TextView) hasViews.findViewById(id.requestNumber));
+        price_group = ((TextView) hasViews.findViewById(id.price_group));
+        address = ((TextView) hasViews.findViewById(id.address));
         state = ((TextView) hasViews.findViewById(id.state));
         rejectButton = ((Button) hasViews.findViewById(id.rejectButton));
-        chosen_group = ((TextView) hasViews.findViewById(id.chosen_group));
-        address = ((TextView) hasViews.findViewById(id.address));
+        feedBackButton = ((Button) hasViews.findViewById(id.feedBackButton));
+        datecreated = ((TextView) hasViews.findViewById(id.datecreated));
         {
             View view = hasViews.findViewById(id.okButton);
             if (view!= null) {
@@ -180,20 +180,6 @@ public final class RequestDetailsActivity_
     }
 
     @Override
-    public void showFeedBack(final Feedback[] feedbacks) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                RequestDetailsActivity_.super.showFeedBack(feedbacks);
-            }
-
-        }
-        );
-    }
-
-    @Override
     public void showDetails() {
         handler_.post(new Runnable() {
 
@@ -208,35 +194,13 @@ public final class RequestDetailsActivity_
     }
 
     @Override
-    public void scheduleChanges() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 10000, "") {
+    public void showFeedBack(final Feedback[] feedbacks) {
+        handler_.post(new Runnable() {
 
 
             @Override
-            public void execute() {
-                try {
-                    RequestDetailsActivity_.super.scheduleChanges();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void sendFeedBack(final String comment, final Map<Integer, Float> vote) {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    RequestDetailsActivity_.super.sendFeedBack(comment, vote);
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
+            public void run() {
+                RequestDetailsActivity_.super.showFeedBack(feedbacks);
             }
 
         }
@@ -262,6 +226,24 @@ public final class RequestDetailsActivity_
     }
 
     @Override
+    public void scheduleChanges() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 10000, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    RequestDetailsActivity_.super.scheduleChanges();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
     public void scheduleChangesSec() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 1000, "") {
 
@@ -270,6 +252,24 @@ public final class RequestDetailsActivity_
             public void execute() {
                 try {
                     RequestDetailsActivity_.super.scheduleChangesSec();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void sendFeedBack(final String comment, final Map<Integer, Float> vote) {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    RequestDetailsActivity_.super.sendFeedBack(comment, vote);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

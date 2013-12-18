@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -20,6 +21,7 @@ import com.opentaxi.android.R.id;
 import com.opentaxi.android.R.layout;
 import com.opentaxi.models.Users;
 import org.androidannotations.api.BackgroundExecutor;
+import org.androidannotations.api.SdkVersionHelper;
 import org.androidannotations.api.view.HasViews;
 import org.androidannotations.api.view.OnViewChangedListener;
 import org.androidannotations.api.view.OnViewChangedNotifier;
@@ -72,18 +74,26 @@ public final class UserPassActivity_
     }
 
     @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (((SdkVersionHelper.getSdkInt()< 5)&&(keyCode == KeyEvent.KEYCODE_BACK))&&(event.getRepeatCount() == 0)) {
+            onBackPressed();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
     public void onViewChanged(HasViews hasViews) {
-        pass = ((EditText) hasViews.findViewById(id.passwordField));
         userName = ((EditText) hasViews.findViewById(id.userNameField));
+        pass = ((EditText) hasViews.findViewById(id.passwordField));
         {
-            View view = hasViews.findViewById(id.lostPassword);
+            View view = hasViews.findViewById(id.facebookButton);
             if (view!= null) {
                 view.setOnClickListener(new OnClickListener() {
 
 
                     @Override
                     public void onClick(View view) {
-                        UserPassActivity_.this.lostPassword();
+                        UserPassActivity_.this.facebookButton();
                     }
 
                 }
@@ -106,14 +116,14 @@ public final class UserPassActivity_
             }
         }
         {
-            View view = hasViews.findViewById(id.facebookButton);
+            View view = hasViews.findViewById(id.lostPassword);
             if (view!= null) {
                 view.setOnClickListener(new OnClickListener() {
 
 
                     @Override
                     public void onClick(View view) {
-                        UserPassActivity_.this.facebookButton();
+                        UserPassActivity_.this.lostPassword();
                     }
 
                 }
@@ -152,14 +162,14 @@ public final class UserPassActivity_
     }
 
     @Override
-    public void login(final String username, final String password) {
+    public void checkFacebook(final String token) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    UserPassActivity_.super.login(username, password);
+                    UserPassActivity_.super.checkFacebook(token);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -170,14 +180,14 @@ public final class UserPassActivity_
     }
 
     @Override
-    public void checkFacebook(final String token) {
+    public void login(final String username, final String password) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    UserPassActivity_.super.checkFacebook(token);
+                    UserPassActivity_.super.login(username, password);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

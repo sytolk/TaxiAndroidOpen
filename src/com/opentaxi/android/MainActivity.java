@@ -23,6 +23,7 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.opentaxi.android.asynctask.LogoutTask;
 import com.opentaxi.android.map.AdvancedMapViewer;
+import com.opentaxi.android.simplefacebook.SimpleFacebook;
 import com.opentaxi.android.utils.AppPreferences;
 import com.opentaxi.android.utils.Network;
 import com.opentaxi.generated.mysql.tables.pojos.Servers;
@@ -311,7 +312,6 @@ public class MainActivity extends FragmentActivity {
                 return true;
 
             case R.id.options_exit:
-
                 finish();
                 return true;
             case R.id.options_send_log:
@@ -425,9 +425,13 @@ public class MainActivity extends FragmentActivity {
                 }
                 break;
             case REQUEST_USER_PASS_CODE:
+                //Log.e(TAG, "REQUEST_USER_PASS_CODE onActivityResult requestCode:" + requestCode + " resultCode:" + resultCode);
                 if (resultCode == RESULT_OK) {
                     //userLogin(data);
                     setVersion();
+                } else if (resultCode == RESULT_CANCELED) {
+                    finish();
+                    break;
                 }
                 checkUser();
                 break;
@@ -451,6 +455,7 @@ public class MainActivity extends FragmentActivity {
                 new LogoutTask().execute();
                 AppPreferences.getInstance().setAccessToken("");
                 AppPreferences.getInstance().setLastCloudMessage(null);
+                facebookLogout();
                 finish();
             }
         });
@@ -477,6 +482,30 @@ public class MainActivity extends FragmentActivity {
                 if (e.getMessage() != null) Log.e(TAG, e.getMessage());
             }
         }
+    }
+
+    @Background
+    void facebookLogout() {
+        SimpleFacebook.OnLogoutListener onLogoutListener = new SimpleFacebook.OnLogoutListener() {
+
+            @Override
+            public void onFail(String reason) {
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+            }
+
+            @Override
+            public void onThinking() {
+            }
+
+            @Override
+            public void onLogout() {
+            }
+
+        };
+        SimpleFacebook.getInstance(this).logout(onLogoutListener);
     }
 
     @Click
