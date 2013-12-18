@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/newClientsLayout"
+              android:layout_width="fill_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="0px"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textSize="30dp"
+                android:id="@id/newClientContainerTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Нов Потребител"
+                android:layout_marginTop="30dp"
+                android:layout_alignParentRight="false"
+                android:layout_gravity="center"
+                android:layout_marginBottom="30dp"/>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+
+                <TextView
+                    android:id="@id/newClientUserLabel"
+                    android:clickable="false"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:text="Потребителско име:"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:gravity="right"
+                    android:layout_marginRight="10dp"/>
+
+                <EditText
+                    android:id="@id/userNameField"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:drawSelectorOnTop="true"
+                    android:layout_weight=".6"
+                    android:layout_marginRight="40dp"
+                    android:inputType="textPersonName">
+
+                    <requestFocus/>
+                </EditText>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+
+                <TextView
+                    android:id="@id/passwordLabel"
+                    android:clickable="false"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:text="Парола:"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:gravity="right"
+                    android:layout_marginRight="10dp"/>
+
+                <EditText
+                    android:id="@id/passwordField"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:password="true"
+                    android:layout_weight=".6"
+                    android:layout_marginRight="40dp"
+                    android:inputType="textPassword"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+
+                <TextView
+                    android:id="@+id/password2Label"
+                    android:clickable="false"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:text="Повтори Паролата:"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:gravity="right"
+                    android:layout_marginRight="10dp"/>
+
+                <EditText
+                    android:id="@+id/password2Field"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:password="true"
+                    android:layout_weight=".6"
+                    android:layout_marginRight="40dp"
+                    android:inputType="textPassword"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+
+                <TextView
+                    android:id="@+id/hintLabel"
+                    android:clickable="false"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:text="Подсказващ текст за паролата:"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:gravity="right"
+                    android:layout_marginRight="10dp"/>
+
+                <EditText
+                    android:id="@+id/passwordHint"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_weight=".6"
+                    android:layout_marginRight="40dp"
+                    android:inputType="textAutoCorrect"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+
+                <TextView
+                    android:id="@+id/emailLabel"
+                    android:clickable="false"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:text="Емаил:"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:gravity="right"
+                    android:layout_marginRight="10dp"/>
+
+                <EditText
+                    android:id="@+id/emailField"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_weight=".6"
+                    android:layout_marginRight="40dp"
+                    android:inputType="textEmailAddress"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+
+                <TextView
+                    android:id="@+id/nameLabel"
+                    android:clickable="false"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:text="Име:"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:gravity="right"
+                    android:layout_marginRight="10dp"/>
+
+                <EditText
+                    android:id="@+id/nameField"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_weight=".6"
+                    android:layout_marginRight="40dp"
+                    android:inputType="textPersonName"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+
+                <TextView
+                    android:id="@+id/middleNameLabel"
+                    android:clickable="false"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:text="Презиме:"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:gravity="right"
+                    android:layout_marginRight="10dp"/>
+
+                <EditText
+                    android:id="@+id/middleName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_weight=".6"
+                    android:layout_marginRight="40dp"
+                    android:inputType="textPersonName"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+
+                <TextView
+                    android:id="@+id/lastNameLabel"
+                    android:clickable="false"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:text="Фамилия:"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:gravity="right"
+                    android:layout_marginRight="10dp"/>
+
+                <EditText
+                    android:id="@+id/lastName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_weight=".6"
+                    android:layout_marginRight="40dp"
+                    android:inputType="textPersonName"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+
+                <TextView
+                    android:id="@+id/phoneLabel"
+                    android:clickable="false"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:text="Телефон (GSM):"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:gravity="right"
+                    android:layout_marginRight="10dp"/>
+
+                <EditText
+                    android:id="@+id/phoneNumber"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_weight=".6"
+                    android:layout_marginRight="40dp"
+                    android:inputType="phone"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+
+                <TextView
+                    android:id="@+id/cityLabel"
+                    android:clickable="false"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:text="Град:"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:gravity="right"
+                    android:layout_marginRight="10dp"/>
+
+                <AutoCompleteTextView
+                    android:id="@+id/cityName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_weight=".6"
+                    android:layout_marginRight="40dp"
+                    android:completionThreshold="1"
+                    android:inputType="textAutoComplete"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+
+                <TextView
+                    android:id="@+id/userAgreement"
+                    android:clickable="true"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:text="Условия за ползване"
+                    android:gravity="right"/>
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Съгласен съм с условията"
+                    android:id="@+id/iAgreeCheckBox"
+                    android:textColor="#ffffff"
+                    android:gravity="left"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="90dp"
+        android:orientation="horizontal"
+        android:layout_margin="10dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".3"/>
+
+        <Button
+            android:enabled="true"
+            android:id="@+id/sendButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="ИЗПРАТИ"
+            android:textSize="30dp"
+            android:layout_weight=".3"
+            android:layout_marginRight="40dp"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".3"/>
+
+    </LinearLayout>
+</LinearLayout>

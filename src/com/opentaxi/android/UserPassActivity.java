@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -24,6 +26,8 @@ import com.opentaxi.models.Users;
 import com.opentaxi.rest.RestClient;
 import com.taxibulgaria.enums.Gender;
 import org.androidannotations.annotations.*;
+
+import java.io.File;
 
 /**
  * Created with IntelliJ IDEA.
@@ -54,6 +58,8 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
     Validator validator;
 
     SimpleFacebook mSimpleFacebook;
+
+    private static final int SERVER_CHANGE = 12;
 
     /*@InstanceState
     Bundle savedInstanceState;
@@ -121,6 +127,42 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.options_server:
+                Intent intent = new Intent(this, ServersActivity_.class);
+                startActivityForResult(intent, SERVER_CHANGE);
+                return true;
+
+            case R.id.options_exit:
+
+                finish();
+                return true;
+            case R.id.options_send_log:
+
+                String javaTmpDir = System.getProperty("java.io.tmpdir");
+                File cacheDir = new File(javaTmpDir, "DiskLruCacheDir");
+                if (cacheDir.exists()) {
+                    File[] files = cacheDir.listFiles();
+                    if (files != null)
+                        for (File file : files) {
+                            file.delete();
+                        }
+                }
+                int i = 2 / 0;
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (mSimpleFacebook != null)
             mSimpleFacebook.onActivityResult(this, requestCode, resultCode, data);
@@ -148,7 +190,7 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
     @Click
     void facebookButton() {
 
-        mSimpleFacebook = SimpleFacebook.getInstance(this);
+        mSimpleFacebook = SimpleFacebook.getInstance(this); // Permissions.USER_BIRTHDAY
         Permissions[] permissions = new Permissions[]{Permissions.EMAIL, Permissions.USER_WEBSITE, Permissions.USER_WORK_HISTORY, Permissions.USER_ABOUT_ME, Permissions.USER_HOMETOWN};
         SimpleFacebookConfiguration configuration = new SimpleFacebookConfiguration.Builder()
                 //.setAppId("550947981660612")
@@ -170,7 +212,7 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
 
             @Override
             public void onNotAcceptingPermissions() {
-                Log.e(TAG, "onNotAcceptingPermissions");
+                Log.e(TAG, "onNotAcceptingPermissions token:" + mSimpleFacebook.getAccessToken());
             }
 
             @Override
@@ -181,7 +223,7 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
             @Override
             public void onException(Throwable throwable) {
                 Log.e(TAG, "onException:" + throwable.getMessage());
-                facebookLogout();
+                //facebookLogout();
             }
 
             @Override
@@ -209,24 +251,28 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
 
     @UiThread
     void facebookUser(Users user) {
-        if (user != null) { //user already exist
+        if (user != null) { //user already exist in taxi-bulgaria service
+            Log.i(TAG, "facebookUser user:" + user.getUsername());
             if (user.getId() != null && user.getId() > 0) {
+                RestClient.getInstance().setAuthHeadersEncoded(user.getUsername(), user.getPassword());
                 AppPreferences.getInstance().setUsers(user);
                 finish();
             } else setError("Грешно потребителско име или парола!");
 
-            facebookLogout();
+            //facebookLogout();
         } else { //new Facebook User
-
+            Log.i(TAG, "New facebookUser");
             SimpleFacebook.OnProfileRequestListener onProfileRequestListener = new SimpleFacebook.OnProfileRequestListener() {
 
                 @Override
                 public void onFail(String reason) {
+                    Log.i(TAG, "New facebookUser onFail");
                 }
 
                 @Override
                 public void onException(Throwable throwable) {
-                    facebookLogout();
+                    Log.i(TAG, "New facebookUser onException");
+                    //facebookLogout();
                 }
 
                 @Override
@@ -279,7 +325,7 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
                         finish();
                     } else Log.e(TAG, "profile is null or not verified");
 
-                    facebookLogout();
+                    //facebookLogout();
                 }
 
             };

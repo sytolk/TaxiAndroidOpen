@@ -40,10 +40,6 @@ public final class NewRequestActivity_
     private final OnViewChangedNotifier onViewChangedNotifier_ = new OnViewChangedNotifier();
     private Handler handler_ = new Handler(Looper.getMainLooper());
 
-    private void init_(Bundle savedInstanceState) {
-        OnViewChangedNotifier.registerOnViewChangedListener(this);
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         OnViewChangedNotifier previousNotifier = OnViewChangedNotifier.replaceNotifier(onViewChangedNotifier_);
@@ -51,6 +47,10 @@ public final class NewRequestActivity_
         super.onCreate(savedInstanceState);
         OnViewChangedNotifier.replaceNotifier(previousNotifier);
         setContentView(layout.new_request);
+    }
+
+    private void init_(Bundle savedInstanceState) {
+        OnViewChangedNotifier.registerOnViewChangedListener(this);
     }
 
     @Override
@@ -71,14 +71,6 @@ public final class NewRequestActivity_
         onViewChangedNotifier_.notifyViewChanged(this);
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (((SdkVersionHelper.getSdkInt()< 5)&&(keyCode == KeyEvent.KEYCODE_BACK))&&(event.getRepeatCount() == 0)) {
-            onBackPressed();
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
     public static NewRequestActivity_.IntentBuilder_ intent(Context context) {
         return new NewRequestActivity_.IntentBuilder_(context);
     }
@@ -88,56 +80,56 @@ public final class NewRequestActivity_
     }
 
     @Override
-    public void onViewChanged(HasViews hasViews) {
-        region = ((TextView) hasViews.findViewById(id.region));
-        addressText = ((EditText) hasViews.findViewById(id.addressText));
-        regionsPicker = ((Spinner) hasViews.findViewById(id.regionsPicker));
-        pricesPicker = ((Spinner) hasViews.findViewById(id.pricesPicker));
-        requestSend = ((Button) hasViews.findViewById(id.requestSend));
-        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
-        llFilters = ((LinearLayout) hasViews.findViewById(id.llFilters));
-        reqInfoButtonContainer = ((LinearLayout) hasViews.findViewById(id.reqInfoButtonContainer));
-        addressChange = ((Button) hasViews.findViewById(id.addressChange));
-        address = ((TextView) hasViews.findViewById(id.address));
-        if (hasViews.findViewById(id.requestSend)!= null) {
-            hasViews.findViewById(id.requestSend).setOnClickListener(new OnClickListener() {
-
-
-                @Override
-                public void onClick(View view) {
-                    NewRequestActivity_.this.requestSend();
-                }
-
-            }
-            );
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (((SdkVersionHelper.getSdkInt()< 5)&&(keyCode == KeyEvent.KEYCODE_BACK))&&(event.getRepeatCount() == 0)) {
+            onBackPressed();
         }
-        if (hasViews.findViewById(id.addressChange)!= null) {
-            hasViews.findViewById(id.addressChange).setOnClickListener(new OnClickListener() {
-
-
-                @Override
-                public void onClick(View view) {
-                    NewRequestActivity_.this.addressChange();
-                }
-
-            }
-            );
-        }
-        afterActivity();
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
-    public void showAddress(final com.opentaxi.generated.mysql.tables.pojos.NewRequest adr) {
-        handler_.post(new Runnable() {
+    public void onViewChanged(HasViews hasViews) {
+        regionsPicker = ((Spinner) hasViews.findViewById(id.regionsPicker));
+        pricesPicker = ((Spinner) hasViews.findViewById(id.pricesPicker));
+        requestSend = ((Button) hasViews.findViewById(id.requestSend));
+        address = ((TextView) hasViews.findViewById(id.address));
+        region = ((TextView) hasViews.findViewById(id.region));
+        addressChange = ((Button) hasViews.findViewById(id.addressChange));
+        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
+        reqInfoButtonContainer = ((LinearLayout) hasViews.findViewById(id.reqInfoButtonContainer));
+        llFilters = ((LinearLayout) hasViews.findViewById(id.llFilters));
+        addressText = ((EditText) hasViews.findViewById(id.addressText));
+        {
+            View view = hasViews.findViewById(id.addressChange);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
 
 
-            @Override
-            public void run() {
-                NewRequestActivity_.super.showAddress(adr);
+                    @Override
+                    public void onClick(View view) {
+                        NewRequestActivity_.this.addressChange();
+                    }
+
+                }
+                );
             }
-
         }
-        );
+        {
+            View view = hasViews.findViewById(id.requestSend);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        NewRequestActivity_.this.requestSend();
+                    }
+
+                }
+                );
+            }
+        }
+        afterActivity();
     }
 
     @Override
@@ -183,6 +175,20 @@ public final class NewRequestActivity_
     }
 
     @Override
+    public void showAddress(final com.opentaxi.generated.mysql.tables.pojos.NewRequest adr) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                NewRequestActivity_.super.showAddress(adr);
+            }
+
+        }
+        );
+    }
+
+    @Override
     public void SuccessDialog() {
         handler_.post(new Runnable() {
 
@@ -190,6 +196,24 @@ public final class NewRequestActivity_
             @Override
             public void run() {
                 NewRequestActivity_.super.SuccessDialog();
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void setRegions() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    NewRequestActivity_.super.setRegions();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
             }
 
         }
@@ -205,42 +229,6 @@ public final class NewRequestActivity_
             public void execute() {
                 try {
                     NewRequestActivity_.super.setPrices();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void sendRequest(final com.opentaxi.models.NewRequest newRequest) {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    NewRequestActivity_.super.sendRequest(newRequest);
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void setAddress() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    NewRequestActivity_.super.setAddress();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -269,14 +257,32 @@ public final class NewRequestActivity_
     }
 
     @Override
-    public void setRegions() {
+    public void setAddress() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    NewRequestActivity_.super.setRegions();
+                    NewRequestActivity_.super.setAddress();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void sendRequest(final com.opentaxi.models.NewRequest newRequest) {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    NewRequestActivity_.super.sendRequest(newRequest);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

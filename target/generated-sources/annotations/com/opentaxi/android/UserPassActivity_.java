@@ -15,7 +15,6 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.Button;
 import android.widget.EditText;
 import com.opentaxi.android.R.id;
 import com.opentaxi.android.R.layout;
@@ -33,10 +32,6 @@ public final class UserPassActivity_
     private final OnViewChangedNotifier onViewChangedNotifier_ = new OnViewChangedNotifier();
     private Handler handler_ = new Handler(Looper.getMainLooper());
 
-    private void init_(Bundle savedInstanceState) {
-        OnViewChangedNotifier.registerOnViewChangedListener(this);
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         OnViewChangedNotifier previousNotifier = OnViewChangedNotifier.replaceNotifier(onViewChangedNotifier_);
@@ -44,6 +39,10 @@ public final class UserPassActivity_
         super.onCreate(savedInstanceState);
         OnViewChangedNotifier.replaceNotifier(previousNotifier);
         setContentView(layout.login);
+    }
+
+    private void init_(Bundle savedInstanceState) {
+        OnViewChangedNotifier.registerOnViewChangedListener(this);
     }
 
     @Override
@@ -74,56 +73,52 @@ public final class UserPassActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        userName = ((EditText) hasViews.findViewById(id.userNameField));
-        submitButton = ((Button) hasViews.findViewById(id.clientLoginButton));
         pass = ((EditText) hasViews.findViewById(id.passwordField));
-        if (hasViews.findViewById(id.newClient)!= null) {
-            hasViews.findViewById(id.newClient).setOnClickListener(new OnClickListener() {
+        userName = ((EditText) hasViews.findViewById(id.userNameField));
+        {
+            View view = hasViews.findViewById(id.newClient);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
 
 
-                @Override
-                public void onClick(View view) {
-                    UserPassActivity_.this.newClient();
+                    @Override
+                    public void onClick(View view) {
+                        UserPassActivity_.this.newClient();
+                    }
+
                 }
-
+                );
             }
-            );
         }
-        if (hasViews.findViewById(id.lostPassword)!= null) {
-            hasViews.findViewById(id.lostPassword).setOnClickListener(new OnClickListener() {
+        {
+            View view = hasViews.findViewById(id.facebookButton);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
 
 
-                @Override
-                public void onClick(View view) {
-                    UserPassActivity_.this.lostPassword();
+                    @Override
+                    public void onClick(View view) {
+                        UserPassActivity_.this.facebookButton();
+                    }
+
                 }
-
+                );
             }
-            );
         }
-        if (hasViews.findViewById(id.facebookButton)!= null) {
-            hasViews.findViewById(id.facebookButton).setOnClickListener(new OnClickListener() {
+        {
+            View view = hasViews.findViewById(id.lostPassword);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
 
 
-                @Override
-                public void onClick(View view) {
-                    UserPassActivity_.this.facebookButton();
+                    @Override
+                    public void onClick(View view) {
+                        UserPassActivity_.this.lostPassword();
+                    }
+
                 }
-
+                );
             }
-            );
-        }
-        if (hasViews.findViewById(id.clientLoginButton)!= null) {
-            hasViews.findViewById(id.clientLoginButton).setOnClickListener(new OnClickListener() {
-
-
-                @Override
-                public void onClick(View view) {
-                    UserPassActivity_.this.clientLoginButton();
-                }
-
-            }
-            );
         }
         afterLoad();
     }
@@ -157,24 +152,6 @@ public final class UserPassActivity_
     }
 
     @Override
-    public void facebookLogout() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    UserPassActivity_.super.facebookLogout();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
     public void login(final String username, final String password) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
@@ -201,6 +178,24 @@ public final class UserPassActivity_
             public void execute() {
                 try {
                     UserPassActivity_.super.checkFacebook(token);
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void facebookLogout() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    UserPassActivity_.super.facebookLogout();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

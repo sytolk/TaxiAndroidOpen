@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -41,12 +40,6 @@ public final class NewClientActivity_
     public final static String NEW_USERS_EXTRA = "newUsers";
     private Handler handler_ = new Handler(Looper.getMainLooper());
 
-    private void init_(Bundle savedInstanceState) {
-        OnViewChangedNotifier.registerOnViewChangedListener(this);
-        injectExtras_();
-        requestWindowFeature(1);
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         OnViewChangedNotifier previousNotifier = OnViewChangedNotifier.replaceNotifier(onViewChangedNotifier_);
@@ -54,6 +47,12 @@ public final class NewClientActivity_
         super.onCreate(savedInstanceState);
         OnViewChangedNotifier.replaceNotifier(previousNotifier);
         setContentView(layout.new_client);
+    }
+
+    private void init_(Bundle savedInstanceState) {
+        OnViewChangedNotifier.registerOnViewChangedListener(this);
+        injectExtras_();
+        requestWindowFeature(1);
     }
 
     @Override
@@ -74,14 +73,6 @@ public final class NewClientActivity_
         onViewChangedNotifier_.notifyViewChanged(this);
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (((SdkVersionHelper.getSdkInt()< 5)&&(keyCode == KeyEvent.KEYCODE_BACK))&&(event.getRepeatCount() == 0)) {
-            onBackPressed();
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
     public static NewClientActivity_.IntentBuilder_ intent(Context context) {
         return new NewClientActivity_.IntentBuilder_(context);
     }
@@ -91,84 +82,95 @@ public final class NewClientActivity_
     }
 
     @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (((SdkVersionHelper.getSdkInt()< 5)&&(keyCode == KeyEvent.KEYCODE_BACK))&&(event.getRepeatCount() == 0)) {
+            onBackPressed();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
     public void onViewChanged(HasViews hasViews) {
-        passwordHint = ((EditText) hasViews.findViewById(id.passwordHint));
-        cityName = ((AutoCompleteTextView) hasViews.findViewById(id.cityName));
-        userName = ((EditText) hasViews.findViewById(id.userNameField));
-        nameField = ((EditText) hasViews.findViewById(id.nameField));
         lastName = ((EditText) hasViews.findViewById(id.lastName));
-        email = ((EditText) hasViews.findViewById(id.emailField));
-        pass = ((EditText) hasViews.findViewById(id.passwordField));
-        middleName = ((EditText) hasViews.findViewById(id.middleName));
         iAgreeCheckBox = ((CheckBox) hasViews.findViewById(id.iAgreeCheckBox));
+        pass = ((EditText) hasViews.findViewById(id.passwordField));
+        passwordHint = ((EditText) hasViews.findViewById(id.passwordHint));
+        nameField = ((EditText) hasViews.findViewById(id.nameField));
+        middleName = ((EditText) hasViews.findViewById(id.middleName));
+        userName = ((EditText) hasViews.findViewById(id.userNameField));
         pass2 = ((EditText) hasViews.findViewById(id.password2Field));
         sendButton = ((Button) hasViews.findViewById(id.sendButton));
-        if (hasViews.findViewById(id.sendButton)!= null) {
-            hasViews.findViewById(id.sendButton).setOnClickListener(new OnClickListener() {
+        cityName = ((AutoCompleteTextView) hasViews.findViewById(id.cityName));
+        phoneNumber = ((EditText) hasViews.findViewById(id.phoneNumber));
+        email = ((EditText) hasViews.findViewById(id.emailField));
+        {
+            View view = hasViews.findViewById(id.sendButton);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
 
 
-                @Override
-                public void onClick(View view) {
-                    NewClientActivity_.this.sendButton();
+                    @Override
+                    public void onClick(View view) {
+                        NewClientActivity_.this.sendButton();
+                    }
+
                 }
-
+                );
             }
-            );
         }
-        if (hasViews.findViewById(id.userAgreement)!= null) {
-            hasViews.findViewById(id.userAgreement).setOnClickListener(new OnClickListener() {
+        {
+            View view = hasViews.findViewById(id.userAgreement);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
 
 
-                @Override
-                public void onClick(View view) {
-                    NewClientActivity_.this.userAgreement();
+                    @Override
+                    public void onClick(View view) {
+                        NewClientActivity_.this.userAgreement();
+                    }
+
                 }
-
+                );
             }
-            );
         }
-        if (hasViews.findViewById(id.emailField)!= null) {
-            hasViews.findViewById(id.emailField).setOnFocusChangeListener(new OnFocusChangeListener() {
+        {
+            View view = hasViews.findViewById(id.userNameField);
+            if (view!= null) {
+                view.setOnFocusChangeListener(new OnFocusChangeListener() {
 
 
-                @Override
-                public void onFocusChange(View view, boolean hasFocus) {
-                    NewClientActivity_.this.focusChangedOnEmailField(view, hasFocus);
+                    @Override
+                    public void onFocusChange(View view, boolean hasFocus) {
+                        NewClientActivity_.this.focusChangedOnUserNameField(view, hasFocus);
+                    }
+
                 }
-
+                );
             }
-            );
         }
-        if (hasViews.findViewById(id.userNameField)!= null) {
-            hasViews.findViewById(id.userNameField).setOnFocusChangeListener(new OnFocusChangeListener() {
+        {
+            View view = hasViews.findViewById(id.emailField);
+            if (view!= null) {
+                view.setOnFocusChangeListener(new OnFocusChangeListener() {
 
 
-                @Override
-                public void onFocusChange(View view, boolean hasFocus) {
-                    NewClientActivity_.this.focusChangedOnUserNameField(view, hasFocus);
+                    @Override
+                    public void onFocusChange(View view, boolean hasFocus) {
+                        NewClientActivity_.this.focusChangedOnEmailField(view, hasFocus);
+                    }
+
                 }
-
+                );
             }
-            );
         }
         afterLoad();
     }
 
-    @SuppressWarnings("unchecked")
-    private<T >T cast_(Object object) {
-        return ((T) object);
-    }
-
     private void injectExtras_() {
-        Intent intent_ = getIntent();
-        Bundle extras_ = intent_.getExtras();
+        Bundle extras_ = getIntent().getExtras();
         if (extras_!= null) {
             if (extras_.containsKey(NEW_USERS_EXTRA)) {
-                try {
-                    newUsers = cast_(extras_.get(NEW_USERS_EXTRA));
-                } catch (ClassCastException e) {
-                    Log.e("NewClientActivity_", "Could not cast extra to expected type, the field is left to its default value", e);
-                }
+                newUsers = ((NewUsers) extras_.getSerializable(NEW_USERS_EXTRA));
             }
         }
     }
@@ -177,20 +179,6 @@ public final class NewClientActivity_
     public void setIntent(Intent newIntent) {
         super.setIntent(newIntent);
         injectExtras_();
-    }
-
-    @Override
-    public void finishThis() {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                NewClientActivity_.super.finishThis();
-            }
-
-        }
-        );
     }
 
     @Override
@@ -208,13 +196,13 @@ public final class NewClientActivity_
     }
 
     @Override
-    public void ActivationDialog() {
+    public void finishThis() {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                NewClientActivity_.super.ActivationDialog();
+                NewClientActivity_.super.finishThis();
             }
 
         }
@@ -229,6 +217,20 @@ public final class NewClientActivity_
             @Override
             public void run() {
                 NewClientActivity_.super.setEmailError(error);
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void ActivationDialog() {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                NewClientActivity_.super.ActivationDialog();
             }
 
         }
@@ -254,14 +256,14 @@ public final class NewClientActivity_
     }
 
     @Override
-    public void checkEmail(final String email) {
+    public void checkUsername(final String username) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    NewClientActivity_.super.checkEmail(email);
+                    NewClientActivity_.super.checkUsername(username);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -272,14 +274,14 @@ public final class NewClientActivity_
     }
 
     @Override
-    public void checkUsername(final String username) {
+    public void checkEmail(final String email) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    NewClientActivity_.super.checkUsername(username);
+                    NewClientActivity_.super.checkEmail(email);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

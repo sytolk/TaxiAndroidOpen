@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -45,11 +44,6 @@ public final class EditRequestActivity_
     public final static String NEW_C_REQUEST_EXTRA = "newCRequest";
     private Handler handler_ = new Handler(Looper.getMainLooper());
 
-    private void init_(Bundle savedInstanceState) {
-        OnViewChangedNotifier.registerOnViewChangedListener(this);
-        injectExtras_();
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         OnViewChangedNotifier previousNotifier = OnViewChangedNotifier.replaceNotifier(onViewChangedNotifier_);
@@ -57,6 +51,11 @@ public final class EditRequestActivity_
         super.onCreate(savedInstanceState);
         OnViewChangedNotifier.replaceNotifier(previousNotifier);
         setContentView(layout.new_request);
+    }
+
+    private void init_(Bundle savedInstanceState) {
+        OnViewChangedNotifier.registerOnViewChangedListener(this);
+        injectExtras_();
     }
 
     @Override
@@ -77,14 +76,6 @@ public final class EditRequestActivity_
         onViewChangedNotifier_.notifyViewChanged(this);
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (((SdkVersionHelper.getSdkInt()< 5)&&(keyCode == KeyEvent.KEYCODE_BACK))&&(event.getRepeatCount() == 0)) {
-            onBackPressed();
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
     public static EditRequestActivity_.IntentBuilder_ intent(Context context) {
         return new EditRequestActivity_.IntentBuilder_(context);
     }
@@ -94,59 +85,63 @@ public final class EditRequestActivity_
     }
 
     @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (((SdkVersionHelper.getSdkInt()< 5)&&(keyCode == KeyEvent.KEYCODE_BACK))&&(event.getRepeatCount() == 0)) {
+            onBackPressed();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
     public void onViewChanged(HasViews hasViews) {
-        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
-        region = ((TextView) hasViews.findViewById(id.region));
+        regionsPicker = ((Spinner) hasViews.findViewById(id.regionsPicker));
         pricesPicker = ((Spinner) hasViews.findViewById(id.pricesPicker));
         addressText = ((EditText) hasViews.findViewById(id.addressText));
-        llFilters = ((LinearLayout) hasViews.findViewById(id.llFilters));
-        addressChange = ((Button) hasViews.findViewById(id.addressChange));
-        reqInfoButtonContainer = ((LinearLayout) hasViews.findViewById(id.reqInfoButtonContainer));
-        regionsPicker = ((Spinner) hasViews.findViewById(id.regionsPicker));
-        requestSend = ((Button) hasViews.findViewById(id.requestSend));
         address = ((TextView) hasViews.findViewById(id.address));
-        if (hasViews.findViewById(id.addressChange)!= null) {
-            hasViews.findViewById(id.addressChange).setOnClickListener(new OnClickListener() {
+        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
+        reqInfoButtonContainer = ((LinearLayout) hasViews.findViewById(id.reqInfoButtonContainer));
+        llFilters = ((LinearLayout) hasViews.findViewById(id.llFilters));
+        requestSend = ((Button) hasViews.findViewById(id.requestSend));
+        region = ((TextView) hasViews.findViewById(id.region));
+        addressChange = ((Button) hasViews.findViewById(id.addressChange));
+        {
+            View view = hasViews.findViewById(id.addressChange);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
 
 
-                @Override
-                public void onClick(View view) {
-                    EditRequestActivity_.this.addressChange();
+                    @Override
+                    public void onClick(View view) {
+                        EditRequestActivity_.this.addressChange();
+                    }
+
                 }
-
+                );
             }
-            );
         }
-        if (hasViews.findViewById(id.requestSend)!= null) {
-            hasViews.findViewById(id.requestSend).setOnClickListener(new OnClickListener() {
+        {
+            View view = hasViews.findViewById(id.requestSend);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
 
 
-                @Override
-                public void onClick(View view) {
-                    EditRequestActivity_.this.requestSend();
+                    @Override
+                    public void onClick(View view) {
+                        EditRequestActivity_.this.requestSend();
+                    }
+
                 }
-
+                );
             }
-            );
         }
         afterActivity();
     }
 
-    @SuppressWarnings("unchecked")
-    private<T >T cast_(Object object) {
-        return ((T) object);
-    }
-
     private void injectExtras_() {
-        Intent intent_ = getIntent();
-        Bundle extras_ = intent_.getExtras();
+        Bundle extras_ = getIntent().getExtras();
         if (extras_!= null) {
             if (extras_.containsKey(NEW_C_REQUEST_EXTRA)) {
-                try {
-                    newCRequest = cast_(extras_.get(NEW_C_REQUEST_EXTRA));
-                } catch (ClassCastException e) {
-                    Log.e("EditRequestActivity_", "Could not cast extra to expected type, the field is left to its default value", e);
-                }
+                newCRequest = ((NewCRequest) extras_.getSerializable(NEW_C_REQUEST_EXTRA));
             }
         }
     }
@@ -172,13 +167,13 @@ public final class EditRequestActivity_
     }
 
     @Override
-    public void SuccessDialog() {
+    public void showRegions(final Regions[] regions) {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                EditRequestActivity_.super.SuccessDialog();
+                EditRequestActivity_.super.showRegions(regions);
             }
 
         }
@@ -200,13 +195,13 @@ public final class EditRequestActivity_
     }
 
     @Override
-    public void showRegions(final Regions[] regions) {
+    public void SuccessDialog() {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                EditRequestActivity_.super.showRegions(regions);
+                EditRequestActivity_.super.SuccessDialog();
             }
 
         }
@@ -232,14 +227,14 @@ public final class EditRequestActivity_
     }
 
     @Override
-    public void setRegions() {
+    public void sendRequest(final NewRequest newRequest) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    EditRequestActivity_.super.setRegions();
+                    EditRequestActivity_.super.sendRequest(newRequest);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -250,14 +245,14 @@ public final class EditRequestActivity_
     }
 
     @Override
-    public void sendRequest(final NewRequest newRequest) {
+    public void setRegions() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    EditRequestActivity_.super.sendRequest(newRequest);
+                    EditRequestActivity_.super.setRegions();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

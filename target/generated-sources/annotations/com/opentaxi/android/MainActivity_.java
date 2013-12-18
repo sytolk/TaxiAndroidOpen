@@ -33,10 +33,6 @@ public final class MainActivity_
     private final OnViewChangedNotifier onViewChangedNotifier_ = new OnViewChangedNotifier();
     private Handler handler_ = new Handler(Looper.getMainLooper());
 
-    private void init_(Bundle savedInstanceState) {
-        OnViewChangedNotifier.registerOnViewChangedListener(this);
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         OnViewChangedNotifier previousNotifier = OnViewChangedNotifier.replaceNotifier(onViewChangedNotifier_);
@@ -44,6 +40,10 @@ public final class MainActivity_
         super.onCreate(savedInstanceState);
         OnViewChangedNotifier.replaceNotifier(previousNotifier);
         setContentView(layout.main);
+    }
+
+    private void init_(Bundle savedInstanceState) {
+        OnViewChangedNotifier.registerOnViewChangedListener(this);
     }
 
     @Override
@@ -64,14 +64,6 @@ public final class MainActivity_
         onViewChangedNotifier_.notifyViewChanged(this);
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (((SdkVersionHelper.getSdkInt()< 5)&&(keyCode == KeyEvent.KEYCODE_BACK))&&(event.getRepeatCount() == 0)) {
-            onBackPressed();
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
     public static MainActivity_.IntentBuilder_ intent(Context context) {
         return new MainActivity_.IntentBuilder_(context);
     }
@@ -81,73 +73,79 @@ public final class MainActivity_
     }
 
     @Override
-    public void onViewChanged(HasViews hasViews) {
-        user = ((TextView) hasViews.findViewById(id.user));
-        version = ((TextView) hasViews.findViewById(id.txt_version));
-        bandwidth = ((TextView) hasViews.findViewById(id.bandwidth));
-        if (hasViews.findViewById(id.requestButton)!= null) {
-            hasViews.findViewById(id.requestButton).setOnClickListener(new OnClickListener() {
-
-
-                @Override
-                public void onClick(View view) {
-                    MainActivity_.this.requestButton();
-                }
-
-            }
-            );
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (((SdkVersionHelper.getSdkInt()< 5)&&(keyCode == KeyEvent.KEYCODE_BACK))&&(event.getRepeatCount() == 0)) {
+            onBackPressed();
         }
-        if (hasViews.findViewById(id.exitButton)!= null) {
-            hasViews.findViewById(id.exitButton).setOnClickListener(new OnClickListener() {
-
-
-                @Override
-                public void onClick(View view) {
-                    MainActivity_.this.exitButton();
-                }
-
-            }
-            );
-        }
-        if (hasViews.findViewById(id.newRequestButton)!= null) {
-            hasViews.findViewById(id.newRequestButton).setOnClickListener(new OnClickListener() {
-
-
-                @Override
-                public void onClick(View view) {
-                    MainActivity_.this.newRequestButton();
-                }
-
-            }
-            );
-        }
-        if (hasViews.findViewById(id.mapButton)!= null) {
-            hasViews.findViewById(id.mapButton).setOnClickListener(new OnClickListener() {
-
-
-                @Override
-                public void onClick(View view) {
-                    MainActivity_.this.mapButton();
-                }
-
-            }
-            );
-        }
-        afterMain();
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
-    public void afterLogin(final String username) {
-        handler_.post(new Runnable() {
+    public void onViewChanged(HasViews hasViews) {
+        user = ((TextView) hasViews.findViewById(id.user));
+        bandwidth = ((TextView) hasViews.findViewById(id.bandwidth));
+        version = ((TextView) hasViews.findViewById(id.txt_version));
+        {
+            View view = hasViews.findViewById(id.requestButton);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
 
 
-            @Override
-            public void run() {
-                MainActivity_.super.afterLogin(username);
+                    @Override
+                    public void onClick(View view) {
+                        MainActivity_.this.requestButton();
+                    }
+
+                }
+                );
             }
-
         }
-        );
+        {
+            View view = hasViews.findViewById(id.mapButton);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        MainActivity_.this.mapButton();
+                    }
+
+                }
+                );
+            }
+        }
+        {
+            View view = hasViews.findViewById(id.exitButton);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        MainActivity_.this.exitButton();
+                    }
+
+                }
+                );
+            }
+        }
+        {
+            View view = hasViews.findViewById(id.newRequestButton);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        MainActivity_.this.newRequestButton();
+                    }
+
+                }
+                );
+            }
+        }
+        afterMain();
     }
 
     @Override
@@ -165,6 +163,20 @@ public final class MainActivity_
     }
 
     @Override
+    public void afterLogin(final String username) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                MainActivity_.super.afterLogin(username);
+            }
+
+        }
+        );
+    }
+
+    @Override
     public void startUserPass() {
         handler_.post(new Runnable() {
 
@@ -172,6 +184,24 @@ public final class MainActivity_
             @Override
             public void run() {
                 MainActivity_.super.startUserPass();
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void beforeStartUserPass() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    MainActivity_.super.beforeStartUserPass();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
             }
 
         }
@@ -187,24 +217,6 @@ public final class MainActivity_
             public void execute() {
                 try {
                     MainActivity_.super.gcmRegister();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void sendVersion(final String version) {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    MainActivity_.super.sendVersion(version);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -233,14 +245,14 @@ public final class MainActivity_
     }
 
     @Override
-    public void beforeStartUserPass() {
+    public void sendVersion(final String version) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    MainActivity_.super.beforeStartUserPass();
+                    MainActivity_.super.sendVersion(version);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

@@ -33,11 +33,6 @@ public final class RequestsActivity_
     private final OnViewChangedNotifier onViewChangedNotifier_ = new OnViewChangedNotifier();
     private Handler handler_ = new Handler(Looper.getMainLooper());
 
-    private void init_(Bundle savedInstanceState) {
-        OnViewChangedNotifier.registerOnViewChangedListener(this);
-        requestWindowFeature(1);
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         OnViewChangedNotifier previousNotifier = OnViewChangedNotifier.replaceNotifier(onViewChangedNotifier_);
@@ -45,6 +40,11 @@ public final class RequestsActivity_
         super.onCreate(savedInstanceState);
         OnViewChangedNotifier.replaceNotifier(previousNotifier);
         setContentView(layout.requests);
+    }
+
+    private void init_(Bundle savedInstanceState) {
+        OnViewChangedNotifier.registerOnViewChangedListener(this);
+        requestWindowFeature(1);
     }
 
     @Override
@@ -77,43 +77,62 @@ public final class RequestsActivity_
     public void onViewChanged(HasViews hasViews) {
         pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
         requests_table = ((TableLayout) hasViews.findViewById(id.requests_table));
-        if (hasViews.findViewById(id.requestsHistory)!= null) {
-            hasViews.findViewById(id.requestsHistory).setOnClickListener(new OnClickListener() {
+        {
+            View view = hasViews.findViewById(id.requestsHistory);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
 
 
-                @Override
-                public void onClick(View view) {
-                    RequestsActivity_.this.requestsHistory();
+                    @Override
+                    public void onClick(View view) {
+                        RequestsActivity_.this.requestsHistory();
+                    }
+
                 }
-
+                );
             }
-            );
         }
-        if (hasViews.findViewById(id.backButton)!= null) {
-            hasViews.findViewById(id.backButton).setOnClickListener(new OnClickListener() {
+        {
+            View view = hasViews.findViewById(id.backButton);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
 
 
-                @Override
-                public void onClick(View view) {
-                    RequestsActivity_.this.backButton();
+                    @Override
+                    public void onClick(View view) {
+                        RequestsActivity_.this.backButton();
+                    }
+
                 }
-
+                );
             }
-            );
         }
-        if (hasViews.findViewById(id.newRequests)!= null) {
-            hasViews.findViewById(id.newRequests).setOnClickListener(new OnClickListener() {
+        {
+            View view = hasViews.findViewById(id.newRequests);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
 
 
-                @Override
-                public void onClick(View view) {
-                    RequestsActivity_.this.newRequests();
+                    @Override
+                    public void onClick(View view) {
+                        RequestsActivity_.this.newRequests();
+                    }
+
                 }
-
+                );
             }
-            );
         }
         afterRequestsActivity();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case  100 :
+                RequestsActivity_.this.onResult();
+                break;
+        }
     }
 
     @Override
@@ -124,24 +143,6 @@ public final class RequestsActivity_
             @Override
             public void run() {
                 RequestsActivity_.super.showRequests(requests);
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void getRequestHistory() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    RequestsActivity_.super.getRequestHistory();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
             }
 
         }
@@ -203,13 +204,21 @@ public final class RequestsActivity_
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        RequestsActivity_.super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case  100 :
-                RequestsActivity_.this.onResult();
-                break;
+    public void getRequestHistory() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    RequestsActivity_.super.getRequestHistory();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
         }
+        );
     }
 
     public static class IntentBuilder_ {

@@ -68,13 +68,17 @@ public class NewClientActivity extends FragmentActivity implements Validator.Val
     @ViewById
     AutoCompleteTextView cityName;
 
+    @TextRule(order = 6, minLength = 1, message = "Телефона е задължително поле.")
+    @ViewById
+    EditText phoneNumber;
+
     //@Required(order = 5)
-    @Email(order = 5, message = "Невалиден email адрес.")
+    @Email(order = 7, message = "Невалиден email адрес.")
     @ViewById(R.id.emailField)
     EditText email;
 
     //You must agree to the terms
-    @Checked(order = 6, message = "Трябва да премете условията за ползване.")
+    @Checked(order = 8, message = "Трябва да премете условията за ползване.")
     @ViewById
     CheckBox iAgreeCheckBox;
 
@@ -192,8 +196,13 @@ public class NewClientActivity extends FragmentActivity implements Validator.Val
             contact.setLastname(lastName.getText().toString());
             users.setContact(contact);
 
-            TelephonyManager manager = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
-            String mPhoneNumber = manager.getLine1Number();
+            String mPhoneNumber;
+            if (!phoneNumber.getText().toString().equals("")) {
+                mPhoneNumber = phoneNumber.getText().toString();
+            } else {
+                TelephonyManager manager = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
+                mPhoneNumber = manager.getLine1Number();
+            }
             if (mPhoneNumber != null) {
                 com.opentaxi.generated.mysql.tables.pojos.CommunicationMethod communication = new com.opentaxi.generated.mysql.tables.pojos.CommunicationMethod();
                 communication.setContactData(mPhoneNumber);

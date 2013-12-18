@@ -38,10 +38,9 @@
                     android:clickable="false"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".4"
+                    android:layout_weight=".5"
                     android:text="Потребителско име:"
                     android:textStyle="bold"
-                    android:textSize="20dp"
                     android:gravity="right"
                     android:layout_marginRight="10dp"/>
 
@@ -50,7 +49,7 @@
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
                     android:drawSelectorOnTop="true"
-                    android:layout_weight=".6"
+                    android:layout_weight=".5"
                     android:layout_marginRight="40dp"
                     android:inputType="textPersonName">
 
@@ -69,10 +68,9 @@
                     android:clickable="false"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".4"
+                    android:layout_weight=".5"
                     android:text="Парола:"
                     android:textStyle="bold"
-                    android:textSize="20dp"
                     android:gravity="right"
                     android:layout_marginRight="10dp"/>
 
@@ -82,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:text=""
                     android:password="true"
-                    android:layout_weight=".6"
+                    android:layout_weight=".5"
                     android:layout_marginRight="40dp"
                     android:inputType="textPassword"/>
             </LinearLayout>
@@ -98,10 +96,9 @@
                     android:clickable="false"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".4"
+                    android:layout_weight=".5"
                     android:text="Повтори Паролата:"
                     android:textStyle="bold"
-                    android:textSize="20dp"
                     android:gravity="right"
                     android:layout_marginRight="10dp"/>
 
@@ -111,7 +108,7 @@
                     android:layout_height="wrap_content"
                     android:text=""
                     android:password="true"
-                    android:layout_weight=".6"
+                    android:layout_weight=".5"
                     android:layout_marginRight="40dp"
                     android:inputType="textPassword"/>
             </LinearLayout>
@@ -127,10 +124,9 @@
                     android:clickable="false"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".4"
-                    android:text="Подсказващ текст за паролата:"
+                    android:layout_weight=".5"
+                    android:text="Подсказка за паролата:"
                     android:textStyle="bold"
-                    android:textSize="20dp"
                     android:gravity="right"
                     android:layout_marginRight="10dp"/>
 
@@ -139,7 +135,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text=""
-                    android:layout_weight=".6"
+                    android:layout_weight=".5"
                     android:layout_marginRight="40dp"
                     android:inputType="textAutoCorrect"/>
             </LinearLayout>
@@ -155,10 +151,9 @@
                     android:clickable="false"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".4"
+                    android:layout_weight=".5"
                     android:text="Емаил:"
                     android:textStyle="bold"
-                    android:textSize="20dp"
                     android:gravity="right"
                     android:layout_marginRight="10dp"/>
 
@@ -167,7 +162,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text=""
-                    android:layout_weight=".6"
+                    android:layout_weight=".5"
                     android:layout_marginRight="40dp"
                     android:inputType="textEmailAddress"/>
             </LinearLayout>
@@ -183,10 +178,9 @@
                     android:clickable="false"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".4"
+                    android:layout_weight=".5"
                     android:text="Име:"
                     android:textStyle="bold"
-                    android:textSize="20dp"
                     android:gravity="right"
                     android:layout_marginRight="10dp"/>
 
@@ -195,7 +189,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text=""
-                    android:layout_weight=".6"
+                    android:layout_weight=".5"
                     android:layout_marginRight="40dp"
                     android:inputType="textPersonName"/>
             </LinearLayout>
@@ -211,10 +205,9 @@
                     android:clickable="false"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".4"
+                    android:layout_weight=".5"
                     android:text="Презиме:"
                     android:textStyle="bold"
-                    android:textSize="20dp"
                     android:gravity="right"
                     android:layout_marginRight="10dp"/>
 
@@ -223,7 +216,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text=""
-                    android:layout_weight=".6"
+                    android:layout_weight=".5"
                     android:layout_marginRight="40dp"
                     android:inputType="textPersonName"/>
             </LinearLayout>
@@ -239,10 +232,9 @@
                     android:clickable="false"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".4"
+                    android:layout_weight=".5"
                     android:text="Фамилия:"
                     android:textStyle="bold"
-                    android:textSize="20dp"
                     android:gravity="right"
                     android:layout_marginRight="10dp"/>
 
@@ -251,9 +243,36 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text=""
-                    android:layout_weight=".6"
+                    android:layout_weight=".5"
                     android:layout_marginRight="40dp"
                     android:inputType="textPersonName"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+
+                <TextView
+                    android:id="@+id/phoneLabel"
+                    android:clickable="false"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:text="Телефон (GSM):"
+                    android:textStyle="bold"
+                    android:gravity="right"
+                    android:layout_marginRight="10dp"/>
+
+                <EditText
+                    android:id="@+id/phoneNumber"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_weight=".5"
+                    android:layout_marginRight="40dp"
+                    android:inputType="phone"/>
             </LinearLayout>
 
             <LinearLayout
@@ -267,10 +286,9 @@
                     android:clickable="false"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".4"
+                    android:layout_weight=".5"
                     android:text="Град:"
                     android:textStyle="bold"
-                    android:textSize="20dp"
                     android:gravity="right"
                     android:layout_marginRight="10dp"/>
 
@@ -279,7 +297,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text=""
-                    android:layout_weight=".6"
+                    android:layout_weight=".5"
                     android:layout_marginRight="40dp"
                     android:completionThreshold="1"
                     android:inputType="textAutoComplete"/>
@@ -331,7 +349,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="ИЗПРАТИ"
-            android:textSize="30dp"
             android:layout_weight=".3"
             android:layout_marginRight="40dp"/>
 

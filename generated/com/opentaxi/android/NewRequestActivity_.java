@@ -40,10 +40,6 @@ public final class NewRequestActivity_
     private final OnViewChangedNotifier onViewChangedNotifier_ = new OnViewChangedNotifier();
     private Handler handler_ = new Handler(Looper.getMainLooper());
 
-    private void init_(Bundle savedInstanceState) {
-        OnViewChangedNotifier.registerOnViewChangedListener(this);
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         OnViewChangedNotifier previousNotifier = OnViewChangedNotifier.replaceNotifier(onViewChangedNotifier_);
@@ -51,6 +47,10 @@ public final class NewRequestActivity_
         super.onCreate(savedInstanceState);
         OnViewChangedNotifier.replaceNotifier(previousNotifier);
         setContentView(layout.new_request);
+    }
+
+    private void init_(Bundle savedInstanceState) {
+        OnViewChangedNotifier.registerOnViewChangedListener(this);
     }
 
     @Override
@@ -71,14 +71,6 @@ public final class NewRequestActivity_
         onViewChangedNotifier_.notifyViewChanged(this);
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (((SdkVersionHelper.getSdkInt()< 5)&&(keyCode == KeyEvent.KEYCODE_BACK))&&(event.getRepeatCount() == 0)) {
-            onBackPressed();
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
     public static NewRequestActivity_.IntentBuilder_ intent(Context context) {
         return new NewRequestActivity_.IntentBuilder_(context);
     }
@@ -88,42 +80,70 @@ public final class NewRequestActivity_
     }
 
     @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (((SdkVersionHelper.getSdkInt()< 5)&&(keyCode == KeyEvent.KEYCODE_BACK))&&(event.getRepeatCount() == 0)) {
+            onBackPressed();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
     public void onViewChanged(HasViews hasViews) {
+        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
+        reqInfoButtonContainer = ((LinearLayout) hasViews.findViewById(id.reqInfoButtonContainer));
+        requestSend = ((Button) hasViews.findViewById(id.requestSend));
         llFilters = ((LinearLayout) hasViews.findViewById(id.llFilters));
         addressText = ((EditText) hasViews.findViewById(id.addressText));
         pricesPicker = ((Spinner) hasViews.findViewById(id.pricesPicker));
-        reqInfoButtonContainer = ((LinearLayout) hasViews.findViewById(id.reqInfoButtonContainer));
-        address = ((TextView) hasViews.findViewById(id.address));
-        requestSend = ((Button) hasViews.findViewById(id.requestSend));
-        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
+        addressChange = ((Button) hasViews.findViewById(id.addressChange));
         region = ((TextView) hasViews.findViewById(id.region));
         regionsPicker = ((Spinner) hasViews.findViewById(id.regionsPicker));
-        addressChange = ((Button) hasViews.findViewById(id.addressChange));
-        if (hasViews.findViewById(id.requestSend)!= null) {
-            hasViews.findViewById(id.requestSend).setOnClickListener(new OnClickListener() {
+        address = ((TextView) hasViews.findViewById(id.address));
+        {
+            View view = hasViews.findViewById(id.addressChange);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
 
 
-                @Override
-                public void onClick(View view) {
-                    NewRequestActivity_.this.requestSend();
+                    @Override
+                    public void onClick(View view) {
+                        NewRequestActivity_.this.addressChange();
+                    }
+
                 }
-
+                );
             }
-            );
         }
-        if (hasViews.findViewById(id.addressChange)!= null) {
-            hasViews.findViewById(id.addressChange).setOnClickListener(new OnClickListener() {
+        {
+            View view = hasViews.findViewById(id.requestSend);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
 
 
-                @Override
-                public void onClick(View view) {
-                    NewRequestActivity_.this.addressChange();
+                    @Override
+                    public void onClick(View view) {
+                        NewRequestActivity_.this.requestSend();
+                    }
+
                 }
-
+                );
             }
-            );
         }
         afterActivity();
+    }
+
+    @Override
+    public void showPrices(final Groups[] prices) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                NewRequestActivity_.super.showPrices(prices);
+            }
+
+        }
+        );
     }
 
     @Override
@@ -183,13 +203,17 @@ public final class NewRequestActivity_
     }
 
     @Override
-    public void showPrices(final Groups[] prices) {
-        handler_.post(new Runnable() {
+    public void setRegions() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
-            public void run() {
-                NewRequestActivity_.super.showPrices(prices);
+            public void execute() {
+                try {
+                    NewRequestActivity_.super.setRegions();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
             }
 
         }
@@ -233,24 +257,6 @@ public final class NewRequestActivity_
     }
 
     @Override
-    public void setAddress() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    NewRequestActivity_.super.setAddress();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
     public void setPrices() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
@@ -269,14 +275,14 @@ public final class NewRequestActivity_
     }
 
     @Override
-    public void setRegions() {
+    public void setAddress() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    NewRequestActivity_.super.setRegions();
+                    NewRequestActivity_.super.setAddress();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

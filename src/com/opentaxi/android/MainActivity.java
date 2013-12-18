@@ -145,6 +145,7 @@ public class MainActivity extends FragmentActivity {
     void beforeStartUserPass() {
         String token = AppPreferences.getInstance().getAccessToken();
         if (token != null && !token.equals("")) {
+            Log.i(TAG, "already authorized token=" + token);
             if (!RestClient.getInstance().haveAuthorization()) {
                 //Log.i(TAG, "AppPreferences.getInstance().getAccessToken=" + token);
                 Users user = RestClient.getInstance().FacebookLogin(token);
@@ -157,7 +158,7 @@ public class MainActivity extends FragmentActivity {
             } else {
                 Users user = AppPreferences.getInstance().getUsers();
                 if (user != null) afterLogin(user.getUsername());
-                Log.e(TAG, "already authorized token=" + token);
+                else Log.e(TAG, "facebook no user");
             }
         } else startUserPass();
     }
