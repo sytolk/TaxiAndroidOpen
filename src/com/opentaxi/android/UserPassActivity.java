@@ -236,7 +236,7 @@ public class UserPassActivity extends FragmentActivity implements Validator.Vali
         mSimpleFacebook = SimpleFacebook.getInstance(this); // Permissions.USER_BIRTHDAY
         Permissions[] permissions = new Permissions[]{Permissions.EMAIL, Permissions.USER_WEBSITE, Permissions.USER_WORK_HISTORY, Permissions.USER_ABOUT_ME, Permissions.USER_HOMETOWN};
         SimpleFacebookConfiguration configuration = new SimpleFacebookConfiguration.Builder()
-                //.setAppId("550947981660612")
+                .setAppId("550947981660612")
                 .setNamespace("taxi-bulgaria")
                 .setPermissions(permissions)
                 .build();
