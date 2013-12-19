@@ -24,12 +24,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
-                    android:text="Заявка Номер:"/>
+                    android:text="Заявка Номер:"
+                    android:textSize="20dp"/>
                 <TextView
                     android:id="@+id/requestNumber"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".5"/>
+                    android:layout_weight=".5"
+                    android:textSize="20dp"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -41,12 +43,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
-                    android:text="Дата и час:"/>
+                    android:text="Дата и час:"
+                    android:textSize="20dp"/>
                 <TextView
                     android:id="@+id/datecreated"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".5"/>
+                    android:layout_weight=".5"
+                    android:textSize="20dp"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -58,12 +62,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
-                    android:text="Адрес:"/>
+                    android:text="Адрес:"
+                    android:textSize="20dp"/>
                 <TextView
                     android:id="@+id/address"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".5"/>
+                    android:layout_weight=".5"
+                    android:textSize="20dp"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -75,12 +81,33 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
-                    android:text="Тарифа лв/км:"/>
+                    android:text="Автомобил:"
+                    android:textSize="20dp"/>
+                <TextView
+                    android:id="@+id/car"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:textSize="20dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:text="Тарифа лв/км:"
+                    android:textSize="20dp"/>
                 <TextView
                     android:id="@+id/price_group"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".5"/>
+                    android:layout_weight=".5"
+                    android:textSize="20dp"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -92,12 +119,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
-                    android:text="Нужно ми е:"/>
+                    android:text="Нужно ми е:"
+                    android:textSize="20dp"/>
                 <TextView
                     android:id="@+id/chosen_group"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".5"/>
+                    android:layout_weight=".5"
+                    android:textSize="20dp"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -109,12 +138,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
-                    android:text="Време за пристигане на автомобила:"/>
+                    android:text="Време за пристигане на автомобила:"
+                    android:textSize="20dp"/>
                 <TextView
                     android:id="@+id/arrive_time"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".5"/>
+                    android:layout_weight=".5"
+                    android:textSize="20dp"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -126,12 +157,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
-                    android:text="Оставащо време:"/>
+                    android:text="Оставащо време:"
+                    android:textSize="20dp"/>
                 <TextView
                     android:id="@+id/remaining_time"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".5"/>
+                    android:layout_weight=".5"
+                    android:textSize="20dp"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -143,12 +176,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
-                    android:text="Статус:"/>
+                    android:text="Статус:"
+                    android:textSize="20dp"/>
                 <TextView
                     android:id="@+id/state"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".5"/>
+                    android:layout_weight=".5"
+                    android:textSize="20dp"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
@@ -165,21 +200,24 @@
             android:layout_height="wrap_content"
             android:minHeight="80dp"
             android:text="Назад"
-            android:layout_weight=".3"/>
+            android:layout_weight=".3"
+            android:textSize="20dp"/>
         <Button
             android:id="@+id/rejectButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:minHeight="80dp"
             android:text="Откажи"
-            android:layout_weight=".3"/>
+            android:layout_weight=".3"
+            android:textSize="20dp"/>
         <Button
             android:id="@+id/editButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:minHeight="80dp"
             android:text="Промени"
-            android:layout_weight=".3"/>
+            android:layout_weight=".3"
+            android:textSize="20dp"/>
         <Button
             android:id="@+id/feedBackButton"
             android:layout_width="0dp"
@@ -187,6 +225,7 @@
             android:minHeight="80dp"
             android:text="Обратна Връзка"
             android:layout_weight=".3"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:textSize="20dp"/>
     </LinearLayout>
 </LinearLayout>

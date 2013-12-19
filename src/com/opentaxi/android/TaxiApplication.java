@@ -18,6 +18,7 @@ public class TaxiApplication extends Application {
 
     private static boolean requestsVisible=false;
     private static boolean requestsDetailsVisible=false;
+    private static boolean userPassVisible=false;
 
     public static boolean isRequestsVisible() {
         return requestsVisible;
@@ -41,6 +42,18 @@ public class TaxiApplication extends Application {
 
     public static void requestsDetailsPaused() {
         requestsDetailsVisible = false;
+    }
+
+    public static boolean isUserPassVisible() {
+        return userPassVisible;
+    }
+
+    public static void userPassResumed() {
+        userPassVisible = true;
+    }
+
+    public static void userPassPaused() {
+        userPassVisible = false;
     }
 
     @Override

@@ -115,7 +115,16 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-    already authorized toke
+
+    <ProgressBar
+        android:id="@+id/pbProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        style="@android:style/Widget.ProgressBar.Large">
+    </ProgressBar>
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

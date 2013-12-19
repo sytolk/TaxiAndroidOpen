@@ -52,6 +52,9 @@ public class RequestDetailsActivity extends FragmentActivity {
     TextView address;
 
     @ViewById
+    TextView car;
+
+    @ViewById
     TextView price_group;
 
     @ViewById
@@ -122,6 +125,8 @@ public class RequestDetailsActivity extends FragmentActivity {
                 if (regions != null) {
                     address.setText(regions.getDescription() + " " + newCRequest.getFullAddress());
                 } else address.setText(newCRequest.getFullAddress());
+
+                car.setText("Стил №" + newCRequest.getCarNumber());
                 Map<String, List<Groups>> groupsMap = newCRequest.getRequestGroups();
                 if (groupsMap.containsKey("PRICE_GROUPS")) {
                     List<Groups> priceGroups = groupsMap.get("PRICE_GROUPS");

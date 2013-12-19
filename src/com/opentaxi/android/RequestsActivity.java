@@ -208,7 +208,7 @@ public class RequestsActivity extends Activity {
                                 address.setText(regions.getDescription() + " " + newCRequest.getFullAddress());
                             } else address.setText(newCRequest.getFullAddress());
                             time.setText(newCRequest.getDispTime() + " мин.");
-                            car.setText(newCRequest.getCarNumber());
+                            if (newCRequest.getCarNumber() != null) car.setText("Стил №" + newCRequest.getCarNumber());
                             Integer status = newCRequest.getStatus();
                             state.setText(RequestStatus.getByCode(status).toString());
 

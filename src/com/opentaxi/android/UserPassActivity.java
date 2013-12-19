@@ -1,13 +1,20 @@
 package com.opentaxi.android;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.Validator;
@@ -37,7 +44,7 @@ import java.io.File;
  * To change this template use File | Settings | File Templates.
  */
 @EActivity(R.layout.login)
-public class UserPassActivity extends Activity implements Validator.ValidationListener {
+public class UserPassActivity extends FragmentActivity implements Validator.ValidationListener {
 
     private static final String TAG = "UserPassActivity";
 
@@ -55,6 +62,9 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
     @ViewById(R.id.passwordField)
     EditText pass;
 
+    @ViewById(R.id.pbProgress)
+    ProgressBar pbProgress;
+
     Validator validator;
 
     SimpleFacebook mSimpleFacebook;
@@ -70,6 +80,7 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
 
     @Override
     public void finish() {
+        TaxiApplication.userPassPaused();
         if (result != Activity.RESULT_CANCELED) result = Activity.RESULT_OK;
         if (getParent() == null) {
             setResult(result);
@@ -78,6 +89,20 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
         }
         super.finish();
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        TaxiApplication.userPassPaused();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        TaxiApplication.userPassResumed();
+        if (pbProgress != null) pbProgress.setVisibility(View.GONE);
+    }
+
     /*@InstanceState
     Bundle savedInstanceState;
 
@@ -221,7 +246,7 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
             @Override
             public void onLogin() {
 
-                //Log.e(TAG, "onLogin");
+                Log.i(TAG, "onLogin");
                 if (AppPreferences.getInstance() != null)
                     AppPreferences.getInstance().setAccessToken(mSimpleFacebook.getAccessToken());  //todo move this to disk cache
                 checkFacebook(mSimpleFacebook.getAccessToken());
@@ -230,22 +255,27 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
             @Override
             public void onNotAcceptingPermissions() {
                 Log.e(TAG, "onNotAcceptingPermissions token:" + mSimpleFacebook.getAccessToken());
+                overFacebookLoginTime();
             }
 
             @Override
             public void onThinking() {
                 Log.i(TAG, "onThinking");
+                pbProgress.setVisibility(View.VISIBLE);
+                maxFacebookLoginTime();
             }
 
             @Override
             public void onException(Throwable throwable) {
                 Log.e(TAG, "onException:" + throwable.getMessage());
+                overFacebookLoginTime();
                 //facebookLogout();
             }
 
             @Override
             public void onFail(String reason) {
                 Log.e(TAG, "onFail:" + reason);
+                overFacebookLoginTime();
             }
         };
 
@@ -259,6 +289,80 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
             Session.openActiveSession(this, true, statusCallback);
         }*/
     }
+
+    @Background(delay = 15000)
+    void maxFacebookLoginTime() {
+        if (mSimpleFacebook.getAccessToken() == null || mSimpleFacebook.getAccessToken().equals("")) {
+            overFacebookLoginTime();
+        }
+    }
+
+    @UiThread
+    void overFacebookLoginTime() {
+        if (TaxiApplication.isUserPassVisible()) {
+            TaxiApplication.userPassPaused();
+            pbProgress.setVisibility(View.GONE);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setTitle("Времето за вход през Facebook изтече");
+            alertDialogBuilder.setMessage("Възможно е вашето устройство да не се поддържа от Facebook. Искате ли да създадете свой потребителски акаунт в системата на Taxi Bulgaria ?");
+            //null should be your on click listener
+            alertDialogBuilder.setPositiveButton("ДА", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    newClient();
+                }
+            });
+            alertDialogBuilder.setNegativeButton("НЕ", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    TaxiApplication.userPassResumed();
+                }
+            });
+
+            Dialog facebookDialog = alertDialogBuilder.create();
+
+            if (facebookDialog != null) {
+                try {
+                    // Create a new DialogFragment for the error dialog
+                    MainDialogFragment errorFragment = new MainDialogFragment();
+                    // Set the dialog in the DialogFragment
+                    errorFragment.setDialog(facebookDialog);
+                    // Show the error dialog in the DialogFragment
+                    errorFragment.show(getSupportFragmentManager(), "FacebookDialog");
+                } catch (Exception e) {
+                    if (e.getMessage() != null) Log.e(TAG, e.getMessage());
+                }
+            }
+        }
+    }
+
+    // Define a DialogFragment that displays the error dialog
+    public static class MainDialogFragment extends DialogFragment {
+        // Global field to contain the error dialog
+        private Dialog mDialog;
+
+        // Default constructor. Sets the dialog field to null
+        public MainDialogFragment() {
+            super();
+            mDialog = null;
+        }
+
+        // Set the dialog to display
+        public void setDialog(Dialog dialog) {
+            mDialog = dialog;
+        }
+
+        // Return a Dialog to the DialogFragment.
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            if (mDialog == null) super.setShowsDialog(false);
+            return mDialog;
+        }
+    }
+
 
     @Background
     void checkFacebook(String token) {
@@ -284,21 +388,26 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
                 @Override
                 public void onFail(String reason) {
                     Log.i(TAG, "New facebookUser onFail");
+                    overFacebookLoginTime();
                 }
 
                 @Override
                 public void onException(Throwable throwable) {
                     Log.i(TAG, "New facebookUser onException");
                     //facebookLogout();
+                    overFacebookLoginTime();
                 }
 
                 @Override
                 public void onThinking() {
+                    Log.i(TAG, "New facebookUser onThinking");
+                    pbProgress.setVisibility(View.VISIBLE);
+                    maxFacebookLoginTime();
                 }
 
                 @Override
                 public void onComplete(Profile profile) {
-
+                    Log.i(TAG, "New facebookUser onComplete");
                     if (profile != null) { //&& profile.getVerified()) {
                         NewUsers users = new NewUsers();
                         users.setUsername(profile.getUsername());
@@ -349,30 +458,6 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
 
             mSimpleFacebook.getProfile(onProfileRequestListener);
         }
-    }
-
-    @Background
-    void facebookLogout() {
-        SimpleFacebook.OnLogoutListener onLogoutListener = new SimpleFacebook.OnLogoutListener() {
-
-            @Override
-            public void onFail(String reason) {
-            }
-
-            @Override
-            public void onException(Throwable throwable) {
-            }
-
-            @Override
-            public void onThinking() {
-            }
-
-            @Override
-            public void onLogout() {
-            }
-
-        };
-        mSimpleFacebook.logout(onLogoutListener);
     }
 
     @Click

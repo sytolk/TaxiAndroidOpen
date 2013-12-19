@@ -22,9 +22,9 @@
         <TextView
             android:id="@+id/user"
             android:layout_width="fill_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:textSize="30dp"
+            android:textSize="25dp"
             android:textStyle="bold"/>
 
         <LinearLayout
