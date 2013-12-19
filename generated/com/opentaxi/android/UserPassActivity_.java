@@ -84,9 +84,9 @@ public final class UserPassActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        userName = ((EditText) hasViews.findViewById(id.userNameField));
         pass = ((EditText) hasViews.findViewById(id.passwordField));
         pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
+        userName = ((EditText) hasViews.findViewById(id.userNameField));
         {
             View view = hasViews.findViewById(id.facebookButton);
             if (view!= null) {
@@ -136,13 +136,13 @@ public final class UserPassActivity_
     }
 
     @Override
-    public void facebookUser(final Users user) {
+    public void overFacebookLoginTime(final String title) {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                UserPassActivity_.super.facebookUser(user);
+                UserPassActivity_.super.overFacebookLoginTime(title);
             }
 
         }
@@ -164,31 +164,13 @@ public final class UserPassActivity_
     }
 
     @Override
-    public void overFacebookLoginTime(final String title) {
+    public void facebookUser(final Users user) {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                UserPassActivity_.super.overFacebookLoginTime(title);
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void maxFacebookLoginTime() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 15000, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    UserPassActivity_.super.maxFacebookLoginTime();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
+                UserPassActivity_.super.facebookUser(user);
             }
 
         }
@@ -204,6 +186,24 @@ public final class UserPassActivity_
             public void execute() {
                 try {
                     UserPassActivity_.super.checkFacebook(token);
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void maxFacebookLoginTime() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 15000, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    UserPassActivity_.super.maxFacebookLoginTime();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

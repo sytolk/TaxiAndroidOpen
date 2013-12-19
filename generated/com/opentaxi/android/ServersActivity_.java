@@ -74,8 +74,8 @@ public final class ServersActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        cancelButton = ((Button) hasViews.findViewById(id.cancelButton));
         serversContent = ((LinearLayout) hasViews.findViewById(id.serversContent));
+        cancelButton = ((Button) hasViews.findViewById(id.cancelButton));
         {
             View view = hasViews.findViewById(id.cancelButton);
             if (view!= null) {
@@ -110,20 +110,6 @@ public final class ServersActivity_
     }
 
     @Override
-    public void showServers(final boolean testing) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                ServersActivity_.super.showServers(testing);
-            }
-
-        }
-        );
-    }
-
-    @Override
     public void loginError(final String error) {
         handler_.post(new Runnable() {
 
@@ -138,14 +124,28 @@ public final class ServersActivity_
     }
 
     @Override
-    public void updateServers() {
+    public void showServers(final boolean testing) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                ServersActivity_.super.showServers(testing);
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void login() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    ServersActivity_.super.updateServers();
+                    ServersActivity_.super.login();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -174,14 +174,14 @@ public final class ServersActivity_
     }
 
     @Override
-    public void login() {
+    public void updateServers() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    ServersActivity_.super.login();
+                    ServersActivity_.super.updateServers();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

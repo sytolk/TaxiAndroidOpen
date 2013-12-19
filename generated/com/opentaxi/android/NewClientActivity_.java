@@ -91,18 +91,18 @@ public final class NewClientActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        nameField = ((EditText) hasViews.findViewById(id.nameField));
-        lastName = ((EditText) hasViews.findViewById(id.lastName));
-        middleName = ((EditText) hasViews.findViewById(id.middleName));
+        pass2 = ((EditText) hasViews.findViewById(id.password2Field));
         email = ((EditText) hasViews.findViewById(id.emailField));
+        sendButton = ((Button) hasViews.findViewById(id.sendButton));
         userName = ((EditText) hasViews.findViewById(id.userNameField));
+        lastName = ((EditText) hasViews.findViewById(id.lastName));
+        iAgreeCheckBox = ((CheckBox) hasViews.findViewById(id.iAgreeCheckBox));
+        nameField = ((EditText) hasViews.findViewById(id.nameField));
         cityName = ((AutoCompleteTextView) hasViews.findViewById(id.cityName));
         phoneNumber = ((EditText) hasViews.findViewById(id.phoneNumber));
-        sendButton = ((Button) hasViews.findViewById(id.sendButton));
-        iAgreeCheckBox = ((CheckBox) hasViews.findViewById(id.iAgreeCheckBox));
+        middleName = ((EditText) hasViews.findViewById(id.middleName));
         passwordHint = ((EditText) hasViews.findViewById(id.passwordHint));
         pass = ((EditText) hasViews.findViewById(id.passwordField));
-        pass2 = ((EditText) hasViews.findViewById(id.password2Field));
         {
             View view = hasViews.findViewById(id.userAgreement);
             if (view!= null) {
@@ -182,27 +182,13 @@ public final class NewClientActivity_
     }
 
     @Override
-    public void ActivationDialog() {
+    public void setEmailError(final String error) {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                NewClientActivity_.super.ActivationDialog();
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void finishThis() {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                NewClientActivity_.super.finishThis();
+                NewClientActivity_.super.setEmailError(error);
             }
 
         }
@@ -224,13 +210,27 @@ public final class NewClientActivity_
     }
 
     @Override
-    public void setEmailError(final String error) {
+    public void finishThis() {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                NewClientActivity_.super.setEmailError(error);
+                NewClientActivity_.super.finishThis();
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void ActivationDialog() {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                NewClientActivity_.super.ActivationDialog();
             }
 
         }

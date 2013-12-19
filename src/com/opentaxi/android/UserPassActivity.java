@@ -206,8 +206,9 @@ public class UserPassActivity extends FragmentActivity implements Validator.Vali
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (mSimpleFacebook != null)
-            mSimpleFacebook.onActivityResult(this, requestCode, resultCode, data);
+        if (mSimpleFacebook == null) mSimpleFacebook = SimpleFacebook.getInstance(this);
+        mSimpleFacebook.onActivityResult(this, requestCode, resultCode, data);
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -489,7 +490,8 @@ public class UserPassActivity extends FragmentActivity implements Validator.Vali
                     try {
                         String userEncrypt = AppPreferences.getInstance().encrypt(username, "user_salt");
                         String passEncrypt = AppPreferences.getInstance().encrypt(password, username);
-                        RestClient.getInstance().saveAuthorization(userEncrypt, passEncrypt);
+                        if (userEncrypt != null && passEncrypt != null)
+                            RestClient.getInstance().saveAuthorization(userEncrypt, passEncrypt);
                     } catch (Exception e) {
                         if (e.getMessage() != null) Log.e(TAG, "Exception:" + e.getMessage());
                     }

@@ -405,8 +405,12 @@ public class MainActivity extends FragmentActivity {
         } else bandwidth.setText("no connection");
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        SimpleFacebook.getInstance(this).onActivityResult(this, requestCode, resultCode, data);
+
         switch (requestCode) {
 
             case PLAY_SERVICES_RESOLUTION_REQUEST:
