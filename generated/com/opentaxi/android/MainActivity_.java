@@ -82,9 +82,24 @@ public final class MainActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        bandwidth = ((TextView) hasViews.findViewById(id.bandwidth));
         user = ((TextView) hasViews.findViewById(id.user));
+        bandwidth = ((TextView) hasViews.findViewById(id.bandwidth));
         version = ((TextView) hasViews.findViewById(id.txt_version));
+        {
+            View view = hasViews.findViewById(id.requestButton);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        MainActivity_.this.requestButton();
+                    }
+
+                }
+                );
+            }
+        }
         {
             View view = hasViews.findViewById(id.mapButton);
             if (view!= null) {
@@ -130,22 +145,21 @@ public final class MainActivity_
                 );
             }
         }
-        {
-            View view = hasViews.findViewById(id.requestButton);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        MainActivity_.this.requestButton();
-                    }
-
-                }
-                );
-            }
-        }
         afterMain();
+    }
+
+    @Override
+    public void changeNetworkState() {
+        handler_.postDelayed(new Runnable() {
+
+
+            @Override
+            public void run() {
+                MainActivity_.super.changeNetworkState();
+            }
+
+        }
+        , 1000L);
     }
 
     @Override
@@ -177,17 +191,39 @@ public final class MainActivity_
     }
 
     @Override
-    public void changeNetworkState() {
-        handler_.postDelayed(new Runnable() {
+    public void facebookLogout() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
-            public void run() {
-                MainActivity_.super.changeNetworkState();
+            public void execute() {
+                try {
+                    MainActivity_.super.facebookLogout();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
             }
 
         }
-        , 1000L);
+        );
+    }
+
+    @Override
+    public void setServers() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    MainActivity_.super.setServers();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
     }
 
     @Override
@@ -227,24 +263,6 @@ public final class MainActivity_
     }
 
     @Override
-    public void facebookLogout() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    MainActivity_.super.facebookLogout();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
     public void beforeStartUserPass() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
@@ -253,24 +271,6 @@ public final class MainActivity_
             public void execute() {
                 try {
                     MainActivity_.super.beforeStartUserPass();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void setServers() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    MainActivity_.super.setServers();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

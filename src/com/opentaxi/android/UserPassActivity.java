@@ -255,27 +255,27 @@ public class UserPassActivity extends FragmentActivity implements Validator.Vali
             @Override
             public void onNotAcceptingPermissions() {
                 Log.e(TAG, "onNotAcceptingPermissions token:" + mSimpleFacebook.getAccessToken());
-                overFacebookLoginTime();
+                overFacebookLoginTime("нямате позволение за достъп");
             }
 
             @Override
             public void onThinking() {
                 Log.i(TAG, "onThinking");
                 pbProgress.setVisibility(View.VISIBLE);
-                maxFacebookLoginTime();
+                //maxFacebookLoginTime();
             }
 
             @Override
             public void onException(Throwable throwable) {
                 Log.e(TAG, "onException:" + throwable.getMessage());
-                overFacebookLoginTime();
+                overFacebookLoginTime("повдигнато е изключение");
                 //facebookLogout();
             }
 
             @Override
             public void onFail(String reason) {
                 Log.e(TAG, "onFail:" + reason);
-                overFacebookLoginTime();
+                overFacebookLoginTime(reason);
             }
         };
 
@@ -292,19 +292,20 @@ public class UserPassActivity extends FragmentActivity implements Validator.Vali
 
     @Background(delay = 15000)
     void maxFacebookLoginTime() {
+        Log.e(TAG, "maxFacebookLoginTime");
         if (mSimpleFacebook.getAccessToken() == null || mSimpleFacebook.getAccessToken().equals("")) {
-            overFacebookLoginTime();
-        }
+            overFacebookLoginTime("времето изтече");
+        } else Log.i(TAG, "maxFacebookLoginTime have token:" + mSimpleFacebook.getAccessToken());
     }
 
     @UiThread
-    void overFacebookLoginTime() {
+    void overFacebookLoginTime(String title) {
         if (TaxiApplication.isUserPassVisible()) {
             TaxiApplication.userPassPaused();
             pbProgress.setVisibility(View.GONE);
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setTitle("Времето за вход през Facebook изтече");
-            alertDialogBuilder.setMessage("Възможно е вашето устройство да не се поддържа от Facebook. Искате ли да създадете свой потребителски акаунт в системата на Taxi Bulgaria ?");
+            alertDialogBuilder.setTitle("Вход през Facebook " + title);
+            alertDialogBuilder.setMessage("Искате ли да създадете свой потребителски акаунт в системата на Taxi Bulgaria ?");
             //null should be your on click listener
             alertDialogBuilder.setPositiveButton("ДА", new DialogInterface.OnClickListener() {
 
@@ -336,7 +337,7 @@ public class UserPassActivity extends FragmentActivity implements Validator.Vali
                     if (e.getMessage() != null) Log.e(TAG, e.getMessage());
                 }
             }
-        }
+        } else Log.i(TAG, "overFacebookLoginTime TaxiApplication.isUserPassVisible=false");
     }
 
     // Define a DialogFragment that displays the error dialog
@@ -388,14 +389,14 @@ public class UserPassActivity extends FragmentActivity implements Validator.Vali
                 @Override
                 public void onFail(String reason) {
                     Log.i(TAG, "New facebookUser onFail");
-                    overFacebookLoginTime();
+                    overFacebookLoginTime(reason);
                 }
 
                 @Override
                 public void onException(Throwable throwable) {
                     Log.i(TAG, "New facebookUser onException");
                     //facebookLogout();
-                    overFacebookLoginTime();
+                    overFacebookLoginTime("повдигнато е изключение");
                 }
 
                 @Override

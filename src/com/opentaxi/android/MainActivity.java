@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.*;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.telephony.TelephonyManager;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,6 +36,8 @@ import org.mapsforge.android.AndroidUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 @EActivity(R.layout.main)
 public class MainActivity extends FragmentActivity {
@@ -68,7 +72,7 @@ public class MainActivity extends FragmentActivity {
     @AfterViews
     void afterMain() {
 
-       /* PackageInfo info;
+        PackageInfo info;
         try {
             info = getPackageManager().getPackageInfo("com.opentaxi.android", PackageManager.GET_SIGNATURES);
             for (Signature signature : info.signatures) {
@@ -85,7 +89,7 @@ public class MainActivity extends FragmentActivity {
             Log.e("no such an algorithm", e.toString());
         } catch (Exception e) {
             Log.e("exception", e.toString());
-        }*/
+        }
 
         AppPreferences appPreferences = AppPreferences.getInstance(this);
         RestClient.getInstance().setSocketsType(appPreferences.getSocketType());
