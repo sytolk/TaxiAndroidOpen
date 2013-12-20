@@ -91,33 +91,18 @@ public final class NewClientActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        passwordHint = ((EditText) hasViews.findViewById(id.passwordHint));
-        email = ((EditText) hasViews.findViewById(id.emailField));
-        userName = ((EditText) hasViews.findViewById(id.userNameField));
-        pass2 = ((EditText) hasViews.findViewById(id.password2Field));
-        nameField = ((EditText) hasViews.findViewById(id.nameField));
-        cityName = ((AutoCompleteTextView) hasViews.findViewById(id.cityName));
         lastName = ((EditText) hasViews.findViewById(id.lastName));
-        pass = ((EditText) hasViews.findViewById(id.passwordField));
         phoneNumber = ((EditText) hasViews.findViewById(id.phoneNumber));
-        iAgreeCheckBox = ((CheckBox) hasViews.findViewById(id.iAgreeCheckBox));
-        sendButton = ((Button) hasViews.findViewById(id.sendButton));
+        cityName = ((AutoCompleteTextView) hasViews.findViewById(id.cityName));
         middleName = ((EditText) hasViews.findViewById(id.middleName));
-        {
-            View view = hasViews.findViewById(id.userAgreement);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        NewClientActivity_.this.userAgreement();
-                    }
-
-                }
-                );
-            }
-        }
+        nameField = ((EditText) hasViews.findViewById(id.nameField));
+        userName = ((EditText) hasViews.findViewById(id.userNameField));
+        pass = ((EditText) hasViews.findViewById(id.passwordField));
+        passwordHint = ((EditText) hasViews.findViewById(id.passwordHint));
+        pass2 = ((EditText) hasViews.findViewById(id.password2Field));
+        iAgreeCheckBox = ((CheckBox) hasViews.findViewById(id.iAgreeCheckBox));
+        email = ((EditText) hasViews.findViewById(id.emailField));
+        sendButton = ((Button) hasViews.findViewById(id.sendButton));
         {
             View view = hasViews.findViewById(id.sendButton);
             if (view!= null) {
@@ -127,6 +112,21 @@ public final class NewClientActivity_
                     @Override
                     public void onClick(View view) {
                         NewClientActivity_.this.sendButton();
+                    }
+
+                }
+                );
+            }
+        }
+        {
+            View view = hasViews.findViewById(id.userAgreement);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        NewClientActivity_.this.userAgreement();
                     }
 
                 }
@@ -182,13 +182,13 @@ public final class NewClientActivity_
     }
 
     @Override
-    public void setEmailError(final String error) {
+    public void ActivationDialog() {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                NewClientActivity_.super.setEmailError(error);
+                NewClientActivity_.super.ActivationDialog();
             }
 
         }
@@ -210,13 +210,13 @@ public final class NewClientActivity_
     }
 
     @Override
-    public void setUserError(final String error) {
+    public void setEmailError(final String error) {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                NewClientActivity_.super.setUserError(error);
+                NewClientActivity_.super.setEmailError(error);
             }
 
         }
@@ -224,13 +224,13 @@ public final class NewClientActivity_
     }
 
     @Override
-    public void ActivationDialog() {
+    public void setUserError(final String error) {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                NewClientActivity_.super.ActivationDialog();
+                NewClientActivity_.super.setUserError(error);
             }
 
         }
@@ -256,14 +256,14 @@ public final class NewClientActivity_
     }
 
     @Override
-    public void checkEmail(final String email) {
+    public void createNewUser(final NewUsers users) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    NewClientActivity_.super.checkEmail(email);
+                    NewClientActivity_.super.createNewUser(users);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -274,14 +274,14 @@ public final class NewClientActivity_
     }
 
     @Override
-    public void createNewUser(final NewUsers users) {
+    public void checkEmail(final String email) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    NewClientActivity_.super.createNewUser(users);
+                    NewClientActivity_.super.checkEmail(email);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

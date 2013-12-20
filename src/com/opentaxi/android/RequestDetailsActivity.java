@@ -118,61 +118,62 @@ public class RequestDetailsActivity extends FragmentActivity {
     void showDetails() {
         if (TaxiApplication.isRequestsDetailsVisible()) {
             if (newCRequest != null && newCRequest.getRequestsId() != null) {
+                if (requestNumber != null) {
+                    requestNumber.setText(newCRequest.getRequestsId().toString());
+                    datecreated.setText(DateFormat.getDateInstance(DateFormat.SHORT).format(newCRequest.getDatecreated()));
+                    Regions regions = RestClient.getInstance().getRegionById(newCRequest.getRegionId());
+                    if (regions != null) {
+                        address.setText(regions.getDescription() + " " + newCRequest.getFullAddress());
+                    } else address.setText(newCRequest.getFullAddress());
 
-                requestNumber.setText(newCRequest.getRequestsId().toString());
-                datecreated.setText(DateFormat.getDateInstance(DateFormat.SHORT).format(newCRequest.getDatecreated()));
-                Regions regions = RestClient.getInstance().getRegionById(newCRequest.getRegionId());
-                if (regions != null) {
-                    address.setText(regions.getDescription() + " " + newCRequest.getFullAddress());
-                } else address.setText(newCRequest.getFullAddress());
-
-                car.setText("Стил №" + newCRequest.getCarNumber());
-                Map<String, List<Groups>> groupsMap = newCRequest.getRequestGroups();
-                if (groupsMap.containsKey("PRICE_GROUPS")) {
-                    List<Groups> priceGroups = groupsMap.get("PRICE_GROUPS");
-                    if (priceGroups.size() > 0) {
-                        Groups priceGroup = priceGroups.get(0);
-                        if (priceGroup != null)
-                            price_group.setText(priceGroup.getDescription());
-                    }
-                }
-                StringBuilder groupChosen = new StringBuilder();
-                for (Map.Entry<String, List<Groups>> groups : groupsMap.entrySet()) {
-                    List<Groups> priceGroups = groups.getValue();
-                    if (priceGroups != null) {
-                        Groups priceGroup = priceGroups.get(0);
-                        if (priceGroup != null) {
-                            if (groups.getKey().equals("PRICE_GROUPS")) {
+                    car.setText("Стил №" + newCRequest.getCarNumber());
+                    Map<String, List<Groups>> groupsMap = newCRequest.getRequestGroups();
+                    if (groupsMap.containsKey("PRICE_GROUPS")) {
+                        List<Groups> priceGroups = groupsMap.get("PRICE_GROUPS");
+                        if (priceGroups.size() > 0) {
+                            Groups priceGroup = priceGroups.get(0);
+                            if (priceGroup != null)
                                 price_group.setText(priceGroup.getDescription());
-                            } else {
-                                groupChosen.append(priceGroup.getDescription()).append(",");
+                        }
+                    }
+                    StringBuilder groupChosen = new StringBuilder();
+                    for (Map.Entry<String, List<Groups>> groups : groupsMap.entrySet()) {
+                        List<Groups> priceGroups = groups.getValue();
+                        if (priceGroups != null) {
+                            Groups priceGroup = priceGroups.get(0);
+                            if (priceGroup != null) {
+                                if (groups.getKey().equals("PRICE_GROUPS")) {
+                                    price_group.setText(priceGroup.getDescription());
+                                } else {
+                                    groupChosen.append(priceGroup.getDescription()).append(",");
+                                }
                             }
                         }
                     }
-                }
-                chosen_group.setText(groupChosen.toString());
+                    chosen_group.setText(groupChosen.toString());
 
-                if (newCRequest.getDispTime() != null && newCRequest.getDispTime() > 0)
-                    arrive_time.setText(newCRequest.getDispTime() + " min");
-                else arrive_time.setText("не е определено");
+                    if (newCRequest.getDispTime() != null && newCRequest.getDispTime() > 0)
+                        arrive_time.setText(newCRequest.getDispTime() + " min");
+                    else arrive_time.setText("не е определено");
 
-                remaining_time.setText(newCRequest.getExecTime());
-                state.setText(RequestStatus.getByCode(newCRequest.getStatus()).toString());
+                    remaining_time.setText(newCRequest.getExecTime());
+                    state.setText(RequestStatus.getByCode(newCRequest.getStatus()).toString());
 
-                if (newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_DELETE.getCode())) {
-                    rejectButton.setVisibility(View.GONE);
-                    editButton.setVisibility(View.GONE);
-                    feedBackButton.setVisibility(View.GONE);
-                } else if (newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_BEGIN.getCode()) || newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_DONE.getCode())) {
-                    rejectButton.setVisibility(View.GONE);
-                    editButton.setVisibility(View.GONE);
-                    feedBackButton.setVisibility(View.VISIBLE);
-                } else {
-                    rejectButton.setVisibility(View.VISIBLE);
-                    editButton.setVisibility(View.VISIBLE);
-                    feedBackButton.setVisibility(View.GONE);
-                    scheduleChanges();
-                }
+                    if (newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_DELETE.getCode())) {
+                        rejectButton.setVisibility(View.GONE);
+                        editButton.setVisibility(View.GONE);
+                        feedBackButton.setVisibility(View.GONE);
+                    } else if (newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_BEGIN.getCode()) || newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_DONE.getCode())) {
+                        rejectButton.setVisibility(View.GONE);
+                        editButton.setVisibility(View.GONE);
+                        feedBackButton.setVisibility(View.VISIBLE);
+                    } else {
+                        rejectButton.setVisibility(View.VISIBLE);
+                        editButton.setVisibility(View.VISIBLE);
+                        feedBackButton.setVisibility(View.GONE);
+                        scheduleChanges();
+                    }
+                } else scheduleChangesSec();
             } else {
                 Log.e(TAG, "No newCRequest or newCRequest.getRequestsId=null");
                 //finish(); its close after server error

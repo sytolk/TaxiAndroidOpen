@@ -141,19 +141,19 @@ public class RequestsActivity extends Activity {
 
                     address = new TextView(this);
                     address.setPadding(2, 2, 2, 2);
-                    address.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.5f));
+                    address.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.4f));
 
                     time = new TextView(this);
                     time.setPadding(2, 2, 2, 2);
-                    time.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.3f));
+                    time.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.2f));
 
                     car = new TextView(this);
                     car.setPadding(2, 2, 2, 2);
-                    car.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.1f));
+                    car.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.2f));
 
                     state = new TextView(this);
                     state.setPadding(2, 2, 2, 2);
-                    state.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.1f));
+                    state.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.2f));
 
                     //id.setText("Номер");
                     //date.setText("Дата и час");
@@ -187,19 +187,19 @@ public class RequestsActivity extends Activity {
 
                             address = new TextView(this);
                             address.setPadding(2, 2, 2, 2);
-                            address.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.5f));
+                            address.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.4f));
 
                             time = new TextView(this);
                             time.setPadding(2, 2, 2, 2);
-                            time.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.3f));
+                            time.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.2f));
 
                             car = new TextView(this);
                             car.setPadding(2, 2, 2, 2);
-                            car.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.1f));
+                            car.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.2f));
 
                             state = new TextView(this);
                             state.setPadding(2, 2, 2, 2);
-                            state.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.1f));
+                            state.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.2f));
 
                             //id.setText(requestMap.get("id").toString());
                             //date.setText(requestMap.get("datecreated").toString()); //DateFormat.getDateInstance(DateFormat.SHORT).format(requestMap.get("datecreated")));

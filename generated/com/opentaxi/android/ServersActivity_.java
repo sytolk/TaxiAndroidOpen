@@ -77,21 +77,6 @@ public final class ServersActivity_
         cancelButton = ((Button) hasViews.findViewById(id.cancelButton));
         serversContent = ((LinearLayout) hasViews.findViewById(id.serversContent));
         {
-            View view = hasViews.findViewById(id.refreshButton);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        ServersActivity_.this.refreshButton();
-                    }
-
-                }
-                );
-            }
-        }
-        {
             View view = hasViews.findViewById(id.cancelButton);
             if (view!= null) {
                 view.setOnClickListener(new OnClickListener() {
@@ -106,7 +91,36 @@ public final class ServersActivity_
                 );
             }
         }
+        {
+            View view = hasViews.findViewById(id.refreshButton);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        ServersActivity_.this.refreshButton();
+                    }
+
+                }
+                );
+            }
+        }
         afterServers();
+    }
+
+    @Override
+    public void loginError(final String error) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                ServersActivity_.super.loginError(error);
+            }
+
+        }
+        );
     }
 
     @Override
@@ -124,13 +138,17 @@ public final class ServersActivity_
     }
 
     @Override
-    public void loginError(final String error) {
-        handler_.post(new Runnable() {
+    public void updateServers() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
-            public void run() {
-                ServersActivity_.super.loginError(error);
+            public void execute() {
+                try {
+                    ServersActivity_.super.updateServers();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
             }
 
         }
@@ -164,24 +182,6 @@ public final class ServersActivity_
             public void execute() {
                 try {
                     ServersActivity_.super.testServer(socket);
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void updateServers() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    ServersActivity_.super.updateServers();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

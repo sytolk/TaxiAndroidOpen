@@ -1,4 +1,4 @@
-#Taxi Android Open
+#Taxi Android Open <div style="float: right"><a href="https://play.google.com/store/apps/details?id=com.opentaxi.android" rel="Taxi Bulgaria">![Taxi Bulgaria](https://developer.android.com/images/brand/en_generic_rgb_wo_60.png)</a></div>
 
 This open source application is for clients of taxi companies. It`s using array of Taxi web services for communication with cars. The client can change the primary server or the server can be changed automatically if no connection.
 With this application its easy to send request, view request status and can help clients to find taxi.
