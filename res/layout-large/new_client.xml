@@ -156,7 +156,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".4"
-                    android:text="Емаил:"
+                    android:text="Имейл:"
                     android:textStyle="bold"
                     android:textSize="20dp"
                     android:gravity="right"

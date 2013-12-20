@@ -126,7 +126,7 @@ public class RequestDetailsActivity extends FragmentActivity {
                         address.setText(regions.getDescription() + " " + newCRequest.getFullAddress());
                     } else address.setText(newCRequest.getFullAddress());
 
-                    car.setText("Стил №" + newCRequest.getCarNumber());
+                    if (newCRequest.getCarNumber() != null && !newCRequest.getCarNumber().equals("")) car.setText("Стил №" + newCRequest.getCarNumber());
                     Map<String, List<Groups>> groupsMap = newCRequest.getRequestGroups();
                     if (groupsMap.containsKey("PRICE_GROUPS")) {
                         List<Groups> priceGroups = groupsMap.get("PRICE_GROUPS");
@@ -157,7 +157,15 @@ public class RequestDetailsActivity extends FragmentActivity {
                     else arrive_time.setText("не е определено");
 
                     remaining_time.setText(newCRequest.getExecTime());
-                    state.setText(RequestStatus.getByCode(newCRequest.getStatus()).toString());
+
+
+                    if (newCRequest.getStatus() != null) {
+                        String statusCode = RequestStatus.getByCode(newCRequest.getStatus()).toString();
+                        int resourceID = getResources().getIdentifier(statusCode, "string", getPackageName());
+                        if (resourceID > 0) {
+                            state.setText(resourceID);
+                        } else state.setText(statusCode);
+                    }
 
                     if (newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_DELETE.getCode())) {
                         rejectButton.setVisibility(View.GONE);

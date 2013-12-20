@@ -208,9 +208,16 @@ public class RequestsActivity extends Activity {
                                 address.setText(regions.getDescription() + " " + newCRequest.getFullAddress());
                             } else address.setText(newCRequest.getFullAddress());
                             time.setText(newCRequest.getDispTime() + " мин.");
-                            if (newCRequest.getCarNumber() != null) car.setText("Стил №" + newCRequest.getCarNumber());
-                            Integer status = newCRequest.getStatus();
-                            state.setText(RequestStatus.getByCode(status).toString());
+                            if (newCRequest.getCarNumber() != null && !newCRequest.getCarNumber().equals(""))
+                                car.setText("Стил №" + newCRequest.getCarNumber());
+
+                            if (newCRequest.getStatus() != null) {
+                                String statusCode = RequestStatus.getByCode(newCRequest.getStatus()).toString();
+                                int resourceID = getResources().getIdentifier(statusCode, "string", getPackageName());
+                                if (resourceID > 0) {
+                                    state.setText(resourceID);
+                                } else state.setText(statusCode);
+                            }
 
                             row.setOnClickListener(new View.OnClickListener() {
                                 @Override

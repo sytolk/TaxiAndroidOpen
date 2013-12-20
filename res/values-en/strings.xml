@@ -93,4 +93,23 @@
 	<string name="unit_symbol_kilometer">&#160;km</string>
 	<string name="unit_symbol_meter">&#160;m</string>
 	<string name="zoomLevel">Zoom level</string>
+
+    <!--REQUEST STATUS-->
+    <string name="NEW_REQUEST_NEW">New request</string>
+    <string name="NEW_REQUEST_PROCESSING">Processing..</string>
+    <string name="NEW_REQUEST_GREEN">Sending to car..</string>
+    <string name="NEW_REQUEST_YELLOW">Resending..</string>
+    <string name="NEW_REQUEST_RED">Searching for car..</string>
+    <string name="NEW_REQUEST_APPROVED">Approved !</string>
+    <string name="NEW_REQUEST_BEGIN">Begin</string>
+    <string name="NEW_REQUEST_DONE">Done</string>
+    <string name="NEW_REQUEST_NEXT">Approved</string>
+    <string name="NEW_REQUEST_ON_POSITION">On position !</string>
+    <string name="NEW_REQUEST_SKIP_POSITION">Skiping position !</string>
+    <string name="NEW_REQUEST_TRANSFER">Approved !</string>
+    <string name="NEW_REQUEST_REFRESH">Processing..</string>
+    <string name="NEW_REQUEST_REJECTED">Rejected from car</string>
+    <string name="NEW_REQUEST_EDIT">Edit</string>
+    <string name="NEW_REQUEST_DELETE">Deleted</string>
+
 </resources>

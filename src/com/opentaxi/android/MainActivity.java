@@ -64,7 +64,7 @@ public class MainActivity extends FragmentActivity {
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     GoogleCloudMessaging gcm;
-    private boolean havePlayService = true;
+    //private boolean havePlayService = true;
 
     /**
      * Called when the activity is first created.
@@ -230,11 +230,11 @@ public class MainActivity extends FragmentActivity {
             // In debug mode, log the status
             Log.d("Activity Recognition",
                     "Google Play services is available.");
-            havePlayService = true;
+            TaxiApplication.setHavePlayService(true);
             // Continue
             return true;
             // Google Play services was not available for some reason
-        } else if (havePlayService) {
+        } else if (TaxiApplication.isHavePlayService()) {
             // Get the error dialog from Google Play services
             Dialog errorDialog = GooglePlayServicesUtil.getErrorDialog(resultCode, this, PLAY_SERVICES_RESOLUTION_REQUEST);
 
@@ -350,7 +350,7 @@ public class MainActivity extends FragmentActivity {
         registerReceiver(networkState, filter);
         super.onResume();
         // Check device for Play Services APK.
-        servicesConnected();
+        //servicesConnected();
 
         //Check Internet connection
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -423,7 +423,7 @@ public class MainActivity extends FragmentActivity {
                     case Activity.RESULT_OK:
                         break;
                     case Activity.RESULT_CANCELED:
-                        havePlayService = false;
+                        TaxiApplication.setHavePlayService(false);
                         break;
                 }
                 break;

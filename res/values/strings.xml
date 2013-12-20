@@ -94,5 +94,23 @@
     <string name="unit_symbol_meter">&#160;m</string>
     <string name="zoomLevel">Zoom level</string>
 
+    <!--REQUEST STATUS-->
+    <string name="NEW_REQUEST_NEW">Нова заявка</string>
+    <string name="NEW_REQUEST_PROCESSING">Обработва се</string>
+    <string name="NEW_REQUEST_GREEN">Изпращане на автомобил..</string>
+    <string name="NEW_REQUEST_YELLOW">Повторно изпращане..</string>
+    <string name="NEW_REQUEST_RED">В процес на търсене..</string>
+    <string name="NEW_REQUEST_APPROVED">Потвърдена !</string>
+    <string name="NEW_REQUEST_BEGIN">Начало на курс</string>
+    <string name="NEW_REQUEST_DONE">Изпълнена</string>
+    <string name="NEW_REQUEST_NEXT">Потвърдена !</string>
+    <string name="NEW_REQUEST_ON_POSITION">Таксито е на адреса !</string>
+    <string name="NEW_REQUEST_SKIP_POSITION">Подминал адреса !</string>
+    <string name="NEW_REQUEST_TRANSFER">Потвърдена !</string>
+    <string name="NEW_REQUEST_REFRESH">Обработва се</string>
+    <string name="NEW_REQUEST_REJECTED">Отказана от колата</string>
+    <string name="NEW_REQUEST_EDIT">Променена</string>
+    <string name="NEW_REQUEST_DELETE">Изтрита</string>
+
     <string name="app_id">550947981660612</string>
 </resources>

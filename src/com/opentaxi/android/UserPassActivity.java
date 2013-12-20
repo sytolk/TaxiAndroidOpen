@@ -146,6 +146,8 @@ public class UserPassActivity extends FragmentActivity implements Validator.Vali
             @Override
             public boolean onKey(final View v, final int keyCode, final KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_ENTER) {
+                    userName.setError(null);
+                    pass.setError(null);
                     validator.validateAsync();
                     //return true; //this will keep keyboard open
                 }
@@ -229,6 +231,10 @@ public class UserPassActivity extends FragmentActivity implements Validator.Vali
         submitButton.setClickable(false);
         validator.validateAsync();
     }*/
+    @UiThread
+    void showProgress() {
+        if (pbProgress != null) pbProgress.setVisibility(View.VISIBLE);
+    }
 
     @Click
     void facebookButton() {
@@ -248,6 +254,7 @@ public class UserPassActivity extends FragmentActivity implements Validator.Vali
             public void onLogin() {
 
                 Log.i(TAG, "onLogin");
+                showProgress();
                 if (AppPreferences.getInstance() != null)
                     AppPreferences.getInstance().setAccessToken(mSimpleFacebook.getAccessToken());  //todo move this to disk cache
                 checkFacebook(mSimpleFacebook.getAccessToken());
@@ -262,7 +269,7 @@ public class UserPassActivity extends FragmentActivity implements Validator.Vali
             @Override
             public void onThinking() {
                 Log.i(TAG, "onThinking");
-                pbProgress.setVisibility(View.VISIBLE);
+                showProgress();
                 //maxFacebookLoginTime();
             }
 
@@ -403,7 +410,7 @@ public class UserPassActivity extends FragmentActivity implements Validator.Vali
                 @Override
                 public void onThinking() {
                     Log.i(TAG, "New facebookUser onThinking");
-                    pbProgress.setVisibility(View.VISIBLE);
+                    showProgress();
                     maxFacebookLoginTime();
                 }
 

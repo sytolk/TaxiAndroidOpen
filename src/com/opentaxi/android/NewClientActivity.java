@@ -119,13 +119,21 @@ public class NewClientActivity extends FragmentActivity implements Validator.Val
 
     @Click
     void sendButton() {
-        if (validator != null)
+        if (validator != null) {
+            userName.setError(null);
+            pass.setError(null);
+            cityName.setError(null);
+            phoneNumber.setError(null);
+            email.setError(null);
+
             validator.validate();
+        }
     }
 
     @FocusChange({R.id.userNameField})
     void focusChangedOnUserNameField(View userField, boolean hasFocus) {
         if (!hasFocus) {
+            userName.setError(null);
             checkUsername(userName.getText().toString());
         }
     }
@@ -134,21 +142,26 @@ public class NewClientActivity extends FragmentActivity implements Validator.Val
     void checkUsername(String username) {
         Boolean exist = RestClient.getInstance().checkUserExist(username);
         if (exist != null && exist) setUserError("Потребителското име съществува");
-        else haveErrors = false;
+        else {
+            haveErrors = false;
+        }
     }
 
     @FocusChange({R.id.emailField})
     void focusChangedOnEmailField(View emailField, boolean hasFocus) {
         if (!hasFocus) {
+            email.setError(null);
             checkEmail(email.getText().toString());
         }
     }
 
     @Background
-    void checkEmail(String email) {
-        Boolean exist = RestClient.getInstance().checkEmailExist(email);
-        if (exist != null && exist) setEmailError("Този имеил съществува");
-        else haveErrors = false;
+    void checkEmail(String emailCheck) {
+        Boolean exist = RestClient.getInstance().checkEmailExist(emailCheck);
+        if (exist != null && exist) setEmailError("Този имейл съществува");
+        else {
+            haveErrors = false;
+        }
     }
 
     @Background
@@ -232,8 +245,8 @@ public class NewClientActivity extends FragmentActivity implements Validator.Val
     @UiThread
     void ActivationDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Потвърди емайла");
-        alertDialogBuilder.setMessage("Вашият акунт е създаден успешно но е нужно да потвърдите имаила си (" + email.getText().toString() + "). Това може да стане като кликнете на линка който ви изпратихме на:" + email.getText().toString());
+        alertDialogBuilder.setTitle("Потвърждение на имейл");
+        alertDialogBuilder.setMessage("Вашият акунт е създаден успешно но е нужно да потвърдите имейла си (" + email.getText().toString() + "). Това може да стане като кликнете на линка който ви изпратихме на:" + email.getText().toString());
 
         alertDialogBuilder.setNeutralButton("ОК", new DialogInterface.OnClickListener() {
 

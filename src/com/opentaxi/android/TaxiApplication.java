@@ -16,9 +16,18 @@ import org.acra.annotation.ReportsCrashes;
 @ReportsCrashes(formKey = "dF8wOUJYbFhCeDVlMG1JT3FkN2xXM0E6MQ", logcatFilterByPid = true)
 public class TaxiApplication extends Application {
 
+    private static boolean havePlayService=true;
     private static boolean requestsVisible=false;
     private static boolean requestsDetailsVisible=false;
     private static boolean userPassVisible=false;
+
+    public static void setHavePlayService(boolean havePlayService) {
+        TaxiApplication.havePlayService = havePlayService;
+    }
+
+    public static boolean isHavePlayService() {
+        return havePlayService;
+    }
 
     public static boolean isRequestsVisible() {
         return requestsVisible;
