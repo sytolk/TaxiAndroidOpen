@@ -228,10 +228,11 @@ public class NewRequestActivity extends FragmentActivity {
 
     @Click
     void requestSend() {
-        String txt = addressText.getText().toString();
-        if (txt.length() == 0) txt = address.getText().toString();
+        String txt = null;
+        if (addressText.getVisibility() == View.VISIBLE) txt = addressText.getText().toString();
+        else txt = address.getText().toString();
 
-        if (txt.length() > 1) {
+        if (txt != null && txt.length() > 1) {
             reqInfoButtonContainer.setVisibility(View.GONE);
             pbProgress.setVisibility(View.VISIBLE);
 

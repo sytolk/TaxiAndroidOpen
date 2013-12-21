@@ -110,20 +110,6 @@ public final class ServersActivity_
     }
 
     @Override
-    public void loginError(final String error) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                ServersActivity_.super.loginError(error);
-            }
-
-        }
-        );
-    }
-
-    @Override
     public void showServers(final boolean testing) {
         handler_.post(new Runnable() {
 
@@ -138,14 +124,28 @@ public final class ServersActivity_
     }
 
     @Override
-    public void updateServers() {
+    public void loginError(final String error) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                ServersActivity_.super.loginError(error);
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void testServer(final String socket) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    ServersActivity_.super.updateServers();
+                    ServersActivity_.super.testServer(socket);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -174,14 +174,14 @@ public final class ServersActivity_
     }
 
     @Override
-    public void testServer(final String socket) {
+    public void updateServers() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    ServersActivity_.super.testServer(socket);
+                    ServersActivity_.super.updateServers();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
