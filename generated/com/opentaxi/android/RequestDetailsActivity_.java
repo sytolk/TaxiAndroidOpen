@@ -90,18 +90,18 @@ public final class RequestDetailsActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        remaining_time = ((TextView) hasViews.findViewById(id.remaining_time));
-        datecreated = ((TextView) hasViews.findViewById(id.datecreated));
         rejectButton = ((Button) hasViews.findViewById(id.rejectButton));
-        feedBackButton = ((Button) hasViews.findViewById(id.feedBackButton));
-        editButton = ((Button) hasViews.findViewById(id.editButton));
-        address = ((TextView) hasViews.findViewById(id.address));
-        arrive_time = ((TextView) hasViews.findViewById(id.arrive_time));
-        requestNumber = ((TextView) hasViews.findViewById(id.requestNumber));
-        price_group = ((TextView) hasViews.findViewById(id.price_group));
-        car = ((TextView) hasViews.findViewById(id.car));
+        remaining_time = ((TextView) hasViews.findViewById(id.remaining_time));
         chosen_group = ((TextView) hasViews.findViewById(id.chosen_group));
         state = ((TextView) hasViews.findViewById(id.state));
+        price_group = ((TextView) hasViews.findViewById(id.price_group));
+        car = ((TextView) hasViews.findViewById(id.car));
+        address = ((TextView) hasViews.findViewById(id.address));
+        requestNumber = ((TextView) hasViews.findViewById(id.requestNumber));
+        editButton = ((Button) hasViews.findViewById(id.editButton));
+        feedBackButton = ((Button) hasViews.findViewById(id.feedBackButton));
+        datecreated = ((TextView) hasViews.findViewById(id.datecreated));
+        arrive_time = ((TextView) hasViews.findViewById(id.arrive_time));
         {
             View view = hasViews.findViewById(id.editButton);
             if (view!= null) {
@@ -111,21 +111,6 @@ public final class RequestDetailsActivity_
                     @Override
                     public void onClick(View view) {
                         RequestDetailsActivity_.this.editButton();
-                    }
-
-                }
-                );
-            }
-        }
-        {
-            View view = hasViews.findViewById(id.feedBackButton);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        RequestDetailsActivity_.this.feedBackButton();
                     }
 
                 }
@@ -162,6 +147,21 @@ public final class RequestDetailsActivity_
                 );
             }
         }
+        {
+            View view = hasViews.findViewById(id.feedBackButton);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        RequestDetailsActivity_.this.feedBackButton();
+                    }
+
+                }
+                );
+            }
+        }
         afterRequestsActivity();
     }
 
@@ -181,6 +181,20 @@ public final class RequestDetailsActivity_
     }
 
     @Override
+    public void showFeedBack(final Feedback[] feedbacks) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                RequestDetailsActivity_.super.showFeedBack(feedbacks);
+            }
+
+        }
+        );
+    }
+
+    @Override
     public void showDetails() {
         handler_.post(new Runnable() {
 
@@ -195,13 +209,17 @@ public final class RequestDetailsActivity_
     }
 
     @Override
-    public void showFeedBack(final Feedback[] feedbacks) {
-        handler_.post(new Runnable() {
+    public void scheduleChangesSec() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 1000, "") {
 
 
             @Override
-            public void run() {
-                RequestDetailsActivity_.super.showFeedBack(feedbacks);
+            public void execute() {
+                try {
+                    RequestDetailsActivity_.super.scheduleChangesSec();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
             }
 
         }
@@ -227,14 +245,14 @@ public final class RequestDetailsActivity_
     }
 
     @Override
-    public void scheduleChangesSec() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 1000, "") {
+    public void sendFeedBack(final String comment, final Map<Integer, Float> vote) {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    RequestDetailsActivity_.super.scheduleChangesSec();
+                    RequestDetailsActivity_.super.sendFeedBack(comment, vote);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -271,24 +289,6 @@ public final class RequestDetailsActivity_
             public void execute() {
                 try {
                     RequestDetailsActivity_.super.scheduleChanges();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void sendFeedBack(final String comment, final Map<Integer, Float> vote) {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    RequestDetailsActivity_.super.sendFeedBack(comment, vote);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

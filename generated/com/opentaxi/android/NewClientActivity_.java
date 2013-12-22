@@ -91,33 +91,18 @@ public final class NewClientActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        phoneNumber = ((EditText) hasViews.findViewById(id.phoneNumber));
-        cityName = ((AutoCompleteTextView) hasViews.findViewById(id.cityName));
-        middleName = ((EditText) hasViews.findViewById(id.middleName));
-        nameField = ((EditText) hasViews.findViewById(id.nameField));
-        sendButton = ((Button) hasViews.findViewById(id.sendButton));
-        passwordHint = ((EditText) hasViews.findViewById(id.passwordHint));
-        pass2 = ((EditText) hasViews.findViewById(id.password2Field));
-        userName = ((EditText) hasViews.findViewById(id.userNameField));
-        email = ((EditText) hasViews.findViewById(id.emailField));
-        iAgreeCheckBox = ((CheckBox) hasViews.findViewById(id.iAgreeCheckBox));
-        pass = ((EditText) hasViews.findViewById(id.passwordField));
         lastName = ((EditText) hasViews.findViewById(id.lastName));
-        {
-            View view = hasViews.findViewById(id.userAgreement);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        NewClientActivity_.this.userAgreement();
-                    }
-
-                }
-                );
-            }
-        }
+        cityName = ((AutoCompleteTextView) hasViews.findViewById(id.cityName));
+        pass2 = ((EditText) hasViews.findViewById(id.password2Field));
+        iAgreeCheckBox = ((CheckBox) hasViews.findViewById(id.iAgreeCheckBox));
+        email = ((EditText) hasViews.findViewById(id.emailField));
+        pass = ((EditText) hasViews.findViewById(id.passwordField));
+        middleName = ((EditText) hasViews.findViewById(id.middleName));
+        phoneNumber = ((EditText) hasViews.findViewById(id.phoneNumber));
+        passwordHint = ((EditText) hasViews.findViewById(id.passwordHint));
+        sendButton = ((Button) hasViews.findViewById(id.sendButton));
+        userName = ((EditText) hasViews.findViewById(id.userNameField));
+        nameField = ((EditText) hasViews.findViewById(id.nameField));
         {
             View view = hasViews.findViewById(id.sendButton);
             if (view!= null) {
@@ -127,6 +112,21 @@ public final class NewClientActivity_
                     @Override
                     public void onClick(View view) {
                         NewClientActivity_.this.sendButton();
+                    }
+
+                }
+                );
+            }
+        }
+        {
+            View view = hasViews.findViewById(id.userAgreement);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        NewClientActivity_.this.userAgreement();
                     }
 
                 }
@@ -182,13 +182,13 @@ public final class NewClientActivity_
     }
 
     @Override
-    public void setUserError(final String error) {
+    public void finishThis() {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                NewClientActivity_.super.setUserError(error);
+                NewClientActivity_.super.finishThis();
             }
 
         }
@@ -224,13 +224,13 @@ public final class NewClientActivity_
     }
 
     @Override
-    public void finishThis() {
+    public void setUserError(final String error) {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                NewClientActivity_.super.finishThis();
+                NewClientActivity_.super.setUserError(error);
             }
 
         }
@@ -256,14 +256,14 @@ public final class NewClientActivity_
     }
 
     @Override
-    public void checkEmail(final String emailCheck) {
+    public void createNewUser(final NewUsers users) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    NewClientActivity_.super.checkEmail(emailCheck);
+                    NewClientActivity_.super.createNewUser(users);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -274,14 +274,14 @@ public final class NewClientActivity_
     }
 
     @Override
-    public void createNewUser(final NewUsers users) {
+    public void checkEmail(final String emailCheck) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    NewClientActivity_.super.createNewUser(users);
+                    NewClientActivity_.super.checkEmail(emailCheck);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

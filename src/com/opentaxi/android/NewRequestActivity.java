@@ -244,9 +244,11 @@ public class NewRequestActivity extends FragmentActivity {
 
             List<Groups> filterGroups = new ArrayList<Groups>();
             Groups[] visibleGroups = RestClient.getInstance().getClientVisibleGroups();
-            for (Groups group : visibleGroups) {
-                CheckBox cb = (CheckBox) findViewById(group.getGroupsId());
-                if (cb.isChecked()) filterGroups.add(group);
+            if (visibleGroups != null) {
+                for (Groups group : visibleGroups) {
+                    CheckBox cb = (CheckBox) findViewById(group.getGroupsId());
+                    if (cb.isChecked()) filterGroups.add(group);
+                }
             }
             GroupsAdapter priceAdapter = (GroupsAdapter) pricesPicker.getSelectedItem();
             if (priceAdapter != null) filterGroups.add(priceAdapter.getGroups());

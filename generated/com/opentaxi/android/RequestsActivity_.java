@@ -150,24 +150,6 @@ public final class RequestsActivity_
     }
 
     @Override
-    public void getRequestHistory() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    RequestsActivity_.super.getRequestHistory();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
     public void getRequests() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
@@ -212,6 +194,24 @@ public final class RequestsActivity_
             public void execute() {
                 try {
                     RequestsActivity_.super.scheduleRequestSec();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void getRequestHistory() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    RequestsActivity_.super.getRequestHistory();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

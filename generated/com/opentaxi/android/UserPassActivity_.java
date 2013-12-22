@@ -85,8 +85,8 @@ public final class UserPassActivity_
     @Override
     public void onViewChanged(HasViews hasViews) {
         pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
-        pass = ((EditText) hasViews.findViewById(id.passwordField));
         userName = ((EditText) hasViews.findViewById(id.userNameField));
+        pass = ((EditText) hasViews.findViewById(id.passwordField));
         {
             View view = hasViews.findViewById(id.lostPassword);
             if (view!= null) {
@@ -136,6 +136,20 @@ public final class UserPassActivity_
     }
 
     @Override
+    public void facebookUser(final Users user) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                UserPassActivity_.super.facebookUser(user);
+            }
+
+        }
+        );
+    }
+
+    @Override
     public void showProgress() {
         handler_.post(new Runnable() {
 
@@ -178,13 +192,17 @@ public final class UserPassActivity_
     }
 
     @Override
-    public void facebookUser(final Users user) {
-        handler_.post(new Runnable() {
+    public void login(final String username, final String password) {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
-            public void run() {
-                UserPassActivity_.super.facebookUser(user);
+            public void execute() {
+                try {
+                    UserPassActivity_.super.login(username, password);
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
             }
 
         }
@@ -200,24 +218,6 @@ public final class UserPassActivity_
             public void execute() {
                 try {
                     UserPassActivity_.super.checkFacebook(token);
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void login(final String username, final String password) {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    UserPassActivity_.super.login(username, password);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
