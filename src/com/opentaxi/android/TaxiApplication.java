@@ -18,6 +18,7 @@ public class TaxiApplication extends Application {
 
     private static boolean havePlayService=true;
     private static boolean requestsVisible=false;
+    private static boolean requestsHistory=false;
     private static boolean requestsDetailsVisible=false;
     private static boolean userPassVisible=false;
 
@@ -39,6 +40,14 @@ public class TaxiApplication extends Application {
 
     public static void requestsPaused() {
         requestsVisible = false;
+    }
+
+    public static boolean isRequestsHistory() {
+        return requestsHistory;
+    }
+
+    public static void requestsHistory(boolean history) {
+        requestsHistory = history;
     }
 
     public static boolean isRequestsDetailsVisible() {

@@ -5,6 +5,7 @@
 
 package com.opentaxi.android;
 
+import java.io.Serializable;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +25,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import com.opentaxi.android.R.id;
 import com.opentaxi.android.R.layout;
+import com.opentaxi.generated.mysql.tables.pojos.Cars;
 import com.opentaxi.generated.mysql.tables.pojos.Groups;
 import com.opentaxi.generated.mysql.tables.pojos.Regions;
 import org.androidannotations.api.BackgroundExecutor;
@@ -38,6 +40,7 @@ public final class NewRequestActivity_
 {
 
     private final OnViewChangedNotifier onViewChangedNotifier_ = new OnViewChangedNotifier();
+    public final static String CARS_EXTRA = "cars";
     private Handler handler_ = new Handler(Looper.getMainLooper());
 
     @Override
@@ -51,6 +54,7 @@ public final class NewRequestActivity_
 
     private void init_(Bundle savedInstanceState) {
         OnViewChangedNotifier.registerOnViewChangedListener(this);
+        injectExtras_();
     }
 
     @Override
@@ -89,16 +93,17 @@ public final class NewRequestActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        reqInfoButtonContainer = ((LinearLayout) hasViews.findViewById(id.reqInfoButtonContainer));
-        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
         addressText = ((EditText) hasViews.findViewById(id.addressText));
-        pricesPicker = ((Spinner) hasViews.findViewById(id.pricesPicker));
-        addressChange = ((Button) hasViews.findViewById(id.addressChange));
-        address = ((TextView) hasViews.findViewById(id.address));
-        regionsPicker = ((Spinner) hasViews.findViewById(id.regionsPicker));
         requestSend = ((Button) hasViews.findViewById(id.requestSend));
         llFilters = ((LinearLayout) hasViews.findViewById(id.llFilters));
+        regionsPicker = ((Spinner) hasViews.findViewById(id.regionsPicker));
+        addressChange = ((Button) hasViews.findViewById(id.addressChange));
+        pricesPicker = ((Spinner) hasViews.findViewById(id.pricesPicker));
+        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
         region = ((TextView) hasViews.findViewById(id.region));
+        reqInfoButtonContainer = ((LinearLayout) hasViews.findViewById(id.reqInfoButtonContainer));
+        address = ((TextView) hasViews.findViewById(id.address));
+        citiesPicker = ((Spinner) hasViews.findViewById(id.citiesPicker));
         {
             View view = hasViews.findViewById(id.addressChange);
             if (view!= null) {
@@ -132,6 +137,63 @@ public final class NewRequestActivity_
         afterActivity();
     }
 
+    private void injectExtras_() {
+        Bundle extras_ = getIntent().getExtras();
+        if (extras_!= null) {
+            if (extras_.containsKey(CARS_EXTRA)) {
+                cars = ((Cars) extras_.getSerializable(CARS_EXTRA));
+            }
+        }
+    }
+
+    @Override
+    public void setIntent(Intent newIntent) {
+        super.setIntent(newIntent);
+        injectExtras_();
+    }
+
+    @Override
+    public void showRegions(final Regions[] regions) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                NewRequestActivity_.super.showRegions(regions);
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void notSupporderDialog() {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                NewRequestActivity_.super.notSupporderDialog();
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void showCities(final String supported) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                NewRequestActivity_.super.showCities(supported);
+            }
+
+        }
+        );
+    }
+
     @Override
     public void showPrices(final Groups[] prices) {
         handler_.post(new Runnable() {
@@ -147,27 +209,13 @@ public final class NewRequestActivity_
     }
 
     @Override
-    public void showAddress(final com.opentaxi.generated.mysql.tables.pojos.NewRequest adr) {
+    public void showGroups(final Groups[] groups) {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                NewRequestActivity_.super.showAddress(adr);
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void showRegions(final Regions[] regions) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                NewRequestActivity_.super.showRegions(regions);
+                NewRequestActivity_.super.showGroups(groups);
             }
 
         }
@@ -189,13 +237,49 @@ public final class NewRequestActivity_
     }
 
     @Override
-    public void showGroups(final Groups[] groups) {
+    public void showAddress(final com.opentaxi.generated.mysql.tables.pojos.NewRequest adr) {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                NewRequestActivity_.super.showGroups(groups);
+                NewRequestActivity_.super.showAddress(adr);
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void sendRequest(final com.opentaxi.models.NewRequest newRequest) {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    NewRequestActivity_.super.sendRequest(newRequest);
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void setPrices() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    NewRequestActivity_.super.setPrices();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
             }
 
         }
@@ -229,42 +313,6 @@ public final class NewRequestActivity_
             public void execute() {
                 try {
                     NewRequestActivity_.super.setAddress();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void setPrices() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    NewRequestActivity_.super.setPrices();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void sendRequest(final com.opentaxi.models.NewRequest newRequest) {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    NewRequestActivity_.super.sendRequest(newRequest);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -332,6 +380,11 @@ public final class NewRequestActivity_
                     context_.startActivity(intent_);
                 }
             }
+        }
+
+        public NewRequestActivity_.IntentBuilder_ cars(Cars cars) {
+            intent_.putExtra(CARS_EXTRA, ((Serializable) cars));
+            return this;
         }
 
     }

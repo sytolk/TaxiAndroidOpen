@@ -385,7 +385,7 @@ public class UserPassActivity extends FragmentActivity implements Validator.Vali
             Log.i(TAG, "facebookUser user:" + user.getUsername());
             if (user.getId() != null && user.getId() > 0) {
                 RestClient.getInstance().setAuthHeadersEncoded(user.getUsername(), user.getPassword());
-                AppPreferences.getInstance().setUsers(user);
+                if (AppPreferences.getInstance() != null) AppPreferences.getInstance().setUsers(user);
                 finish();
             } else setError("Грешно потребителско име или парола!");
 

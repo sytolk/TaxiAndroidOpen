@@ -9,11 +9,14 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.*;
+import com.opentaxi.android.adapters.CitiesAdapter;
 import com.opentaxi.android.adapters.GroupsAdapter;
 import com.opentaxi.android.adapters.RegionsAdapter;
 import com.opentaxi.android.utils.AppPreferences;
+import com.opentaxi.generated.mysql.tables.pojos.Cars;
 import com.opentaxi.generated.mysql.tables.pojos.Groups;
 import com.opentaxi.generated.mysql.tables.pojos.Regions;
 import com.opentaxi.models.NewRequest;
@@ -37,6 +40,9 @@ public class NewRequestActivity extends FragmentActivity {
 
     private static final String TAG = "NewRequestActivity";
 
+    @Extra
+    Cars cars;
+
     @ViewById(R.id.pricesPicker)
     Spinner pricesPicker;
 
@@ -45,6 +51,9 @@ public class NewRequestActivity extends FragmentActivity {
 
     @ViewById(R.id.addressText)
     EditText addressText;
+
+    @ViewById(R.id.citiesPicker)
+    Spinner citiesPicker;
 
     @ViewById(R.id.region)
     TextView region;
@@ -69,13 +78,36 @@ public class NewRequestActivity extends FragmentActivity {
 
     @AfterViews
     protected void afterActivity() {
-
+        if (cars == null) setTitle("Поръчка на такси");
+        else setTitle("Поръчка на такси до автомобил номер: " + cars.getNumber());
+        showCities("Бургас");
         setRegions();
         setPrices();
         setGroups();
         address.setText("Адреса се определя автоматично според координатите ви. Моля изчакайте...");
         addressText.setVisibility(View.GONE);
     }
+
+    @UiThread
+    void showCities(String supported) {
+        if (supported != null) {
+            CitiesAdapter[] citiesAdapter = new CitiesAdapter[1];
+            citiesAdapter[0] = new CitiesAdapter(supported);
+            ArrayAdapter<CitiesAdapter> adapter2 = new ArrayAdapter<CitiesAdapter>(this, R.layout.spinner_layout, citiesAdapter);
+            adapter2.setDropDownViewResource(R.layout.spinner_layout);
+            citiesPicker.setAdapter(adapter2);
+            citiesPicker.setOnTouchListener(Spinner_OnTouch);
+        }
+    }
+
+    private View.OnTouchListener Spinner_OnTouch = new View.OnTouchListener() {
+        public boolean onTouch(View v, MotionEvent event) {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                notSupporderDialog();
+            }
+            return true;
+        }
+    };
 
     @Background
     void setRegions() {
@@ -237,6 +269,7 @@ public class NewRequestActivity extends FragmentActivity {
             pbProgress.setVisibility(View.VISIBLE);
 
             NewRequest newRequest = new NewRequest();
+            if (cars != null) newRequest.setCarId(cars.getId());
             RegionsAdapter regionsAdapter = (RegionsAdapter) regionsPicker.getSelectedItem();
             newRequest.setRegionId(regionsAdapter.getId());
 
@@ -310,6 +343,36 @@ public class NewRequestActivity extends FragmentActivity {
                 errorFragment.setDialog(successDialog);
                 // Show the error dialog in the DialogFragment
                 errorFragment.show(getSupportFragmentManager(), "newRequestSuccess");
+            } catch (Exception e) {
+                if (e.getMessage() != null) Log.e(TAG, e.getMessage());
+            }
+        }
+    }
+
+    @UiThread
+    void notSupporderDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Информация");
+        alertDialogBuilder.setMessage("Съжаляваме но услугата за момента се предлага за град Бургас. Ще бъдете известени по имейл когато услугата стане достъпна за други градове.");
+
+        alertDialogBuilder.setNeutralButton("ОК", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        Dialog successDialog = alertDialogBuilder.create();
+
+        if (successDialog != null) {
+            try {
+                // Create a new DialogFragment for the error dialog
+                MainDialogFragment errorFragment = new MainDialogFragment();
+                // Set the dialog in the DialogFragment
+                errorFragment.setDialog(successDialog);
+                // Show the error dialog in the DialogFragment
+                errorFragment.show(getSupportFragmentManager(), "notSupporderDialog");
             } catch (Exception e) {
                 if (e.getMessage() != null) Log.e(TAG, e.getMessage());
             }

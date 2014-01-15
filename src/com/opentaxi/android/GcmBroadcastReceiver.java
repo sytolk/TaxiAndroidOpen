@@ -37,19 +37,21 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        String regId = intent.getExtras().getString("registration_id");
-        if (regId != null && !regId.equals("")) {
+        if (intent != null && intent.getExtras() != null) {
+            String regId = intent.getExtras().getString("registration_id");
+            if (regId != null && !regId.equals("")) {
       /* Do what ever you want with the regId eg. send it to your server */
-            Log.i("GcmBroadcastReceiver", "onReceive:" + regId);
-            //String oldRegid = RestClient.getInstance().getGCMRegistrationId();
-            //if (oldRegid == null || !oldRegid.equals(regId))
+                Log.i("GcmBroadcastReceiver", "onReceive:" + regId);
+                //String oldRegid = RestClient.getInstance().getGCMRegistrationId();
+                //if (oldRegid == null || !oldRegid.equals(regId))
                 RestClient.getInstance().gcmRegister(regId);
+            }
         }
 
         // Explicitly specify that GcmIntentService will handle the intent.
         ComponentName comp = new ComponentName(context.getPackageName(), GcmIntentService.class.getName());
         // Start the service, keeping the device awake while it is launching.
-        startWakefulService(context, (intent.setComponent(comp)));
+        if (intent != null) startWakefulService(context, (intent.setComponent(comp)));
         setResultCode(Activity.RESULT_OK);
     }
 }

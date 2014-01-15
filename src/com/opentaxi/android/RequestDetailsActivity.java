@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
@@ -78,6 +79,8 @@ public class RequestDetailsActivity extends FragmentActivity {
     @ViewById
     TextView state;
 
+    private static final int CAR_DETAILS = 9;
+
     public void onPause() {
         super.onPause();
         TaxiApplication.requestsDetailsPaused();
@@ -89,6 +92,10 @@ public class RequestDetailsActivity extends FragmentActivity {
         super.onResume();
         TaxiApplication.requestsDetailsResumed();
         scheduleChangesSec();
+    }
+
+    @OnActivityResult(CAR_DETAILS)
+    void onResult() {
     }
 
     @AfterViews
@@ -126,7 +133,17 @@ public class RequestDetailsActivity extends FragmentActivity {
                         address.setText(regions.getDescription() + " " + newCRequest.getFullAddress());
                     } else address.setText(newCRequest.getFullAddress());
 
-                    if (newCRequest.getCarNumber() != null && !newCRequest.getCarNumber().equals("")) car.setText("Стил №" + newCRequest.getCarNumber());
+                    if (newCRequest.getCarNumber() != null && !newCRequest.getCarNumber().equals("")) {
+                        car.setText("Стил №" + newCRequest.getCarNumber());
+
+                        car.setOnClickListener(new View.OnClickListener() {
+                            public void onClick(View v) {
+                                Intent requestsIntent = new Intent(RequestDetailsActivity.this, CarDetailsActivity_.class);
+                                requestsIntent.putExtra("carNumber", newCRequest.getCarNumber());
+                                RequestDetailsActivity.this.startActivityForResult(requestsIntent, CAR_DETAILS);
+                            }
+                        });
+                    }
                     Map<String, List<Groups>> groupsMap = newCRequest.getRequestGroups();
                     if (groupsMap.containsKey("PRICE_GROUPS")) {
                         List<Groups> priceGroups = groupsMap.get("PRICE_GROUPS");
@@ -154,7 +171,7 @@ public class RequestDetailsActivity extends FragmentActivity {
 
                     if (newCRequest.getDispTime() != null && newCRequest.getDispTime() > 0)
                         arrive_time.setText(newCRequest.getDispTime() + " min");
-                    else arrive_time.setText("не е определено");
+                    else arrive_time.setText("не зададено");
 
                     remaining_time.setText(newCRequest.getExecTime());
 
@@ -163,7 +180,11 @@ public class RequestDetailsActivity extends FragmentActivity {
                         String statusCode = RequestStatus.getByCode(newCRequest.getStatus()).toString();
                         int resourceID = getResources().getIdentifier(statusCode, "string", getPackageName());
                         if (resourceID > 0) {
-                            state.setText(resourceID);
+                            try {
+                                state.setText(resourceID);
+                            } catch (Resources.NotFoundException e) {
+                                Log.e(TAG, "Resources.NotFoundException:" + resourceID);
+                            }
                         } else state.setText(statusCode);
                     }
 

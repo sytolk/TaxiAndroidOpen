@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.facebook.android:facebook-android-sdk:apklib:3.6.0-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/facebook/android/facebook-android-sdk/3.6.0-SNAPSHOT/facebook-android-sdk-3.6.0-SNAPSHOT.apklib!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/facebook/android/facebook-android-sdk/3.6.0-SNAPSHOT/facebook-android-sdk-3.6.0-SNAPSHOT-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/facebook/android/facebook-android-sdk/3.6.0-SNAPSHOT/facebook-android-sdk-3.6.0-SNAPSHOT-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -82,33 +82,18 @@ public final class MainActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
+        version = ((TextView) hasViews.findViewById(id.txt_version));
         user = ((TextView) hasViews.findViewById(id.user));
         bandwidth = ((TextView) hasViews.findViewById(id.bandwidth));
-        version = ((TextView) hasViews.findViewById(id.txt_version));
         {
-            View view = hasViews.findViewById(id.requestButton);
+            View view = hasViews.findViewById(id.exitButton);
             if (view!= null) {
                 view.setOnClickListener(new OnClickListener() {
 
 
                     @Override
                     public void onClick(View view) {
-                        MainActivity_.this.requestButton();
-                    }
-
-                }
-                );
-            }
-        }
-        {
-            View view = hasViews.findViewById(id.mapButton);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        MainActivity_.this.mapButton();
+                        MainActivity_.this.exitButton();
                     }
 
                 }
@@ -131,14 +116,29 @@ public final class MainActivity_
             }
         }
         {
-            View view = hasViews.findViewById(id.exitButton);
+            View view = hasViews.findViewById(id.mapButton);
             if (view!= null) {
                 view.setOnClickListener(new OnClickListener() {
 
 
                     @Override
                     public void onClick(View view) {
-                        MainActivity_.this.exitButton();
+                        MainActivity_.this.mapButton();
+                    }
+
+                }
+                );
+            }
+        }
+        {
+            View view = hasViews.findViewById(id.requestButton);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        MainActivity_.this.requestButton();
                     }
 
                 }
@@ -163,6 +163,20 @@ public final class MainActivity_
     }
 
     @Override
+    public void startUserPass() {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                MainActivity_.super.startUserPass();
+            }
+
+        }
+        );
+    }
+
+    @Override
     public void afterLogin(final String username) {
         handler_.post(new Runnable() {
 
@@ -177,13 +191,53 @@ public final class MainActivity_
     }
 
     @Override
-    public void startUserPass() {
-        handler_.post(new Runnable() {
+    public void facebookLogout() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
-            public void run() {
-                MainActivity_.super.startUserPass();
+            public void execute() {
+                try {
+                    MainActivity_.super.facebookLogout();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void gcmRegister() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    MainActivity_.super.gcmRegister();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void beforeStartUserPass() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    MainActivity_.super.beforeStartUserPass();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
             }
 
         }
@@ -217,60 +271,6 @@ public final class MainActivity_
             public void execute() {
                 try {
                     MainActivity_.super.setServers();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void beforeStartUserPass() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    MainActivity_.super.beforeStartUserPass();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void gcmRegister() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    MainActivity_.super.gcmRegister();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void facebookLogout() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    MainActivity_.super.facebookLogout();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

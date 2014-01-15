@@ -86,29 +86,14 @@ public final class MainActivity_
         bandwidth = ((TextView) hasViews.findViewById(id.bandwidth));
         version = ((TextView) hasViews.findViewById(id.txt_version));
         {
-            View view = hasViews.findViewById(id.requestButton);
+            View view = hasViews.findViewById(id.newRequestButton);
             if (view!= null) {
                 view.setOnClickListener(new OnClickListener() {
 
 
                     @Override
                     public void onClick(View view) {
-                        MainActivity_.this.requestButton();
-                    }
-
-                }
-                );
-            }
-        }
-        {
-            View view = hasViews.findViewById(id.mapButton);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        MainActivity_.this.mapButton();
+                        MainActivity_.this.newRequestButton();
                     }
 
                 }
@@ -131,14 +116,29 @@ public final class MainActivity_
             }
         }
         {
-            View view = hasViews.findViewById(id.newRequestButton);
+            View view = hasViews.findViewById(id.mapButton);
             if (view!= null) {
                 view.setOnClickListener(new OnClickListener() {
 
 
                     @Override
                     public void onClick(View view) {
-                        MainActivity_.this.newRequestButton();
+                        MainActivity_.this.mapButton();
+                    }
+
+                }
+                );
+            }
+        }
+        {
+            View view = hasViews.findViewById(id.requestButton);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        MainActivity_.this.requestButton();
                     }
 
                 }
@@ -146,20 +146,6 @@ public final class MainActivity_
             }
         }
         afterMain();
-    }
-
-    @Override
-    public void changeNetworkState() {
-        handler_.postDelayed(new Runnable() {
-
-
-            @Override
-            public void run() {
-                MainActivity_.super.changeNetworkState();
-            }
-
-        }
-        , 1000L);
     }
 
     @Override
@@ -177,6 +163,20 @@ public final class MainActivity_
     }
 
     @Override
+    public void changeNetworkState() {
+        handler_.postDelayed(new Runnable() {
+
+
+            @Override
+            public void run() {
+                MainActivity_.super.changeNetworkState();
+            }
+
+        }
+        , 1000L);
+    }
+
+    @Override
     public void startUserPass() {
         handler_.post(new Runnable() {
 
@@ -184,6 +184,24 @@ public final class MainActivity_
             @Override
             public void run() {
                 MainActivity_.super.startUserPass();
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void setServers() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    MainActivity_.super.setServers();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
             }
 
         }
@@ -209,14 +227,14 @@ public final class MainActivity_
     }
 
     @Override
-    public void gcmRegister() {
+    public void facebookLogout() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    MainActivity_.super.gcmRegister();
+                    MainActivity_.super.facebookLogout();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -227,14 +245,14 @@ public final class MainActivity_
     }
 
     @Override
-    public void setServers() {
+    public void gcmRegister() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    MainActivity_.super.setServers();
+                    MainActivity_.super.gcmRegister();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

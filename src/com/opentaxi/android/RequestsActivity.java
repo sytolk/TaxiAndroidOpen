@@ -2,10 +2,10 @@ package com.opentaxi.android;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -25,7 +25,7 @@ import java.util.Date;
  * Time: 2:58 PM
  * developer STANIMIR MARINOV
  */
-@WindowFeature(Window.FEATURE_NO_TITLE)
+//@WindowFeature(Window.FEATURE_NO_TITLE)
 //@Fullscreen
 @EActivity(R.layout.requests)
 public class RequestsActivity extends Activity {
@@ -33,7 +33,7 @@ public class RequestsActivity extends Activity {
     private static final String TAG = "RequestsActivity";
     private static final int REQUEST_DETAILS = 100;
 
-    private boolean isFromHistory = false;
+    //private boolean isFromHistory = false;
     private long lastShowRequests = 0;
 
     @ViewById
@@ -45,7 +45,7 @@ public class RequestsActivity extends Activity {
     @AfterViews
     void afterRequestsActivity() {
         if (requests_table != null) {
-            isFromHistory = false;
+            TaxiApplication.requestsHistory(false);
             requests_table.setVisibility(View.INVISIBLE);
             pbProgress.setVisibility(View.VISIBLE);
             getRequests();
@@ -75,7 +75,7 @@ public class RequestsActivity extends Activity {
     @Background(delay = 1000)
     void scheduleRequestSec() {
         if (TaxiApplication.isRequestsVisible()) {
-            if (isFromHistory) getRequestHistory();
+            if (TaxiApplication.isRequestsHistory()) getRequestHistory();
             else getRequests();
         }
     }
@@ -83,13 +83,14 @@ public class RequestsActivity extends Activity {
     @Background(delay = 10000)
     void scheduleRequest() {
         if (TaxiApplication.isRequestsVisible()) {
-            if (isFromHistory) getRequestHistory();
+            if (TaxiApplication.isRequestsHistory()) getRequestHistory();
             else getRequests();
         }
     }
 
     @Background
     void getRequests() {
+        setActivityTile("Активни поръчки");
         if (new Date().getTime() > (lastShowRequests + 5000)) {
             RequestCView requestView = new RequestCView();
             requestView.setPage(1);
@@ -109,11 +110,17 @@ public class RequestsActivity extends Activity {
 
     @Background
     void getRequestHistory() {
+        setActivityTile("История на поръчките");
         RequestCView requestView = new RequestCView();
         requestView.setPage(1);
         requestView.setMy(true);
         requestView.setRequestStatus(RequestStatus.NEW_REQUEST_DONE.getCode());
         showRequests(RestClient.getInstance().getRequests(requestView));
+    }
+
+    @UiThread
+    void setActivityTile(String title) {
+        setTitle(title);
     }
 
     @UiThread
@@ -215,7 +222,11 @@ public class RequestsActivity extends Activity {
                                 String statusCode = RequestStatus.getByCode(newCRequest.getStatus()).toString();
                                 int resourceID = getResources().getIdentifier(statusCode, "string", getPackageName());
                                 if (resourceID > 0) {
-                                    state.setText(resourceID);
+                                    try {
+                                        state.setText(resourceID);
+                                    } catch (Resources.NotFoundException e) {
+                                        Log.e(TAG, "Resources.NotFoundException:" + resourceID);
+                                    }
                                 } else state.setText(statusCode);
                             }
 
@@ -247,7 +258,7 @@ public class RequestsActivity extends Activity {
                     }
 
                 } else {
-                    Log.e(TAG, "requests_table=null");
+                    Log.i(TAG, "requests=null");
                     row = new TableRow(this);
                     TextView txt = new TextView(this);
                     txt.setPadding(2, 2, 2, 2);
@@ -262,8 +273,8 @@ public class RequestsActivity extends Activity {
 
     @Click
     void backButton() {
-        if (isFromHistory) {
-            isFromHistory = false;
+        if (TaxiApplication.isRequestsHistory()) {
+            TaxiApplication.requestsHistory(false);
             getRequests();
         } else {
             TaxiApplication.requestsPaused();
@@ -273,14 +284,14 @@ public class RequestsActivity extends Activity {
 
     @Click
     void newRequests() {
-        isFromHistory = false;
+        TaxiApplication.requestsHistory(false);
         TaxiApplication.requestsPaused();
         NewRequestActivity_.intent(this).start();
     }
 
     @Click
     void requestsHistory() {
-        isFromHistory = true;
+        TaxiApplication.requestsHistory(true);
         requests_table.setVisibility(View.INVISIBLE);
         pbProgress.setVisibility(View.VISIBLE);
         getRequestHistory();

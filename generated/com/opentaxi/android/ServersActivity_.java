@@ -138,14 +138,14 @@ public final class ServersActivity_
     }
 
     @Override
-    public void login() {
+    public void testServer(final String socket) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    ServersActivity_.super.login();
+                    ServersActivity_.super.testServer(socket);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -156,14 +156,14 @@ public final class ServersActivity_
     }
 
     @Override
-    public void testServer(final String socket) {
+    public void login() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    ServersActivity_.super.testServer(socket);
+                    ServersActivity_.super.login();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

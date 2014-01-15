@@ -16,23 +16,24 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.EditText;
-import android.widget.ProgressBar;
+import android.widget.Button;
+import android.widget.RatingBar;
+import android.widget.TextView;
 import com.opentaxi.android.R.id;
 import com.opentaxi.android.R.layout;
-import com.opentaxi.models.Users;
-import org.androidannotations.api.BackgroundExecutor;
+import com.opentaxi.generated.mysql.tables.pojos.Cars;
 import org.androidannotations.api.SdkVersionHelper;
 import org.androidannotations.api.view.HasViews;
 import org.androidannotations.api.view.OnViewChangedListener;
 import org.androidannotations.api.view.OnViewChangedNotifier;
 
-public final class UserPassActivity_
-    extends UserPassActivity
+public final class CarDetailsActivity_
+    extends CarDetailsActivity
     implements HasViews, OnViewChangedListener
 {
 
     private final OnViewChangedNotifier onViewChangedNotifier_ = new OnViewChangedNotifier();
+    public final static String CAR_NUMBER_EXTRA = "carNumber";
     private Handler handler_ = new Handler(Looper.getMainLooper());
 
     @Override
@@ -41,11 +42,12 @@ public final class UserPassActivity_
         init_(savedInstanceState);
         super.onCreate(savedInstanceState);
         OnViewChangedNotifier.replaceNotifier(previousNotifier);
-        setContentView(layout.login);
+        setContentView(layout.car_details);
     }
 
     private void init_(Bundle savedInstanceState) {
         OnViewChangedNotifier.registerOnViewChangedListener(this);
+        injectExtras_();
     }
 
     @Override
@@ -66,12 +68,12 @@ public final class UserPassActivity_
         onViewChangedNotifier_.notifyViewChanged(this);
     }
 
-    public static UserPassActivity_.IntentBuilder_ intent(Context context) {
-        return new UserPassActivity_.IntentBuilder_(context);
+    public static CarDetailsActivity_.IntentBuilder_ intent(Context context) {
+        return new CarDetailsActivity_.IntentBuilder_(context);
     }
 
-    public static UserPassActivity_.IntentBuilder_ intent(Fragment supportFragment) {
-        return new UserPassActivity_.IntentBuilder_(supportFragment);
+    public static CarDetailsActivity_.IntentBuilder_ intent(Fragment supportFragment) {
+        return new CarDetailsActivity_.IntentBuilder_(supportFragment);
     }
 
     @Override
@@ -84,18 +86,19 @@ public final class UserPassActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
-        pass = ((EditText) hasViews.findViewById(id.passwordField));
-        userName = ((EditText) hasViews.findViewById(id.userNameField));
+        rating = ((RatingBar) hasViews.findViewById(id.rating));
+        carNumberView = ((TextView) hasViews.findViewById(id.carNumberView));
+        driver = ((TextView) hasViews.findViewById(id.driver));
+        requestButton = ((Button) hasViews.findViewById(id.requestButton));
         {
-            View view = hasViews.findViewById(id.facebookButton);
+            View view = hasViews.findViewById(id.requestButton);
             if (view!= null) {
                 view.setOnClickListener(new OnClickListener() {
 
 
                     @Override
                     public void onClick(View view) {
-                        UserPassActivity_.this.facebookButton();
+                        CarDetailsActivity_.this.requestButton();
                     }
 
                 }
@@ -103,142 +106,46 @@ public final class UserPassActivity_
             }
         }
         {
-            View view = hasViews.findViewById(id.lostPassword);
+            View view = hasViews.findViewById(id.okButton);
             if (view!= null) {
                 view.setOnClickListener(new OnClickListener() {
 
 
                     @Override
                     public void onClick(View view) {
-                        UserPassActivity_.this.lostPassword();
+                        CarDetailsActivity_.this.okButton();
                     }
 
                 }
                 );
             }
         }
-        {
-            View view = hasViews.findViewById(id.newClient);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
+        afterRequestsActivity();
+    }
 
-
-                    @Override
-                    public void onClick(View view) {
-                        UserPassActivity_.this.newClient();
-                    }
-
-                }
-                );
+    private void injectExtras_() {
+        Bundle extras_ = getIntent().getExtras();
+        if (extras_!= null) {
+            if (extras_.containsKey(CAR_NUMBER_EXTRA)) {
+                carNumber = extras_.getString(CAR_NUMBER_EXTRA);
             }
         }
-        afterLoad();
     }
 
     @Override
-    public void facebookUser(final Users user) {
+    public void setIntent(Intent newIntent) {
+        super.setIntent(newIntent);
+        injectExtras_();
+    }
+
+    @Override
+    public void showDetails(final Cars cars) {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                UserPassActivity_.super.facebookUser(user);
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void setError(final String error) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                UserPassActivity_.super.setError(error);
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void showProgress() {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                UserPassActivity_.super.showProgress();
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void overFacebookLoginTime(final String title) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                UserPassActivity_.super.overFacebookLoginTime(title);
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void maxFacebookLoginTime() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 15000, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    UserPassActivity_.super.maxFacebookLoginTime();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void checkFacebook(final String token) {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    UserPassActivity_.super.checkFacebook(token);
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void login(final String username, final String password) {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    UserPassActivity_.super.login(username, password);
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
+                CarDetailsActivity_.super.showDetails(cars);
             }
 
         }
@@ -253,20 +160,20 @@ public final class UserPassActivity_
 
         public IntentBuilder_(Context context) {
             context_ = context;
-            intent_ = new Intent(context, UserPassActivity_.class);
+            intent_ = new Intent(context, CarDetailsActivity_.class);
         }
 
         public IntentBuilder_(Fragment fragment) {
             fragmentSupport_ = fragment;
             context_ = fragment.getActivity();
-            intent_ = new Intent(context_, UserPassActivity_.class);
+            intent_ = new Intent(context_, CarDetailsActivity_.class);
         }
 
         public Intent get() {
             return intent_;
         }
 
-        public UserPassActivity_.IntentBuilder_ flags(int flags) {
+        public CarDetailsActivity_.IntentBuilder_ flags(int flags) {
             intent_.setFlags(flags);
             return this;
         }
@@ -285,6 +192,11 @@ public final class UserPassActivity_
                     context_.startActivity(intent_);
                 }
             }
+        }
+
+        public CarDetailsActivity_.IntentBuilder_ carNumber(String carNumber) {
+            intent_.putExtra(CAR_NUMBER_EXTRA, carNumber);
+            return this;
         }
 
     }

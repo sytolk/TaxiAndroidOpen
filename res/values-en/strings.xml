@@ -104,6 +104,7 @@
     <string name="NEW_REQUEST_BEGIN">Begin</string>
     <string name="NEW_REQUEST_DONE">Done</string>
     <string name="NEW_REQUEST_NEXT">Approved</string>
+    <string name="NEW_REQUEST_PRIVATE">Private</string>
     <string name="NEW_REQUEST_ON_POSITION">On position !</string>
     <string name="NEW_REQUEST_SKIP_POSITION">Skiping position !</string>
     <string name="NEW_REQUEST_TRANSFER">Approved !</string>

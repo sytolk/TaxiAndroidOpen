@@ -12,14 +12,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import com.opentaxi.android.R.id;
 import com.opentaxi.android.R.layout;
 import com.opentaxi.models.Users;
 import org.androidannotations.api.BackgroundExecutor;
+import org.androidannotations.api.SdkVersionHelper;
 import org.androidannotations.api.view.HasViews;
 import org.androidannotations.api.view.OnViewChangedListener;
 import org.androidannotations.api.view.OnViewChangedNotifier;
@@ -72,9 +75,18 @@ public final class UserPassActivity_
     }
 
     @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (((SdkVersionHelper.getSdkInt()< 5)&&(keyCode == KeyEvent.KEYCODE_BACK))&&(event.getRepeatCount() == 0)) {
+            onBackPressed();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
     public void onViewChanged(HasViews hasViews) {
-        pass = ((EditText) hasViews.findViewById(id.passwordField));
+        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
         userName = ((EditText) hasViews.findViewById(id.userNameField));
+        pass = ((EditText) hasViews.findViewById(id.passwordField));
         {
             View view = hasViews.findViewById(id.newClient);
             if (view!= null) {
@@ -124,6 +136,20 @@ public final class UserPassActivity_
     }
 
     @Override
+    public void overFacebookLoginTime(final String title) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                UserPassActivity_.super.overFacebookLoginTime(title);
+            }
+
+        }
+        );
+    }
+
+    @Override
     public void facebookUser(final Users user) {
         handler_.post(new Runnable() {
 
@@ -131,6 +157,20 @@ public final class UserPassActivity_
             @Override
             public void run() {
                 UserPassActivity_.super.facebookUser(user);
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void showProgress() {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                UserPassActivity_.super.showProgress();
             }
 
         }
@@ -188,14 +228,14 @@ public final class UserPassActivity_
     }
 
     @Override
-    public void facebookLogout() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+    public void maxFacebookLoginTime() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 15000, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    UserPassActivity_.super.facebookLogout();
+                    UserPassActivity_.super.maxFacebookLoginTime();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

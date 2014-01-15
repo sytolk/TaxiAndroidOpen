@@ -34,7 +34,7 @@
             <plugin>
                 <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                 <artifactId>android-maven-plugin</artifactId>
-                <version>3.6.0</version>
+                <version>3.8.1</version>
                 <configuration>
                     <sdk>
                         <platform>${android-platform}</platform>
@@ -88,6 +88,7 @@
         <dependency>
             <groupId>android.support</groupId>
             <artifactId>compatibility-v4</artifactId>
+            <!--<artifactId>compatibility-v7</artifactId>-->
             <version>19</version>
         </dependency>
         <!--<dependency>

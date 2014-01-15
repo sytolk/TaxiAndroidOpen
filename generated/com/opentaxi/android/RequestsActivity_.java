@@ -44,7 +44,6 @@ public final class RequestsActivity_
 
     private void init_(Bundle savedInstanceState) {
         OnViewChangedNotifier.registerOnViewChangedListener(this);
-        requestWindowFeature(1);
     }
 
     @Override
@@ -75,8 +74,8 @@ public final class RequestsActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        requests_table = ((TableLayout) hasViews.findViewById(id.requests_table));
         pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
+        requests_table = ((TableLayout) hasViews.findViewById(id.requests_table));
         {
             View view = hasViews.findViewById(id.requestsHistory);
             if (view!= null) {
@@ -150,35 +149,13 @@ public final class RequestsActivity_
     }
 
     @Override
-    public void getRequests() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+    public void setActivityTile(final String title) {
+        handler_.post(new Runnable() {
 
 
             @Override
-            public void execute() {
-                try {
-                    RequestsActivity_.super.getRequests();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void scheduleRequest() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 10000, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    RequestsActivity_.super.scheduleRequest();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
+            public void run() {
+                RequestsActivity_.super.setActivityTile(title);
             }
 
         }
@@ -212,6 +189,42 @@ public final class RequestsActivity_
             public void execute() {
                 try {
                     RequestsActivity_.super.getRequestHistory();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void scheduleRequest() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 10000, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    RequestsActivity_.super.scheduleRequest();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void getRequests() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    RequestsActivity_.super.getRequests();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
