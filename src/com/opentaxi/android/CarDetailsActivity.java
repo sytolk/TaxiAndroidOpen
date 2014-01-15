@@ -48,6 +48,11 @@ public class CarDetailsActivity extends FragmentActivity {
 
     @AfterViews
     void afterRequestsActivity() {
+        setDetails();
+    }
+
+    @Background
+    void setDetails() {
         showDetails(RestClient.getInstance().getCarsInfo(carNumber));
     }
 
