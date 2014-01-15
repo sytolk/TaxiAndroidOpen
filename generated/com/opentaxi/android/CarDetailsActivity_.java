@@ -86,25 +86,10 @@ public final class CarDetailsActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
+        requestButton = ((Button) hasViews.findViewById(id.requestButton));
+        driver = ((TextView) hasViews.findViewById(id.driver));
         rating = ((RatingBar) hasViews.findViewById(id.rating));
         carNumberView = ((TextView) hasViews.findViewById(id.carNumberView));
-        driver = ((TextView) hasViews.findViewById(id.driver));
-        requestButton = ((Button) hasViews.findViewById(id.requestButton));
-        {
-            View view = hasViews.findViewById(id.requestButton);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        CarDetailsActivity_.this.requestButton();
-                    }
-
-                }
-                );
-            }
-        }
         {
             View view = hasViews.findViewById(id.okButton);
             if (view!= null) {
@@ -114,6 +99,21 @@ public final class CarDetailsActivity_
                     @Override
                     public void onClick(View view) {
                         CarDetailsActivity_.this.okButton();
+                    }
+
+                }
+                );
+            }
+        }
+        {
+            View view = hasViews.findViewById(id.requestButton);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        CarDetailsActivity_.this.requestButton();
                     }
 
                 }

@@ -57,14 +57,18 @@ public class CarDetailsActivity extends FragmentActivity {
             carNumberView.setText(cars.getNumber());
             requestButton.append(" " + cars.getNumber());
             driver.setText(cars.getAuthKey());
-            if (cars.getDescription() != null) {
+            if (cars.getDescription() != null && !cars.getDescription().equals("")) {
                /* rating.setFocusable(false);
                 rating.setOnTouchListener(new View.OnTouchListener() {
                     public boolean onTouch(View v, MotionEvent event) {
                         return true;
                     }
                 });*/
-                rating.setRating(Float.parseFloat(cars.getDescription()));
+                try {
+                    rating.setRating(Float.parseFloat(cars.getDescription()));
+                } catch (NumberFormatException e) {
+                    Log.e(TAG, "setRating");
+                }
             }
             this.cars = cars;
         }
