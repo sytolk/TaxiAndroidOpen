@@ -16,11 +16,13 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import com.opentaxi.android.R.id;
 import com.opentaxi.android.R.layout;
 import com.opentaxi.generated.mysql.tables.pojos.Cars;
+import org.androidannotations.api.BackgroundExecutor;
 import org.androidannotations.api.SdkVersionHelper;
 import org.androidannotations.api.view.HasViews;
 import org.androidannotations.api.view.OnViewChangedListener;
@@ -85,24 +87,10 @@ public final class CarDetailsActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        carNumberView = ((TextView) hasViews.findViewById(id.carNumberView));
-        driver = ((TextView) hasViews.findViewById(id.driver));
         rating = ((RatingBar) hasViews.findViewById(id.rating));
-        {
-            View view = hasViews.findViewById(id.requestButton);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        CarDetailsActivity_.this.requestButton();
-                    }
-
-                }
-                );
-            }
-        }
+        driver = ((TextView) hasViews.findViewById(id.driver));
+        carNumberView = ((TextView) hasViews.findViewById(id.carNumberView));
+        requestButton = ((Button) hasViews.findViewById(id.requestButton));
         {
             View view = hasViews.findViewById(id.okButton);
             if (view!= null) {
@@ -112,6 +100,21 @@ public final class CarDetailsActivity_
                     @Override
                     public void onClick(View view) {
                         CarDetailsActivity_.this.okButton();
+                    }
+
+                }
+                );
+            }
+        }
+        {
+            View view = hasViews.findViewById(id.requestButton);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        CarDetailsActivity_.this.requestButton();
                     }
 
                 }
@@ -144,6 +147,24 @@ public final class CarDetailsActivity_
             @Override
             public void run() {
                 CarDetailsActivity_.super.showDetails(cars);
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void setDetails() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    CarDetailsActivity_.super.setDetails();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
             }
 
         }

@@ -34,7 +34,7 @@ public class AppPreferences {
     ObjectMapper mapper = new ObjectMapper();
 
     private static final String SOCKET_TYPE = "SOCKET_TYPE";
-    private static final String APP_VERSION = "APP_VERSION";
+    //private static final String APP_VERSION = "APP_VERSION";
     private static final String ACCESS_TOKEN = "ACCESS_TOKEN";
 
     /**
@@ -227,7 +227,7 @@ public class AppPreferences {
         this.currentLocationTime = currentLocationTime;
     }
 
-    public String getAppVersion() {
+    /*public String getAppVersion() {
         if (appVersion == null) {
             appVersion = appSharedPrefs.getString(APP_VERSION, "");
         }
@@ -239,7 +239,7 @@ public class AppPreferences {
         this.prefsEditor = appSharedPrefs.edit();
         prefsEditor.putString(APP_VERSION, version);
         prefsEditor.commit();
-    }
+    }*/
 
     public String getAccessToken() {
         if (token == null) {

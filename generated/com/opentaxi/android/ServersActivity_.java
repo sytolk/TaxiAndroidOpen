@@ -74,23 +74,8 @@ public final class ServersActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        serversContent = ((LinearLayout) hasViews.findViewById(id.serversContent));
         cancelButton = ((Button) hasViews.findViewById(id.cancelButton));
-        {
-            View view = hasViews.findViewById(id.refreshButton);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        ServersActivity_.this.refreshButton();
-                    }
-
-                }
-                );
-            }
-        }
+        serversContent = ((LinearLayout) hasViews.findViewById(id.serversContent));
         {
             View view = hasViews.findViewById(id.cancelButton);
             if (view!= null) {
@@ -100,6 +85,21 @@ public final class ServersActivity_
                     @Override
                     public void onClick(View view) {
                         ServersActivity_.this.cancelButton();
+                    }
+
+                }
+                );
+            }
+        }
+        {
+            View view = hasViews.findViewById(id.refreshButton);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        ServersActivity_.this.refreshButton();
                     }
 
                 }

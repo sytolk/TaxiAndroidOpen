@@ -8,8 +8,10 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.telephony.TelephonyManager;
@@ -29,11 +31,16 @@ import com.opentaxi.android.utils.Network;
 import com.opentaxi.generated.mysql.tables.pojos.Servers;
 import com.opentaxi.models.Users;
 import com.opentaxi.rest.RestClient;
+import com.taxibulgaria.enums.Applications;
 import org.androidannotations.annotations.*;
 import org.mapsforge.android.AndroidUtils;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 @EActivity(R.layout.main)
 public class MainActivity extends FragmentActivity {
@@ -121,10 +128,10 @@ public class MainActivity extends FragmentActivity {
         this.user.setText(username);
         AppPreferences.getInstance().setRegions();
 
-        setVersion();
         //appPreferences.registerGCM(getBaseContext());
 
         if (!oneTime) {
+            setVersion();
             Log.i(TAG, "Updating servers");
             oneTime = true;
             setServers();
@@ -268,21 +275,108 @@ public class MainActivity extends FragmentActivity {
         try {
             PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             version.setText(pInfo.versionName);
-            if (AppPreferences.getInstance() != null && !AppPreferences.getInstance().getAppVersion().equals(pInfo.versionName)) {
-                AppPreferences.getInstance().setAppVersion(pInfo.versionName);
-                sendVersion(pInfo.versionName);
-                // Check if app was updated; if so, it must clear the GCM registration ID
-                // since the existing regID is not guaranteed to work with the new app version.
-                RestClient.getInstance().setGCMRegistrationId("");//AppPreferences.getInstance().setGCMRegId("");
-            }
+            //if (AppPreferences.getInstance() != null && !AppPreferences.getInstance().getAppVersion().equals(pInfo.versionName)) {
+            //    AppPreferences.getInstance().setAppVersion(pInfo.versionName);
+            sendVersion(pInfo.versionName, pInfo.versionCode);
+            //}
         } catch (PackageManager.NameNotFoundException e) {
             Log.e(TAG, "setVersion:" + e.getMessage());
         }
     }
 
     @Background
-    void sendVersion(String version) {
-        RestClient.getInstance().sendVersion(version);
+    void sendVersion(String version, Integer code) {
+        Boolean isActual = RestClient.getInstance().sendVersion(Applications.ANDROID_CLIENT.getCode(), version, code);
+        if (isActual != null && !isActual) {
+            updateVersionDialog();
+        } else Log.i(TAG, "You have last version");
+    }
+
+    @UiThread
+    void updateVersionDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Нова версия на Такси България!");
+        alertDialogBuilder.setMessage("Налична е нова версия. Желаете ли да актуализирате ?");
+        //null should be your on click listener
+        alertDialogBuilder.setPositiveButton("ДА", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                downloadUpdate();
+            }
+        });
+        alertDialogBuilder.setNegativeButton("НЕ", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        Dialog updateDialog = alertDialogBuilder.create();
+
+        // If Google Play services can provide an error dialog
+        if (updateDialog != null) {
+            try {
+                // Create a new DialogFragment for the error dialog
+                MainDialogFragment errorFragment = new MainDialogFragment();
+                // Set the dialog in the DialogFragment
+                errorFragment.setDialog(updateDialog);
+                // Show the error dialog in the DialogFragment
+                errorFragment.show(getSupportFragmentManager(), "UpdateDialog");
+            } catch (Exception e) {
+                if (e.getMessage() != null) Log.e(TAG, e.getMessage());
+            }
+        }
+    }
+
+    @Background
+    void downloadUpdate() {
+        try {
+            URL url = new URL("http://taxi-bulgaria.com:8888/TaxiAndroidOpen.apk");
+            HttpURLConnection c = (HttpURLConnection) url.openConnection();
+            c.setRequestMethod("GET");
+            c.setDoOutput(true);
+            c.connect();
+
+            //String PATH = "/mnt/sdcard/Download/";
+            File file = new File(Environment.getExternalStorageDirectory(), "Download/");
+            file.mkdirs();
+            File outputFile = new File(file, "update.apk");
+            if (outputFile.exists()) {
+                outputFile.delete();
+            }
+            FileOutputStream fos = new FileOutputStream(outputFile);
+
+            InputStream is = c.getInputStream();
+
+            byte[] buffer = new byte[1024];
+            int len1 = 0;
+            while ((len1 = is.read(buffer)) != -1) {
+                fos.write(buffer, 0, len1);
+            }
+            fos.close();
+            is.close();
+
+            // Check if app was updated; if so, it must clear the GCM registration ID
+            // since the existing regID is not guaranteed to work with the new app version.
+            RestClient.getInstance().setGCMRegistrationId("");
+
+            startUpdate();
+        } catch (Exception e) {
+            Log.e("UpdateAPP", "Update error! " + e.getMessage());
+        }
+    }
+
+    @UiThread
+    void startUpdate() {
+        File newVersion = new File(Environment.getExternalStorageDirectory(), "Download/update.apk");
+        if (newVersion.exists()) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(Uri.fromFile(newVersion), "application/vnd.android.package-archive");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // without this flag android returned a intent error!
+            startActivity(intent);
+        }
     }
 
     @Override
