@@ -12,24 +12,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import com.opentaxi.android.R.id;
-import com.opentaxi.android.R.layout;
-import com.opentaxi.models.Users;
+import com.opentaxi.generated.mysql.tables.pojos.Cars;
+import com.opentaxi.models.RequestCView;
 import org.androidannotations.api.BackgroundExecutor;
-import org.androidannotations.api.SdkVersionHelper;
 import org.androidannotations.api.view.HasViews;
-import org.androidannotations.api.view.OnViewChangedListener;
 import org.androidannotations.api.view.OnViewChangedNotifier;
 
-public final class UserPassActivity_
-    extends UserPassActivity
-    implements HasViews, OnViewChangedListener
+public final class BubbleOverlay_
+    extends BubbleOverlay
+    implements HasViews
 {
 
     private final OnViewChangedNotifier onViewChangedNotifier_ = new OnViewChangedNotifier();
@@ -41,11 +34,9 @@ public final class UserPassActivity_
         init_(savedInstanceState);
         super.onCreate(savedInstanceState);
         OnViewChangedNotifier.replaceNotifier(previousNotifier);
-        setContentView(layout.login);
     }
 
     private void init_(Bundle savedInstanceState) {
-        OnViewChangedNotifier.registerOnViewChangedListener(this);
     }
 
     @Override
@@ -66,83 +57,22 @@ public final class UserPassActivity_
         onViewChangedNotifier_.notifyViewChanged(this);
     }
 
-    public static UserPassActivity_.IntentBuilder_ intent(Context context) {
-        return new UserPassActivity_.IntentBuilder_(context);
+    public static BubbleOverlay_.IntentBuilder_ intent(Context context) {
+        return new BubbleOverlay_.IntentBuilder_(context);
     }
 
-    public static UserPassActivity_.IntentBuilder_ intent(Fragment supportFragment) {
-        return new UserPassActivity_.IntentBuilder_(supportFragment);
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (((SdkVersionHelper.getSdkInt()< 5)&&(keyCode == KeyEvent.KEYCODE_BACK))&&(event.getRepeatCount() == 0)) {
-            onBackPressed();
-        }
-        return super.onKeyDown(keyCode, event);
+    public static BubbleOverlay_.IntentBuilder_ intent(Fragment supportFragment) {
+        return new BubbleOverlay_.IntentBuilder_(supportFragment);
     }
 
     @Override
-    public void onViewChanged(HasViews hasViews) {
-        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
-        pass = ((EditText) hasViews.findViewById(id.passwordField));
-        userName = ((EditText) hasViews.findViewById(id.userNameField));
-        {
-            View view = hasViews.findViewById(id.facebookButton);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        UserPassActivity_.this.facebookButton();
-                    }
-
-                }
-                );
-            }
-        }
-        {
-            View view = hasViews.findViewById(id.newClient);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        UserPassActivity_.this.newClient();
-                    }
-
-                }
-                );
-            }
-        }
-        {
-            View view = hasViews.findViewById(id.lostPassword);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        UserPassActivity_.this.lostPassword();
-                    }
-
-                }
-                );
-            }
-        }
-        afterLoad();
-    }
-
-    @Override
-    public void showProgress() {
+    public void showRequests(final RequestCView requests) {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                UserPassActivity_.super.showProgress();
+                BubbleOverlay_.super.showRequests(requests);
             }
 
         }
@@ -150,13 +80,13 @@ public final class UserPassActivity_
     }
 
     @Override
-    public void setError(final String error) {
+    public void showCarPosition(final Cars cars) {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                UserPassActivity_.super.setError(error);
+                BubbleOverlay_.super.showCarPosition(cars);
             }
 
         }
@@ -164,42 +94,14 @@ public final class UserPassActivity_
     }
 
     @Override
-    public void overFacebookLoginTime(final String title) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                UserPassActivity_.super.overFacebookLoginTime(title);
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void facebookUser(final Users user) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                UserPassActivity_.super.facebookUser(user);
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void maxFacebookLoginTime() {
+    public void showMyRequestsDelayed() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 15000, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    UserPassActivity_.super.maxFacebookLoginTime();
+                    BubbleOverlay_.super.showMyRequestsDelayed();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -210,14 +112,14 @@ public final class UserPassActivity_
     }
 
     @Override
-    public void login(final String username, final String password) {
+    public void showMyRequests() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    UserPassActivity_.super.login(username, password);
+                    BubbleOverlay_.super.showMyRequests();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -228,14 +130,14 @@ public final class UserPassActivity_
     }
 
     @Override
-    public void checkFacebook(final String token) {
+    public void showCar(final String carsNumber) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    UserPassActivity_.super.checkFacebook(token);
+                    BubbleOverlay_.super.showCar(carsNumber);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -253,20 +155,20 @@ public final class UserPassActivity_
 
         public IntentBuilder_(Context context) {
             context_ = context;
-            intent_ = new Intent(context, UserPassActivity_.class);
+            intent_ = new Intent(context, BubbleOverlay_.class);
         }
 
         public IntentBuilder_(Fragment fragment) {
             fragmentSupport_ = fragment;
             context_ = fragment.getActivity();
-            intent_ = new Intent(context_, UserPassActivity_.class);
+            intent_ = new Intent(context_, BubbleOverlay_.class);
         }
 
         public Intent get() {
             return intent_;
         }
 
-        public UserPassActivity_.IntentBuilder_ flags(int flags) {
+        public BubbleOverlay_.IntentBuilder_ flags(int flags) {
             intent_.setFlags(flags);
             return this;
         }

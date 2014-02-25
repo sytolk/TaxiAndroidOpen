@@ -18,20 +18,21 @@ public class UserGpsBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-
         final LocationInfo locationInfo = (LocationInfo) intent.getSerializableExtra(LocationLibraryConstants.LOCATION_BROADCAST_EXTRA_LOCATIONINFO);
-        //locationInfo.refresh(context);
-        Log.i("LocationBroadcastReceiver", "onReceive: received location update:" + locationInfo.lastLat + ", " + locationInfo.lastLong);
+        if (locationInfo != null && locationInfo.anyLocationDataReceived()) {
+            //locationInfo.refresh(context);
+            Log.i("LocationBroadcastReceiver", "onReceive: received location update:" + locationInfo.lastLat + ", " + locationInfo.lastLong);
 
-        new SendCoordinatesTask(locationInfo.lastLat, locationInfo.lastLong, locationInfo.lastLocationUpdateTimestamp).execute(context);
+            new SendCoordinatesTask(locationInfo.lastLat, locationInfo.lastLong, locationInfo.lastLocationUpdateTimestamp).execute(context);
 
-        if (AppPreferences.getInstance() != null) {
+            if (AppPreferences.getInstance() != null) {
 
-            Date now = new Date();
-            AppPreferences.getInstance().setNorth((double) locationInfo.lastLat);
-            AppPreferences.getInstance().setEast((double) locationInfo.lastLong);
-            AppPreferences.getInstance().setCurrentLocationTime(locationInfo.lastLocationBroadcastTimestamp);
-            AppPreferences.getInstance().setGpsLastTime(now.getTime());
-        }
+                Date now = new Date();
+                AppPreferences.getInstance().setNorth((double) locationInfo.lastLat);
+                AppPreferences.getInstance().setEast((double) locationInfo.lastLong);
+                AppPreferences.getInstance().setCurrentLocationTime(locationInfo.lastLocationBroadcastTimestamp);
+                AppPreferences.getInstance().setGpsLastTime(now.getTime());
+            }
+        } else Log.e(TAG, "onReceive: anyLocationDataReceived=false");
     }
 }

@@ -82,8 +82,8 @@ public final class MainActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        bandwidth = ((TextView) hasViews.findViewById(id.bandwidth));
         version = ((TextView) hasViews.findViewById(id.txt_version));
+        bandwidth = ((TextView) hasViews.findViewById(id.bandwidth));
         user = ((TextView) hasViews.findViewById(id.user));
         {
             View view = hasViews.findViewById(id.exitButton);
@@ -149,6 +149,20 @@ public final class MainActivity_
     }
 
     @Override
+    public void createNotification() {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                MainActivity_.super.createNotification();
+            }
+
+        }
+        );
+    }
+
+    @Override
     public void afterLogin(final String username) {
         handler_.post(new Runnable() {
 
@@ -191,20 +205,6 @@ public final class MainActivity_
     }
 
     @Override
-    public void startUpdate() {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                MainActivity_.super.startUpdate();
-            }
-
-        }
-        );
-    }
-
-    @Override
     public void startUserPass() {
         handler_.post(new Runnable() {
 
@@ -212,6 +212,20 @@ public final class MainActivity_
             @Override
             public void run() {
                 MainActivity_.super.startUserPass();
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void startUpdate() {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                MainActivity_.super.startUpdate();
             }
 
         }
@@ -255,24 +269,6 @@ public final class MainActivity_
     }
 
     @Override
-    public void downloadUpdate() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    MainActivity_.super.downloadUpdate();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
     public void setServers() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
@@ -291,14 +287,14 @@ public final class MainActivity_
     }
 
     @Override
-    public void facebookLogout() {
+    public void gcmRegister() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    MainActivity_.super.facebookLogout();
+                    MainActivity_.super.gcmRegister();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -309,14 +305,32 @@ public final class MainActivity_
     }
 
     @Override
-    public void gcmRegister() {
+    public void downloadUpdate() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    MainActivity_.super.gcmRegister();
+                    MainActivity_.super.downloadUpdate();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void facebookLogout() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    MainActivity_.super.facebookLogout();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

@@ -5,6 +5,7 @@ import android.util.Log;
 import com.littlefluffytoys.littlefluffylocationlibrary.LocationLibrary;
 import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;
+import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,11 +17,13 @@ import org.acra.annotation.ReportsCrashes;
 @ReportsCrashes(formKey = "dF8wOUJYbFhCeDVlMG1JT3FkN2xXM0E6MQ", logcatFilterByPid = true)
 public class TaxiApplication extends Application {
 
-    private static boolean havePlayService=true;
-    private static boolean requestsVisible=false;
-    private static boolean requestsHistory=false;
-    private static boolean requestsDetailsVisible=false;
-    private static boolean userPassVisible=false;
+    private static boolean havePlayService = true;
+    private static boolean requestsVisible = false;
+    private static boolean requestsHistory = false;
+    private static boolean requestsDetailsVisible = false;
+    private static boolean userPassVisible = false;
+    private static boolean mapVisible = false;
+    private static Integer lastRequestId;
 
     public static void setHavePlayService(boolean havePlayService) {
         TaxiApplication.havePlayService = havePlayService;
@@ -74,6 +77,26 @@ public class TaxiApplication extends Application {
         userPassVisible = false;
     }
 
+    public static boolean isMapVisible() {
+        return mapVisible;
+    }
+
+    public static void mapResumed() {
+        mapVisible = true;
+    }
+
+    public static void mapPaused() {
+        mapVisible = false;
+    }
+
+    public static Integer getLastRequestId() {
+        return lastRequestId;
+    }
+
+    public static void setLastRequestId(Integer lastRequestId) {
+        TaxiApplication.lastRequestId = lastRequestId;
+    }
+
     @Override
     public void onCreate() {
 
@@ -84,6 +107,8 @@ public class TaxiApplication extends Application {
         }
 
         super.onCreate();
+
+        AndroidGraphicFactory.createInstance(this);
 
         Log.d("TaxiApplication", "onCreate()");
 

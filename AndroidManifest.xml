@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.opentaxi.android"
-          android:versionName="1.0.12"
-          android:versionCode="14"
+          android:versionName="1.0.15"
+          android:versionCode="15"
           android:installLocation="auto">
 
     <uses-sdk
-        android:minSdkVersion="8" android:targetSdkVersion="19"/>
+        android:minSdkVersion="8"
+        android:targetSdkVersion="19"/>
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -32,8 +33,9 @@
     <uses-permission android:name="android.permission.READ_SYNC_STATS"/>
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>-->
 
-    <uses-permission android:name="android.permission.INSTALL_PACKAGES"/>
-    <uses-permission android:name="android.permission.DELETE_PACKAGES"/>
+    <!--auto update-->
+    <!--<uses-permission android:name="android.permission.INSTALL_PACKAGES"/>
+    <uses-permission android:name="android.permission.DELETE_PACKAGES"/>-->
 
     <!--Permission Denial: can't dump meminfo from from pid=2322, uid=10106 without permission android.permission.DUMP-->
     <!--<uses-permission android:name="android.permission.DUMP"/>-->
@@ -79,7 +81,7 @@
             android:name=".MainActivity_"
             android:label="@string/app_name"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:finishOnTaskLaunch="true">
             <!--android:launchMode="singleInstance"-->
             <intent-filter>
@@ -166,34 +168,41 @@
 
         <!--osmap-->
         <activity
-            android:name=".map.AdvancedMapViewer"
-            android:theme="@style/Mapsforge"
+            android:name="org.mapsforge.applications.android.mapbg.LocationOverlayMapViewer"
             android:allowTaskReparenting="false"
             android:taskAffinity=""
             android:excludeFromRecents="true"
-            android:launchMode="singleTop"
-            android:finishOnTaskLaunch="true">
+            android:launchMode="singleTask"
+            android:finishOnTaskLaunch="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
         <activity
-            android:name=".map.preferences.EditPreferences"
+            android:name="com.opentaxi.android.BubbleOverlay_"
             android:allowTaskReparenting="false"
             android:taskAffinity=""
-            android:excludeFromRecents="true"/>
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:finishOnTaskLaunch="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
         <activity
-            android:name=".map.filepicker.FilePicker"
+            android:name="com.opentaxi.android.LongPressMapAction_"
             android:allowTaskReparenting="false"
             android:taskAffinity=""
-            android:excludeFromRecents="true"/>
-        <activity
-            android:name=".map.InfoView"
-            android:theme="@android:style/Theme.NoTitleBar"
-            android:allowTaskReparenting="false"
-            android:taskAffinity=""
-            android:excludeFromRecents="true"/>
+            android:excludeFromRecents="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+        </activity>
+
+        <activity android:name="org.mapsforge.applications.android.filepicker.FilePicker"/>
+        <activity android:name="org.mapsforge.applications.android.mapbg.Settings"/>
 
         <!--
           WakefulBroadcastReceiver that will receive intents from GCM

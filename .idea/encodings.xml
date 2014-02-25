@@ -1,23 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
-    <file url="file://$PROJECT_DIR$/res/menu/options_menu.xml" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/res/xml/preferences.xml" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/map/AdvancedMapViewer.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/map/FileUtils.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/map/InfoView.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/map/ScreenshotCapturer.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/map/SeekBarChangeListener.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/map/filefilter/FilterByFileExtension.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/map/filefilter/ValidFileFilter.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/map/filefilter/ValidMapFile.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/map/filefilter/ValidRenderTheme.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/map/filepicker/FilePicker.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/map/filepicker/FilePickerIconAdapter.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/map/preferences/CacheSizePreference.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/map/preferences/EditPreferences.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/map/preferences/MoveSpeedPreference.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/map/preferences/SeekBarPreference.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/res/layout/show_address.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/BubbleOverlay.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/LongPressMapAction.java" charset="UTF-8" />
   </component>
 </project>
 

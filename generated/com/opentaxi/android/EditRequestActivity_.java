@@ -94,32 +94,17 @@ public final class EditRequestActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        address = ((TextView) hasViews.findViewById(id.address));
-        citiesPicker = ((Spinner) hasViews.findViewById(id.citiesPicker));
-        addressText = ((EditText) hasViews.findViewById(id.addressText));
-        requestSend = ((Button) hasViews.findViewById(id.requestSend));
-        addressChange = ((Button) hasViews.findViewById(id.addressChange));
-        reqInfoButtonContainer = ((LinearLayout) hasViews.findViewById(id.reqInfoButtonContainer));
-        pricesPicker = ((Spinner) hasViews.findViewById(id.pricesPicker));
-        region = ((TextView) hasViews.findViewById(id.region));
-        regionsPicker = ((Spinner) hasViews.findViewById(id.regionsPicker));
-        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
         llFilters = ((LinearLayout) hasViews.findViewById(id.llFilters));
-        {
-            View view = hasViews.findViewById(id.addressChange);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        EditRequestActivity_.this.addressChange();
-                    }
-
-                }
-                );
-            }
-        }
+        reqInfoButtonContainer = ((LinearLayout) hasViews.findViewById(id.reqInfoButtonContainer));
+        addressText = ((EditText) hasViews.findViewById(id.addressText));
+        addressChange = ((Button) hasViews.findViewById(id.addressChange));
+        address = ((TextView) hasViews.findViewById(id.address));
+        region = ((TextView) hasViews.findViewById(id.region));
+        citiesPicker = ((Spinner) hasViews.findViewById(id.citiesPicker));
+        requestSend = ((Button) hasViews.findViewById(id.requestSend));
+        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
+        pricesPicker = ((Spinner) hasViews.findViewById(id.pricesPicker));
+        regionsPicker = ((Spinner) hasViews.findViewById(id.regionsPicker));
         {
             View view = hasViews.findViewById(id.requestSend);
             if (view!= null) {
@@ -129,6 +114,21 @@ public final class EditRequestActivity_
                     @Override
                     public void onClick(View view) {
                         EditRequestActivity_.this.requestSend();
+                    }
+
+                }
+                );
+            }
+        }
+        {
+            View view = hasViews.findViewById(id.addressChange);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        EditRequestActivity_.this.addressChange();
                     }
 
                 }
@@ -151,6 +151,20 @@ public final class EditRequestActivity_
     public void setIntent(Intent newIntent) {
         super.setIntent(newIntent);
         injectExtras_();
+    }
+
+    @Override
+    public void SuccessDialog() {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                EditRequestActivity_.super.SuccessDialog();
+            }
+
+        }
+        );
     }
 
     @Override
@@ -182,27 +196,13 @@ public final class EditRequestActivity_
     }
 
     @Override
-    public void SuccessDialog() {
+    public void showPrices(final Groups[] prices) {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                EditRequestActivity_.super.SuccessDialog();
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void showRegions(final Regions[] regions) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                EditRequestActivity_.super.showRegions(regions);
+                EditRequestActivity_.super.showPrices(prices);
             }
 
         }
@@ -224,13 +224,13 @@ public final class EditRequestActivity_
     }
 
     @Override
-    public void showPrices(final Groups[] prices) {
+    public void showRegions(final Regions[] regions) {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                EditRequestActivity_.super.showPrices(prices);
+                EditRequestActivity_.super.showRegions(regions);
             }
 
         }

@@ -34,8 +34,12 @@
             <plugin>
                 <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                 <artifactId>android-maven-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.8.2</version>
+                <extensions>true</extensions>
                 <configuration>
+                    <genDirectory>gen</genDirectory>
+                    <genDirectoryAidl>gen</genDirectoryAidl>
+                    <extractDuplicates>true</extractDuplicates>
                     <sdk>
                         <platform>${android-platform}</platform>
                         <path>/home/stanimir/android-sdk-linux</path>
@@ -46,7 +50,37 @@
                     <!--<deleteConflictingFiles>true</deleteConflictingFiles>-->
                     <undeployBeforeDeploy>true</undeployBeforeDeploy>
                 </configuration>
-                <extensions>true</extensions>
+            </plugin>
+            <plugin>
+                <groupId>com.pyx4me</groupId>
+                <artifactId>proguard-maven-plugin</artifactId>
+                <version>2.0.4</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals><goal>proguard</goal></goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <obfuscate>false</obfuscate>
+                    <options>
+                        <option> -keep public class * extends android.app.Activity</option>
+                        <option>-keep public class * extends android.app.Application</option>
+                        <option>-keep public class * extends android.app.Service</option>
+                        <option>-keep public class * extends
+                            android.content.BroadcastReceiver</option>
+                        <option>-keep public class * extends
+                            android.content.ContentProvider</option>
+                        <option>-dontskipnonpubliclibraryclasses</option>
+                        <option>-dontoptimize</option>
+                        <option>-printmapping map.txt</option>
+                        <option>-printseeds seed.txt</option>
+                        <option>-ignorewarnings</option>
+                    </options>
+                    <libs>
+                        <lib>${java.home}/lib/rt.jar</lib>
+                    </libs>
+                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -54,15 +88,14 @@
     <dependencies>
         <dependency>
             <groupId>com.taxi-bulgaria.rest</groupId>
-            <artifactId>open-rest-client</artifactId>
+            <artifactId>open-rest-client-a</artifactId>
             <version>1.0.1.BUILD-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>android</groupId>
             <artifactId>android</artifactId>
-            <!--<version>2.2_r3</version>-->
-            <version>4.4_r1</version>
+            <version>4.4.2_r2</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -98,9 +131,16 @@
         </dependency>-->
 
         <dependency>
-            <groupId>org.mapsforge</groupId>
-            <artifactId>mapsforge-map</artifactId>
-            <version>0.3.1-SNAPSHOT</version>
+            <groupId>com.opentaxi.android</groupId>
+            <artifactId>mapsforge-bg</artifactId>
+            <type>apklib</type>
+            <version>0.4.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>support-v4</artifactId>
+                    <groupId>com.google.android</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- LittleFluffyLocationLibrary -->

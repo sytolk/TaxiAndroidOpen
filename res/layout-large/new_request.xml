@@ -24,33 +24,6 @@
                 android:gravity="center_vertical">
 
                 <TextView
-                    android:id="@+id/price"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="Тарифа"
-                    android:textColor="#ffffff"
-                    android:textSize="40dp"
-                    android:layout_weight=".3"
-                    android:gravity="right"
-                    android:layout_marginRight="20dp"/>
-
-                <Spinner
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/pricesPicker"
-                    android:layout_weight=".7"/>
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_margin="20dp"
-                android:gravity="center_vertical">
-
-                <TextView
                     android:id="@+id/city"
                     android:text="Град"
                     android:layout_width="0dp"
@@ -58,7 +31,8 @@
                     android:textColor="#ffffff"
                     android:layout_weight=".3"
                     android:gravity="right"
-                    android:layout_marginRight="20dp"/>
+                    android:layout_marginRight="20dp"
+                    android:textSize="30dp"/>
 
                 <Spinner
                     android:layout_width="0dp"
@@ -83,7 +57,8 @@
                     android:textColor="#ffffff"
                     android:layout_weight=".3"
                     android:gravity="right"
-                    android:layout_marginRight="20dp"/>
+                    android:layout_marginRight="20dp"
+                    android:textSize="30dp"/>
 
                 <Spinner
                     android:layout_width="0dp"
@@ -106,7 +81,7 @@
                     android:layout_height="wrap_content"
                     android:text="Адрес"
                     android:textColor="#ffffff"
-                    android:textSize="40dp"
+                    android:textSize="30dp"
                     android:layout_weight=".2"
                     android:gravity="right"
                     android:layout_marginRight="20dp"/>
@@ -115,8 +90,16 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/addressText"
-                    android:layout_weight=".6"
-                    android:textSize="40dp"/>
+                    android:layout_weight=".5"
+                    android:textSize="30dp"/>
+
+                <ImageButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/addressImage"
+                    android:layout_weight=".1"
+                    android:contentDescription="@string/show_address"
+                    android:src="@drawable/ic_menu_mylocation"/>
 
                 <Button
                     android:id="@+id/addressChange"
@@ -126,6 +109,31 @@
                     android:text="Промени"
                     android:layout_weight=".2"/>
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="20dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/price"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Тарифа"
+                    android:textColor="#ffffff"
+                    android:textSize="30dp"
+                    android:layout_weight=".3"
+                    android:gravity="right"
+                    android:layout_marginRight="20dp"/>
+
+                <Spinner
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/pricesPicker"
+                    android:layout_weight=".7"/>
             </LinearLayout>
 
             <TextView
@@ -193,7 +201,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Повикай ТАКСИ"
-            android:textSize="40dp"
+            android:textSize="30dp"
             android:layout_weight=".3"/>
 
         <TextView

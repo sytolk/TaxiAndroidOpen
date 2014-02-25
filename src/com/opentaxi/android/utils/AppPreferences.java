@@ -3,10 +3,13 @@ package com.opentaxi.android.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
 import com.opentaxi.android.asynctask.RegionsTask;
+import com.opentaxi.generated.mysql.tables.pojos.Regions;
 import com.opentaxi.models.NewRequest;
 import com.opentaxi.models.Users;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -125,13 +128,17 @@ public class AppPreferences {
 
     public synchronized void setRegions() {
         if (regionsMap == null || regionsMap.isEmpty()) {
-            new RegionsTask(new RegionsTask.OnTaskCompleted() {
+            AsyncTask<Context, Void, Regions[]> regionsTask = new RegionsTask(new RegionsTask.OnTaskCompleted() {
 
                 @Override
                 public void onTaskCompleted(Map<Integer, String> regMap) {
                     regionsMap = regMap;
                 }
-            }).execute();
+            });
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+                regionsTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            else regionsTask.execute();
         }
     }
 

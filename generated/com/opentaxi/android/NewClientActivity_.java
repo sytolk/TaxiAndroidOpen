@@ -91,18 +91,18 @@ public final class NewClientActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        middleName = ((EditText) hasViews.findViewById(id.middleName));
-        userName = ((EditText) hasViews.findViewById(id.userNameField));
-        sendButton = ((Button) hasViews.findViewById(id.sendButton));
         cityName = ((AutoCompleteTextView) hasViews.findViewById(id.cityName));
-        phoneNumber = ((EditText) hasViews.findViewById(id.phoneNumber));
-        nameField = ((EditText) hasViews.findViewById(id.nameField));
         pass2 = ((EditText) hasViews.findViewById(id.password2Field));
         pass = ((EditText) hasViews.findViewById(id.passwordField));
         passwordHint = ((EditText) hasViews.findViewById(id.passwordHint));
         lastName = ((EditText) hasViews.findViewById(id.lastName));
-        iAgreeCheckBox = ((CheckBox) hasViews.findViewById(id.iAgreeCheckBox));
+        phoneNumber = ((EditText) hasViews.findViewById(id.phoneNumber));
         email = ((EditText) hasViews.findViewById(id.emailField));
+        nameField = ((EditText) hasViews.findViewById(id.nameField));
+        middleName = ((EditText) hasViews.findViewById(id.middleName));
+        sendButton = ((Button) hasViews.findViewById(id.sendButton));
+        userName = ((EditText) hasViews.findViewById(id.userNameField));
+        iAgreeCheckBox = ((CheckBox) hasViews.findViewById(id.iAgreeCheckBox));
         {
             View view = hasViews.findViewById(id.userAgreement);
             if (view!= null) {
@@ -182,34 +182,6 @@ public final class NewClientActivity_
     }
 
     @Override
-    public void setUserError(final String error) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                NewClientActivity_.super.setUserError(error);
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void ActivationDialog() {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                NewClientActivity_.super.ActivationDialog();
-            }
-
-        }
-        );
-    }
-
-    @Override
     public void setEmailError(final String error) {
         handler_.post(new Runnable() {
 
@@ -238,17 +210,27 @@ public final class NewClientActivity_
     }
 
     @Override
-    public void createNewUser(final NewUsers users) {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+    public void setUserError(final String error) {
+        handler_.post(new Runnable() {
 
 
             @Override
-            public void execute() {
-                try {
-                    NewClientActivity_.super.createNewUser(users);
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
+            public void run() {
+                NewClientActivity_.super.setUserError(error);
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void ActivationDialog() {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                NewClientActivity_.super.ActivationDialog();
             }
 
         }
@@ -264,6 +246,24 @@ public final class NewClientActivity_
             public void execute() {
                 try {
                     NewClientActivity_.super.checkUsername(username);
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void createNewUser(final NewUsers users) {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    NewClientActivity_.super.createNewUser(users);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

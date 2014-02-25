@@ -1,11 +1,10 @@
 package com.opentaxi.android;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
+import android.app.*;
 import android.content.*;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -14,17 +13,16 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.opentaxi.android.asynctask.LogoutTask;
-import com.opentaxi.android.map.AdvancedMapViewer;
 import com.opentaxi.android.simplefacebook.SimpleFacebook;
 import com.opentaxi.android.utils.AppPreferences;
 import com.opentaxi.android.utils.Network;
@@ -33,7 +31,6 @@ import com.opentaxi.models.Users;
 import com.opentaxi.rest.RestClient;
 import com.taxibulgaria.enums.Applications;
 import org.androidannotations.annotations.*;
-import org.mapsforge.android.AndroidUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -97,6 +94,53 @@ public class MainActivity extends FragmentActivity {
         AppPreferences appPreferences = AppPreferences.getInstance(this);
         RestClient.getInstance().setSocketsType(appPreferences.getSocketType());
         checkUser();
+
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            alertMessageNoGps();
+        }
+    }
+
+    void alertMessageNoGps() {
+        //showDialog(DIALOG_EXIT);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle(R.string.no_gps_title);
+        alertDialogBuilder.setMessage(R.string.no_gps_msg);
+        //null should be your on click listener
+        alertDialogBuilder.setPositiveButton("ДА", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                new LogoutTask().execute();
+                AppPreferences.getInstance().setAccessToken("");
+                AppPreferences.getInstance().setLastCloudMessage(null);
+                facebookLogout();
+                finish();
+            }
+        });
+        alertDialogBuilder.setNegativeButton("НЕ", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        Dialog exitDialog = alertDialogBuilder.create();
+
+        // If Google Play services can provide an error dialog
+        if (exitDialog != null) {
+            try {
+                // Create a new DialogFragment for the error dialog
+                MainDialogFragment errorFragment = new MainDialogFragment();
+                // Set the dialog in the DialogFragment
+                errorFragment.setDialog(exitDialog);
+                // Show the error dialog in the DialogFragment
+                errorFragment.show(getSupportFragmentManager(), "ExitDialog");
+            } catch (Exception e) {
+                if (e.getMessage() != null) Log.e(TAG, e.getMessage());
+            }
+        }
     }
 
     private void checkUser() {
@@ -201,7 +245,7 @@ public class MainActivity extends FragmentActivity {
     }
 
     // Define a DialogFragment that displays the error dialog
-    public static class MainDialogFragment extends DialogFragment {
+    public class MainDialogFragment extends DialogFragment {
         // Global field to contain the error dialog
         private Dialog mDialog;
 
@@ -288,8 +332,31 @@ public class MainActivity extends FragmentActivity {
     void sendVersion(String version, Integer code) {
         Boolean isActual = RestClient.getInstance().sendVersion(Applications.ANDROID_CLIENT.getCode(), version, code);
         if (isActual != null && !isActual) {
-            updateVersionDialog();
+            //updateVersionDialog(); todo
+            createNotification();
         } else Log.i(TAG, "You have last version");
+    }
+
+    @UiThread
+    public void createNotification() {
+        // Prepare intent which is triggered if the
+        // notification is selected
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("market://details?id=com.opentaxi.android"));
+        PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        // Build notification
+        Notification noti = new NotificationCompat.Builder(this)
+                .setContentTitle(getString(R.string.new_version))
+                        //.setContentText("Version")
+                .setSmallIcon(R.drawable.icon)
+                .setContentIntent(pIntent)
+                .addAction(R.drawable.icon, "Update", pIntent).build();
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        // hide the notification after its selected
+        noti.flags |= Notification.FLAG_AUTO_CANCEL;
+
+        notificationManager.notify(0, noti);
     }
 
     @UiThread
@@ -490,9 +557,11 @@ public class MainActivity extends FragmentActivity {
 
     @UiThread(delay = 1000)
     void changeNetworkState() {
-        if (RestClient.getInstance().isHaveConnection()) {
-            bandwidth.setText(RestClient.getInstance().getConnectionTypeName()); //+ " strength:" + RestClient.getInstance().getBandwidth());
-        } else bandwidth.setText("no connection");
+        if (bandwidth != null) {
+            if (RestClient.getInstance().isHaveConnection()) {
+                bandwidth.setText(RestClient.getInstance().getConnectionTypeName()); //+ " strength:" + RestClient.getInstance().getBandwidth());
+            } else bandwidth.setText("no connection");
+        }
     }
 
 
@@ -615,8 +684,12 @@ public class MainActivity extends FragmentActivity {
 
     @Click
     void mapButton() {
-        Intent intent = new Intent(MainActivity.this, AdvancedMapViewer.class);
-        MainActivity.this.startActivityForResult(intent, MAP_VIEW);
+        //if (TaxiApplication.getLastRequestId() != null) {
+        BubbleOverlay_.intent(this).start();
+        /*} else {
+            Intent intent = new Intent(MainActivity.this, LocationOverlayMapViewer.class);
+            MainActivity.this.startActivityForResult(intent, MAP_VIEW);
+        }*/
     }
 
     @Click
@@ -651,8 +724,8 @@ public class MainActivity extends FragmentActivity {
      *
      * @param text the text message to display
      */
-    void showToastOnUiThread(final String text) {
-        if (AndroidUtils.currentThreadIsUiThread()) {
+    /*void showToastOnUiThread(final String text) {
+        if (AndroidUtil.currentThreadIsUiThread()) {
             Toast toast = Toast.makeText(this, text, Toast.LENGTH_LONG);
             toast.show();
         } else {
@@ -664,5 +737,5 @@ public class MainActivity extends FragmentActivity {
                 }
             });
         }
-    }
+    }*/
 }

@@ -39,9 +39,12 @@ import java.util.List;
 public class NewRequestActivity extends FragmentActivity {
 
     private static final String TAG = "NewRequestActivity";
+    private static final int SHOW_ADDRESS_ON_MAP = 999;
 
     @Extra
     Cars cars;
+
+    com.opentaxi.generated.mysql.tables.pojos.NewRequest newRequest;
 
     @ViewById(R.id.pricesPicker)
     Spinner pricesPicker;
@@ -86,6 +89,32 @@ public class NewRequestActivity extends FragmentActivity {
         setGroups();
         address.setText("Адреса се определя автоматично според координатите ви. Моля изчакайте...");
         addressText.setVisibility(View.GONE);
+    }
+
+    /*@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.i(TAG, resultCode + " " + resultCode);
+        if (requestCode == SHOW_ADDRESS_ON_MAP) {
+            if (resultCode == Activity.RESULT_OK && data != null) {
+                Bundle extras = data.getExtras();
+                if (extras != null) {
+                    com.opentaxi.generated.mysql.tables.pojos.NewRequest newRequest = (com.opentaxi.generated.mysql.tables.pojos.NewRequest) extras.getSerializable("newRequest");
+                    showAddress(newRequest);
+                }
+            } else Log.e(TAG, "" + resultCode);
+        }
+    }*/
+
+    @OnActivityResult(SHOW_ADDRESS_ON_MAP)
+    void onResult(int resultCode, Intent data) {
+        //Log.i(TAG, "" + resultCode + " " + data);
+        if (resultCode == Activity.RESULT_OK && data != null) {
+            Bundle extras = data.getExtras();
+            if (extras != null) {
+                this.newRequest = (com.opentaxi.generated.mysql.tables.pojos.NewRequest) extras.getSerializable("newRequest");
+                showAddress(newRequest);
+            }
+        } else Log.e(TAG, "" + resultCode);
     }
 
     @UiThread
@@ -182,7 +211,7 @@ public class NewRequestActivity extends FragmentActivity {
     @Background
     void setAddress() {
         Log.i(TAG, "setAddress");
-        if (AppPreferences.getInstance() != null) {
+        if (this.newRequest == null && AppPreferences.getInstance() != null) {
             Date now = new Date();
             if (AppPreferences.getInstance().getGpsLastTime() > (now.getTime() - 600000)) {  //if last coordinates time is from 5 min interval
                 com.opentaxi.generated.mysql.tables.pojos.NewRequest address = RestClient.getInstance().getAddressByCoordinates(AppPreferences.getInstance().getNorth().floatValue(), AppPreferences.getInstance().getEast().floatValue());
@@ -206,6 +235,7 @@ public class NewRequestActivity extends FragmentActivity {
             selectRegionsItemById(regionsPicker, adr.getRegionId());
             address.setText(adr.getFullAddress());
             addressChange.setVisibility(View.VISIBLE);
+            addressText.setVisibility(View.GONE);
         } else {
             Log.e(TAG, "address=null");
             address.setText("Адрес: ");
@@ -233,12 +263,12 @@ public class NewRequestActivity extends FragmentActivity {
         }
     }
 
-    @Override
+    /*@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-           /* if (requestCode == REJECTION) {
+           *//* if (requestCode == REJECTION) {
                 finish();
-            }*/
+            }*//*
         }
     }
 
@@ -256,7 +286,7 @@ public class NewRequestActivity extends FragmentActivity {
             getParent().setResult(Activity.RESULT_OK);
         }
         super.finish();
-    }
+    }*/
 
     @Click
     void requestSend() {
@@ -300,6 +330,7 @@ public class NewRequestActivity extends FragmentActivity {
     void sendRequest(NewRequest newRequest) {
         Integer requestId = RestClient.getInstance().sendRequest(newRequest);
         if (requestId != null && requestId > 0) {
+            TaxiApplication.setLastRequestId(requestId);
             SuccessDialog();
         }
     }
@@ -310,6 +341,14 @@ public class NewRequestActivity extends FragmentActivity {
         address.setText("Адрес: ");
         addressText.setVisibility(View.VISIBLE);
         addressChange.setVisibility(View.GONE);
+    }
+
+    @Click
+    void addressImage() {
+        Intent intent = new Intent(this, LongPressMapAction_.class);
+        intent.putExtra("newRequest", this.newRequest);
+        startActivityForResult(intent, SHOW_ADDRESS_ON_MAP);
+        //LongPressMapAction_.intent(this).startForResult(SHOW_ADDRESS_ON_MAP);
     }
 
     @UiThread

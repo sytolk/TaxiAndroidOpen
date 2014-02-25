@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.taxi-bulgaria.rest:open-rest-client-a:1.0.1.BUILD-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/taxi-bulgaria/rest/open-rest-client-a/1.0.1.BUILD-SNAPSHOT/open-rest-client-a-1.0.1.BUILD-20140212.130248-2.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/taxi-bulgaria/rest/open-rest-client-a/1.0.1.BUILD-SNAPSHOT/open-rest-client-a-1.0.1.BUILD-20140212.130248-2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/taxi-bulgaria/rest/open-rest-client-a/1.0.1.BUILD-SNAPSHOT/open-rest-client-a-1.0.1.BUILD-20140212.130248-2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
