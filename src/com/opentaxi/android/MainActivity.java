@@ -111,11 +111,7 @@ public class MainActivity extends FragmentActivity {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                new LogoutTask().execute();
-                AppPreferences.getInstance().setAccessToken("");
-                AppPreferences.getInstance().setLastCloudMessage(null);
-                facebookLogout();
-                finish();
+                startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
             }
         });
         alertDialogBuilder.setNegativeButton("НЕ", new DialogInterface.OnClickListener() {

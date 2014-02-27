@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.mobsandgeeks.saripaar.Rule;
@@ -65,6 +66,9 @@ public class UserPassActivity extends FragmentActivity implements Validator.Vali
     @ViewById(R.id.pbProgress)
     ProgressBar pbProgress;
 
+    @ViewById(R.id.loginLayout)
+    LinearLayout loginLayout;
+
     Validator validator;
 
     SimpleFacebook mSimpleFacebook;
@@ -100,7 +104,7 @@ public class UserPassActivity extends FragmentActivity implements Validator.Vali
     public void onResume() {
         super.onResume();
         TaxiApplication.userPassResumed();
-        if (pbProgress != null) pbProgress.setVisibility(View.GONE);
+        hideProgress();
     }
 
     /*@InstanceState
@@ -233,7 +237,18 @@ public class UserPassActivity extends FragmentActivity implements Validator.Vali
     }*/
     @UiThread
     void showProgress() {
-        if (pbProgress != null) pbProgress.setVisibility(View.VISIBLE);
+        if (pbProgress != null){
+            pbProgress.setVisibility(View.VISIBLE);
+            loginLayout.setVisibility(View.GONE);
+        }
+    }
+
+    @UiThread
+    void hideProgress() {
+        if (pbProgress != null){
+            pbProgress.setVisibility(View.GONE);
+            loginLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     @Click
@@ -310,7 +325,7 @@ public class UserPassActivity extends FragmentActivity implements Validator.Vali
     void overFacebookLoginTime(String title) {
         if (TaxiApplication.isUserPassVisible()) {
             TaxiApplication.userPassPaused();
-            pbProgress.setVisibility(View.GONE);
+            hideProgress();
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setTitle("Вход през Facebook " + title);
             alertDialogBuilder.setMessage("Искате ли да създадете свой потребителски акаунт в системата на Taxi Bulgaria ?");

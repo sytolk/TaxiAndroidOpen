@@ -74,8 +74,8 @@ public final class RequestsActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        requests_table = ((TableLayout) hasViews.findViewById(id.requests_table));
         pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
+        requests_table = ((TableLayout) hasViews.findViewById(id.requests_table));
         {
             View view = hasViews.findViewById(id.requestsHistory);
             if (view!= null) {

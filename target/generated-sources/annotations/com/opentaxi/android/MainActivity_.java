@@ -83,8 +83,8 @@ public final class MainActivity_
     @Override
     public void onViewChanged(HasViews hasViews) {
         version = ((TextView) hasViews.findViewById(id.txt_version));
-        user = ((TextView) hasViews.findViewById(id.user));
         bandwidth = ((TextView) hasViews.findViewById(id.bandwidth));
+        user = ((TextView) hasViews.findViewById(id.user));
         {
             View view = hasViews.findViewById(id.mapButton);
             if (view!= null) {
@@ -94,21 +94,6 @@ public final class MainActivity_
                     @Override
                     public void onClick(View view) {
                         MainActivity_.this.mapButton();
-                    }
-
-                }
-                );
-            }
-        }
-        {
-            View view = hasViews.findViewById(id.requestButton);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        MainActivity_.this.requestButton();
                     }
 
                 }
@@ -145,17 +130,32 @@ public final class MainActivity_
                 );
             }
         }
+        {
+            View view = hasViews.findViewById(id.requestButton);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        MainActivity_.this.requestButton();
+                    }
+
+                }
+                );
+            }
+        }
         afterMain();
     }
 
     @Override
-    public void afterLogin(final String username) {
+    public void startUpdate() {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                MainActivity_.super.afterLogin(username);
+                MainActivity_.super.startUpdate();
             }
 
         }
@@ -177,6 +177,34 @@ public final class MainActivity_
     }
 
     @Override
+    public void afterLogin(final String username) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                MainActivity_.super.afterLogin(username);
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void createNotification() {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                MainActivity_.super.createNotification();
+            }
+
+        }
+        );
+    }
+
+    @Override
     public void changeNetworkState() {
         handler_.postDelayed(new Runnable() {
 
@@ -191,31 +219,13 @@ public final class MainActivity_
     }
 
     @Override
-    public void startUpdate() {
+    public void updateVersionDialog() {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                MainActivity_.super.startUpdate();
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void setServers() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    MainActivity_.super.setServers();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
+                MainActivity_.super.updateVersionDialog();
             }
 
         }
@@ -231,6 +241,42 @@ public final class MainActivity_
             public void execute() {
                 try {
                     MainActivity_.super.sendVersion(version, code);
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void downloadUpdate() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    MainActivity_.super.downloadUpdate();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void setServers() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    MainActivity_.super.setServers();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

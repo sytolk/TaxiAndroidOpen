@@ -3,6 +3,7 @@ package com.opentaxi.android;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import com.opentaxi.android.adapters.CitiesAdapter;
 import com.opentaxi.android.adapters.GroupsAdapter;
@@ -299,6 +301,10 @@ public class NewRequestActivity extends FragmentActivity {
             pbProgress.setVisibility(View.VISIBLE);
 
             NewRequest newRequest = new NewRequest();
+            if (this.newRequest != null) {
+                newRequest.setNorth(this.newRequest.getNorth());
+                newRequest.setEast(this.newRequest.getEast());
+            }
             if (cars != null) newRequest.setCarId(cars.getId());
             RegionsAdapter regionsAdapter = (RegionsAdapter) regionsPicker.getSelectedItem();
             newRequest.setRegionId(regionsAdapter.getId());
@@ -341,10 +347,17 @@ public class NewRequestActivity extends FragmentActivity {
         address.setText("Адрес: ");
         addressText.setVisibility(View.VISIBLE);
         addressChange.setVisibility(View.GONE);
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(addressText, InputMethodManager.SHOW_IMPLICIT);
     }
 
     @Click
     void addressImage() {
+        if (addressText.getVisibility() == View.VISIBLE) {
+            String txt = addressText.getText().toString();
+            if (txt != null && txt.length() > 0) this.newRequest.setFullAddress(txt);
+        }
+
         Intent intent = new Intent(this, LongPressMapAction_.class);
         intent.putExtra("newRequest", this.newRequest);
         startActivityForResult(intent, SHOW_ADDRESS_ON_MAP);

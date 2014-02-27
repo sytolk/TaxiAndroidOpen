@@ -15,8 +15,11 @@
 package com.opentaxi.android;
 
 import android.graphics.Color;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.TextView;
+import com.opentaxi.android.utils.AppPreferences;
 import com.opentaxi.generated.mysql.tables.pojos.Cars;
 import com.opentaxi.models.NewCRequest;
 import com.opentaxi.models.RequestCView;
@@ -25,14 +28,13 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.mapsforge.applications.android.mapbg.LocationOverlayMapViewer;
-import org.mapsforge.applications.android.mapbg.MarkerOverlay;
 import org.mapsforge.applications.android.mapbg.Utils;
 import org.mapsforge.core.graphics.Bitmap;
 import org.mapsforge.core.model.LatLong;
 import org.mapsforge.map.layer.Layer;
-import org.mapsforge.map.layer.Layers;
 import org.mapsforge.map.layer.overlay.Marker;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,13 +44,26 @@ import java.util.List;
 public class BubbleOverlay extends LocationOverlayMapViewer {
 
     private Bitmap bubble;
-    private MarkerOverlay addressOverlay = new MarkerOverlay();
-    private MarkerOverlay carsOverlay = new MarkerOverlay();
+    //private MarkerOverlay addressOverlay = new MarkerOverlay();
+    //private MarkerOverlay carsOverlay = new MarkerOverlay();
+    List<Layer> addressOverlay = new ArrayList<>();
+    List<Layer> carsOverlay = new ArrayList<>();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        if (AppPreferences.getInstance() != null && mapFileName == null) {
+            setMapFile(AppPreferences.getInstance().getMapFile());
+        }
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public void onPause() {
         super.onPause();
         TaxiApplication.mapPaused();
+        if (AppPreferences.getInstance() != null && mapFileName != null) {
+            AppPreferences.getInstance().setMapFile(mapFileName);
+        }
     }
 
     @Override
@@ -85,8 +100,9 @@ public class BubbleOverlay extends LocationOverlayMapViewer {
     @UiThread
     void showCarPosition(Cars cars) {
         if (TaxiApplication.isMapVisible() && cars != null) {
-            final List<Layer> overlayItems = carsOverlay.getOverlayItems();
-            overlayItems.clear();
+
+            //final List<Layer> overlayItems = carsOverlay.getOverlayItems();
+            //overlayItems.clear();
 
             TextView bubbleView = new TextView(this);
             Utils.setBackground(bubbleView, getResources().getDrawable(R.drawable.balloon_overlay_unfocused));
@@ -100,19 +116,30 @@ public class BubbleOverlay extends LocationOverlayMapViewer {
 
             if (cars.getCurrPosNorth() != null && cars.getCurrPosEast() != null) {
                 Marker marker = new Marker(new LatLong(cars.getCurrPosNorth(), cars.getCurrPosEast()), bubble, 0, -bubble.getHeight() / 2);
-                marker.setDisplayModel(this.mapViews.get(0).getModel().displayModel);
-                overlayItems.add(marker);
+                //marker.setDisplayModel(this.mapViews.get(0).getModel().displayModel);
+                carsOverlay.add(marker);
+                this.layerManagers.get(0).getLayers().add(marker);
                 //Log.i(TAG, "Car:" + cars.getNumber());
             }
-            carsOverlay.requestRedraw();
+
+            //carsOverlay.requestRedraw();
         }
     }
 
     @UiThread
     void showRequests(RequestCView requests) {
         if (requests != null) {
-            final List<Layer> overlayItems = addressOverlay.getOverlayItems();
-            overlayItems.clear();
+            //final List<Layer> overlayItems = addressOverlay.getOverlayItems();
+            //overlayItems.clear();
+            if (addressOverlay.size() > 0) {
+                this.layerManagers.get(0).getLayers().remove(this.addressOverlay);
+                addressOverlay.clear();
+            }
+            if (carsOverlay.size() > 0) {
+                this.layerManagers.get(0).getLayers().remove(this.carsOverlay);
+                carsOverlay.clear();
+            }
+
             List<NewCRequest> newRequest = requests.getGridModel();
             if (newRequest != null) {
                 for (final NewCRequest newCRequest : newRequest) {
@@ -128,17 +155,20 @@ public class BubbleOverlay extends LocationOverlayMapViewer {
                             bubble = Utils.viewToBitmap(this, bubbleView);
                             bubble.incrementRefCount();
                             Marker marker = new Marker(new LatLong(newCRequest.getNorth(), newCRequest.getEast()), bubble, 0, -bubble.getHeight() / 2);
-                            marker.setDisplayModel(this.mapViews.get(0).getModel().displayModel);
-                            overlayItems.add(marker);
+                            //marker.setDisplayModel(this.mapViews.get(0).getModel().displayModel);
+                            addressOverlay.add(marker);
                             //Log.i(TAG, newCRequest.getFullAddress());
                         }
-                        if (newCRequest.getCarId() != null) {
+                        if (newCRequest.getCarNumber() != null) {
+                            Log.i(TAG, "CarNumber:" + newCRequest.getCarNumber());
                             showCar(newCRequest.getCarNumber());
                         }
                     }
                 }
             }
-            addressOverlay.requestRedraw();
+            this.layerManagers.get(0).getLayers().addAll(addressOverlay);
+            //this.layerManagers.get(0).getLayers().setGroup("requests", overlayItems);
+            //addressOverlay.requestRedraw();
         }
         showMyRequestsDelayed();
     }
@@ -146,9 +176,9 @@ public class BubbleOverlay extends LocationOverlayMapViewer {
     @Override
     protected void createLayers() {
         super.createLayers();
-        Layers layers = this.layerManagers.get(0).getLayers();
-        if (!layers.contains(addressOverlay)) layers.add(addressOverlay);
-        if (!layers.contains(carsOverlay)) layers.add(carsOverlay);
+        //Layers layers = this.layerManagers.get(0).getLayers();
+        //if (!layers.contains(addressOverlay)) layers.add(addressOverlay);
+        //if (!layers.contains(carsOverlay)) layers.add(carsOverlay);
         showMyRequests();
     }
 

@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import com.opentaxi.android.R.id;
 import com.opentaxi.android.R.layout;
@@ -84,9 +85,25 @@ public final class UserPassActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
+        loginLayout = ((LinearLayout) hasViews.findViewById(id.loginLayout));
         pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
         pass = ((EditText) hasViews.findViewById(id.passwordField));
         userName = ((EditText) hasViews.findViewById(id.userNameField));
+        {
+            View view = hasViews.findViewById(id.lostPassword);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        UserPassActivity_.this.lostPassword();
+                    }
+
+                }
+                );
+            }
+        }
         {
             View view = hasViews.findViewById(id.facebookButton);
             if (view!= null) {
@@ -117,22 +134,21 @@ public final class UserPassActivity_
                 );
             }
         }
-        {
-            View view = hasViews.findViewById(id.lostPassword);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        UserPassActivity_.this.lostPassword();
-                    }
-
-                }
-                );
-            }
-        }
         afterLoad();
+    }
+
+    @Override
+    public void hideProgress() {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                UserPassActivity_.super.hideProgress();
+            }
+
+        }
+        );
     }
 
     @Override
@@ -210,14 +226,14 @@ public final class UserPassActivity_
     }
 
     @Override
-    public void login(final String username, final String password) {
+    public void checkFacebook(final String token) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    UserPassActivity_.super.login(username, password);
+                    UserPassActivity_.super.checkFacebook(token);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -228,14 +244,14 @@ public final class UserPassActivity_
     }
 
     @Override
-    public void checkFacebook(final String token) {
+    public void login(final String username, final String password) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    UserPassActivity_.super.checkFacebook(token);
+                    UserPassActivity_.super.login(username, password);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

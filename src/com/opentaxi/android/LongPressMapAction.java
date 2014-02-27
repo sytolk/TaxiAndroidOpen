@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
+import com.opentaxi.android.utils.AppPreferences;
 import com.opentaxi.generated.mysql.tables.pojos.NewRequest;
 import com.opentaxi.rest.RestClient;
 import org.androidannotations.annotations.*;
@@ -40,6 +42,28 @@ public class LongPressMapAction extends LocationOverlayMapViewer {
     /*private static final Paint RED = Utils.createPaint(
             AndroidGraphicFactory.INSTANCE.createColor(Color.RED), 0,
             Style.FILL);*/
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        if (AppPreferences.getInstance() != null && mapFileName == null) {
+            setMapFile(AppPreferences.getInstance().getMapFile());
+        }
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        TaxiApplication.mapPaused();
+        if (AppPreferences.getInstance() != null && mapFileName != null) {
+            AppPreferences.getInstance().setMapFile(mapFileName);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        TaxiApplication.mapResumed();
+    }
 
     protected int getLayoutId() {
         return R.layout.show_address;
@@ -117,7 +141,7 @@ public class LongPressMapAction extends LocationOverlayMapViewer {
         if (address != null) {
             Layers layers = this.layerManagers.get(0).getLayers(); //this.mapViews.get(0).getLayerManager().getLayers()
             if (index >= 0) layers.remove(index);
-            float circleSize = 8 * this.mapViews.get(0).getModel().displayModel.getScaleFactor();
+            float circleSize = 6 * this.mapViews.get(0).getModel().displayModel.getScaleFactor();
             Paint paint = Utils.createPaint(AndroidGraphicFactory.INSTANCE.createColor(Color.BLACK), 0, Style.FILL); //android.graphics.Paint.ANTI_ALIAS_FLAG);
             paint.setTextAlign(Align.LEFT);
             paint.setTextSize(25f);
@@ -133,18 +157,18 @@ public class LongPressMapAction extends LocationOverlayMapViewer {
 
     @Click
     void okButton() {
-        setResult(Activity.RESULT_OK, new Intent().putExtra("newRequest", this.newRequest));
+        //setResult(Activity.RESULT_OK, new Intent().putExtra("newRequest", this.newRequest));
         finish();
     }
 
-    /*@Override
+    @Override
     public void finish() {
         //Log.i(TAG, "Address:" + newRequest.getFullAddress());
         if (getParent() == null) {
-            setResult(Activity.RESULT_OK, new Intent().putExtra("newRequest", address));
+            setResult(Activity.RESULT_OK, new Intent().putExtra("newRequest", this.newRequest));
         } else {
-            getParent().setResult(Activity.RESULT_OK, new Intent().putExtra("newRequest", address));
+            getParent().setResult(Activity.RESULT_OK, new Intent().putExtra("newRequest", this.newRequest));
         }
         super.finish();
-    }*/
+    }
 }

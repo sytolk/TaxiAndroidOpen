@@ -37,7 +37,7 @@ public class AppPreferences {
     ObjectMapper mapper = new ObjectMapper();
 
     private static final String SOCKET_TYPE = "SOCKET_TYPE";
-    //private static final String APP_VERSION = "APP_VERSION";
+    private static final String MAP_FILE = "MAP_FILE";
     private static final String ACCESS_TOKEN = "ACCESS_TOKEN";
 
     /**
@@ -54,7 +54,7 @@ public class AppPreferences {
     private long currentLocationTime; //datetime received from GPS
     private long gpsLastTime = 0; //local Android datetime of last received coordinates
 
-    private String appVersion;
+    private String mapFile;
     private String token;
     private Integer socketType;
     private Context context;
@@ -234,19 +234,19 @@ public class AppPreferences {
         this.currentLocationTime = currentLocationTime;
     }
 
-    /*public String getAppVersion() {
-        if (appVersion == null) {
-            appVersion = appSharedPrefs.getString(APP_VERSION, "");
+    public String getMapFile() {
+        if (mapFile == null) {
+            mapFile = appSharedPrefs.getString(MAP_FILE, null);
         }
-        return appVersion;
+        return mapFile;
     }
 
-    public void setAppVersion(String version) {
-        this.appVersion = version;
+    public void setMapFile(String file) {
+        this.mapFile = file;
         this.prefsEditor = appSharedPrefs.edit();
-        prefsEditor.putString(APP_VERSION, version);
+        prefsEditor.putString(MAP_FILE, file);
         prefsEditor.commit();
-    }*/
+    }
 
     public String getAccessToken() {
         if (token == null) {

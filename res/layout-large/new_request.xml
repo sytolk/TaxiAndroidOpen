@@ -93,13 +93,14 @@
                     android:layout_weight=".5"
                     android:textSize="30dp"/>
 
-                <ImageButton
-                    android:layout_width="0dp"
+                <ToggleButton
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/addressImage"
-                    android:layout_weight=".1"
                     android:contentDescription="@string/show_address"
-                    android:src="@drawable/ic_menu_mylocation"/>
+                    android:background="@drawable/ic_menu_mylocation"
+                    android:textOff=""
+                    android:textOn=""/>
 
                 <Button
                     android:id="@+id/addressChange"
