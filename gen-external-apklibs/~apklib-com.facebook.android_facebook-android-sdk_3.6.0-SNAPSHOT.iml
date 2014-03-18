@@ -10,9 +10,6 @@
         <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/com.facebook.android_facebook-android-sdk_3.6.0-SNAPSHOT/assets" />
         <option name="LIBS_FOLDER_RELATIVE_PATH" value="/com.facebook.android_facebook-android-sdk_3.6.0-SNAPSHOT/libs" />
         <option name="LIBRARY_PROJECT" value="true" />
-        <resOverlayFolders>
-          <path>/com.facebook.android_facebook-android-sdk_3.6.0-SNAPSHOT/res-overlay</path>
-        </resOverlayFolders>
       </configuration>
     </facet>
   </component>

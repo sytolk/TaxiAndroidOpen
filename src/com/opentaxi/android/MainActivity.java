@@ -71,7 +71,6 @@ public class MainActivity extends FragmentActivity {
      */
     @AfterViews
     void afterMain() {
-
         /*PackageInfo info;
         try {
             info = getPackageManager().getPackageInfo("com.opentaxi.android", PackageManager.GET_SIGNATURES);
@@ -123,20 +122,7 @@ public class MainActivity extends FragmentActivity {
         });
 
         Dialog exitDialog = alertDialogBuilder.create();
-
-        // If Google Play services can provide an error dialog
-        if (exitDialog != null) {
-            try {
-                // Create a new DialogFragment for the error dialog
-                MainDialogFragment errorFragment = new MainDialogFragment();
-                // Set the dialog in the DialogFragment
-                errorFragment.setDialog(exitDialog);
-                // Show the error dialog in the DialogFragment
-                errorFragment.show(getSupportFragmentManager(), "ExitDialog");
-            } catch (Exception e) {
-                if (e.getMessage() != null) Log.e(TAG, e.getMessage());
-            }
-        }
+        exitDialog.show();
     }
 
     private void checkUser() {
@@ -377,20 +363,7 @@ public class MainActivity extends FragmentActivity {
         });
 
         Dialog updateDialog = alertDialogBuilder.create();
-
-        // If Google Play services can provide an error dialog
-        if (updateDialog != null) {
-            try {
-                // Create a new DialogFragment for the error dialog
-                MainDialogFragment errorFragment = new MainDialogFragment();
-                // Set the dialog in the DialogFragment
-                errorFragment.setDialog(updateDialog);
-                // Show the error dialog in the DialogFragment
-                errorFragment.show(getSupportFragmentManager(), "UpdateDialog");
-            } catch (Exception e) {
-                if (e.getMessage() != null) Log.e(TAG, e.getMessage());
-            }
-        }
+        updateDialog.show();
     }
 
     @Background
@@ -631,20 +604,7 @@ public class MainActivity extends FragmentActivity {
         });
 
         Dialog exitDialog = alertDialogBuilder.create();
-
-        // If Google Play services can provide an error dialog
-        if (exitDialog != null) {
-            try {
-                // Create a new DialogFragment for the error dialog
-                MainDialogFragment errorFragment = new MainDialogFragment();
-                // Set the dialog in the DialogFragment
-                errorFragment.setDialog(exitDialog);
-                // Show the error dialog in the DialogFragment
-                errorFragment.show(getSupportFragmentManager(), "ExitDialog");
-            } catch (Exception e) {
-                if (e.getMessage() != null) Log.e(TAG, e.getMessage());
-            }
-        }
+        exitDialog.show();
     }
 
     @Background

@@ -181,8 +181,8 @@ public class RequestsActivity extends Activity {
                         requests_table.addView(row, new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
                         for (final NewCRequest newCRequest : requests.getGridModel()) {
-
-                            row = new TableRow(this);
+                            if (!newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_MSG.getCode())) {
+                                row = new TableRow(this);
 
                /* id = new TextView(this);
                 id.setPadding(2, 2, 2, 2);
@@ -192,68 +192,69 @@ public class RequestsActivity extends Activity {
                 date.setPadding(2, 2, 2, 2);
                 date.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.1f));*/
 
-                            address = new TextView(this);
-                            address.setPadding(2, 2, 2, 2);
-                            address.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.4f));
+                                address = new TextView(this);
+                                address.setPadding(2, 2, 2, 2);
+                                address.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.4f));
 
-                            time = new TextView(this);
-                            time.setPadding(2, 2, 2, 2);
-                            time.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.2f));
+                                time = new TextView(this);
+                                time.setPadding(2, 2, 2, 2);
+                                time.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.2f));
 
-                            car = new TextView(this);
-                            car.setPadding(2, 2, 2, 2);
-                            car.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.2f));
+                                car = new TextView(this);
+                                car.setPadding(2, 2, 2, 2);
+                                car.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.2f));
 
-                            state = new TextView(this);
-                            state.setPadding(2, 2, 2, 2);
-                            state.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.2f));
+                                state = new TextView(this);
+                                state.setPadding(2, 2, 2, 2);
+                                state.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.2f));
 
-                            //id.setText(requestMap.get("id").toString());
-                            //date.setText(requestMap.get("datecreated").toString()); //DateFormat.getDateInstance(DateFormat.SHORT).format(requestMap.get("datecreated")));
-                            Regions regions = RestClient.getInstance().getRegionById(newCRequest.getRegionId());
-                            if (regions != null) {
-                                address.setText(regions.getDescription() + " " + newCRequest.getFullAddress());
-                            } else address.setText(newCRequest.getFullAddress());
-                            time.setText(newCRequest.getDispTime() + " мин.");
-                            if (newCRequest.getCarNumber() != null && !newCRequest.getCarNumber().equals(""))
-                                car.setText("Стил №" + newCRequest.getCarNumber());
+                                //id.setText(requestMap.get("id").toString());
+                                //date.setText(requestMap.get("datecreated").toString()); //DateFormat.getDateInstance(DateFormat.SHORT).format(requestMap.get("datecreated")));
+                                Regions regions = RestClient.getInstance().getRegionById(newCRequest.getRegionId());
+                                if (regions != null) {
+                                    address.setText(regions.getDescription() + " " + newCRequest.getFullAddress());
+                                } else address.setText(newCRequest.getFullAddress());
+                                time.setText(newCRequest.getDispTime() + " мин.");
+                                if (newCRequest.getCarNumber() != null && !newCRequest.getCarNumber().equals(""))
+                                    car.setText("Стил №" + newCRequest.getCarNumber());
 
-                            if (newCRequest.getStatus() != null) {
-                                String statusCode = RequestStatus.getByCode(newCRequest.getStatus()).toString();
-                                int resourceID = getResources().getIdentifier(statusCode, "string", getPackageName());
-                                if (resourceID > 0) {
-                                    try {
-                                        state.setText(resourceID);
-                                    } catch (Resources.NotFoundException e) {
-                                        Log.e(TAG, "Resources.NotFoundException:" + resourceID);
-                                    }
-                                } else state.setText(statusCode);
-                            }
-
-                            row.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-
-                                    // RequestDetailsActivity_.intent(RequestsActivity.this).myDateExtra().
-                                    //InquiryQuestionActivity_.intent(InquiryActivity.this).myDataExtra().startForResult();
-                                    Intent requestsIntent = new Intent(RequestsActivity.this, RequestDetailsActivity_.class);
-                                    requestsIntent.putExtra("newCRequest", newCRequest);
-                                    // proposalIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    // proposalIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    RequestsActivity.this.startActivityForResult(requestsIntent, REQUEST_DETAILS);
+                                if (newCRequest.getStatus() != null) {
+                                    String statusCode = RequestStatus.getByCode(newCRequest.getStatus()).toString();
+                                    int resourceID = getResources().getIdentifier(statusCode, "string", getPackageName());
+                                    if (resourceID > 0) {
+                                        try {
+                                            state.setText(resourceID);
+                                        } catch (Resources.NotFoundException e) {
+                                            Log.e(TAG, "Resources.NotFoundException:" + resourceID);
+                                        }
+                                    } else state.setText(statusCode);
                                 }
-                            });
+
+                                row.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+
+                                        // RequestDetailsActivity_.intent(RequestsActivity.this).myDateExtra().
+                                        //InquiryQuestionActivity_.intent(InquiryActivity.this).myDataExtra().startForResult();
+                                        Intent requestsIntent = new Intent(RequestsActivity.this, RequestDetailsActivity_.class);
+                                        requestsIntent.putExtra("newCRequest", newCRequest);
+                                        // proposalIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        // proposalIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        RequestsActivity.this.startActivityForResult(requestsIntent, REQUEST_DETAILS);
+                                    }
+                                });
                    /* row.setBackgroundColor(getResources().getColor(R.color.red_color));*/
 
 
-                            //row.addView(id);
-                            //row.addView(date);
-                            row.addView(address);
-                            row.addView(time);
-                            row.addView(car);
-                            row.addView(state);
+                                //row.addView(id);
+                                //row.addView(date);
+                                row.addView(address);
+                                row.addView(time);
+                                row.addView(car);
+                                row.addView(state);
 
-                            requests_table.addView(row, new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                                requests_table.addView(row, new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                            }
                         }
                     }
 

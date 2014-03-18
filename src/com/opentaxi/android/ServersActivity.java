@@ -5,11 +5,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.*;
-import org.androidannotations.annotations.*;
 import com.opentaxi.android.utils.AppPreferences;
 import com.opentaxi.generated.mysql.tables.pojos.Servers;
 import com.opentaxi.models.Users;
 import com.opentaxi.rest.RestClient;
+import org.androidannotations.annotations.*;
 
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -141,6 +141,10 @@ public class ServersActivity extends Activity {
     @Override
     public void onPause() {
         super.onPause();
+        if (refreshScheduler != null) {
+            refreshScheduler.shutdown();
+            refreshScheduler = null;
+        }
         finish();
     }
 

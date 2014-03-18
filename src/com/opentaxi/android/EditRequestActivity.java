@@ -5,9 +5,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -34,7 +31,7 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 @EActivity(R.layout.new_request)
-public class EditRequestActivity extends FragmentActivity {
+public class EditRequestActivity extends Activity {
 
     private static final String TAG = "NewRequestActivity";
 
@@ -328,19 +325,7 @@ public class EditRequestActivity extends FragmentActivity {
         });
 
         Dialog successDialog = alertDialogBuilder.create();
-
-        if (successDialog != null) {
-            try {
-                // Create a new DialogFragment for the error dialog
-                MainDialogFragment errorFragment = new MainDialogFragment();
-                // Set the dialog in the DialogFragment
-                errorFragment.setDialog(successDialog);
-                // Show the error dialog in the DialogFragment
-                errorFragment.show(getSupportFragmentManager(), "notSupporderDialog");
-            } catch (Exception e) {
-                if (e.getMessage() != null) Log.e(TAG, e.getMessage());
-            }
-        }
+        successDialog.show();
     }
 
     @UiThread
@@ -365,41 +350,6 @@ public class EditRequestActivity extends FragmentActivity {
         });
 
         Dialog successDialog = alertDialogBuilder.create();
-
-        if (successDialog != null) {
-            try {
-                // Create a new DialogFragment for the error dialog
-                MainDialogFragment errorFragment = new MainDialogFragment();
-                // Set the dialog in the DialogFragment
-                errorFragment.setDialog(successDialog);
-                // Show the error dialog in the DialogFragment
-                errorFragment.show(getSupportFragmentManager(), "newRequestSuccess");
-            } catch (Exception e) {
-                if (e.getMessage() != null) Log.e(TAG, e.getMessage());
-            }
-        }
-    }
-
-    public static class MainDialogFragment extends DialogFragment {
-        // Global field to contain the error dialog
-        private Dialog mDialog;
-
-        // Default constructor. Sets the dialog field to null
-        public MainDialogFragment() {
-            super();
-            mDialog = null;
-        }
-
-        // Set the dialog to display
-        public void setDialog(Dialog dialog) {
-            mDialog = dialog;
-        }
-
-        // Return a Dialog to the DialogFragment.
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            if (mDialog == null) super.setShowsDialog(false);
-            return mDialog;
-        }
+        successDialog.show();
     }
 }

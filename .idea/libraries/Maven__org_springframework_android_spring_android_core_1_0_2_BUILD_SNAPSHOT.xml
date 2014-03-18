@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.springframework.android:spring-android-core:1.0.2.BUILD-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/android/spring-android-core/1.0.2.BUILD-SNAPSHOT/spring-android-core-1.0.2.BUILD-20140310.162444-24.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/android/spring-android-core/1.0.2.BUILD-SNAPSHOT/spring-android-core-1.0.2.BUILD-20140310.162444-24-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/android/spring-android-core/1.0.2.BUILD-SNAPSHOT/spring-android-core-1.0.2.BUILD-20140310.162444-24-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -23,7 +22,6 @@ import com.opentaxi.android.R.id;
 import com.opentaxi.android.R.layout;
 import com.opentaxi.generated.mysql.tables.pojos.Cars;
 import org.androidannotations.api.BackgroundExecutor;
-import org.androidannotations.api.SdkVersionHelper;
 import org.androidannotations.api.view.HasViews;
 import org.androidannotations.api.view.OnViewChangedListener;
 import org.androidannotations.api.view.OnViewChangedNotifier;
@@ -78,17 +76,9 @@ public final class CarDetailsActivity_
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (((SdkVersionHelper.getSdkInt()< 5)&&(keyCode == KeyEvent.KEYCODE_BACK))&&(event.getRepeatCount() == 0)) {
-            onBackPressed();
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
     public void onViewChanged(HasViews hasViews) {
-        carNumberView = ((TextView) hasViews.findViewById(id.carNumberView));
         requestButton = ((Button) hasViews.findViewById(id.requestButton));
+        carNumberView = ((TextView) hasViews.findViewById(id.carNumberView));
         driver = ((TextView) hasViews.findViewById(id.driver));
         rating = ((RatingBar) hasViews.findViewById(id.rating));
         {

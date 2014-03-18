@@ -5,9 +5,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -45,7 +42,7 @@ import java.io.File;
  * To change this template use File | Settings | File Templates.
  */
 @EActivity(R.layout.login)
-public class UserPassActivity extends FragmentActivity implements Validator.ValidationListener {
+public class UserPassActivity extends Activity implements Validator.ValidationListener {
 
     private static final String TAG = "UserPassActivity";
 
@@ -218,23 +215,6 @@ public class UserPassActivity extends FragmentActivity implements Validator.Vali
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    /*private class SessionStatusCallback implements Session.StatusCallback {
-        @Override
-        public void call(Session session, SessionState state, Exception exception) {
-            Log.i("LoginUsingLoginFragmentActivity:" + session.getAccessToken(), String.format("New session state: %s", state.toString()));
-        }
-    }*/
-
-    /*@OnActivityResult(RESULT_NEW_CLIENT)
-    void onResult(int resultCode, Intent data) {
-
-    }*/
-
-    /*@Click
-    void clientLoginButton() {
-        submitButton.setClickable(false);
-        validator.validateAsync();
-    }*/
     @UiThread
     void showProgress() {
         if (pbProgress != null){
@@ -347,44 +327,8 @@ public class UserPassActivity extends FragmentActivity implements Validator.Vali
             });
 
             Dialog facebookDialog = alertDialogBuilder.create();
-
-            if (facebookDialog != null) {
-                try {
-                    // Create a new DialogFragment for the error dialog
-                    MainDialogFragment errorFragment = new MainDialogFragment();
-                    // Set the dialog in the DialogFragment
-                    errorFragment.setDialog(facebookDialog);
-                    // Show the error dialog in the DialogFragment
-                    errorFragment.show(getSupportFragmentManager(), "FacebookDialog");
-                } catch (Exception e) {
-                    if (e.getMessage() != null) Log.e(TAG, e.getMessage());
-                }
-            }
+            facebookDialog.show();
         } else Log.i(TAG, "overFacebookLoginTime TaxiApplication.isUserPassVisible=false");
-    }
-
-    // Define a DialogFragment that displays the error dialog
-    public static class MainDialogFragment extends DialogFragment {
-        // Global field to contain the error dialog
-        private Dialog mDialog;
-
-        // Default constructor. Sets the dialog field to null
-        public MainDialogFragment() {
-            super();
-            mDialog = null;
-        }
-
-        // Set the dialog to display
-        public void setDialog(Dialog dialog) {
-            mDialog = dialog;
-        }
-
-        // Return a Dialog to the DialogFragment.
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            if (mDialog == null) super.setShowsDialog(false);
-            return mDialog;
-        }
     }
 
 

@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
@@ -26,7 +25,6 @@ import com.opentaxi.android.R.id;
 import com.opentaxi.android.R.layout;
 import com.opentaxi.models.NewUsers;
 import org.androidannotations.api.BackgroundExecutor;
-import org.androidannotations.api.SdkVersionHelper;
 import org.androidannotations.api.view.HasViews;
 import org.androidannotations.api.view.OnViewChangedListener;
 import org.androidannotations.api.view.OnViewChangedNotifier;
@@ -82,42 +80,19 @@ public final class NewClientActivity_
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (((SdkVersionHelper.getSdkInt()< 5)&&(keyCode == KeyEvent.KEYCODE_BACK))&&(event.getRepeatCount() == 0)) {
-            onBackPressed();
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
     public void onViewChanged(HasViews hasViews) {
-        middleName = ((EditText) hasViews.findViewById(id.middleName));
-        pass2 = ((EditText) hasViews.findViewById(id.password2Field));
-        phoneNumber = ((EditText) hasViews.findViewById(id.phoneNumber));
-        pass = ((EditText) hasViews.findViewById(id.passwordField));
-        email = ((EditText) hasViews.findViewById(id.emailField));
         cityName = ((AutoCompleteTextView) hasViews.findViewById(id.cityName));
+        email = ((EditText) hasViews.findViewById(id.emailField));
+        middleName = ((EditText) hasViews.findViewById(id.middleName));
         nameField = ((EditText) hasViews.findViewById(id.nameField));
+        lastName = ((EditText) hasViews.findViewById(id.lastName));
         sendButton = ((Button) hasViews.findViewById(id.sendButton));
         userName = ((EditText) hasViews.findViewById(id.userNameField));
-        lastName = ((EditText) hasViews.findViewById(id.lastName));
-        iAgreeCheckBox = ((CheckBox) hasViews.findViewById(id.iAgreeCheckBox));
+        pass2 = ((EditText) hasViews.findViewById(id.password2Field));
         passwordHint = ((EditText) hasViews.findViewById(id.passwordHint));
-        {
-            View view = hasViews.findViewById(id.userAgreement);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        NewClientActivity_.this.userAgreement();
-                    }
-
-                }
-                );
-            }
-        }
+        iAgreeCheckBox = ((CheckBox) hasViews.findViewById(id.iAgreeCheckBox));
+        phoneNumber = ((EditText) hasViews.findViewById(id.phoneNumber));
+        pass = ((EditText) hasViews.findViewById(id.passwordField));
         {
             View view = hasViews.findViewById(id.sendButton);
             if (view!= null) {
@@ -134,14 +109,14 @@ public final class NewClientActivity_
             }
         }
         {
-            View view = hasViews.findViewById(id.userNameField);
+            View view = hasViews.findViewById(id.userAgreement);
             if (view!= null) {
-                view.setOnFocusChangeListener(new OnFocusChangeListener() {
+                view.setOnClickListener(new OnClickListener() {
 
 
                     @Override
-                    public void onFocusChange(View view, boolean hasFocus) {
-                        NewClientActivity_.this.focusChangedOnUserNameField(view, hasFocus);
+                    public void onClick(View view) {
+                        NewClientActivity_.this.userAgreement();
                     }
 
                 }
@@ -157,6 +132,21 @@ public final class NewClientActivity_
                     @Override
                     public void onFocusChange(View view, boolean hasFocus) {
                         NewClientActivity_.this.focusChangedOnEmailField(view, hasFocus);
+                    }
+
+                }
+                );
+            }
+        }
+        {
+            View view = hasViews.findViewById(id.userNameField);
+            if (view!= null) {
+                view.setOnFocusChangeListener(new OnFocusChangeListener() {
+
+
+                    @Override
+                    public void onFocusChange(View view, boolean hasFocus) {
+                        NewClientActivity_.this.focusChangedOnUserNameField(view, hasFocus);
                     }
 
                 }
@@ -182,13 +172,13 @@ public final class NewClientActivity_
     }
 
     @Override
-    public void setEmailError(final String error) {
+    public void ActivationDialog() {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                NewClientActivity_.super.setEmailError(error);
+                NewClientActivity_.super.ActivationDialog();
             }
 
         }
@@ -210,13 +200,13 @@ public final class NewClientActivity_
     }
 
     @Override
-    public void ActivationDialog() {
+    public void setEmailError(final String error) {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                NewClientActivity_.super.ActivationDialog();
+                NewClientActivity_.super.setEmailError(error);
             }
 
         }
@@ -238,14 +228,14 @@ public final class NewClientActivity_
     }
 
     @Override
-    public void createNewUser(final NewUsers users) {
+    public void checkEmail(final String emailCheck) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    NewClientActivity_.super.createNewUser(users);
+                    NewClientActivity_.super.checkEmail(emailCheck);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -274,14 +264,14 @@ public final class NewClientActivity_
     }
 
     @Override
-    public void checkEmail(final String emailCheck) {
+    public void createNewUser(final NewUsers users) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    NewClientActivity_.super.checkEmail(emailCheck);
+                    NewClientActivity_.super.createNewUser(users);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

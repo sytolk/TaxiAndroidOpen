@@ -10,9 +10,6 @@
         <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/com.google.android.gms_google-play-services_12.0.0/assets" />
         <option name="LIBS_FOLDER_RELATIVE_PATH" value="/com.google.android.gms_google-play-services_12.0.0/libs" />
         <option name="LIBRARY_PROJECT" value="true" />
-        <resOverlayFolders>
-          <path>/com.google.android.gms_google-play-services_12.0.0/res-overlay</path>
-        </resOverlayFolders>
       </configuration>
     </facet>
   </component>

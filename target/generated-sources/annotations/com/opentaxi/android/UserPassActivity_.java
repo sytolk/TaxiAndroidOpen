@@ -87,17 +87,17 @@ public final class UserPassActivity_
     public void onViewChanged(HasViews hasViews) {
         userName = ((EditText) hasViews.findViewById(id.userNameField));
         loginLayout = ((LinearLayout) hasViews.findViewById(id.loginLayout));
-        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
         pass = ((EditText) hasViews.findViewById(id.passwordField));
+        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
         {
-            View view = hasViews.findViewById(id.newClient);
+            View view = hasViews.findViewById(id.facebookButton);
             if (view!= null) {
                 view.setOnClickListener(new OnClickListener() {
 
 
                     @Override
                     public void onClick(View view) {
-                        UserPassActivity_.this.newClient();
+                        UserPassActivity_.this.facebookButton();
                     }
 
                 }
@@ -120,14 +120,14 @@ public final class UserPassActivity_
             }
         }
         {
-            View view = hasViews.findViewById(id.facebookButton);
+            View view = hasViews.findViewById(id.newClient);
             if (view!= null) {
                 view.setOnClickListener(new OnClickListener() {
 
 
                     @Override
                     public void onClick(View view) {
-                        UserPassActivity_.this.facebookButton();
+                        UserPassActivity_.this.newClient();
                     }
 
                 }
@@ -138,20 +138,6 @@ public final class UserPassActivity_
     }
 
     @Override
-    public void hideProgress() {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                UserPassActivity_.super.hideProgress();
-            }
-
-        }
-        );
-    }
-
-    @Override
     public void showProgress() {
         handler_.post(new Runnable() {
 
@@ -159,34 +145,6 @@ public final class UserPassActivity_
             @Override
             public void run() {
                 UserPassActivity_.super.showProgress();
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void facebookUser(final Users user) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                UserPassActivity_.super.facebookUser(user);
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void overFacebookLoginTime(final String title) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                UserPassActivity_.super.overFacebookLoginTime(title);
             }
 
         }
@@ -208,17 +166,41 @@ public final class UserPassActivity_
     }
 
     @Override
-    public void login(final String username, final String password) {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+    public void overFacebookLoginTime(final String title) {
+        handler_.post(new Runnable() {
 
 
             @Override
-            public void execute() {
-                try {
-                    UserPassActivity_.super.login(username, password);
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
+            public void run() {
+                UserPassActivity_.super.overFacebookLoginTime(title);
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void hideProgress() {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                UserPassActivity_.super.hideProgress();
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void facebookUser(final Users user) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                UserPassActivity_.super.facebookUser(user);
             }
 
         }
@@ -234,6 +216,24 @@ public final class UserPassActivity_
             public void execute() {
                 try {
                     UserPassActivity_.super.checkFacebook(token);
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void login(final String username, final String password) {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    UserPassActivity_.super.login(username, password);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

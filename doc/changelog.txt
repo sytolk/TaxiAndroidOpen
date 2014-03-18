@@ -1,3 +1,6 @@
+https://play.google.com/store/apps/details?id=com.cocoapps.screenrecorder&hl=bg
+
+версия: 1.0.15 mapsforge v.0.4.0.
 версия: 1.0.10 fixed issue 3.
 версия: 1.0.6 issue 1 Back button on login screen.
 версия: 1.0.5 issue 1 for Blade III.

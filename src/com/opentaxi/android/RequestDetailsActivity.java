@@ -1,13 +1,11 @@
 package com.opentaxi.android;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -36,7 +34,7 @@ import java.util.Map;
  */
 @WindowFeature(Window.FEATURE_NO_TITLE)
 @EActivity(R.layout.request_details)
-public class RequestDetailsActivity extends FragmentActivity {
+public class RequestDetailsActivity extends Activity {
 
     private static final String TAG = "RequestDetailsActivity";
 
@@ -245,19 +243,7 @@ public class RequestDetailsActivity extends FragmentActivity {
         });
 
         Dialog rejectDialog = alertDialogBuilder.create();
-
-        if (rejectDialog != null) {
-            try {
-                // Create a new DialogFragment for the error dialog
-                MainDialogFragment errorFragment = new MainDialogFragment();
-                // Set the dialog in the DialogFragment
-                errorFragment.setDialog(rejectDialog);
-                // Show the error dialog in the DialogFragment
-                errorFragment.show(getSupportFragmentManager(), "rejectRequest");
-            } catch (Exception e) {
-                if (e.getMessage() != null) Log.e(TAG, e.getMessage());
-            }
-        }
+        rejectDialog.show();
     }
 
     @Background
@@ -343,19 +329,7 @@ public class RequestDetailsActivity extends FragmentActivity {
             });
 
             Dialog feedBackDialog = alertDialogBuilder.create();
-
-            if (feedBackDialog != null) {
-                try {
-                    // Create a new DialogFragment for the error dialog
-                    MainDialogFragment errorFragment = new MainDialogFragment();
-                    // Set the dialog in the DialogFragment
-                    errorFragment.setDialog(feedBackDialog);
-                    // Show the error dialog in the DialogFragment
-                    errorFragment.show(getSupportFragmentManager(), "feedBack");
-                } catch (Exception e) {
-                    if (e.getMessage() != null) Log.e(TAG, e.getMessage());
-                }
-            }
+            feedBackDialog.show();
         }
     }
 
@@ -364,28 +338,5 @@ public class RequestDetailsActivity extends FragmentActivity {
         if (comment != null && !comment.equals(""))
             RestClient.getInstance().RequestNotes(newCRequest.getRequestsId(), comment);
         RestClient.getInstance().sendFeedBack(newCRequest.getRequestsId(), vote);
-    }
-
-    public static class MainDialogFragment extends DialogFragment {
-        // Global field to contain the error dialog
-        private Dialog mDialog;
-
-        // Default constructor. Sets the dialog field to null
-        public MainDialogFragment() {
-            super();
-            mDialog = null;
-        }
-
-        // Set the dialog to display
-        public void setDialog(Dialog dialog) {
-            mDialog = dialog;
-        }
-
-        // Return a Dialog to the DialogFragment.
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            if (mDialog == null) super.setShowsDialog(false);
-            return mDialog;
-        }
     }
 }

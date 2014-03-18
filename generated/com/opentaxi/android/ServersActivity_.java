@@ -77,21 +77,6 @@ public final class ServersActivity_
         serversContent = ((LinearLayout) hasViews.findViewById(id.serversContent));
         cancelButton = ((Button) hasViews.findViewById(id.cancelButton));
         {
-            View view = hasViews.findViewById(id.cancelButton);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        ServersActivity_.this.cancelButton();
-                    }
-
-                }
-                );
-            }
-        }
-        {
             View view = hasViews.findViewById(id.refreshButton);
             if (view!= null) {
                 view.setOnClickListener(new OnClickListener() {
@@ -106,21 +91,22 @@ public final class ServersActivity_
                 );
             }
         }
-        afterServers();
-    }
-
-    @Override
-    public void showServers(final boolean testing) {
-        handler_.post(new Runnable() {
+        {
+            View view = hasViews.findViewById(id.cancelButton);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
 
 
-            @Override
-            public void run() {
-                ServersActivity_.super.showServers(testing);
+                    @Override
+                    public void onClick(View view) {
+                        ServersActivity_.this.cancelButton();
+                    }
+
+                }
+                );
             }
-
         }
-        );
+        afterServers();
     }
 
     @Override
@@ -131,6 +117,20 @@ public final class ServersActivity_
             @Override
             public void run() {
                 ServersActivity_.super.loginError(error);
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void showServers(final boolean testing) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                ServersActivity_.super.showServers(testing);
             }
 
         }

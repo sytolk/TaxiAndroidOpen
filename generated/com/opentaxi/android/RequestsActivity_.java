@@ -74,8 +74,23 @@ public final class RequestsActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
         requests_table = ((TableLayout) hasViews.findViewById(id.requests_table));
+        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
+        {
+            View view = hasViews.findViewById(id.requestsHistory);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        RequestsActivity_.this.requestsHistory();
+                    }
+
+                }
+                );
+            }
+        }
         {
             View view = hasViews.findViewById(id.backButton);
             if (view!= null) {
@@ -100,21 +115,6 @@ public final class RequestsActivity_
                     @Override
                     public void onClick(View view) {
                         RequestsActivity_.this.newRequests();
-                    }
-
-                }
-                );
-            }
-        }
-        {
-            View view = hasViews.findViewById(id.requestsHistory);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        RequestsActivity_.this.requestsHistory();
                     }
 
                 }
@@ -163,24 +163,6 @@ public final class RequestsActivity_
     }
 
     @Override
-    public void getRequests() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    RequestsActivity_.super.getRequests();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
     public void scheduleRequestSec() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 1000, "") {
 
@@ -199,14 +181,14 @@ public final class RequestsActivity_
     }
 
     @Override
-    public void scheduleRequest() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 10000, "") {
+    public void getRequests() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    RequestsActivity_.super.scheduleRequest();
+                    RequestsActivity_.super.getRequests();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -225,6 +207,24 @@ public final class RequestsActivity_
             public void execute() {
                 try {
                     RequestsActivity_.super.getRequestHistory();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void scheduleRequest() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 10000, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    RequestsActivity_.super.scheduleRequest();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

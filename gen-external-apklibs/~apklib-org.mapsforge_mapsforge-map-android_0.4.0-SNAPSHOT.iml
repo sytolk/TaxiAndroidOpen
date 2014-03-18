@@ -10,9 +10,6 @@
         <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/org.mapsforge_mapsforge-map-android_0.4.0-SNAPSHOT/assets" />
         <option name="LIBS_FOLDER_RELATIVE_PATH" value="/org.mapsforge_mapsforge-map-android_0.4.0-SNAPSHOT/libs" />
         <option name="LIBRARY_PROJECT" value="true" />
-        <resOverlayFolders>
-          <path>/org.mapsforge_mapsforge-map-android_0.4.0-SNAPSHOT/res-overlay</path>
-        </resOverlayFolders>
       </configuration>
     </facet>
   </component>
