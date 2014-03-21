@@ -175,7 +175,12 @@ public class BubbleOverlay extends LocationOverlayMapViewer {
 
     @Override
     protected void createLayers() {
-        super.createLayers();
+        try {
+            super.createLayers();
+        } catch (Exception e) {
+            if (e.getMessage() != null) Log.e(TAG, "Invalid map file? " + e.getMessage());
+            startMapFilePicker();
+        }
         //Layers layers = this.layerManagers.get(0).getLayers();
         //if (!layers.contains(addressOverlay)) layers.add(addressOverlay);
         //if (!layers.contains(carsOverlay)) layers.add(carsOverlay);

@@ -38,6 +38,7 @@ public class LongPressMapAction extends LocationOverlayMapViewer {
 
     private static final Paint GREEN = Utils.createPaint(AndroidGraphicFactory.INSTANCE.createColor(Color.GREEN), 0, Style.FILL);
     int index = -1;
+
     //private NewRequest address = new NewRequest();
     /*private static final Paint RED = Utils.createPaint(
             AndroidGraphicFactory.INSTANCE.createColor(Color.RED), 0,
@@ -71,7 +72,12 @@ public class LongPressMapAction extends LocationOverlayMapViewer {
 
     @Override
     protected void createLayers() {
-        super.createLayers();
+        try {
+            super.createLayers();
+        } catch (Exception e) {
+            if (e.getMessage() != null) Log.e(TAG, "Invalid map file? " + e.getMessage());
+            startMapFilePicker();
+        }
         Layers layers = this.layerManagers.get(0).getLayers();
         File mapFile = this.getMapFile();
         if (mapFile != null) {
@@ -97,7 +103,7 @@ public class LongPressMapAction extends LocationOverlayMapViewer {
         }
     }
 
-    void showAlert(){
+    void showAlert() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle("Избор на адрес");
         alertDialogBuilder.setMessage("Моля посочете на картата и задръжте за 1 секунда върху адреса на заявката");

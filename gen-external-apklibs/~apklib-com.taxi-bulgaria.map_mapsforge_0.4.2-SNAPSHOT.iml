@@ -3,21 +3,21 @@
   <component name="FacetManager">
     <facet type="android" name="Android">
       <configuration>
-        <option name="GEN_FOLDER_RELATIVE_PATH_APT" value="/com.taxi-bulgaria.map_mapsforge_0.4.1-SNAPSHOT/gen" />
-        <option name="GEN_FOLDER_RELATIVE_PATH_AIDL" value="/com.taxi-bulgaria.map_mapsforge_0.4.1-SNAPSHOT/gen" />
-        <option name="MANIFEST_FILE_RELATIVE_PATH" value="/com.taxi-bulgaria.map_mapsforge_0.4.1-SNAPSHOT/AndroidManifest.xml" />
-        <option name="RES_FOLDER_RELATIVE_PATH" value="/com.taxi-bulgaria.map_mapsforge_0.4.1-SNAPSHOT/res" />
-        <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/com.taxi-bulgaria.map_mapsforge_0.4.1-SNAPSHOT/assets" />
-        <option name="LIBS_FOLDER_RELATIVE_PATH" value="/com.taxi-bulgaria.map_mapsforge_0.4.1-SNAPSHOT/libs" />
+        <option name="GEN_FOLDER_RELATIVE_PATH_APT" value="/com.taxi-bulgaria.map_mapsforge_0.4.2-SNAPSHOT/gen" />
+        <option name="GEN_FOLDER_RELATIVE_PATH_AIDL" value="/com.taxi-bulgaria.map_mapsforge_0.4.2-SNAPSHOT/gen" />
+        <option name="MANIFEST_FILE_RELATIVE_PATH" value="/com.taxi-bulgaria.map_mapsforge_0.4.2-SNAPSHOT/AndroidManifest.xml" />
+        <option name="RES_FOLDER_RELATIVE_PATH" value="/com.taxi-bulgaria.map_mapsforge_0.4.2-SNAPSHOT/res" />
+        <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/com.taxi-bulgaria.map_mapsforge_0.4.2-SNAPSHOT/assets" />
+        <option name="LIBS_FOLDER_RELATIVE_PATH" value="/com.taxi-bulgaria.map_mapsforge_0.4.2-SNAPSHOT/libs" />
         <option name="LIBRARY_PROJECT" value="true" />
       </configuration>
     </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$MODULE_DIR$/com.taxi-bulgaria.map_mapsforge_0.4.1-SNAPSHOT">
-      <sourceFolder url="file://$MODULE_DIR$/com.taxi-bulgaria.map_mapsforge_0.4.1-SNAPSHOT/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/com.taxi-bulgaria.map_mapsforge_0.4.1-SNAPSHOT/gen" isTestSource="false" generated="true" />
+    <content url="file://$MODULE_DIR$/com.taxi-bulgaria.map_mapsforge_0.4.2-SNAPSHOT">
+      <sourceFolder url="file://$MODULE_DIR$/com.taxi-bulgaria.map_mapsforge_0.4.2-SNAPSHOT/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/com.taxi-bulgaria.map_mapsforge_0.4.2-SNAPSHOT/gen" isTestSource="false" generated="true" />
     </content>
     <orderEntry type="jdk" jdkName="Maven Android API 17 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

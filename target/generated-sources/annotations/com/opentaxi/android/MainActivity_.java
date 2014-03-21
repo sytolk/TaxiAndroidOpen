@@ -82,24 +82,9 @@ public final class MainActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        bandwidth = ((TextView) hasViews.findViewById(id.bandwidth));
-        user = ((TextView) hasViews.findViewById(id.user));
         version = ((TextView) hasViews.findViewById(id.txt_version));
-        {
-            View view = hasViews.findViewById(id.requestButton);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        MainActivity_.this.requestButton();
-                    }
-
-                }
-                );
-            }
-        }
+        user = ((TextView) hasViews.findViewById(id.user));
+        bandwidth = ((TextView) hasViews.findViewById(id.bandwidth));
         {
             View view = hasViews.findViewById(id.mapButton);
             if (view!= null) {
@@ -145,7 +130,36 @@ public final class MainActivity_
                 );
             }
         }
+        {
+            View view = hasViews.findViewById(id.requestButton);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        MainActivity_.this.requestButton();
+                    }
+
+                }
+                );
+            }
+        }
         afterMain();
+    }
+
+    @Override
+    public void startUserPass() {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                MainActivity_.super.startUserPass();
+            }
+
+        }
+        );
     }
 
     @Override
@@ -163,13 +177,13 @@ public final class MainActivity_
     }
 
     @Override
-    public void updateVersionDialog() {
+    public void afterLogin(final String username) {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                MainActivity_.super.updateVersionDialog();
+                MainActivity_.super.afterLogin(username);
             }
 
         }
@@ -177,13 +191,13 @@ public final class MainActivity_
     }
 
     @Override
-    public void startUserPass() {
+    public void updateVersionDialog() {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                MainActivity_.super.startUserPass();
+                MainActivity_.super.updateVersionDialog();
             }
 
         }
@@ -219,20 +233,6 @@ public final class MainActivity_
     }
 
     @Override
-    public void afterLogin(final String username) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                MainActivity_.super.afterLogin(username);
-            }
-
-        }
-        );
-    }
-
-    @Override
     public void gcmRegister() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
@@ -251,14 +251,14 @@ public final class MainActivity_
     }
 
     @Override
-    public void facebookLogout() {
+    public void beforeStartUserPass() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    MainActivity_.super.facebookLogout();
+                    MainActivity_.super.beforeStartUserPass();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -269,14 +269,14 @@ public final class MainActivity_
     }
 
     @Override
-    public void beforeStartUserPass() {
+    public void downloadUpdate() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    MainActivity_.super.beforeStartUserPass();
+                    MainActivity_.super.downloadUpdate();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -323,14 +323,14 @@ public final class MainActivity_
     }
 
     @Override
-    public void downloadUpdate() {
+    public void facebookLogout() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    MainActivity_.super.downloadUpdate();
+                    MainActivity_.super.facebookLogout();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
