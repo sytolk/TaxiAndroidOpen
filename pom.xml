@@ -147,7 +147,7 @@
         <dependency>
             <groupId>com.taxi-bulgaria.rest</groupId>
             <artifactId>open-rest-client-a</artifactId>
-            <version>1.0.2.BUILD-SNAPSHOT</version>
+            <version>1.0.3.BUILD-SNAPSHOT</version>
         </dependency>
 
         <dependency>

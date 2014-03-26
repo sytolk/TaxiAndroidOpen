@@ -66,20 +66,6 @@ public final class BubbleOverlay_
     }
 
     @Override
-    public void showCarPosition(final Cars cars) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                BubbleOverlay_.super.showCarPosition(cars);
-            }
-
-        }
-        );
-    }
-
-    @Override
     public void showRequests(final RequestCView requests) {
         handler_.post(new Runnable() {
 
@@ -94,14 +80,28 @@ public final class BubbleOverlay_
     }
 
     @Override
-    public void showMyRequestsDelayed() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 15000, "") {
+    public void showCarPosition(final Cars cars) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                BubbleOverlay_.super.showCarPosition(cars);
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void showMyRequests() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    BubbleOverlay_.super.showMyRequestsDelayed();
+                    BubbleOverlay_.super.showMyRequests();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -130,14 +130,14 @@ public final class BubbleOverlay_
     }
 
     @Override
-    public void showMyRequests() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+    public void showMyRequestsDelayed() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 15000, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    BubbleOverlay_.super.showMyRequests();
+                    BubbleOverlay_.super.showMyRequestsDelayed();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

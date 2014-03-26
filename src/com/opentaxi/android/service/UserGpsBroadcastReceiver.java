@@ -21,8 +21,6 @@ public class UserGpsBroadcastReceiver extends BroadcastReceiver {
         final LocationInfo locationInfo = (LocationInfo) intent.getSerializableExtra(LocationLibraryConstants.LOCATION_BROADCAST_EXTRA_LOCATIONINFO);
         if (locationInfo != null && locationInfo.anyLocationDataReceived()) {
             //locationInfo.refresh(context);
-            Log.i("LocationBroadcastReceiver", "onReceive: received location update:" + locationInfo.lastLat + ", " + locationInfo.lastLong);
-
             new SendCoordinatesTask(locationInfo.lastLat, locationInfo.lastLong, locationInfo.lastLocationUpdateTimestamp).execute(context);
 
             if (AppPreferences.getInstance() != null) {
@@ -33,6 +31,7 @@ public class UserGpsBroadcastReceiver extends BroadcastReceiver {
                 AppPreferences.getInstance().setCurrentLocationTime(locationInfo.lastLocationBroadcastTimestamp);
                 AppPreferences.getInstance().setGpsLastTime(now.getTime());
             }
+            Log.i("LocationBroadcastReceiver", "onReceive: received location update:" + locationInfo.lastLat + ", " + locationInfo.lastLong);
         } else Log.e(TAG, "onReceive: anyLocationDataReceived=false");
     }
 }

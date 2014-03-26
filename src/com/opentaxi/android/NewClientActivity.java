@@ -181,13 +181,13 @@ public class NewClientActivity extends Activity implements Validator.ValidationL
 
     @UiThread
     void setUserError(String error) {
-        userName.setError(error);
+        if (userName != null) userName.setError(error);
         haveErrors = true;
     }
 
     @UiThread
     void setEmailError(String error) {
-        email.setError(error);
+        if (email != null) email.setError(error);
         haveErrors = true;
     }
 
@@ -225,7 +225,10 @@ public class NewClientActivity extends Activity implements Validator.ValidationL
             address.setCity(cityName.getText().toString());
             users.setAddress(address);
             createNewUser(users);
-        } else Log.e(TAG, "haveErrors = true");
+        } else {
+            if (userName != null) checkUsername(userName.getText().toString());
+            Log.e(TAG, "haveErrors = true");
+        }
     }
 
     @Override

@@ -31,8 +31,8 @@
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="jdk" jdkName="Maven Android API 17 Platform" jdkType="Android SDK" />
-    <orderEntry type="library" name="Maven: com.taxi-bulgaria.rest:open-rest-client-a:1.0.2.BUILD-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: com.taxi-bulgaria.rest:open-rest-client:1.0.2.BUILD-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.taxi-bulgaria.rest:open-rest-client-a:1.0.3.BUILD-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.taxi-bulgaria.rest:open-rest-client:1.0.3.BUILD-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.taxi-bulgaria.common:common:1.0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.android:spring-android-rest-template:1.0.2.BUILD-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.android:spring-android-core:1.0.2.BUILD-SNAPSHOT" level="project" />
