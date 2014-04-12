@@ -4,7 +4,7 @@ Don\`t have google play? You can download the app directly from [opera store](ht
 
 This open source application is for clients of taxi companies. It`s using array of Taxi web services for communication with cars. The client can change the primary server or the server can be changed automatically if no connection.
 With this application its easy to send request, view request status and can help clients to find taxi.
-Supported Android from 2.2 to 4.3
+Supported Android from 2.2 and up.
 
 Currently the cloud web services (they are private) provide taxi support for city of Burgas, Bulgaria.
 
