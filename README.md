@@ -26,6 +26,9 @@ Using project dependencies:
 
 for map export view osmosis.txt in doc
 
+Project is [maven](http://maven.apache.org/) to build source first its need to install the libraries necessary to build Android applications with Maven from your local Android SDK installation.
+Read description of this project [maven-android-sdk-deployer](https://github.com/mosabua/maven-android-sdk-deployer) for details.
+
 ##License
 
 Copyright [2013] [Stanimir Marinov]
