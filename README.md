@@ -12,6 +12,9 @@ Currently the cloud web services (they are private) provide taxi support for cit
 
 ##Development
 
+Project is [maven](http://maven.apache.org/) to build source first its need to install the libraries necessary to build Android applications with Maven from your local Android SDK installation.
+Read description of this project [maven-android-sdk-deployer](https://github.com/mosabua/maven-android-sdk-deployer) for details.
+
 Using project dependencies:
 
 [androidannotations](http://androidannotations.org/)
@@ -24,10 +27,7 @@ Using project dependencies:
 
 [ACRA](https://github.com/ACRA/acra)
 
-for map export view osmosis.txt in doc
-
-Project is [maven](http://maven.apache.org/) to build source first its need to install the libraries necessary to build Android applications with Maven from your local Android SDK installation.
-Read description of this project [maven-android-sdk-deployer](https://github.com/mosabua/maven-android-sdk-deployer) for details.
+for map export view osmosis.txt in doc.
 
 ##License
 
