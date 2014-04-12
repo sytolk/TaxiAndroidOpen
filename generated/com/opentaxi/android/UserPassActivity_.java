@@ -85,25 +85,10 @@ public final class UserPassActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        pass = ((EditText) hasViews.findViewById(id.passwordField));
-        loginLayout = ((LinearLayout) hasViews.findViewById(id.loginLayout));
-        userName = ((EditText) hasViews.findViewById(id.userNameField));
         pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
-        {
-            View view = hasViews.findViewById(id.lostPassword);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        UserPassActivity_.this.lostPassword();
-                    }
-
-                }
-                );
-            }
-        }
+        loginLayout = ((LinearLayout) hasViews.findViewById(id.loginLayout));
+        pass = ((EditText) hasViews.findViewById(id.passwordField));
+        userName = ((EditText) hasViews.findViewById(id.userNameField));
         {
             View view = hasViews.findViewById(id.facebookButton);
             if (view!= null) {
@@ -113,6 +98,21 @@ public final class UserPassActivity_
                     @Override
                     public void onClick(View view) {
                         UserPassActivity_.this.facebookButton();
+                    }
+
+                }
+                );
+            }
+        }
+        {
+            View view = hasViews.findViewById(id.lostPassword);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        UserPassActivity_.this.lostPassword();
                     }
 
                 }
@@ -152,20 +152,6 @@ public final class UserPassActivity_
     }
 
     @Override
-    public void setError(final String error) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                UserPassActivity_.super.setError(error);
-            }
-
-        }
-        );
-    }
-
-    @Override
     public void hideProgress() {
         handler_.post(new Runnable() {
 
@@ -180,13 +166,13 @@ public final class UserPassActivity_
     }
 
     @Override
-    public void overFacebookLoginTime(final String title) {
+    public void setError(final String error) {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                UserPassActivity_.super.overFacebookLoginTime(title);
+                UserPassActivity_.super.setError(error);
             }
 
         }
@@ -201,6 +187,20 @@ public final class UserPassActivity_
             @Override
             public void run() {
                 UserPassActivity_.super.facebookUser(user);
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void overFacebookLoginTime(final String title) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                UserPassActivity_.super.overFacebookLoginTime(title);
             }
 
         }
