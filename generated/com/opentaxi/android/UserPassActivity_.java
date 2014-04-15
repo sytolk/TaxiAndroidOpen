@@ -90,14 +90,14 @@ public final class UserPassActivity_
         pass = ((EditText) hasViews.findViewById(id.passwordField));
         userName = ((EditText) hasViews.findViewById(id.userNameField));
         {
-            View view = hasViews.findViewById(id.facebookButton);
+            View view = hasViews.findViewById(id.newClient);
             if (view!= null) {
                 view.setOnClickListener(new OnClickListener() {
 
 
                     @Override
                     public void onClick(View view) {
-                        UserPassActivity_.this.facebookButton();
+                        UserPassActivity_.this.newClient();
                     }
 
                 }
@@ -120,14 +120,14 @@ public final class UserPassActivity_
             }
         }
         {
-            View view = hasViews.findViewById(id.newClient);
+            View view = hasViews.findViewById(id.facebookButton);
             if (view!= null) {
                 view.setOnClickListener(new OnClickListener() {
 
 
                     @Override
                     public void onClick(View view) {
-                        UserPassActivity_.this.newClient();
+                        UserPassActivity_.this.facebookButton();
                     }
 
                 }
@@ -135,6 +135,20 @@ public final class UserPassActivity_
             }
         }
         afterLoad();
+    }
+
+    @Override
+    public void facebookUser(final Users user) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                UserPassActivity_.super.facebookUser(user);
+            }
+
+        }
+        );
     }
 
     @Override
@@ -180,20 +194,6 @@ public final class UserPassActivity_
     }
 
     @Override
-    public void facebookUser(final Users user) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                UserPassActivity_.super.facebookUser(user);
-            }
-
-        }
-        );
-    }
-
-    @Override
     public void overFacebookLoginTime(final String title) {
         handler_.post(new Runnable() {
 
@@ -208,14 +208,14 @@ public final class UserPassActivity_
     }
 
     @Override
-    public void login(final String username, final String password) {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+    public void maxFacebookLoginTime() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 15000, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    UserPassActivity_.super.login(username, password);
+                    UserPassActivity_.super.maxFacebookLoginTime();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -244,14 +244,14 @@ public final class UserPassActivity_
     }
 
     @Override
-    public void maxFacebookLoginTime() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 15000, "") {
+    public void login(final String username, final String password) {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    UserPassActivity_.super.maxFacebookLoginTime();
+                    UserPassActivity_.super.login(username, password);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

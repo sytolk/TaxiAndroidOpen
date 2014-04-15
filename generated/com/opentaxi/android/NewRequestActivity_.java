@@ -83,32 +83,17 @@ public final class NewRequestActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        requestSend = ((Button) hasViews.findViewById(id.requestSend));
-        region = ((TextView) hasViews.findViewById(id.region));
+        reqInfoButtonContainer = ((LinearLayout) hasViews.findViewById(id.reqInfoButtonContainer));
         pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
+        llFilters = ((LinearLayout) hasViews.findViewById(id.llFilters));
         pricesPicker = ((Spinner) hasViews.findViewById(id.pricesPicker));
         citiesPicker = ((Spinner) hasViews.findViewById(id.citiesPicker));
+        region = ((TextView) hasViews.findViewById(id.region));
+        requestSend = ((Button) hasViews.findViewById(id.requestSend));
         regionsPicker = ((Spinner) hasViews.findViewById(id.regionsPicker));
+        address = ((TextView) hasViews.findViewById(id.address));
         addressChange = ((Button) hasViews.findViewById(id.addressChange));
         addressText = ((EditText) hasViews.findViewById(id.addressText));
-        llFilters = ((LinearLayout) hasViews.findViewById(id.llFilters));
-        reqInfoButtonContainer = ((LinearLayout) hasViews.findViewById(id.reqInfoButtonContainer));
-        address = ((TextView) hasViews.findViewById(id.address));
-        {
-            View view = hasViews.findViewById(id.addressChange);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        NewRequestActivity_.this.addressChange();
-                    }
-
-                }
-                );
-            }
-        }
         {
             View view = hasViews.findViewById(id.addressImage);
             if (view!= null) {
@@ -118,6 +103,21 @@ public final class NewRequestActivity_
                     @Override
                     public void onClick(View view) {
                         NewRequestActivity_.this.addressImage();
+                    }
+
+                }
+                );
+            }
+        }
+        {
+            View view = hasViews.findViewById(id.addressChange);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        NewRequestActivity_.this.addressChange();
                     }
 
                 }
@@ -168,6 +168,20 @@ public final class NewRequestActivity_
     }
 
     @Override
+    public void showGroups(final Groups[] groups) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                NewRequestActivity_.super.showGroups(groups);
+            }
+
+        }
+        );
+    }
+
+    @Override
     public void showAddress(final com.opentaxi.generated.mysql.tables.pojos.NewRequest adr) {
         handler_.post(new Runnable() {
 
@@ -210,34 +224,6 @@ public final class NewRequestActivity_
     }
 
     @Override
-    public void showCities(final String supported) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                NewRequestActivity_.super.showCities(supported);
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void showGroups(final Groups[] groups) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                NewRequestActivity_.super.showGroups(groups);
-            }
-
-        }
-        );
-    }
-
-    @Override
     public void SuccessDialog() {
         handler_.post(new Runnable() {
 
@@ -252,6 +238,20 @@ public final class NewRequestActivity_
     }
 
     @Override
+    public void showCities(final String supported) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                NewRequestActivity_.super.showCities(supported);
+            }
+
+        }
+        );
+    }
+
+    @Override
     public void showRegions(final Regions[] regions) {
         handler_.post(new Runnable() {
 
@@ -259,6 +259,24 @@ public final class NewRequestActivity_
             @Override
             public void run() {
                 NewRequestActivity_.super.showRegions(regions);
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void setGroups() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    NewRequestActivity_.super.setGroups();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
             }
 
         }
@@ -292,24 +310,6 @@ public final class NewRequestActivity_
             public void execute() {
                 try {
                     NewRequestActivity_.super.sendRequest(newRequest);
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void setGroups() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    NewRequestActivity_.super.setGroups();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

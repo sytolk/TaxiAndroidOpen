@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.opentaxi.android"
-          android:versionName="1.0.18"
+          android:versionName="1.0.19"
           android:versionCode="18"
           android:installLocation="auto">
 
@@ -18,7 +18,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <!--<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>-->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+   <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>-->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <!--ACRA If the READ_PHONE_STATE permission is granted, reports include the Unique Device Identifier (IMEI)-->

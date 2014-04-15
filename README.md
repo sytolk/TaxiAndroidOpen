@@ -25,6 +25,8 @@ Using project dependencies:
 
 [form validation](https://github.com/ragunathjawahar/android-saripaar)
 
+[facebook-android-sdk](https://github.com/facebook/facebook-android-sdk)
+
 [ACRA](https://github.com/ACRA/acra)
 
 for map export view osmosis.txt in doc.
