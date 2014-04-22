@@ -94,14 +94,14 @@ public final class BubbleOverlay_
     }
 
     @Override
-    public void showCar(final String carsNumber) {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+    public void showMyRequestsDelayed() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 15000, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    BubbleOverlay_.super.showCar(carsNumber);
+                    BubbleOverlay_.super.showMyRequestsDelayed();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -112,14 +112,14 @@ public final class BubbleOverlay_
     }
 
     @Override
-    public void showMyRequestsDelayed() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 15000, "") {
+    public void showCar(final String carsNumber) {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    BubbleOverlay_.super.showMyRequestsDelayed();
+                    BubbleOverlay_.super.showCar(carsNumber);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

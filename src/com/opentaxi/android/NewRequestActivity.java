@@ -357,12 +357,12 @@ public class NewRequestActivity extends Activity {
         if (addressText.getVisibility() == View.VISIBLE) {
             if (addressText.getText() != null) {
                 String txt = addressText.getText().toString();
-                if (txt != null && txt.length() > 0) this.newRequest.setFullAddress(txt);
+                if (txt != null && txt.length() > 0 && this.newRequest != null) this.newRequest.setFullAddress(txt);
             }
         }
 
         Intent intent = new Intent(this, LongPressMapAction_.class);
-        intent.putExtra("newRequest", this.newRequest);
+        if (this.newRequest != null) intent.putExtra("newRequest", this.newRequest);
         startActivityForResult(intent, SHOW_ADDRESS_ON_MAP);
         //LongPressMapAction_.intent(this).startForResult(SHOW_ADDRESS_ON_MAP);
     }

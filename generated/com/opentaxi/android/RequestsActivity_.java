@@ -92,21 +92,6 @@ public final class RequestsActivity_
             }
         }
         {
-            View view = hasViews.findViewById(id.newRequests);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        RequestsActivity_.this.newRequests();
-                    }
-
-                }
-                );
-            }
-        }
-        {
             View view = hasViews.findViewById(id.requestsHistory);
             if (view!= null) {
                 view.setOnClickListener(new OnClickListener() {
@@ -115,6 +100,21 @@ public final class RequestsActivity_
                     @Override
                     public void onClick(View view) {
                         RequestsActivity_.this.requestsHistory();
+                    }
+
+                }
+                );
+            }
+        }
+        {
+            View view = hasViews.findViewById(id.newRequests);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        RequestsActivity_.this.newRequests();
                     }
 
                 }
@@ -163,14 +163,14 @@ public final class RequestsActivity_
     }
 
     @Override
-    public void getRequests() {
+    public void getRequestHistory() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    RequestsActivity_.super.getRequests();
+                    RequestsActivity_.super.getRequestHistory();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -181,14 +181,14 @@ public final class RequestsActivity_
     }
 
     @Override
-    public void getRequestHistory() {
+    public void getRequests() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    RequestsActivity_.super.getRequestHistory();
+                    RequestsActivity_.super.getRequests();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

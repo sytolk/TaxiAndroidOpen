@@ -78,9 +78,9 @@ public final class CarDetailsActivity_
     @Override
     public void onViewChanged(HasViews hasViews) {
         driver = ((TextView) hasViews.findViewById(id.driver));
-        rating = ((RatingBar) hasViews.findViewById(id.rating));
-        carNumberView = ((TextView) hasViews.findViewById(id.carNumberView));
         requestButton = ((Button) hasViews.findViewById(id.requestButton));
+        carNumberView = ((TextView) hasViews.findViewById(id.carNumberView));
+        rating = ((RatingBar) hasViews.findViewById(id.rating));
         {
             View view = hasViews.findViewById(id.okButton);
             if (view!= null) {
