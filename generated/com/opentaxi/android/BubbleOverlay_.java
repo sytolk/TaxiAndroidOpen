@@ -94,24 +94,6 @@ public final class BubbleOverlay_
     }
 
     @Override
-    public void showMyRequests() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    BubbleOverlay_.super.showMyRequests();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
     public void showCar(final String carsNumber) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
@@ -138,6 +120,24 @@ public final class BubbleOverlay_
             public void execute() {
                 try {
                     BubbleOverlay_.super.showMyRequestsDelayed();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void showMyRequests() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    BubbleOverlay_.super.showMyRequests();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

@@ -192,7 +192,7 @@
             <groupId>com.taxi-bulgaria.map</groupId>
             <artifactId>mapsforge</artifactId>
             <type>apklib</type>
-            <version>0.4.2-SNAPSHOT</version>
+            <version>0.4.3-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <artifactId>support-v4</artifactId>

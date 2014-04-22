@@ -98,6 +98,9 @@ public class LongPressMapAction extends LocationOverlayMapViewer {
             tileRendererLayer.setXmlRenderTheme(this.getRenderTheme());
             layers.add(tileRendererLayer);
 
+            //allow move to map if its have GPS cooordinates
+            invertSnapToLocation();
+
             if (newRequest != null) showTextCircle(newRequest);
             else showAlert();
         }
