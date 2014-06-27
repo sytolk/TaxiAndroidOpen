@@ -44,4 +44,5 @@
     <string name="no_gps_title">Нямате GPS</string>
     <string name="no_gps_msg">Вашият GPS е изключен, желаете ли да го включите?</string>
     <string name="show_address">Покажи адреса на картата</string>
+    <string name="wait_address">Адреса се определя автоматично според координатите ви. Моля изчакайте…</string>
 </resources>

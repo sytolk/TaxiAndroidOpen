@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="JAVA_MODULE" version="4">
+  <component name="DBNavigator.Module.ConnectionManager">
+    <connections />
+  </component>
   <component name="FacetManager">
     <facet type="android" name="Android">
       <configuration>
@@ -10,6 +13,7 @@
         <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/com.google.android.gms_google-play-services_12.0.0/assets" />
         <option name="LIBS_FOLDER_RELATIVE_PATH" value="/com.google.android.gms_google-play-services_12.0.0/libs" />
         <option name="LIBRARY_PROJECT" value="true" />
+        <option name="PROGUARD_LOGS_FOLDER_RELATIVE_PATH" value="/com.google.android.gms_google-play-services_12.0.0/proguard_logs" />
       </configuration>
     </facet>
   </component>

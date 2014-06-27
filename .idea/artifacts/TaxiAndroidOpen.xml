@@ -1,0 +1,22 @@
+<component name="ArtifactManager">
+  <artifact type="apk" name="TaxiAndroidOpen">
+    <output-path>$PROJECT_DIR$/out/artifacts/TaxiAndroidOpen</output-path>
+    <properties id="android-properties">
+      <options>
+        <option name="keyAlias" value="taxi-bulgaria" />
+        <option name="keyPassword" value="dGF4aWJ1bGdhcmlh" />
+        <option name="keyStorePassword" value="b3BlbnRheGk=" />
+        <option name="keyStoreUrl" value="file://$USER_HOME$/keystore/taxi-bulgaria.keystore" />
+        <option name="proGuardCfgFiles">
+          <list>
+            <option value="file://%MODULE_SDK_HOME%/tools/proguard/proguard-android.txt" />
+          </list>
+        </option>
+        <option name="signingMode" value="RELEASE_SIGNED" />
+      </options>
+    </properties>
+    <root id="archive" name="TaxiAndroidOpen.apk">
+      <element id="android-final-package" facet="TaxiAndroidOpen/android/Android" />
+    </root>
+  </artifact>
+</component>

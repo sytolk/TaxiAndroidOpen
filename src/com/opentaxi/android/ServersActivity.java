@@ -102,7 +102,7 @@ public class ServersActivity extends Activity {
                 }
             });
 
-            if (testing && socket.getServerType().equals(AppPreferences.getInstance().getSocketType()))
+            if (testing && socket.getServerType() != null && AppPreferences.getInstance() != null && socket.getServerType().equals(AppPreferences.getInstance().getSocketType()))
                 testServer(socket.getServerHost());
 
             i++;

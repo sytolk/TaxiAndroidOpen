@@ -56,33 +56,31 @@ public class GcmIntentService extends IntentService {
              * extended in the future with new message types, just ignore any message types you're
              * not interested in, or that you don't recognize.
              */
-            switch (messageType) {
-                case GoogleCloudMessaging.MESSAGE_TYPE_SEND_ERROR:
-                    Log.e(TAG, "Send error: " + extras.toString());
-                    break;
-                case GoogleCloudMessaging.MESSAGE_TYPE_DELETED:
-                    Log.e(TAG, "Deleted messages on server: " + extras.toString());
-                    // If it's a regular GCM message, do some work.
-                    break;
-                case GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE:
+            if (messageType.equals(GoogleCloudMessaging.MESSAGE_TYPE_SEND_ERROR)) {
+                Log.e(TAG, "Send error: " + extras.toString());
 
-                    Log.i(TAG, "Received message"); // + intent.getStringExtra("full_address"));
+            } else if (messageType.equals(GoogleCloudMessaging.MESSAGE_TYPE_DELETED)) {
+                Log.e(TAG, "Deleted messages on server: " + extras.toString());
+                // If it's a regular GCM message, do some work.
 
-                    // Waking up mobile if it is sleeping
-                    //WakeLocker.acquire(this);
+            } else if (messageType.equals(GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE)) {
+                Log.i(TAG, "Received message"); // + intent.getStringExtra("full_address"));
 
-                    String cloudMsg = intent.getStringExtra(CloudMessages.class.getName());
-                    if (cloudMsg != null) {
-                        Integer cloudMsgId = Integer.parseInt(cloudMsg);
-                        if (cloudMsgId > 0) {
-                            Log.i(TAG, "Message id:" + cloudMsgId);
-                            //AppPreferences.getInstance().setLastCloudMessage(cloudMsgId);
-                            new ProcessMessageTask(cloudMsgId).execute(this);
-                        }
-                    } else Log.e(TAG, "Received cloudMsg=null");
-                    break;
-                default:
-                    Log.e(TAG, "Unknown messageType:" + messageType);
+                // Waking up mobile if it is sleeping
+                //WakeLocker.acquire(this);
+
+                String cloudMsg = intent.getStringExtra(CloudMessages.class.getName());
+                if (cloudMsg != null) {
+                    Integer cloudMsgId = Integer.parseInt(cloudMsg);
+                    if (cloudMsgId > 0) {
+                        Log.i(TAG, "Message id:" + cloudMsgId);
+                        //AppPreferences.getInstance().setLastCloudMessage(cloudMsgId);
+                        new ProcessMessageTask(cloudMsgId).execute(this);
+                    }
+                } else Log.e(TAG, "Received cloudMsg=null");
+
+            } else {
+                Log.e(TAG, "Unknown messageType:" + messageType);
             }
         }
         // Release the wake lock provided by the WakefulBroadcastReceiver.

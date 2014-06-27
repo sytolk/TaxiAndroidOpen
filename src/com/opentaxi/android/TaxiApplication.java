@@ -1,7 +1,6 @@
 package com.opentaxi.android;
 
 import android.app.Application;
-import android.util.Log;
 import com.littlefluffytoys.littlefluffylocationlibrary.LocationLibrary;
 import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;
@@ -110,7 +109,7 @@ public class TaxiApplication extends Application {
 
         AndroidGraphicFactory.createInstance(this);
 
-        Log.d("TaxiApplication", "onCreate()");
+        //Log.d("TaxiApplication", "onCreate()");
 
         // The following line triggers the initialization of ACRA
         ACRA.init(this);

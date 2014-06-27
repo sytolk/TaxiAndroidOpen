@@ -23,7 +23,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import com.opentaxi.android.R.id;
 import com.opentaxi.android.R.layout;
-import com.opentaxi.models.NewUsers;
+import com.opentaxi.models.NewCUsers;
 import org.androidannotations.api.BackgroundExecutor;
 import org.androidannotations.api.view.HasViews;
 import org.androidannotations.api.view.OnViewChangedListener;
@@ -35,7 +35,7 @@ public final class NewClientActivity_
 {
 
     private final OnViewChangedNotifier onViewChangedNotifier_ = new OnViewChangedNotifier();
-    public final static String NEW_USERS_EXTRA = "newUsers";
+    public final static String NEW_C_USERS_EXTRA = "newCUsers";
     private Handler handler_ = new Handler(Looper.getMainLooper());
 
     @Override
@@ -81,17 +81,17 @@ public final class NewClientActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        cityName = ((AutoCompleteTextView) hasViews.findViewById(id.cityName));
-        sendButton = ((Button) hasViews.findViewById(id.sendButton));
-        pass2 = ((EditText) hasViews.findViewById(id.password2Field));
-        lastName = ((EditText) hasViews.findViewById(id.lastName));
-        userName = ((EditText) hasViews.findViewById(id.userNameField));
-        nameField = ((EditText) hasViews.findViewById(id.nameField));
         phoneNumber = ((EditText) hasViews.findViewById(id.phoneNumber));
-        passwordHint = ((EditText) hasViews.findViewById(id.passwordHint));
-        email = ((EditText) hasViews.findViewById(id.emailField));
-        iAgreeCheckBox = ((CheckBox) hasViews.findViewById(id.iAgreeCheckBox));
+        nameField = ((EditText) hasViews.findViewById(id.nameField));
+        pass2 = ((EditText) hasViews.findViewById(id.password2Field));
+        userName = ((EditText) hasViews.findViewById(id.userNameField));
         middleName = ((EditText) hasViews.findViewById(id.middleName));
+        lastName = ((EditText) hasViews.findViewById(id.lastName));
+        cityName = ((AutoCompleteTextView) hasViews.findViewById(id.cityName));
+        email = ((EditText) hasViews.findViewById(id.emailField));
+        passwordHint = ((EditText) hasViews.findViewById(id.passwordHint));
+        iAgreeCheckBox = ((CheckBox) hasViews.findViewById(id.iAgreeCheckBox));
+        sendButton = ((Button) hasViews.findViewById(id.sendButton));
         pass = ((EditText) hasViews.findViewById(id.passwordField));
         {
             View view = hasViews.findViewById(id.userAgreement);
@@ -159,8 +159,8 @@ public final class NewClientActivity_
     private void injectExtras_() {
         Bundle extras_ = getIntent().getExtras();
         if (extras_!= null) {
-            if (extras_.containsKey(NEW_USERS_EXTRA)) {
-                newUsers = ((NewUsers) extras_.getSerializable(NEW_USERS_EXTRA));
+            if (extras_.containsKey(NEW_C_USERS_EXTRA)) {
+                newCUsers = ((NewCUsers) extras_.getSerializable(NEW_C_USERS_EXTRA));
             }
         }
     }
@@ -172,20 +172,6 @@ public final class NewClientActivity_
     }
 
     @Override
-    public void setEmailError(final String error) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                NewClientActivity_.super.setEmailError(error);
-            }
-
-        }
-        );
-    }
-
-    @Override
     public void setUserError(final String error) {
         handler_.post(new Runnable() {
 
@@ -193,20 +179,6 @@ public final class NewClientActivity_
             @Override
             public void run() {
                 NewClientActivity_.super.setUserError(error);
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void finishThis() {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                NewClientActivity_.super.finishThis();
             }
 
         }
@@ -228,7 +200,53 @@ public final class NewClientActivity_
     }
 
     @Override
-    public void createNewUser(final NewUsers users) {
+    public void finishThis() {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                NewClientActivity_.super.finishThis();
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void setEmailError(final String error) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                NewClientActivity_.super.setEmailError(error);
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void checkUsername(final String username) {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    NewClientActivity_.super.checkUsername(username);
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void createNewUser(final NewCUsers users) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
@@ -254,24 +272,6 @@ public final class NewClientActivity_
             public void execute() {
                 try {
                     NewClientActivity_.super.checkEmail(emailCheck);
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void checkUsername(final String username) {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    NewClientActivity_.super.checkUsername(username);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -323,8 +323,8 @@ public final class NewClientActivity_
             }
         }
 
-        public NewClientActivity_.IntentBuilder_ newUsers(NewUsers newUsers) {
-            intent_.putExtra(NEW_USERS_EXTRA, ((Serializable) newUsers));
+        public NewClientActivity_.IntentBuilder_ newCUsers(NewCUsers newCUsers) {
+            intent_.putExtra(NEW_C_USERS_EXTRA, ((Serializable) newCUsers));
             return this;
         }
 

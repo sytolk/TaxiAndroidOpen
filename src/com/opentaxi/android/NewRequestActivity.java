@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
+import com.littlefluffytoys.littlefluffylocationlibrary.LocationInfo;
 import com.opentaxi.android.adapters.CitiesAdapter;
 import com.opentaxi.android.adapters.GroupsAdapter;
 import com.opentaxi.android.adapters.RegionsAdapter;
@@ -79,6 +80,8 @@ public class NewRequestActivity extends Activity {
     @ViewById(R.id.requestSend)
     Button requestSend;
 
+    LocationInfo latestInfo;
+
     @AfterViews
     protected void afterActivity() {
         if (cars == null) setTitle("Поръчка на такси");
@@ -87,8 +90,10 @@ public class NewRequestActivity extends Activity {
         setRegions();
         setPrices();
         setGroups();
-        address.setText("Адреса се определя автоматично според координатите ви. Моля изчакайте...");
+        address.setText(R.string.wait_address);
+
         addressText.setVisibility(View.GONE);
+        latestInfo = new LocationInfo(getBaseContext());
     }
 
     /*@Override
@@ -215,19 +220,23 @@ public class NewRequestActivity extends Activity {
     void setAddress() {
         Log.i(TAG, "setAddress");
         if (this.newRequest == null && AppPreferences.getInstance() != null) {
+            com.opentaxi.generated.mysql.tables.pojos.NewRequest address = null;
             Date now = new Date();
             if (AppPreferences.getInstance().getGpsLastTime() > (now.getTime() - 600000)) {  //if last coordinates time is from 5 min interval
-                com.opentaxi.generated.mysql.tables.pojos.NewRequest address = RestClient.getInstance().getAddressByCoordinates(AppPreferences.getInstance().getNorth().floatValue(), AppPreferences.getInstance().getEast().floatValue());
-                if (address != null) showAddress(address);
-                else {
-                    //todo make it solr geonames api
-                    //address = GoogleApiRestClient.getInstance().getAddress(AppPreferences.getInstance().getNorth(), AppPreferences.getInstance().getEast());
-                    //showAddress(address);
-                    showAddress(null);
-                }
+                address = RestClient.getInstance().getAddressByCoordinates(AppPreferences.getInstance().getNorth().floatValue(), AppPreferences.getInstance().getEast().floatValue());
+            } else if (latestInfo != null && latestInfo.lastLocationUpdateTimestamp > (now.getTime() - 600000)) {
+                latestInfo.refresh(getBaseContext());
+                address = RestClient.getInstance().getAddressByCoordinates(latestInfo.lastLat, latestInfo.lastLong);
             } else {
+                Log.i(TAG, "GpsLastTime " + AppPreferences.getInstance().getGpsLastTime() + " > " + (now.getTime() - 600000) + " min latestInfo:" + latestInfo);
+            }
+
+            if (address != null) showAddress(address);
+            else {
+                //todo make it solr geonames api
+                //address = GoogleApiRestClient.getInstance().getAddress(AppPreferences.getInstance().getNorth(), AppPreferences.getInstance().getEast());
+                //showAddress(address);
                 showAddress(null);
-                Log.i(TAG, "GpsLastTime " + AppPreferences.getInstance().getGpsLastTime() + " > " + (now.getTime() - 600000) + " min");
             }
         }
     }
@@ -297,7 +306,7 @@ public class NewRequestActivity extends Activity {
         if (addressText.getVisibility() == View.VISIBLE) txt = addressText.getText().toString();
         else txt = address.getText().toString();
 
-        if (txt != null && txt.length() > 1) {
+        if (txt != null && txt.length() > 1 && !txt.equals(getResources().getString(R.string.wait_address))) {
             reqInfoButtonContainer.setVisibility(View.GONE);
             pbProgress.setVisibility(View.VISIBLE);
 

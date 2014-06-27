@@ -46,4 +46,5 @@
     <string name="no_gps_title">No GPS</string>
     <string name="no_gps_msg">Your GPS is disabled. Do you want to enable?</string>
     <string name="show_address">Show address</string>
+    <string name="wait_address">Address is automatically set up from your coordinates. Please wait…</string>
 </resources>

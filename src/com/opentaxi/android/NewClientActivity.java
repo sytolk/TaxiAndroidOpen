@@ -16,7 +16,7 @@ import com.mobsandgeeks.saripaar.annotation.*;
 import com.opentaxi.generated.mysql.tables.pojos.Contact;
 import com.opentaxi.generated.mysql.tables.pojos.Contactaddress;
 import com.opentaxi.generated.mysql.tables.pojos.Users;
-import com.opentaxi.models.NewUsers;
+import com.opentaxi.models.NewCUsers;
 import com.opentaxi.rest.RestClient;
 import com.taxibulgaria.enums.CommunicationMethod;
 import org.androidannotations.annotations.*;
@@ -81,7 +81,7 @@ public class NewClientActivity extends Activity implements Validator.ValidationL
     CheckBox iAgreeCheckBox;
 
     @Extra
-    NewUsers newUsers;
+    NewCUsers newCUsers;
     //private Users users;
     Validator validator;
 
@@ -90,10 +90,10 @@ public class NewClientActivity extends Activity implements Validator.ValidationL
     @AfterViews
     void afterLoad() {
 
-        if (newUsers != null) {
-            userName.setText(newUsers.getUsername());
-            email.setText(newUsers.getEmail());
-            createNewUser(newUsers);
+        if (newCUsers != null) {
+            userName.setText(newCUsers.getUsername());
+            email.setText(newCUsers.getEmail());
+            createNewUser(newCUsers);
         } else {
             validator = new Validator(this);
             //validator.put();
@@ -163,7 +163,7 @@ public class NewClientActivity extends Activity implements Validator.ValidationL
     }
 
     @Background
-    void createNewUser(NewUsers users) {
+    void createNewUser(NewCUsers users) {
         Log.i(TAG, "createNewUser:" + users.getUsername());
         Users userPojo = RestClient.getInstance().createNewUser(users);
         if (userPojo != null) {
@@ -195,7 +195,7 @@ public class NewClientActivity extends Activity implements Validator.ValidationL
     public void onValidationSucceeded() {
         Log.i(TAG, "onValidationSucceeded");
         if (!haveErrors) {
-            NewUsers users = new NewUsers();
+            NewCUsers users = new NewCUsers();
             users.setUsername(userName.getText().toString());
             users.setPassword(pass.getText().toString());
             users.setEmail(email.getText().toString());

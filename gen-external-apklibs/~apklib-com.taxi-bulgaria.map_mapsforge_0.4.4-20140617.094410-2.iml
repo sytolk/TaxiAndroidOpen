@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="DBNavigator.Module.ConnectionManager">
+    <connections />
+  </component>
+  <component name="FacetManager">
+    <facet type="android" name="Android">
+      <configuration>
+        <option name="GEN_FOLDER_RELATIVE_PATH_APT" value="/com.taxi-bulgaria.map_mapsforge_0.4.4-20140617.094410-2/gen" />
+        <option name="GEN_FOLDER_RELATIVE_PATH_AIDL" value="/com.taxi-bulgaria.map_mapsforge_0.4.4-20140617.094410-2/gen" />
+        <option name="MANIFEST_FILE_RELATIVE_PATH" value="/com.taxi-bulgaria.map_mapsforge_0.4.4-20140617.094410-2/AndroidManifest.xml" />
+        <option name="RES_FOLDER_RELATIVE_PATH" value="/com.taxi-bulgaria.map_mapsforge_0.4.4-20140617.094410-2/res" />
+        <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/com.taxi-bulgaria.map_mapsforge_0.4.4-20140617.094410-2/assets" />
+        <option name="LIBS_FOLDER_RELATIVE_PATH" value="/com.taxi-bulgaria.map_mapsforge_0.4.4-20140617.094410-2/libs" />
+        <option name="LIBRARY_PROJECT" value="true" />
+        <option name="PROGUARD_LOGS_FOLDER_RELATIVE_PATH" value="/com.taxi-bulgaria.map_mapsforge_0.4.4-20140617.094410-2/proguard_logs" />
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/com.taxi-bulgaria.map_mapsforge_0.4.4-20140617.094410-2">
+      <sourceFolder url="file://$MODULE_DIR$/com.taxi-bulgaria.map_mapsforge_0.4.4-20140617.094410-2/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/com.taxi-bulgaria.map_mapsforge_0.4.4-20140617.094410-2/gen" isTestSource="false" generated="true" />
+    </content>
+    <orderEntry type="jdk" jdkName="Maven Android API 17 Platform" jdkType="Android SDK" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: android:android:4.4.2_r2" level="project" />
+    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-map-android:0.4.3" level="project" />
+    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-core:0.4.3" level="project" />
+    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-map-reader:0.4.3" level="project" />
+    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-map:0.4.3" level="project" />
+    <orderEntry type="library" name="Maven: org.mapsforge:svg-android:0.4.3" level="project" />
+    <orderEntry type="library" name="Maven: net.sf.kxml:kxml2:2.3.0" level="project" />
+    <orderEntry type="library" name="Maven: com.google.android:support-v4:r7" level="project" />
+  </component>
+</module>
+

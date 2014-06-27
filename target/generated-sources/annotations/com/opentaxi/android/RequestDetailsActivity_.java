@@ -80,18 +80,18 @@ public final class RequestDetailsActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        requestNumber = ((TextView) hasViews.findViewById(id.requestNumber));
-        car = ((TextView) hasViews.findViewById(id.car));
-        arrive_time = ((TextView) hasViews.findViewById(id.arrive_time));
-        price_group = ((TextView) hasViews.findViewById(id.price_group));
-        state = ((TextView) hasViews.findViewById(id.state));
-        remaining_time = ((TextView) hasViews.findViewById(id.remaining_time));
-        datecreated = ((TextView) hasViews.findViewById(id.datecreated));
-        feedBackButton = ((Button) hasViews.findViewById(id.feedBackButton));
         address = ((TextView) hasViews.findViewById(id.address));
+        price_group = ((TextView) hasViews.findViewById(id.price_group));
+        feedBackButton = ((Button) hasViews.findViewById(id.feedBackButton));
         rejectButton = ((Button) hasViews.findViewById(id.rejectButton));
-        chosen_group = ((TextView) hasViews.findViewById(id.chosen_group));
+        state = ((TextView) hasViews.findViewById(id.state));
         editButton = ((Button) hasViews.findViewById(id.editButton));
+        chosen_group = ((TextView) hasViews.findViewById(id.chosen_group));
+        remaining_time = ((TextView) hasViews.findViewById(id.remaining_time));
+        requestNumber = ((TextView) hasViews.findViewById(id.requestNumber));
+        datecreated = ((TextView) hasViews.findViewById(id.datecreated));
+        arrive_time = ((TextView) hasViews.findViewById(id.arrive_time));
+        car = ((TextView) hasViews.findViewById(id.car));
         {
             View view = hasViews.findViewById(id.okButton);
             if (view!= null) {
@@ -245,6 +245,24 @@ public final class RequestDetailsActivity_
     }
 
     @Override
+    public void rejectRequest(final String reason) {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    RequestDetailsActivity_.super.rejectRequest(reason);
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
     public void sendFeedBack(final String comment, final Map<Integer, Float> vote) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
@@ -271,24 +289,6 @@ public final class RequestDetailsActivity_
             public void execute() {
                 try {
                     RequestDetailsActivity_.super.scheduleChangesSec();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void rejectRequest(final String reason) {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    RequestDetailsActivity_.super.rejectRequest(reason);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

@@ -16,7 +16,7 @@
     <properties>
         <android-platform>17</android-platform>
         <android-emulator>8</android-emulator>
-        <java.version>1.7</java.version>
+        <java.version>1.6</java.version>
     </properties>
     <build>
         <sourceDirectory>src</sourceDirectory>
@@ -192,7 +192,7 @@
             <groupId>com.taxi-bulgaria.map</groupId>
             <artifactId>mapsforge</artifactId>
             <type>apklib</type>
-            <version>0.4.3-SNAPSHOT</version>
+            <version>0.4.4-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <artifactId>support-v4</artifactId>
@@ -238,6 +238,18 @@
         </dependency>
 
         <dependency>
+            <groupId>com.github.sromku</groupId>
+            <artifactId>android-simple-facebook</artifactId>
+            <version>2.1-SNAPSHOT</version>
+            <!--<type>apklib</type>-->
+            <exclusions>
+                <exclusion>
+                    <artifactId>support-v4</artifactId>
+                    <groupId>com.google.android</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!--<dependency>
             <groupId>com.facebook.android</groupId>
             <artifactId>facebook-android-sdk</artifactId>
             <version>3.6.0-SNAPSHOT</version>
@@ -248,7 +260,7 @@
                     <groupId>com.google.android</groupId>
                 </exclusion>
             </exclusions>
-        </dependency>
+        </dependency>-->
 
         <!--<dependency>
             <groupId>com.github.ignition</groupId>

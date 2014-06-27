@@ -6,6 +6,7 @@
   <component name="FacetManager">
     <facet type="android" name="Android">
       <configuration>
+        <option name="APK_PATH" value="/target/TaxiAndroidOpen.apk" />
         <option name="UPDATE_PROPERTY_FILES" value="true" />
         <option name="COMPILE_CUSTOM_GENERATED_SOURCES" value="false" />
         <resOverlayFolders>
@@ -14,7 +15,7 @@
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7" inherit-compiler-output="false">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/idea-classes" />
     <output-test url="file://$MODULE_DIR$/target/idea-test-classes" />
     <content url="file://$MODULE_DIR$">
@@ -22,7 +23,12 @@
       <sourceFolder url="file://$MODULE_DIR$/generated" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/annotations" isTestSource="false" generated="true" />
-      <excludeFolder url="file://$MODULE_DIR$/target" />
+      <excludeFolder url="file://$MODULE_DIR$/target/generated-sources/aidl" />
+      <excludeFolder url="file://$MODULE_DIR$/target/generated-sources/combined-assets" />
+      <excludeFolder url="file://$MODULE_DIR$/target/generated-sources/combined-resources" />
+      <excludeFolder url="file://$MODULE_DIR$/target/generated-sources/extracted-dependencies" />
+      <excludeFolder url="file://$MODULE_DIR$/target/generated-sources/r" />
+      <excludeFolder url="file://$MODULE_DIR$/target/idea-classes" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="jdk" jdkName="Maven Android API 17 Platform" jdkType="Android SDK" />
@@ -40,10 +46,11 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: android:android:4.4.2_r2" level="project" />
     <orderEntry type="library" name="Maven: com.google.android.gms:google-play-services:12.0.0" level="project" />
     <orderEntry type="library" name="Maven: android.support:compatibility-v4:19" level="project" />
-    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-core:0.4.0-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-map-reader:0.4.0-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-map:0.4.0-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: svg-android:svg-android:1.0" level="project" />
+    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-map-android:0.4.3" level="project" />
+    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-core:0.4.3" level="project" />
+    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-map-reader:0.4.3" level="project" />
+    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-map:0.4.3" level="project" />
+    <orderEntry type="library" name="Maven: org.mapsforge:svg-android:0.4.3" level="project" />
     <orderEntry type="library" name="Maven: net.sf.kxml:kxml2:2.3.0" level="project" />
     <orderEntry type="module-library">
       <library name="Maven: com.littlefluffytoys.littlefluffylocationlibrary:littlefluffylocationlibrary:r15">
@@ -60,10 +67,11 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.sun.codemodel:codemodel:2.4.1" level="project" />
     <orderEntry type="library" name="Maven: ch.acra:acra:4.5.0" level="project" />
     <orderEntry type="library" name="Maven: org.json:json:20080701" level="project" />
+    <orderEntry type="library" name="Maven: com.github.sromku:android-simple-facebook:2.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: fr.avianey:facebook-android-api:aar:3.14.1" level="project" />
+    <orderEntry type="library" name="Maven: fr.avianey:bolts-android-api:1.1.0" level="project" />
     <orderEntry type="module" module-name="~apklib-com.google.android.gms_google-play-services_12.0.0" />
-    <orderEntry type="module" module-name="~apklib-com.taxi-bulgaria.map_mapsforge_0.4.3-SNAPSHOT" />
-    <orderEntry type="module" module-name="~apklib-org.mapsforge_mapsforge-map-android_0.4.0-SNAPSHOT" />
-    <orderEntry type="module" module-name="~apklib-com.facebook.android_facebook-android-sdk_3.6.0-SNAPSHOT" />
+    <orderEntry type="module" module-name="~apklib-com.taxi-bulgaria.map_mapsforge_0.4.4-SNAPSHOT" />
   </component>
 </module>
 

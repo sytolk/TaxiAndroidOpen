@@ -22,13 +22,15 @@ import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.littlefluffytoys.littlefluffylocationlibrary.LocationLibrary;
 import com.opentaxi.android.asynctask.LogoutTask;
-import com.opentaxi.android.simplefacebook.SimpleFacebook;
 import com.opentaxi.android.utils.AppPreferences;
 import com.opentaxi.android.utils.Network;
 import com.opentaxi.generated.mysql.tables.pojos.Servers;
 import com.opentaxi.models.Users;
 import com.opentaxi.rest.RestClient;
+import com.sromku.simple.fb.SimpleFacebook;
+import com.sromku.simple.fb.listeners.OnLogoutListener;
 import com.taxibulgaria.enums.Applications;
 import org.androidannotations.annotations.*;
 
@@ -131,7 +133,18 @@ public class MainActivity extends FragmentActivity {
             String pass = RestClient.getInstance().getPassword();
 
             if (user == null || user.equals("") || pass == null || pass.equals("")) {
-                beforeStartUserPass();
+                com.opentaxi.generated.mysql.tables.pojos.Users users = AppPreferences.getInstance().getUsers();
+                if (users != null) {
+                    String username = users.getUsername();
+                    String password = users.getPassword();
+
+                    if (username == null || password == null) {
+                        beforeStartUserPass();
+                    } else {
+                        RestClient.getInstance().setAuthHeaders(username, password);
+                        afterLogin(username);
+                    }
+                } else beforeStartUserPass();
             } else {
                 String username = AppPreferences.getInstance().decrypt(user, "user_salt");
                 String password = AppPreferences.getInstance().decrypt(pass, username);
@@ -537,6 +550,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+        super.onActivityResult(requestCode, resultCode, data);
         SimpleFacebook.getInstance(this).onActivityResult(this, requestCode, resultCode, data);
 
         switch (requestCode) {
@@ -609,14 +623,16 @@ public class MainActivity extends FragmentActivity {
 
     @Background
     void facebookLogout() {
-        SimpleFacebook.OnLogoutListener onLogoutListener = new SimpleFacebook.OnLogoutListener() {
+        final OnLogoutListener onLogoutListener = new OnLogoutListener() {
 
             @Override
             public void onFail(String reason) {
+                Log.w(TAG, "Failed to logout");
             }
 
             @Override
             public void onException(Throwable throwable) {
+                Log.e(TAG, "Bad thing happened", throwable);
             }
 
             @Override
@@ -642,6 +658,7 @@ public class MainActivity extends FragmentActivity {
     void mapButton() {
         //if (TaxiApplication.getLastRequestId() != null) {
         BubbleOverlay_.intent(this).start();
+        LocationLibrary.forceLocationUpdate(getBaseContext());
         /*} else {
             Intent intent = new Intent(MainActivity.this, LocationOverlayMapViewer.class);
             MainActivity.this.startActivityForResult(intent, MAP_VIEW);
@@ -650,6 +667,7 @@ public class MainActivity extends FragmentActivity {
 
     @Click
     void newRequestButton() {
+        LocationLibrary.forceLocationUpdate(getBaseContext());
         NewRequestActivity_.intent(this).start();
     }
 

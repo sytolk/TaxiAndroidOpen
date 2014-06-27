@@ -46,8 +46,8 @@ public class BubbleOverlay extends LocationOverlayMapViewer {
     private Bitmap bubble;
     //private MarkerOverlay addressOverlay = new MarkerOverlay();
     //private MarkerOverlay carsOverlay = new MarkerOverlay();
-    List<Layer> addressOverlay = new ArrayList<>();
-    List<Layer> carsOverlay = new ArrayList<>();
+    List<Layer> addressOverlay = new ArrayList<Layer>();
+    List<Layer> carsOverlay = new ArrayList<Layer>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,11 +132,15 @@ public class BubbleOverlay extends LocationOverlayMapViewer {
             //final List<Layer> overlayItems = addressOverlay.getOverlayItems();
             //overlayItems.clear();
             if (addressOverlay.size() > 0) {
-                this.layerManagers.get(0).getLayers().remove(this.addressOverlay);
+                for(Layer layer:this.addressOverlay) {
+                    this.layerManagers.get(0).getLayers().remove(layer);
+                }
                 addressOverlay.clear();
             }
             if (carsOverlay.size() > 0) {
-                this.layerManagers.get(0).getLayers().remove(this.carsOverlay);
+                for(Layer layer:this.carsOverlay) {
+                    this.layerManagers.get(0).getLayers().remove(layer);
+                }
                 carsOverlay.clear();
             }
 

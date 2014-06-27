@@ -83,8 +83,38 @@ public final class MainActivity_
     @Override
     public void onViewChanged(HasViews hasViews) {
         bandwidth = ((TextView) hasViews.findViewById(id.bandwidth));
-        version = ((TextView) hasViews.findViewById(id.txt_version));
         user = ((TextView) hasViews.findViewById(id.user));
+        version = ((TextView) hasViews.findViewById(id.txt_version));
+        {
+            View view = hasViews.findViewById(id.exitButton);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        MainActivity_.this.exitButton();
+                    }
+
+                }
+                );
+            }
+        }
+        {
+            View view = hasViews.findViewById(id.mapButton);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        MainActivity_.this.mapButton();
+                    }
+
+                }
+                );
+            }
+        }
         {
             View view = hasViews.findViewById(id.newRequestButton);
             if (view!= null) {
@@ -115,51 +145,7 @@ public final class MainActivity_
                 );
             }
         }
-        {
-            View view = hasViews.findViewById(id.mapButton);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        MainActivity_.this.mapButton();
-                    }
-
-                }
-                );
-            }
-        }
-        {
-            View view = hasViews.findViewById(id.exitButton);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        MainActivity_.this.exitButton();
-                    }
-
-                }
-                );
-            }
-        }
         afterMain();
-    }
-
-    @Override
-    public void afterLogin(final String username) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                MainActivity_.super.afterLogin(username);
-            }
-
-        }
-        );
     }
 
     @Override
@@ -177,31 +163,17 @@ public final class MainActivity_
     }
 
     @Override
-    public void startUserPass() {
+    public void afterLogin(final String username) {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                MainActivity_.super.startUserPass();
+                MainActivity_.super.afterLogin(username);
             }
 
         }
         );
-    }
-
-    @Override
-    public void changeNetworkState() {
-        handler_.postDelayed(new Runnable() {
-
-
-            @Override
-            public void run() {
-                MainActivity_.super.changeNetworkState();
-            }
-
-        }
-        , 1000L);
     }
 
     @Override
@@ -226,6 +198,34 @@ public final class MainActivity_
             @Override
             public void run() {
                 MainActivity_.super.startUpdate();
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void changeNetworkState() {
+        handler_.postDelayed(new Runnable() {
+
+
+            @Override
+            public void run() {
+                MainActivity_.super.changeNetworkState();
+            }
+
+        }
+        , 1000L);
+    }
+
+    @Override
+    public void startUserPass() {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                MainActivity_.super.startUserPass();
             }
 
         }
@@ -269,32 +269,14 @@ public final class MainActivity_
     }
 
     @Override
-    public void beforeStartUserPass() {
+    public void gcmRegister() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    MainActivity_.super.beforeStartUserPass();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void setServers() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    MainActivity_.super.setServers();
+                    MainActivity_.super.gcmRegister();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -323,14 +305,32 @@ public final class MainActivity_
     }
 
     @Override
-    public void gcmRegister() {
+    public void beforeStartUserPass() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    MainActivity_.super.gcmRegister();
+                    MainActivity_.super.beforeStartUserPass();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void setServers() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    MainActivity_.super.setServers();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

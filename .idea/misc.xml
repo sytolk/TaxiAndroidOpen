@@ -120,6 +120,7 @@
         </lookup-objects>
         <force-database-load value="false" />
         <prompt-connection-selection value="true" />
+        <prompt-schema-selection value="true" />
       </lookup-filters>
     </navigation-settings>
     <dataset-editor-settings>

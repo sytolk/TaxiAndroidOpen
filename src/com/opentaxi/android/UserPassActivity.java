@@ -17,18 +17,20 @@ import android.widget.Toast;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.TextRule;
-import com.opentaxi.android.simplefacebook.Permissions;
-import com.opentaxi.android.simplefacebook.SimpleFacebook;
-import com.opentaxi.android.simplefacebook.SimpleFacebookConfiguration;
-import com.opentaxi.android.simplefacebook.entities.Profile;
-import com.opentaxi.android.simplefacebook.entities.Work;
 import com.opentaxi.android.utils.AppPreferences;
 import com.opentaxi.generated.mysql.tables.pojos.Contact;
 import com.opentaxi.generated.mysql.tables.pojos.Contactaddress;
 import com.opentaxi.generated.mysql.tables.pojos.FacebookUsers;
-import com.opentaxi.models.NewUsers;
+import com.opentaxi.models.NewCUsers;
 import com.opentaxi.models.Users;
 import com.opentaxi.rest.RestClient;
+import com.sromku.simple.fb.Permission;
+import com.sromku.simple.fb.SimpleFacebook;
+import com.sromku.simple.fb.SimpleFacebookConfiguration;
+import com.sromku.simple.fb.entities.Profile;
+import com.sromku.simple.fb.entities.Work;
+import com.sromku.simple.fb.listeners.OnLoginListener;
+import com.sromku.simple.fb.listeners.OnProfileListener;
 import com.taxibulgaria.enums.Gender;
 import org.androidannotations.annotations.*;
 
@@ -217,7 +219,7 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
 
     @UiThread
     void showProgress() {
-        if (pbProgress != null){
+        if (pbProgress != null) {
             pbProgress.setVisibility(View.VISIBLE);
             loginLayout.setVisibility(View.GONE);
         }
@@ -225,7 +227,7 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
 
     @UiThread
     void hideProgress() {
-        if (pbProgress != null){
+        if (pbProgress != null) {
             pbProgress.setVisibility(View.GONE);
             loginLayout.setVisibility(View.VISIBLE);
         }
@@ -235,55 +237,58 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
     void facebookButton() {
 
         mSimpleFacebook = SimpleFacebook.getInstance(this); // Permissions.USER_BIRTHDAY
-        Permissions[] permissions = new Permissions[]{Permissions.EMAIL, Permissions.USER_WEBSITE, Permissions.USER_WORK_HISTORY, Permissions.USER_ABOUT_ME, Permissions.USER_HOMETOWN};
+        Permission[] permissions = new Permission[]{Permission.EMAIL, Permission.USER_WEBSITE, Permission.USER_WORK_HISTORY, Permission.USER_ABOUT_ME, Permission.USER_HOMETOWN};
         SimpleFacebookConfiguration configuration = new SimpleFacebookConfiguration.Builder()
                 .setAppId("550947981660612")
                 .setNamespace("taxi-bulgaria")
                 .setPermissions(permissions)
+                .setAskForAllPermissionsAtOnce(false)
                 .build();
         SimpleFacebook.setConfiguration(configuration);
 
-        SimpleFacebook.OnLoginListener onLoginListener = new SimpleFacebook.OnLoginListener() {
-
-            @Override
-            public void onLogin() {
-
-                Log.i(TAG, "onLogin");
-                showProgress();
-                if (AppPreferences.getInstance() != null)
-                    AppPreferences.getInstance().setAccessToken(mSimpleFacebook.getAccessToken());  //todo move this to disk cache
-                checkFacebook(mSimpleFacebook.getAccessToken());
-            }
-
-            @Override
-            public void onNotAcceptingPermissions() {
-                Log.e(TAG, "onNotAcceptingPermissions token:" + mSimpleFacebook.getAccessToken());
-                overFacebookLoginTime("нямате позволение за достъп");
-            }
-
-            @Override
-            public void onThinking() {
-                Log.i(TAG, "onThinking");
-                showProgress();
-                //maxFacebookLoginTime();
-            }
-
-            @Override
-            public void onException(Throwable throwable) {
-                Log.e(TAG, "onException:" + throwable.getMessage());
-                overFacebookLoginTime("повдигнато е изключение");
-                //facebookLogout();
-            }
+        final OnLoginListener onLoginListener = new OnLoginListener() {
 
             @Override
             public void onFail(String reason) {
                 Log.e(TAG, "onFail:" + reason);
                 overFacebookLoginTime(reason);
             }
-        };
 
+            @Override
+            public void onException(Throwable throwable) {
+                Log.e(TAG, "onException:" + throwable.getMessage());
+                overFacebookLoginTime("повдигнато е изключение");
+            }
+
+            @Override
+            public void onThinking() {
+                Log.i(TAG, "onThinking");
+                showProgress();
+            }
+
+            @Override
+            public void onLogin() {
+                Log.i(TAG, "onLogin");
+                showProgress();
+                if (AppPreferences.getInstance() != null && mSimpleFacebook.getSession() != null) {
+                    AppPreferences.getInstance().setAccessToken(mSimpleFacebook.getSession().getAccessToken());  //todo move this to disk cache
+                    checkFacebook(mSimpleFacebook.getSession().getAccessToken());
+                } else {
+                    overFacebookLoginTime("проблем при създаване на Facebook сесия");
+                    Log.e(TAG, "onLogin getSession=" + mSimpleFacebook.getSession());
+                }
+            }
+
+            @Override
+            public void onNotAcceptingPermissions(Permission.Type type) {
+                if (mSimpleFacebook.getSession() != null)
+                    Log.e(TAG, "onNotAcceptingPermissions token:" + mSimpleFacebook.getSession().getAccessToken());
+                overFacebookLoginTime("нямате позволение за достъп");
+            }
+        };
         mSimpleFacebook.login(onLoginListener);
-        Log.i(TAG, "mSimpleFacebook.login:" + mSimpleFacebook.getAccessToken());
+        if (mSimpleFacebook.getSession() != null)
+            Log.i(TAG, "mSimpleFacebook.login:" + mSimpleFacebook.getSession().getAccessToken());
 
         /*Session session = Session.getActiveSession();
         if (!session.isOpened() && !session.isClosed()) {
@@ -296,9 +301,9 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
     @Background(delay = 15000)
     void maxFacebookLoginTime() {
         Log.e(TAG, "maxFacebookLoginTime");
-        if (mSimpleFacebook.getAccessToken() == null || mSimpleFacebook.getAccessToken().equals("")) {
+        if (mSimpleFacebook.getSession() == null || mSimpleFacebook.getSession().getAccessToken() == null || mSimpleFacebook.getSession().getAccessToken().equals("")) {
             overFacebookLoginTime("времето изтече");
-        } else Log.i(TAG, "maxFacebookLoginTime have token:" + mSimpleFacebook.getAccessToken());
+        } else Log.i(TAG, "maxFacebookLoginTime have token:" + mSimpleFacebook.getSession().getAccessToken());
     }
 
     @UiThread
@@ -351,12 +356,13 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
             //facebookLogout();
         } else { //new Facebook User
             Log.i(TAG, "New facebookUser");
-            SimpleFacebook.OnProfileRequestListener onProfileRequestListener = new SimpleFacebook.OnProfileRequestListener() {
+            OnProfileListener profileListener = new OnProfileListener() {
 
                 @Override
-                public void onFail(String reason) {
-                    Log.i(TAG, "New facebookUser onFail");
-                    overFacebookLoginTime(reason);
+                public void onThinking() {
+                    Log.i(TAG, "New facebookUser onThinking");
+                    showProgress();
+                    maxFacebookLoginTime();
                 }
 
                 @Override
@@ -367,17 +373,16 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
                 }
 
                 @Override
-                public void onThinking() {
-                    Log.i(TAG, "New facebookUser onThinking");
-                    showProgress();
-                    maxFacebookLoginTime();
+                public void onFail(String reason) {
+                    Log.i(TAG, "New facebookUser onFail");
+                    overFacebookLoginTime(reason);
                 }
 
                 @Override
                 public void onComplete(Profile profile) {
                     Log.i(TAG, "New facebookUser onComplete");
                     if (profile != null) { //&& profile.getVerified()) {
-                        NewUsers users = new NewUsers();
+                        NewCUsers users = new NewCUsers();
                         users.setUsername(profile.getUsername());
                         users.setEmail(profile.getEmail());
                         users.setImage(profile.getPicture());
@@ -409,11 +414,11 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
 
                         FacebookUsers facebookUsers = new FacebookUsers();
                         facebookUsers.setFacebookId(Long.parseLong(profile.getId()));
-                        facebookUsers.setToken(mSimpleFacebook.getAccessToken());
+                        facebookUsers.setToken(mSimpleFacebook.getSession().getAccessToken());
                         users.setfUsers(facebookUsers);
 
                         Intent newClient = new Intent(UserPassActivity.this, NewClientActivity_.class);
-                        newClient.putExtra("newUsers", users);
+                        newClient.putExtra("newCUsers", users);
                         newClient.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         UserPassActivity.this.startActivity(newClient);
                         finish();
@@ -421,10 +426,9 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
 
                     //facebookLogout();
                 }
-
             };
 
-            mSimpleFacebook.getProfile(onProfileRequestListener);
+            mSimpleFacebook.getProfile(profileListener);
         }
     }
 
@@ -456,8 +460,14 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
                     try {
                         String userEncrypt = AppPreferences.getInstance().encrypt(username, "user_salt");
                         String passEncrypt = AppPreferences.getInstance().encrypt(password, username);
-                        if (userEncrypt != null && passEncrypt != null)
-                            RestClient.getInstance().saveAuthorization(userEncrypt, passEncrypt);
+                        if (userEncrypt != null && passEncrypt != null) {
+                            if(!RestClient.getInstance().saveAuthorization(userEncrypt, passEncrypt)){
+                                user.setUsername(username);
+                                user.setPassword(password);
+                                AppPreferences.getInstance().setUsers(user);
+                                Log.e(TAG, "Exception: saveAuthorization");
+                            }
+                        }
                     } catch (Exception e) {
                         if (e.getMessage() != null) Log.e(TAG, "Exception:" + e.getMessage());
                     }
