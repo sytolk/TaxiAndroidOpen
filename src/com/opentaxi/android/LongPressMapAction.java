@@ -108,9 +108,9 @@ public class LongPressMapAction extends LocationOverlayMapViewer {
 
     void showAlert() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Избор на адрес");
-        alertDialogBuilder.setMessage("Моля посочете на картата и задръжте за 1 секунда върху адреса на заявката");
-        alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setTitle(getString(R.string.address_choose));
+        alertDialogBuilder.setMessage(getString(R.string.choose_from_map));
+        alertDialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {

@@ -50,7 +50,7 @@
         android:layout_height="65dp"
         android:layout_marginTop="16dp"
         android:layout_marginLeft="10dp"
-        android:text="OK"
+        android:text="@string/ok"
         android:onClick="confirmOkClick"
         android:layout_alignParentLeft="true"
         android:layout_gravity="center_horizontal"/>

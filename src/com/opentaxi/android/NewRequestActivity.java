@@ -8,19 +8,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import com.littlefluffytoys.littlefluffylocationlibrary.LocationInfo;
-import com.opentaxi.android.adapters.CitiesAdapter;
 import com.opentaxi.android.adapters.GroupsAdapter;
 import com.opentaxi.android.adapters.RegionsAdapter;
 import com.opentaxi.android.utils.AppPreferences;
-import com.opentaxi.generated.mysql.tables.pojos.Cars;
-import com.opentaxi.generated.mysql.tables.pojos.Groups;
-import com.opentaxi.generated.mysql.tables.pojos.Regions;
-import com.opentaxi.models.NewRequest;
+import com.opentaxi.generated.mysql.tables.pojos.*;
+import com.opentaxi.models.NewRequestDetails;
 import com.opentaxi.rest.RestClient;
 import com.taxibulgaria.enums.RequestSource;
 import org.androidannotations.annotations.*;
@@ -57,13 +53,16 @@ public class NewRequestActivity extends Activity {
     EditText addressText;
 
     @ViewById(R.id.citiesPicker)
-    Spinner citiesPicker;
+    AutoCompleteTextView citiesPicker;
 
     @ViewById(R.id.region)
     TextView region;
 
     @ViewById(R.id.regionsPicker)
-    Spinner regionsPicker;
+    AutoCompleteTextView regionsPicker;
+
+    @ViewById(R.id.destination)
+    AutoCompleteTextView destination;
 
     @ViewById(R.id.addressChange)
     Button addressChange;
@@ -80,13 +79,28 @@ public class NewRequestActivity extends Activity {
     @ViewById(R.id.requestSend)
     Button requestSend;
 
+    @ViewById(R.id.regionsLayout)
+    LinearLayout regionsLayout;
+
+    @ViewById(R.id.destLayout)
+    LinearLayout destLayout;
+
     LocationInfo latestInfo;
 
     @AfterViews
     protected void afterActivity() {
-        if (cars == null) setTitle("Поръчка на такси");
-        else setTitle("Поръчка на такси до автомобил номер: " + cars.getNumber());
-        showCities("Бургас");
+        if (cars == null) setTitle(getString(R.string.taxi_request));
+        else setTitle(getString(R.string.taxi_request_to_car, cars.getNumber()));
+
+        String[] cities = new String[]{
+                "Бургас", "София", "Варна", "Пловдив", "Burgas", "Sofia", "Varna", "Plovdiv", "Несебър", "Nesebar", "Слънчев бряг", "Sunny beach", "Приморско", "Primorsko", "Царево", "Carevo", "Созопол", "Sozopol"
+        };
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, cities);
+        adapter.setDropDownViewResource(R.layout.spinner_layout);
+        citiesPicker.setAdapter(adapter);
+
+        setCities();
+        //showCities("Бургас");
         setRegions();
         setPrices();
         setGroups();
@@ -122,26 +136,44 @@ public class NewRequestActivity extends Activity {
         } else Log.e(TAG, "" + resultCode);
     }
 
-    @UiThread
-    void showCities(String supported) {
-        if (supported != null) {
-            CitiesAdapter[] citiesAdapter = new CitiesAdapter[1];
-            citiesAdapter[0] = new CitiesAdapter(supported);
-            ArrayAdapter<CitiesAdapter> adapter2 = new ArrayAdapter<CitiesAdapter>(this, R.layout.spinner_layout, citiesAdapter);
-            adapter2.setDropDownViewResource(R.layout.spinner_layout);
-            citiesPicker.setAdapter(adapter2);
-            citiesPicker.setOnTouchListener(Spinner_OnTouch);
-        }
+    @Background
+    void setCities() {
+        showCities(RestClient.getInstance().getAddress());
     }
 
-    private View.OnTouchListener Spinner_OnTouch = new View.OnTouchListener() {
+    @UiThread
+    void showCities(Contactaddress contactAddress) {
+            /*CitiesAdapter[] citiesAdapter = new CitiesAdapter[1];
+            citiesAdapter[0] = new CitiesAdapter(supported);
+            ArrayAdapter<CitiesAdapter> adapter2 = new ArrayAdapter<CitiesAdapter>(this, R.layout.spinner_layout, citiesAdapter);
+            adapter2.setDropDownViewResource(R.layout.spinner_layout);*/
+        if (contactAddress != null && contactAddress.getCity() != null) {
+            //Log.d(TAG, "Contactaddress:" + address.getCity() + ":" + address.getCountryinfogeonamesid());
+
+            citiesPicker.setText(contactAddress.getCity());
+            address.setFocusable(true);
+            address.setFocusableInTouchMode(true);
+            address.requestFocus();
+
+            if (contactAddress.getCountryinfogeonamesid() != null && contactAddress.getCountryinfogeonamesid().equals(732770)) { //Burgas
+                regionsLayout.setVisibility(View.VISIBLE);
+                destLayout.setVisibility(View.GONE);
+            } else {
+                regionsLayout.setVisibility(View.GONE);
+                destLayout.setVisibility(View.VISIBLE);
+            }
+        } //else Log.d(TAG, "Contactaddress=null");
+        //citiesPicker.setOnTouchListener(Spinner_OnTouch);
+    }
+
+    /*private View.OnTouchListener Spinner_OnTouch = new View.OnTouchListener() {
         public boolean onTouch(View v, MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_UP) {
-                notSupporderDialog();
+                notSupportedDialog();
             }
             return true;
         }
-    };
+    };*/
 
     @Background
     void setRegions() {
@@ -151,8 +183,12 @@ public class NewRequestActivity extends Activity {
     @UiThread
     void showRegions(Regions[] regions) {
         if (regions != null) {
-            RegionsAdapter[] regionsAdapter = new RegionsAdapter[regions.length];
-            int i = 0;
+            RegionsAdapter[] regionsAdapter = new RegionsAdapter[regions.length + 1];
+            Regions emptyRegion = new Regions();
+            emptyRegion.setId(0);
+            emptyRegion.setDescription("");
+            regionsAdapter[0] = new RegionsAdapter(emptyRegion);
+            int i = 1;
             for (Regions regionObj : regions) {
                 regionsAdapter[i] = new RegionsAdapter(regionObj);
                 i++;
@@ -206,7 +242,7 @@ public class NewRequestActivity extends Activity {
             groupsAdapters = new GroupsAdapter[1];
             Groups group = new Groups();
             group.setGroupsId(0);
-            group.setDescription("Няма свободни коли. Моля опитайте по късно");
+            group.setDescription(getString(R.string.no_free_cars));
             groupsAdapters[0] = new GroupsAdapter(group);
             requestSend.setVisibility(View.GONE);
         }
@@ -244,18 +280,20 @@ public class NewRequestActivity extends Activity {
     @UiThread
     void showAddress(com.opentaxi.generated.mysql.tables.pojos.NewRequest adr) {
         if (adr != null) {
-            selectRegionsItemById(regionsPicker, adr.getRegionId());
+            // selectRegionsItemById(regionsPicker, adr.getRegionId());
+            Regions region = RestClient.getInstance().getRegionById(adr.getRegionId());
+            if (region != null) regionsPicker.setText(region.getDescription());
             address.setText(adr.getFullAddress());
             addressChange.setVisibility(View.VISIBLE);
             addressText.setVisibility(View.GONE);
         } else {
             Log.e(TAG, "address=null");
-            address.setText("Адрес: ");
+            address.setText(R.string.address);
             addressText.setVisibility(View.VISIBLE);
         }
     }
 
-    public void selectRegionsItemById(Spinner spnr, Integer regionsId) {
+    /*public void selectRegionsItemById(AutoCompleteTextView spnr, Integer regionsId) {
         Log.i(TAG, "selectRegionsItemById:" + regionsId);
         if (regionsId != null) {
             try {
@@ -273,7 +311,7 @@ public class NewRequestActivity extends Activity {
                 if (e.getMessage() != null) Log.e(TAG, e.getMessage());
             }
         }
-    }
+    }*/
 
     /*@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -306,18 +344,47 @@ public class NewRequestActivity extends Activity {
         if (addressText.getVisibility() == View.VISIBLE) txt = addressText.getText().toString();
         else txt = address.getText().toString();
 
-        if (txt != null && txt.length() > 1 && !txt.equals(getResources().getString(R.string.wait_address))) {
+        String city = citiesPicker.getText().toString().trim();
+        if (city == null || city.isEmpty()) {
+            if (citiesPicker.getVisibility() == View.VISIBLE) citiesPicker.setError(getString(R.string.required_field));
+            else
+                Toast.makeText(this, getString(R.string.required_field) + ": " + getString(R.string.city), Toast.LENGTH_SHORT).show();
+        } else if (txt != null && txt.length() > 1 && !txt.equals(getString(R.string.wait_address))) {
             reqInfoButtonContainer.setVisibility(View.GONE);
             pbProgress.setVisibility(View.VISIBLE);
 
-            NewRequest newRequest = new NewRequest();
+            NewRequestDetails newRequest = new NewRequestDetails();
             if (this.newRequest != null) {
                 newRequest.setNorth(this.newRequest.getNorth());
                 newRequest.setEast(this.newRequest.getEast());
             }
             if (cars != null) newRequest.setCarId(cars.getId());
-            RegionsAdapter regionsAdapter = (RegionsAdapter) regionsPicker.getSelectedItem();
-            newRequest.setRegionId(regionsAdapter.getId());
+            RequestsDetails requestsDetails = new RequestsDetails();
+
+            requestsDetails.setFromCity(city);
+            if (destination.getText() != null && !destination.getText().toString().isEmpty())
+                requestsDetails.setDestination(destination.getText().toString());
+            newRequest.setDetails(requestsDetails);
+
+            //RegionsAdapter regionsAdapter = (RegionsAdapter) regionsPicker.getSelectedItem();
+            if (regionsPicker.getText() != null && !regionsPicker.getText().toString().isEmpty()) {
+                Integer regionsId = null;
+
+                if (city.equalsIgnoreCase("бургас") || city.equalsIgnoreCase("burgas") || city.equalsIgnoreCase("bourgas")) {
+                    Regions[] regions = RestClient.getInstance().getRegions();
+                    if (regions != null) {
+                        for (Regions regionObj : regions) {
+                            if (regionObj.getDescription() != null && regionObj.getDescription().equalsIgnoreCase(regionsPicker.getText().toString())) {
+                                regionsId = regionObj.getId();
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (regionsId != null) newRequest.setRegionId(regionsId);
+                else txt = regionsPicker.getText().toString() + " " + txt;
+            }
 
             newRequest.setFullAddress(txt);
 
@@ -337,14 +404,15 @@ public class NewRequestActivity extends Activity {
 
             sendRequest(newRequest);
         } else {
-            if (addressText.getVisibility() == View.VISIBLE) addressText.setError("Задължително поле");
-            else Toast.makeText(this, "Адреса е задължително поле", Toast.LENGTH_SHORT).show();
+            if (addressText.getVisibility() == View.VISIBLE) addressText.setError(getString(R.string.required_field));
+            else
+                Toast.makeText(this, getString(R.string.required_field) + ": " + getString(R.string.address), Toast.LENGTH_SHORT).show();
         }
     }
 
     @Background
-    void sendRequest(NewRequest newRequest) {
-        Integer requestId = RestClient.getInstance().sendRequest(newRequest);
+    void sendRequest(NewRequestDetails newRequest) {
+        Integer requestId = RestClient.getInstance().sendNewRequest(newRequest);
         if (requestId != null && requestId > 0) {
             TaxiApplication.setLastRequestId(requestId);
             SuccessDialog();
@@ -354,7 +422,7 @@ public class NewRequestActivity extends Activity {
     @Click
     void addressChange() {
         addressText.setText(address.getText());
-        address.setText("Адрес: ");
+        address.setText(R.string.address);
         addressText.setVisibility(View.VISIBLE);
         addressChange.setVisibility(View.GONE);
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -382,12 +450,12 @@ public class NewRequestActivity extends Activity {
         pbProgress.setVisibility(View.GONE);
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Изпратена заявка");
+        alertDialogBuilder.setTitle(getString(R.string.send_request));
         String txt = addressText.getText().toString();
         if (txt.length() == 0) txt = address.getText().toString();
-        alertDialogBuilder.setMessage("Заявката " + txt + " беше изпратена успешно! Можете да видите актуалния и статус да я промените или откажете след като затворите този диалог или от бутона ПОРЪЧКИ на главната страница");
+        alertDialogBuilder.setMessage(getString(R.string.request_send_successful, txt));
 
-        alertDialogBuilder.setNeutralButton("ОК", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -401,13 +469,13 @@ public class NewRequestActivity extends Activity {
         successDialog.show();
     }
 
-    @UiThread
-    void notSupporderDialog() {
+    /*@UiThread
+    void notSupportedDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle("Информация");
         alertDialogBuilder.setMessage("Съжаляваме но услугата за момента се предлага за град Бургас. Ще бъдете известени по имейл когато услугата стане достъпна за други градове.");
 
-        alertDialogBuilder.setNeutralButton("ОК", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -417,5 +485,5 @@ public class NewRequestActivity extends Activity {
 
         Dialog successDialog = alertDialogBuilder.create();
         successDialog.show();
-    }
+    }*/
 }

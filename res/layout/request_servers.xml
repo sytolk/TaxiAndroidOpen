@@ -25,13 +25,13 @@
             android:id="@+id/cancelButton"
             android:layout_width="0dp"
             android:layout_height="65dp"
-            android:text="НАЗАД"
+            android:text="@string/back"
             android:layout_weight=".3"/>
         <Button
             android:id="@+id/refreshButton"
             android:layout_width="0dp"
             android:layout_height="65dp"
-            android:text="ИЗТЕГЛИ"
+            android:text="@string/download"
             android:layout_weight=".3"/>
     </LinearLayout>
 </LinearLayout>

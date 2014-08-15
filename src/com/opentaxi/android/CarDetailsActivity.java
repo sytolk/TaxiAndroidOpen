@@ -85,10 +85,10 @@ public class CarDetailsActivity extends Activity {
     @Click
     void requestButton() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Нова заявка");
+        alertDialogBuilder.setTitle(R.string.new_request);
         if (cars != null && (cars.getCurrState().equals(CarState.STATE_FREE.getCode()) || cars.getCurrState().equals(CarState.STATE_BUSY.getCode()))) {
-            alertDialogBuilder.setMessage("Сигурни ли сте че искате да направите лична заявка до автомобил " + carNumber + " ?");
-            alertDialogBuilder.setPositiveButton("ДА", new DialogInterface.OnClickListener() {
+            alertDialogBuilder.setMessage(getString(R.string.private_request_question, carNumber));
+            alertDialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -102,7 +102,7 @@ public class CarDetailsActivity extends Activity {
                 }
             });
 
-            alertDialogBuilder.setNeutralButton("НЕ", new DialogInterface.OnClickListener() {
+            alertDialogBuilder.setNeutralButton(R.string.no, new DialogInterface.OnClickListener() {
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -110,8 +110,8 @@ public class CarDetailsActivity extends Activity {
                 }
             });
         } else {
-            alertDialogBuilder.setMessage("Съжаляваме но автомобил " + carNumber + " в момента не работи");
-            alertDialogBuilder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+            alertDialogBuilder.setMessage(getString(R.string.not_working, carNumber));
+            alertDialogBuilder.setNeutralButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {

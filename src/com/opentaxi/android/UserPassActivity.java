@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import com.google.common.base.Charsets;
+import com.google.common.hash.Hashing;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.TextRule;
@@ -33,8 +35,6 @@ import com.sromku.simple.fb.listeners.OnLoginListener;
 import com.sromku.simple.fb.listeners.OnProfileListener;
 import com.taxibulgaria.enums.Gender;
 import org.androidannotations.annotations.*;
-
-import java.io.File;
 
 /**
  * Created with IntelliJ IDEA.
@@ -188,12 +188,14 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
                 return true;
 
             case R.id.options_exit:
-
+                result = Activity.RESULT_CANCELED;
+                RestClient.getInstance().clearCache();
                 finish();
                 return true;
             case R.id.options_send_log:
 
-                String javaTmpDir = System.getProperty("java.io.tmpdir");
+                RestClient.getInstance().clearCache();
+                /*String javaTmpDir = System.getProperty("java.io.tmpdir");
                 File cacheDir = new File(javaTmpDir, "DiskLruCacheDir");
                 if (cacheDir.exists()) {
                     File[] files = cacheDir.listFiles();
@@ -201,7 +203,7 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
                         for (File file : files) {
                             file.delete();
                         }
-                }
+                }*/
                 int i = 2 / 0;
                 return true;
             default:
@@ -257,7 +259,7 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
             @Override
             public void onException(Throwable throwable) {
                 Log.e(TAG, "onException:" + throwable.getMessage());
-                overFacebookLoginTime("повдигнато е изключение");
+                overFacebookLoginTime(getString(R.string.exception));
             }
 
             @Override
@@ -274,7 +276,7 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
                     AppPreferences.getInstance().setAccessToken(mSimpleFacebook.getSession().getAccessToken());  //todo move this to disk cache
                     checkFacebook(mSimpleFacebook.getSession().getAccessToken());
                 } else {
-                    overFacebookLoginTime("проблем при създаване на Facebook сесия");
+                    overFacebookLoginTime(getString(R.string.fb_session_error));
                     Log.e(TAG, "onLogin getSession=" + mSimpleFacebook.getSession());
                 }
             }
@@ -283,7 +285,7 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
             public void onNotAcceptingPermissions(Permission.Type type) {
                 if (mSimpleFacebook.getSession() != null)
                     Log.e(TAG, "onNotAcceptingPermissions token:" + mSimpleFacebook.getSession().getAccessToken());
-                overFacebookLoginTime("нямате позволение за достъп");
+                overFacebookLoginTime(getString(R.string.fb_no_access));
             }
         };
         mSimpleFacebook.login(onLoginListener);
@@ -312,17 +314,17 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
             TaxiApplication.userPassPaused();
             hideProgress();
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setTitle("Вход през Facebook " + title);
-            alertDialogBuilder.setMessage("Искате ли да създадете свой потребителски акаунт в системата на Taxi Bulgaria ?");
+            alertDialogBuilder.setTitle(getString(R.string.fb_login) + title);
+            alertDialogBuilder.setMessage(getString(R.string.new_account_question));
             //null should be your on click listener
-            alertDialogBuilder.setPositiveButton("ДА", new DialogInterface.OnClickListener() {
+            alertDialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     newClient();
                 }
             });
-            alertDialogBuilder.setNegativeButton("НЕ", new DialogInterface.OnClickListener() {
+            alertDialogBuilder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -351,7 +353,7 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
                 RestClient.getInstance().setAuthHeadersEncoded(user.getUsername(), user.getPassword());
                 if (AppPreferences.getInstance() != null) AppPreferences.getInstance().setUsers(user);
                 finish();
-            } else setError("Грешно потребителско име или парола!");
+            } else setError(getString(R.string.wrong_userpass));
 
             //facebookLogout();
         } else { //new Facebook User
@@ -463,7 +465,7 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
                         if (userEncrypt != null && passEncrypt != null) {
                             if(!RestClient.getInstance().saveAuthorization(userEncrypt, passEncrypt)){
                                 user.setUsername(username);
-                                user.setPassword(password);
+                                user.setPassword(Hashing.sha1().hashString(password, Charsets.UTF_8).toString());
                                 AppPreferences.getInstance().setUsers(user);
                                 Log.e(TAG, "Exception: saveAuthorization");
                             }
@@ -474,10 +476,10 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
                 }
                 //Toast.makeText(UserPassActivity.this, "Влязохте в системата успешно!", Toast.LENGTH_LONG).show();
                 finish();
-            } else setError("Грешно потребителско име или парола!");
+            } else setError(getString(R.string.wrong_userpass));
             // Toast.makeText(UserPassActivity.this, "Грешно потребителско име или парола!", Toast.LENGTH_LONG).show();
 
-        } else setError("Грешка! Сигурни ли сте че имате връзка с интернет?");
+        } else setError(getString(R.string.error_check_internet));
         //Toast.makeText(UserPassActivity.this, "Грешка! Сигурни ли сте че имате връзка с интернет?", Toast.LENGTH_LONG).show();
     }
 

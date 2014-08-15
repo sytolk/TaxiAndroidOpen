@@ -21,7 +21,7 @@
                 android:id="@id/newClientContainerTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ВХОД В СИТЕМАТА"
+                android:text="@string/enter"
                 android:layout_marginTop="30dp"
                 android:layout_alignParentRight="false"
                 android:layout_gravity="center"
@@ -39,7 +39,7 @@
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
                     android:layout_weight=".4"
-                    android:text="Потребител:"
+                    android:text="@string/login_user"
                     android:textStyle="bold"
                     android:textSize="20dp"
                     android:gravity="right"
@@ -70,7 +70,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".4"
-                    android:text="Парола:"
+                    android:text="@string/password"
                     android:textStyle="bold"
                     android:textSize="20dp"
                     android:gravity="right"
@@ -101,7 +101,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
-                    android:text="Нов Потребител"
+                    android:text="@string/new_user"
                     android:gravity="left"/>
 
                 <TextView
@@ -110,7 +110,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
-                    android:text="Забравена парола"
+                    android:text="@string/lost_password"
                     android:gravity="right"/>
 
             </LinearLayout>

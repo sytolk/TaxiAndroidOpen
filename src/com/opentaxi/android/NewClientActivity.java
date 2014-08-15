@@ -62,21 +62,21 @@ public class NewClientActivity extends Activity implements Validator.ValidationL
     @ViewById
     EditText lastName;
 
-    @TextRule(order = 5, minLength = 1, message = "Града е задължително поле.")
+    @TextRule(order = 5, minLength = 1, messageResId = R.string.city_required)
     @ViewById
     AutoCompleteTextView cityName;
 
-    @TextRule(order = 6, minLength = 1, message = "Телефона е задължително поле.")
+    @TextRule(order = 6, minLength = 1, messageResId = R.string.phone_required)
     @ViewById
     EditText phoneNumber;
 
     //@Required(order = 5)
-    @Email(order = 7, message = "Невалиден email адрес.")
+    @Email(order = 7, messageResId = R.string.email_not_valid)
     @ViewById(R.id.emailField)
     EditText email;
 
     //You must agree to the terms
-    @Checked(order = 8, message = "Трябва да премете условията за ползване.")
+    @Checked(order = 8, messageResId = R.string.agree_required)
     @ViewById
     CheckBox iAgreeCheckBox;
 
@@ -100,7 +100,7 @@ public class NewClientActivity extends Activity implements Validator.ValidationL
             validator.setValidationListener(this);
 
             String[] cities = new String[]{
-                    "Бургас", "София", "Варна", "Пловдив", "Burgas", "Sofia", "Varna", "Plovdiv"
+                    "Бургас", "София", "Варна", "Пловдив", "Burgas", "Sofia", "Varna", "Plovdiv", "Несебър", "Nesebar", "Слънчев бряг", "Sunny beach", "Приморско", "Primorsko", "Царево", "Carevo", "Созопол", "Sozopol"
             };
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, cities);
             adapter.setDropDownViewResource(R.layout.spinner_layout);
@@ -139,7 +139,7 @@ public class NewClientActivity extends Activity implements Validator.ValidationL
     @Background
     void checkUsername(String username) {
         Boolean exist = RestClient.getInstance().checkUserExist(username);
-        if (exist != null && exist) setUserError("Потребителското име съществува");
+        if (exist != null && exist) setUserError(getString(R.string.username_exist));
         else {
             haveErrors = false;
         }
@@ -156,7 +156,7 @@ public class NewClientActivity extends Activity implements Validator.ValidationL
     @Background
     void checkEmail(String emailCheck) {
         Boolean exist = RestClient.getInstance().checkEmailExist(emailCheck);
-        if (exist != null && exist) setEmailError("Този имейл съществува");
+        if (exist != null && exist) setEmailError(getString(R.string.email_exist));
         else {
             haveErrors = false;
         }
@@ -246,10 +246,10 @@ public class NewClientActivity extends Activity implements Validator.ValidationL
     @UiThread
     void ActivationDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Потвърждение на имейл");
-        alertDialogBuilder.setMessage("Вашият акунт е създаден успешно но е нужно да потвърдите имейла си (" + email.getText().toString() + "). Това може да стане като кликнете на линка който ви изпратихме на:" + email.getText().toString());
+        alertDialogBuilder.setTitle(getString(R.string.email_confirmation));
+        alertDialogBuilder.setMessage(getString(R.string.new_account_confirmation, email.getText().toString()) + email.getText().toString());
 
-        alertDialogBuilder.setNeutralButton("ОК", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {

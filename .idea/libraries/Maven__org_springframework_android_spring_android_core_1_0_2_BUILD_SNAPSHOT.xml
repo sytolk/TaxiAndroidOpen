@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: org.springframework.android:spring-android-core:1.0.2.BUILD-SNAPSHOT">
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/android/spring-android-core/1.0.2.BUILD-SNAPSHOT/spring-android-core-1.0.2.BUILD-20140623.142639-30.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/android/spring-android-core/1.0.2.BUILD-SNAPSHOT/spring-android-core-1.0.2.BUILD-20140728.073340-32.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/android/spring-android-core/1.0.2.BUILD-SNAPSHOT/spring-android-core-1.0.2.BUILD-20140623.142639-30-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/android/spring-android-core/1.0.2.BUILD-SNAPSHOT/spring-android-core-1.0.2.BUILD-20140728.073340-32-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/android/spring-android-core/1.0.2.BUILD-SNAPSHOT/spring-android-core-1.0.2.BUILD-20140623.142639-30-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/android/spring-android-core/1.0.2.BUILD-SNAPSHOT/spring-android-core-1.0.2.BUILD-20140728.073340-32-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

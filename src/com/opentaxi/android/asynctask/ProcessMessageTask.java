@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.opentaxi.android.MessageActivity;
+import com.opentaxi.android.R;
 import com.opentaxi.android.utils.AppPreferences;
 import com.opentaxi.generated.mysql.tables.pojos.Advertisement;
 import com.opentaxi.generated.mysql.tables.pojos.CloudMessages;
@@ -100,7 +101,7 @@ public class ProcessMessageTask extends AsyncTask<Context, Void, Boolean> {
                                     msgIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     context.startActivity(msgIntent);
                                 } else if (request.getAcceptType().equals(RequestAcceptStatus.RI_TRANSFER_SUCCESS.getCode())) { //TRANSFER SUCCESSFUL
-                                    deleteRequest(request.getRequestsId(), "Трансфера на заявката (" + request.getFullAddress() + ") е успешен!");
+                                    deleteRequest(request.getRequestsId(), context.getString(R.string.transfer_success, request.getFullAddress()));
                                 } else if (request.getAcceptType().equals(RequestAcceptStatus.RI_TRANSFER.getCode())) { //TRANSFER FAILED
 
                                     Messages messages = new Messages();

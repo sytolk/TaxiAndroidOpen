@@ -25,7 +25,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
-                    android:text="Автомобил:"/>
+                    android:text="@string/car"/>
 
                 <TextView
                     android:id="@+id/carNumberView"
@@ -44,7 +44,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
-                    android:text="Шофьор:"/>
+                    android:text="@string/driver"/>
 
                 <TextView
                     android:id="@+id/driver"
@@ -92,7 +92,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:minHeight="80dp"
-            android:text="Назад"
+            android:text="@string/back"
             android:layout_weight=".5"
             android:textSize="20dp"
             android:singleLine="true"/>
@@ -102,7 +102,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:minHeight="80dp"
-            android:text="Повикай"
+            android:text="@string/call"
             android:layout_weight=".5"
             android:textSize="20dp"
             android:singleLine="true"/>

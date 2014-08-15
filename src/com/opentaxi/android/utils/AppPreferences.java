@@ -19,7 +19,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -142,7 +141,7 @@ public class AppPreferences {
         }
     }
 
-    public Map<Integer, String> getRegions() {
+    /*public Map<Integer, String> getRegions() {
         if (regionsMap == null || regionsMap.isEmpty()) {
             setRegions();
 
@@ -166,7 +165,7 @@ public class AppPreferences {
             regionsMap.put(18, "Банево");
         }
         return regionsMap;
-    }
+    }*/
 
     public NewRequest getCurrentRequest() {
         return this.currentRequest;

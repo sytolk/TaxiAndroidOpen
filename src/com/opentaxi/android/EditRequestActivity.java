@@ -6,16 +6,16 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.*;
-import com.opentaxi.android.adapters.CitiesAdapter;
 import com.opentaxi.android.adapters.GroupsAdapter;
 import com.opentaxi.android.adapters.RegionsAdapter;
+import com.opentaxi.generated.mysql.tables.pojos.Contactaddress;
 import com.opentaxi.generated.mysql.tables.pojos.Groups;
 import com.opentaxi.generated.mysql.tables.pojos.Regions;
+import com.opentaxi.generated.mysql.tables.pojos.RequestsDetails;
 import com.opentaxi.models.NewCRequest;
-import com.opentaxi.models.NewRequest;
+import com.opentaxi.models.NewRequestDetails;
 import com.opentaxi.rest.RestClient;
 import org.androidannotations.annotations.*;
 
@@ -33,7 +33,7 @@ import java.util.Map;
 @EActivity(R.layout.new_request)
 public class EditRequestActivity extends Activity {
 
-    private static final String TAG = "NewRequestActivity";
+    private static final String TAG = "EditRequestActivity";
 
     @Extra
     NewCRequest newCRequest;
@@ -42,7 +42,7 @@ public class EditRequestActivity extends Activity {
     Spinner pricesPicker;
 
     @ViewById(R.id.citiesPicker)
-    Spinner citiesPicker;
+    EditText citiesPicker;
 
     @ViewById(R.id.address)
     TextView address;
@@ -74,8 +74,9 @@ public class EditRequestActivity extends Activity {
     @AfterViews
     protected void afterActivity() {
 
-        requestSend.setText("Промени заявката");
-        showCities("Бургас");
+        requestSend.setText(getString(R.string.change_request));
+        //showCities("Бургас");
+        setCities();
         setRegions();
         setPrices();
         setGroups();
@@ -83,26 +84,29 @@ public class EditRequestActivity extends Activity {
         //addressText.setVisibility(View.GONE);
     }
 
-    @UiThread
-    void showCities(String supported) {
-        if (supported != null) {
-            CitiesAdapter[] citiesAdapter = new CitiesAdapter[1];
-            citiesAdapter[0] = new CitiesAdapter(supported);
-            ArrayAdapter<CitiesAdapter> adapter2 = new ArrayAdapter<CitiesAdapter>(this, R.layout.spinner_layout, citiesAdapter);
-            adapter2.setDropDownViewResource(R.layout.spinner_layout);
-            citiesPicker.setAdapter(adapter2);
-            citiesPicker.setOnTouchListener(Spinner_OnTouch);
-        }
+    @Background
+    void setCities() {
+        showCities(RestClient.getInstance().getAddress());
     }
 
-    private View.OnTouchListener Spinner_OnTouch = new View.OnTouchListener() {
+    @UiThread
+    void showCities(Contactaddress address) {
+            /*CitiesAdapter[] citiesAdapter = new CitiesAdapter[1];
+            citiesAdapter[0] = new CitiesAdapter(supported);
+            ArrayAdapter<CitiesAdapter> adapter2 = new ArrayAdapter<CitiesAdapter>(this, R.layout.spinner_layout, citiesAdapter);
+            adapter2.setDropDownViewResource(R.layout.spinner_layout);*/
+        if (address != null) citiesPicker.setText(address.getCity());
+        //citiesPicker.setOnTouchListener(Spinner_OnTouch);
+    }
+
+    /*private View.OnTouchListener Spinner_OnTouch = new View.OnTouchListener() {
         public boolean onTouch(View v, MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 notSupporderDialog();
             }
             return true;
         }
-    };
+    };*/
 
     @Background
     void setRegions() {
@@ -191,7 +195,7 @@ public class EditRequestActivity extends Activity {
     }
 
     void showAddress() {
-        address.setText("Адрес: ");
+        address.setText(R.string.address);
         if (newCRequest != null) addressText.setText(newCRequest.getFullAddress());
         addressText.setVisibility(View.VISIBLE);
     }
@@ -270,8 +274,13 @@ public class EditRequestActivity extends Activity {
             reqInfoButtonContainer.setVisibility(View.GONE);
             pbProgress.setVisibility(View.VISIBLE);
 
-            NewRequest newRequest = new NewRequest();
+            NewRequestDetails newRequest = new NewRequestDetails();
             newRequest.setRequestsId(newCRequest.getRequestsId());
+
+            RequestsDetails requestsDetails = new RequestsDetails();
+            requestsDetails.setFromCity(citiesPicker.getText().toString());
+            newRequest.setDetails(requestsDetails);
+
             RegionsAdapter regionsAdapter = (RegionsAdapter) regionsPicker.getSelectedItem();
             newRequest.setRegionId(regionsAdapter.getId());
 
@@ -289,14 +298,15 @@ public class EditRequestActivity extends Activity {
             newRequest.setRequestGroups(filterGroups);
             sendRequest(newRequest);
         } else {
-            if (addressText.getVisibility() == View.VISIBLE) addressText.setError("Задължително поле");
-            else Toast.makeText(this, "Адреса е задължително поле", Toast.LENGTH_SHORT).show();
+            if (addressText.getVisibility() == View.VISIBLE) addressText.setError(getString(R.string.required_field));
+            else
+                Toast.makeText(this, getString(R.string.required_field) + ": " + getString(R.string.address), Toast.LENGTH_SHORT).show();
         }
     }
 
     @Background
-    void sendRequest(NewRequest newRequest) {
-        Integer requestId = RestClient.getInstance().sendRequest(newRequest);
+    void sendRequest(NewRequestDetails newRequest) {
+        Integer requestId = RestClient.getInstance().sendNewRequest(newRequest);
         if (requestId != null && requestId > 0) {
             SuccessDialog();
         }
@@ -305,18 +315,18 @@ public class EditRequestActivity extends Activity {
     @Click
     void addressChange() {
         addressText.setText(address.getText());
-        address.setText("Адрес: ");
+        address.setText(R.string.address);
         addressText.setVisibility(View.VISIBLE);
         addressChange.setVisibility(View.GONE);
     }
 
-    @UiThread
+   /* @UiThread
     void notSupporderDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle("Информация");
         alertDialogBuilder.setMessage("Съжаляваме но услугата за момента се предлага за град Бургас. Ще бъдете известени по имейл когато услугата стане достъпна за други градове.");
 
-        alertDialogBuilder.setNeutralButton("ОК", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -326,7 +336,7 @@ public class EditRequestActivity extends Activity {
 
         Dialog successDialog = alertDialogBuilder.create();
         successDialog.show();
-    }
+    }*/
 
     @UiThread
     void SuccessDialog() {
@@ -334,12 +344,12 @@ public class EditRequestActivity extends Activity {
         pbProgress.setVisibility(View.GONE);
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Променена заявка");
+        alertDialogBuilder.setTitle(getString(R.string.changed_request));
         String txt = addressText.getText().toString();
         if (txt.length() == 0) txt = address.getText().toString();
-        alertDialogBuilder.setMessage("Заявката " + txt + " беше променена успешно! Можете да видите актуалния и статус да я промените или откажете след като затворите този диалог или от бутона ПОРЪЧКИ на главната страница");
+        alertDialogBuilder.setMessage(getString(R.string.request_changed_successful, txt));
 
-        alertDialogBuilder.setNeutralButton("ОК", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {

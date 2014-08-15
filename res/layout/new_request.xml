@@ -25,7 +25,7 @@
 
                 <TextView
                     android:id="@+id/city"
-                    android:text="Град"
+                    android:text="@string/city"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textColor="#ffffff"
@@ -33,15 +33,19 @@
                     android:gravity="right"
                     android:layout_marginRight="20dp"/>
 
-                <Spinner
+                <AutoCompleteTextView
+                    android:id="@+id/citiesPicker"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/citiesPicker"
-                    android:layout_weight=".7"/>
+                    android:text="@string/burgas"
+                    android:layout_weight=".7"
+                    android:completionThreshold="1"
+                    android:inputType="textAutoComplete"/>
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/regionsLayout"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -49,7 +53,7 @@
 
                 <TextView
                     android:id="@+id/region"
-                    android:text="Квартал"
+                    android:text="@string/region"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textColor="#ffffff"
@@ -57,11 +61,14 @@
                     android:gravity="right"
                     android:layout_marginRight="20dp"/>
 
-                <Spinner
+                <AutoCompleteTextView
+                    android:id="@+id/regionsPicker"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/regionsPicker"
-                    android:layout_weight=".7"/>
+                    android:text=""
+                    android:layout_weight=".7"
+                    android:completionThreshold="1"
+                    android:inputType="textAutoComplete"/>
 
             </LinearLayout>
 
@@ -76,7 +83,7 @@
                     android:id="@+id/address"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Адрес"
+                    android:text="@string/address"
                     android:textColor="#ffffff"
                     android:layout_weight=".2"
                     android:gravity="right"
@@ -86,7 +93,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/addressText"
-                    android:layout_weight=".6"/>
+                    android:layout_weight=".6"
+                    android:inputType="text">
+                    <requestFocus/>
+                </EditText>
 
                 <ToggleButton
                     android:layout_width="wrap_content"
@@ -102,10 +112,37 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    android:text="Промени"
+                    android:text="@string/change"
                     android:layout_weight=".2"/>
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/destLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:text="@string/destination"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="#ffffff"
+                    android:layout_weight=".3"
+                    android:gravity="right"
+                    android:layout_marginRight="20dp"/>
+
+                <AutoCompleteTextView
+                    android:id="@+id/destination"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_weight=".7"
+                    android:completionThreshold="1"
+                    android:inputType="textAutoComplete"/>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -118,7 +155,7 @@
                     android:id="@+id/price"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Тарифа"
+                    android:text="@string/car_price"
                     android:textColor="#ffffff"
                     android:layout_weight=".3"
                     android:gravity="right"
@@ -136,7 +173,7 @@
                 android:id="@+id/filters"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Нуждая се още от:"
+                android:text="@string/needs_from"
                 android:textColor="@color/label_color"
                 android:layout_marginLeft="20dp"/>
 
@@ -191,7 +228,7 @@
             android:id="@+id/requestSend"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Повикай ТАКСИ"
+            android:text="@string/request_taxi"
             android:layout_weight=".3"/>
 
         <TextView

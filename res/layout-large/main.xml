@@ -82,7 +82,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:minHeight="80dp"
-            android:text="@string/newRequest"
+            android:text="@string/request_taxi"
             android:layout_weight=".6"
             android:textSize="@dimen/main_button"/>
 

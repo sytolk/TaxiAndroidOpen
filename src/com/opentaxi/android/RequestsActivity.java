@@ -90,7 +90,7 @@ public class RequestsActivity extends Activity {
 
     @Background
     void getRequests() {
-        setActivityTile("Активни поръчки");
+        setActivityTile(getString(R.string.active_requests));
         if (new Date().getTime() > (lastShowRequests + 5000)) {
             RequestCView requestView = new RequestCView();
             requestView.setPage(1);
@@ -110,7 +110,7 @@ public class RequestsActivity extends Activity {
 
     @Background
     void getRequestHistory() {
-        setActivityTile("История на поръчките");
+        setActivityTile(getString(R.string.request_history));
         RequestCView requestView = new RequestCView();
         requestView.setPage(1);
         requestView.setMy(true);
@@ -164,10 +164,10 @@ public class RequestsActivity extends Activity {
 
                     //id.setText("Номер");
                     //date.setText("Дата и час");
-                    address.setText("Адрес");
-                    time.setText("Време за изпълнение");
-                    car.setText("Автомобил");
-                    state.setText("Статус");
+                    address.setText(R.string.address);
+                    time.setText(R.string.execution_time);
+                    car.setText(R.string.car);
+                    state.setText(R.string.status);
 
                     //row.addView(id);
                     //row.addView(date);
@@ -264,7 +264,7 @@ public class RequestsActivity extends Activity {
                     TextView txt = new TextView(this);
                     txt.setPadding(2, 2, 2, 2);
                     txt.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
-                    txt.setText("Нямате поръчки.");
+                    txt.setText(R.string.no_requests);
                     row.addView(txt);
                     requests_table.addView(row, new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                 }

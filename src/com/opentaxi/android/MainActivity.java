@@ -10,7 +10,6 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NotificationCompat;
@@ -34,12 +33,7 @@ import com.sromku.simple.fb.listeners.OnLogoutListener;
 import com.taxibulgaria.enums.Applications;
 import org.androidannotations.annotations.*;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 @EActivity(R.layout.main)
 public class MainActivity extends FragmentActivity {
@@ -67,6 +61,10 @@ public class MainActivity extends FragmentActivity {
 
     GoogleCloudMessaging gcm;
     //private boolean havePlayService = true;
+
+    public MainActivity() {
+
+    }
 
     /**
      * Called when the activity is first created.
@@ -108,14 +106,14 @@ public class MainActivity extends FragmentActivity {
         alertDialogBuilder.setTitle(R.string.no_gps_title);
         alertDialogBuilder.setMessage(R.string.no_gps_msg);
         //null should be your on click listener
-        alertDialogBuilder.setPositiveButton("ДА", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
             }
         });
-        alertDialogBuilder.setNegativeButton("НЕ", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -141,7 +139,7 @@ public class MainActivity extends FragmentActivity {
                     if (username == null || password == null) {
                         beforeStartUserPass();
                     } else {
-                        RestClient.getInstance().setAuthHeaders(username, password);
+                        RestClient.getInstance().setAuthHeadersEncoded(username, password);
                         afterLogin(username);
                     }
                 } else beforeStartUserPass();
@@ -293,7 +291,6 @@ public class MainActivity extends FragmentActivity {
                     if (e.getMessage() != null) Log.e(TAG, e.getMessage());
                 }
             }
-            return false;
         }
 
         return false;
@@ -354,20 +351,20 @@ public class MainActivity extends FragmentActivity {
         notificationManager.notify(0, noti);
     }
 
-    @UiThread
+    /*@UiThread
     void updateVersionDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle("Нова версия на Такси България!");
         alertDialogBuilder.setMessage("Налична е нова версия. Желаете ли да актуализирате ?");
         //null should be your on click listener
-        alertDialogBuilder.setPositiveButton("ДА", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 downloadUpdate();
             }
         });
-        alertDialogBuilder.setNegativeButton("НЕ", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -427,7 +424,7 @@ public class MainActivity extends FragmentActivity {
             startActivity(intent);
         }
     }
-
+*/
     @Override
     protected void onStop() {
         Log.i(TAG, "onStop");
@@ -455,11 +452,13 @@ public class MainActivity extends FragmentActivity {
                 return true;
 
             case R.id.options_exit:
+                RestClient.getInstance().clearCache();
                 finish();
                 return true;
             case R.id.options_send_log:
 
-                String javaTmpDir = System.getProperty("java.io.tmpdir");
+                RestClient.getInstance().clearCache();
+                /*String javaTmpDir = System.getProperty("java.io.tmpdir");
                 File cacheDir = new File(javaTmpDir, "DiskLruCacheDir");
                 if (cacheDir.exists()) {
                     File[] files = cacheDir.listFiles();
@@ -467,7 +466,7 @@ public class MainActivity extends FragmentActivity {
                         for (File file : files) {
                             file.delete();
                         }
-                }
+                }*/
                 int i = 2 / 0;
                 return true;
             default:
@@ -595,21 +594,23 @@ public class MainActivity extends FragmentActivity {
     void exitButton() {
         //showDialog(DIALOG_EXIT);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Изход");
-        alertDialogBuilder.setMessage("Наистина ли искате да излезете от системата ?");
+        alertDialogBuilder.setTitle(R.string.exit);
+        alertDialogBuilder.setMessage(getString(R.string.exit_confirm));
         //null should be your on click listener
-        alertDialogBuilder.setPositiveButton("ДА", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 new LogoutTask().execute();
                 AppPreferences.getInstance().setAccessToken("");
                 AppPreferences.getInstance().setLastCloudMessage(null);
+                AppPreferences.getInstance().setUsers(null);
+                RestClient.getInstance().removeAuthorization();
                 facebookLogout();
                 finish();
             }
         });
-        alertDialogBuilder.setNegativeButton("НЕ", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {

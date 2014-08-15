@@ -169,7 +169,7 @@ public class RequestDetailsActivity extends Activity {
 
                     if (newCRequest.getDispTime() != null && newCRequest.getDispTime() > 0)
                         arrive_time.setText(newCRequest.getDispTime() + " min");
-                    else arrive_time.setText("не зададено");
+                    else arrive_time.setText(R.string.not_set);
 
                     remaining_time.setText(newCRequest.getExecTime());
 
@@ -217,14 +217,14 @@ public class RequestDetailsActivity extends Activity {
     @Click
     void rejectButton() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Отказ на заявка");
-        alertDialogBuilder.setMessage("Сигурни ли сте че искате да откажете заявката " + newCRequest.getFullAddress() + " ?");
+        alertDialogBuilder.setTitle(getString(R.string.request_rejection));
+        alertDialogBuilder.setMessage(getString(R.string.request_reject_confirm,newCRequest.getFullAddress()));
 
         // Set an EditText view to get user input
         final EditText input = new EditText(this);
         alertDialogBuilder.setView(input);
 
-        alertDialogBuilder.setPositiveButton("ДА", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -234,7 +234,7 @@ public class RequestDetailsActivity extends Activity {
             }
         });
 
-        alertDialogBuilder.setNeutralButton("НЕ", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNeutralButton(R.string.no, new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -276,8 +276,8 @@ public class RequestDetailsActivity extends Activity {
     void showFeedBack(final Feedback[] feedbacks) {
         if (feedbacks != null && newCRequest != null) {
             final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setTitle("Обратна връзка");
-            alertDialogBuilder.setMessage("Как оценявате вашете пътуване от \"" + newCRequest.getFullAddress() + "\"");
+            alertDialogBuilder.setTitle(getString(R.string.feedback));
+            alertDialogBuilder.setMessage(getString(R.string.feedback_request, newCRequest.getFullAddress()));
 
             final LinearLayout parent = new LinearLayout(this);
             parent.setOrientation(LinearLayout.VERTICAL);
@@ -297,14 +297,14 @@ public class RequestDetailsActivity extends Activity {
             }
 
             final TextView commentLabel = new TextView(this);
-            commentLabel.setText("Вашият коментар:");
+            commentLabel.setText(getString(R.string.your_comment));
             parent.addView(commentLabel);
             final EditText comment = new EditText(this);
             parent.addView(comment);
 
             alertDialogBuilder.setView(parent);
 
-            alertDialogBuilder.setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+            alertDialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -320,7 +320,7 @@ public class RequestDetailsActivity extends Activity {
                 }
             });
 
-            alertDialogBuilder.setNeutralButton("По късно", new DialogInterface.OnClickListener() {
+            alertDialogBuilder.setNeutralButton(getString(R.string.later), new DialogInterface.OnClickListener() {
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {

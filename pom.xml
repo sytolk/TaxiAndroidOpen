@@ -25,7 +25,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.0</version>
+                <version>3.1</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
@@ -153,7 +153,7 @@
         <dependency>
             <groupId>android</groupId>
             <artifactId>android</artifactId>
-            <version>4.4.2_r2</version>
+            <version>4.4W_r1</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -163,25 +163,32 @@
             </exclusions>
         </dependency>
 
-        <dependency>
+        <!--<dependency>
             <groupId>com.google.android.gms</groupId>
             <artifactId>google-play-services</artifactId>
-            <version>12.0.0</version>
+            <version>19.0.0</version>
             <type>apklib</type>
         </dependency>
         <dependency>
             <groupId>com.google.android.gms</groupId>
             <artifactId>google-play-services</artifactId>
-            <version>12.0.0</version>
+            <version>19.0.0</version>
             <type>jar</type>
-        </dependency>
+        </dependency>-->
 
         <dependency>
+            <groupId>com.google.android.gms</groupId>
+            <artifactId>play-services</artifactId>
+            <version>5.0.89</version>
+            <type>aar</type>
+        </dependency>
+
+        <!--<dependency>
             <groupId>android.support</groupId>
             <artifactId>compatibility-v4</artifactId>
-            <!--<artifactId>compatibility-v7</artifactId>-->
-            <version>19</version>
-        </dependency>
+            &lt;!&ndash;<artifactId>compatibility-v7</artifactId>&ndash;&gt;
+            <version>20.0.0</version>
+        </dependency>-->
         <!--<dependency>
             <groupId>com.google.android.gcm</groupId>
             <artifactId>gcm-client</artifactId>
@@ -195,8 +202,8 @@
             <version>0.4.4-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>support-v4</artifactId>
                     <groupId>com.google.android</groupId>
+                    <artifactId>support-v4</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -221,14 +228,14 @@
         <dependency>
             <groupId>org.androidannotations</groupId>
             <artifactId>androidannotations</artifactId>
-            <version>3.0-SNAPSHOT</version>
+            <version>3.0.1</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.androidannotations</groupId>
             <artifactId>androidannotations-api</artifactId>
-            <version>3.0-SNAPSHOT</version>
+            <version>3.0.1</version>
         </dependency>
 
         <dependency>
@@ -244,8 +251,8 @@
             <!--<type>apklib</type>-->
             <exclusions>
                 <exclusion>
-                    <artifactId>support-v4</artifactId>
                     <groupId>com.google.android</groupId>
+                    <artifactId>support-v4</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>

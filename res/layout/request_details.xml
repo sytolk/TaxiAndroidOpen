@@ -24,7 +24,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
-                    android:text="Заявка Номер:"/>
+                    android:text="@string/request_number"/>
                 <TextView
                     android:id="@+id/requestNumber"
                     android:layout_width="0dp"
@@ -41,7 +41,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
-                    android:text="Дата и час:"/>
+                    android:text="@string/datetime"/>
                 <TextView
                     android:id="@+id/datecreated"
                     android:layout_width="0dp"
@@ -58,7 +58,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
-                    android:text="Адрес:"/>
+                    android:text="@string/address"/>
                 <TextView
                     android:id="@+id/address"
                     android:layout_width="0dp"
@@ -75,7 +75,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
-                    android:text="Автомобил:"/>
+                    android:text="@string/car"/>
                 <TextView
                     android:id="@+id/car"
                     android:layout_width="0dp"
@@ -95,7 +95,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
-                    android:text="Тарифа лв/км:"/>
+                    android:text="@string/car_price"/>
                 <TextView
                     android:id="@+id/price_group"
                     android:layout_width="0dp"
@@ -112,7 +112,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
-                    android:text="Нужно ми е:"/>
+                    android:text="@string/needs_from"/>
                 <TextView
                     android:id="@+id/chosen_group"
                     android:layout_width="0dp"
@@ -129,7 +129,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
-                    android:text="Време за пристигане на автомобила:"/>
+                    android:text="@string/car_arrive_time"/>
                 <TextView
                     android:id="@+id/arrive_time"
                     android:layout_width="0dp"
@@ -146,7 +146,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
-                    android:text="Оставащо време:"/>
+                    android:text="@string/time_remaining"/>
                 <TextView
                     android:id="@+id/remaining_time"
                     android:layout_width="0dp"
@@ -163,7 +163,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
-                    android:text="Статус:"/>
+                    android:text="@string/status"/>
                 <TextView
                     android:id="@+id/state"
                     android:layout_width="0dp"
@@ -184,7 +184,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:minHeight="80dp"
-            android:text="Назад"
+            android:text="@string/back"
             android:layout_weight=".3"
             android:singleLine="true"/>
         <Button
@@ -192,7 +192,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:minHeight="80dp"
-            android:text="Откажи"
+            android:text="@string/reject"
             android:layout_weight=".3"
             android:singleLine="true"/>
         <Button
@@ -200,7 +200,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:minHeight="80dp"
-            android:text="Промени"
+            android:text="@string/change"
             android:layout_weight=".3"
             android:singleLine="true"/>
         <Button
@@ -208,7 +208,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:minHeight="80dp"
-            android:text="Обратна Връзка"
+            android:text="@string/feedback"
             android:layout_weight=".3"
             android:singleLine="true"
             android:visibility="gone"/>

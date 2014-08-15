@@ -44,8 +44,8 @@ public class LostPasswordActivity extends Activity {
 
     @UiThread
     void result(Boolean result) {
-        if (result == null) userEmailField.setError("Проверете интернет връзката");
+        if (result == null) userEmailField.setError(getString(R.string.check_internet));
         else if (result) finish();
-        else userEmailField.setError("Потребител с имейл:" + userEmailField.getText().toString() + " не съществува.");
+        else userEmailField.setError(getString(R.string.user_not_exist, userEmailField.getText().toString()));
     }
 }

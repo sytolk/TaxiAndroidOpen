@@ -1,3 +1,4 @@
+/*
 package com.opentaxi.android.asynctask;
 
 import android.content.Context;
@@ -11,13 +12,15 @@ import com.opentaxi.rest.RestClient;
 
 import java.util.Map;
 
+*/
 /**
  * Created with IntelliJ IDEA.
  * User: stanimir
  * Date: 3/21/13
  * Time: 3:22 PM
  * developer STANIMIR MARINOV
- */
+ *//*
+
 @Deprecated
 public class GoogleAPIClientTask extends AsyncTask<Context, Void, NewRequest> {
 
@@ -71,13 +74,18 @@ public class GoogleAPIClientTask extends AsyncTask<Context, Void, NewRequest> {
                 }
             }
         }
-      /*  try {
+      */
+/*  try {
             HttpRequestFactory httpRequestFactory = createRequestFactory(transport);
             HttpRequest request = httpRequestFactory.buildGetRequest(new GenericUrl("https://maps.googleapis.com/maps/api/place/search/json?"));  //http://maps.google.com/maps/api/place/search/json?
             request.url.put("key", APIkey);
-           *//* request.url.put("location", latitude + "," + longitude);
+           *//*
+*/
+/* request.url.put("location", latitude + "," + longitude);
             request.url.put("radius", 500);
             request.url.put("sensor", "false");*//*
+*/
+/*
             request.url.put("query", address);
 
             HttpResponse httpResponse= request.execute();
@@ -87,10 +95,14 @@ public class GoogleAPIClientTask extends AsyncTask<Context, Void, NewRequest> {
             }
             //PlacesList places = request.execute().parseAs(PlacesList.class);//my pojo with private double longitude;   private double latitude;
 
-           *//* System.out.println("STATUS = " + places.status);
+           *//*
+*/
+/* System.out.println("STATUS = " + places.status);
             for (Place place : places.results) {
                 System.out.println(place);
             }*//*
+*/
+/*
         } catch (HttpResponseException e) {
             try {
                 System.err.println(e.response.parseAsString());
@@ -99,11 +111,13 @@ public class GoogleAPIClientTask extends AsyncTask<Context, Void, NewRequest> {
             }
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }*/
+        }*//*
+
         return newRequest;
     }
 
-   /* public static HttpRequestFactory createRequestFactory(final HttpTransport transport) {
+   */
+/* public static HttpRequestFactory createRequestFactory(final HttpTransport transport) {
 
         return transport.createRequestFactory(new HttpRequestInitializer() {
             public void initialize(HttpRequest request) {
@@ -115,7 +129,8 @@ public class GoogleAPIClientTask extends AsyncTask<Context, Void, NewRequest> {
                 request.addParser(parser);
             }
         });
-    }*/
+    }*//*
+
 
     @Override
     protected void onPreExecute() {
@@ -129,4 +144,4 @@ public class GoogleAPIClientTask extends AsyncTask<Context, Void, NewRequest> {
     public interface OnTaskCompleted {
         void onTaskCompleted(NewRequest newRequest);
     }
-}
+}*/
