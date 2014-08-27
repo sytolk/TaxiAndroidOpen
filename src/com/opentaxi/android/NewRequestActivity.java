@@ -93,7 +93,7 @@ public class NewRequestActivity extends Activity {
         else setTitle(getString(R.string.taxi_request_to_car, cars.getNumber()));
 
         String[] cities = new String[]{
-                "Бургас", "София", "Варна", "Пловдив", "Burgas", "Sofia", "Varna", "Plovdiv", "Несебър", "Nesebar", "Слънчев бряг", "Sunny beach", "Приморско", "Primorsko", "Царево", "Carevo", "Созопол", "Sozopol"
+                "Бургас", "София", "Варна", "Пловдив", "Burgas", "Sofia", "Varna", "Plovdiv", "Несебър", "Nesebar", "Слънчев бряг", "Sunny beach", "Приморско", "Primorsko", "Царево", "Carevo", "Созопол", "Sozopol", "Разград", "Razgrad", "Монтана", "Montana", "Враца", "Vratsa", "Добрич", "Dobrich", "Русе", "Ruse", "Плевен", "Pleven", "Перник", "Pernik", "Пазарджик", "Pazardzhik", "Ловеч", "Lovech", "Хасково", "Haskovo", "Благоевград", "Blagoevgrad", "Габрово", "Gabrovo", "Кърджали", "Kurdzhali", "Кюстендил", "Kyustendil", "Шумен", "Shumen", "Силистра", "Silistra", "Сливен", "Sliven", "Смолян", "Smolyan", "Стара Загора", "Stara Zagora", "Търговище", "Turgovishte", "Велико Търново", "Veliko Turnovo", "Видин", "Vidin", "Ямбол", "Yambol"
         };
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, cities);
         adapter.setDropDownViewResource(R.layout.spinner_layout);
@@ -230,8 +230,13 @@ public class NewRequestActivity extends Activity {
     void showPrices(Groups[] prices) {
         GroupsAdapter[] groupsAdapters;
         if (prices != null && prices.length > 0) {
-            groupsAdapters = new GroupsAdapter[prices.length];
-            int i = 0;
+            groupsAdapters = new GroupsAdapter[prices.length + 1];
+            Groups all_prices = new Groups();
+            all_prices.setGroupsId(0);
+            all_prices.setDescription(getString(R.string.all_prices));
+            groupsAdapters[0] = new GroupsAdapter(all_prices);
+
+            int i = 1;
             for (Groups group : prices) {
                 groupsAdapters[i] = new GroupsAdapter(group);
                 i++;
@@ -242,9 +247,9 @@ public class NewRequestActivity extends Activity {
             groupsAdapters = new GroupsAdapter[1];
             Groups group = new Groups();
             group.setGroupsId(0);
-            group.setDescription(getString(R.string.no_free_cars));
+            group.setDescription(getString(R.string.all_prices)); //.no_free_cars));
             groupsAdapters[0] = new GroupsAdapter(group);
-            requestSend.setVisibility(View.GONE);
+            requestSend.setVisibility(View.VISIBLE); //.GONE);
         }
 
         ArrayAdapter<GroupsAdapter> adapter2 = new ArrayAdapter<GroupsAdapter>(this, R.layout.spinner_layout, groupsAdapters);

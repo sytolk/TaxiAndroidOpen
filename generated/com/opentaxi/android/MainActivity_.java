@@ -82,24 +82,9 @@ public final class MainActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        user = ((TextView) hasViews.findViewById(id.user));
-        version = ((TextView) hasViews.findViewById(id.txt_version));
         bandwidth = ((TextView) hasViews.findViewById(id.bandwidth));
-        {
-            View view = hasViews.findViewById(id.newRequestButton);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        MainActivity_.this.newRequestButton();
-                    }
-
-                }
-                );
-            }
-        }
+        version = ((TextView) hasViews.findViewById(id.txt_version));
+        user = ((TextView) hasViews.findViewById(id.user));
         {
             View view = hasViews.findViewById(id.exitButton);
             if (view!= null) {
@@ -145,6 +130,21 @@ public final class MainActivity_
                 );
             }
         }
+        {
+            View view = hasViews.findViewById(id.newRequestButton);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        MainActivity_.this.newRequestButton();
+                    }
+
+                }
+                );
+            }
+        }
         afterMain();
     }
 
@@ -160,6 +160,20 @@ public final class MainActivity_
 
         }
         , 1000L);
+    }
+
+    @Override
+    public void afterLogin(final String username) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                MainActivity_.super.afterLogin(username);
+            }
+
+        }
+        );
     }
 
     @Override
@@ -184,38 +198,6 @@ public final class MainActivity_
             @Override
             public void run() {
                 MainActivity_.super.startUserPass();
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void afterLogin(final String username) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                MainActivity_.super.afterLogin(username);
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void beforeStartUserPass() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    MainActivity_.super.beforeStartUserPass();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
             }
 
         }
@@ -259,14 +241,14 @@ public final class MainActivity_
     }
 
     @Override
-    public void facebookLogout() {
+    public void setServers() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    MainActivity_.super.facebookLogout();
+                    MainActivity_.super.setServers();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -277,14 +259,32 @@ public final class MainActivity_
     }
 
     @Override
-    public void setServers() {
+    public void beforeStartUserPass() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    MainActivity_.super.setServers();
+                    MainActivity_.super.beforeStartUserPass();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void facebookLogout() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    MainActivity_.super.facebookLogout();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

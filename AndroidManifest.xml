@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.opentaxi.android"
-          android:versionName="1.0.23"
-          android:versionCode="23"
+          android:versionName="1.0.24"
+          android:versionCode="24"
           android:installLocation="auto">
 
     <uses-sdk
@@ -162,8 +162,7 @@
             android:name=".ServersActivity_"
             android:allowTaskReparenting="false"
             android:taskAffinity=""
-            android:excludeFromRecents="true"
-            android:theme="@style/Theme.White">
+            android:excludeFromRecents="true">
         </activity>
 
         <!--osmap-->

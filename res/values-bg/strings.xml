@@ -29,6 +29,7 @@
     <string name="NEW_REQUEST_REJECTED">Отказана от колата</string>
     <string name="NEW_REQUEST_EDIT">Променена</string>
     <string name="NEW_REQUEST_DELETE">Изтрита</string>
+    <string name="ERROR_NO_FREE_CARS">Няма свободни коли</string>
 
     <string name="new_version">Налична нова версия</string>
 
@@ -129,4 +130,5 @@
     <string name="history">История</string>
     <string name="destination">За къде пътувате</string>
     <string name="burgas">Бургас</string>
+    <string name="all_prices">всички цени</string>
 </resources>

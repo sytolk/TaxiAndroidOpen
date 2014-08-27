@@ -86,31 +86,16 @@ public final class EditRequestActivity_
     @Override
     public void onViewChanged(HasViews hasViews) {
         addressChange = ((Button) hasViews.findViewById(id.addressChange));
-        llFilters = ((LinearLayout) hasViews.findViewById(id.llFilters));
-        pricesPicker = ((Spinner) hasViews.findViewById(id.pricesPicker));
+        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
+        requestSend = ((Button) hasViews.findViewById(id.requestSend));
         address = ((TextView) hasViews.findViewById(id.address));
+        llFilters = ((LinearLayout) hasViews.findViewById(id.llFilters));
         regionsPicker = ((Spinner) hasViews.findViewById(id.regionsPicker));
         reqInfoButtonContainer = ((LinearLayout) hasViews.findViewById(id.reqInfoButtonContainer));
-        requestSend = ((Button) hasViews.findViewById(id.requestSend));
-        region = ((TextView) hasViews.findViewById(id.region));
-        citiesPicker = ((EditText) hasViews.findViewById(id.citiesPicker));
         addressText = ((EditText) hasViews.findViewById(id.addressText));
-        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
-        {
-            View view = hasViews.findViewById(id.addressChange);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        EditRequestActivity_.this.addressChange();
-                    }
-
-                }
-                );
-            }
-        }
+        citiesPicker = ((EditText) hasViews.findViewById(id.citiesPicker));
+        region = ((TextView) hasViews.findViewById(id.region));
+        pricesPicker = ((Spinner) hasViews.findViewById(id.pricesPicker));
         {
             View view = hasViews.findViewById(id.requestSend);
             if (view!= null) {
@@ -120,6 +105,21 @@ public final class EditRequestActivity_
                     @Override
                     public void onClick(View view) {
                         EditRequestActivity_.this.requestSend();
+                    }
+
+                }
+                );
+            }
+        }
+        {
+            View view = hasViews.findViewById(id.addressChange);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        EditRequestActivity_.this.addressChange();
                     }
 
                 }
@@ -145,13 +145,13 @@ public final class EditRequestActivity_
     }
 
     @Override
-    public void showCities(final Contactaddress address) {
+    public void showGroups(final Groups[] groups) {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                EditRequestActivity_.super.showCities(address);
+                EditRequestActivity_.super.showGroups(groups);
             }
 
         }
@@ -187,13 +187,13 @@ public final class EditRequestActivity_
     }
 
     @Override
-    public void showGroups(final Groups[] groups) {
+    public void showCities(final Contactaddress address) {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                EditRequestActivity_.super.showGroups(groups);
+                EditRequestActivity_.super.showCities(address);
             }
 
         }
@@ -215,14 +215,14 @@ public final class EditRequestActivity_
     }
 
     @Override
-    public void sendRequest(final NewRequestDetails newRequest) {
+    public void setCities() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    EditRequestActivity_.super.sendRequest(newRequest);
+                    EditRequestActivity_.super.setCities();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -241,24 +241,6 @@ public final class EditRequestActivity_
             public void execute() {
                 try {
                     EditRequestActivity_.super.setRegions();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void setCities() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    EditRequestActivity_.super.setCities();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -295,6 +277,24 @@ public final class EditRequestActivity_
             public void execute() {
                 try {
                     EditRequestActivity_.super.setPrices();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void sendRequest(final NewRequestDetails newRequest) {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    EditRequestActivity_.super.sendRequest(newRequest);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
