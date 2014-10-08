@@ -76,6 +76,7 @@
     <string name="changed_request">Изменен заказ</string>
     <string name="request_changed_successful">Заказ %1$s  был успешно изменен! Вы можете просмотреть текущее состояние и изменить или отменить после закрытия этого диалогового окна или кнопку заказа главную страницу</string>
     <string name="request_send_successful">Заказ %1$s был успешно отправлен! Вы можете просмотреть текущее состояние и изменить или отменить после закрытия этого диалогового окна или кнопку заказа главную страницу</string>
+    <string name="request_send_error">Заказ %1$s не был послать! Вы можете проверить ваш интернет и попробуйте еще раз</string>
     <string name="address_choose">Выберите адрес</string>
     <string name="choose_from_map">Укажите, пожалуйста, на карте и удерживайте в течение 1 секунды адресу по применению</string>
     <string name="check_internet">Проверьте подключение к Интернету</string>
@@ -96,7 +97,7 @@
     <string name="taxi_request">Заказать такси</string>
     <string name="taxi_request_to_car"> Заказать на номер автомобиля: %1$s</string>
     <string name="no_free_cars">Никакие свободные автомобили. Пожалуйста, повторите попытку позже</string>
-    <string name="send_request">Заказ отправлен</string>
+    <string name="send_request">Заказ</string>
     <string name="request_rejection">Отменить заказ</string>
     <string name="request_reject_confirm">Вы уверены, что хотите отменить свой заказ %1$s ?</string>
     <string name="not_set">не установил</string>
@@ -131,4 +132,7 @@
     <string name="destination">Направление</string>
     <string name="burgas">Бургас</string>
     <string name="all_prices">все цены</string>
+    <string name="options_help">Помочь</string>
+    <string name="request_rejected">К сожалению заказ %1$s ( %2$s ) аннулируется.</string>
+    <string name="request_edited">Заказ %1$s ( %2$s ) обновлен.</string>
 </resources>

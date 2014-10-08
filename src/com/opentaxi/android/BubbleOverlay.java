@@ -20,7 +20,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.widget.TextView;
 import com.opentaxi.android.utils.AppPreferences;
-import com.opentaxi.generated.mysql.tables.pojos.Cars;
+import com.stil.generated.mysql.tables.pojos.Cars;
 import com.opentaxi.models.NewCRequest;
 import com.opentaxi.models.RequestCView;
 import com.opentaxi.rest.RestClient;
@@ -164,7 +164,7 @@ public class BubbleOverlay extends LocationOverlayMapViewer {
                             //Log.i(TAG, newCRequest.getFullAddress());
                         }
                         if (newCRequest.getCarNumber() != null) {
-                            Log.i(TAG, "CarNumber:" + newCRequest.getCarNumber());
+                            //Log.i(TAG, "CarNumber:" + newCRequest.getCarNumber());
                             showCar(newCRequest.getCarNumber());
                         }
                     }

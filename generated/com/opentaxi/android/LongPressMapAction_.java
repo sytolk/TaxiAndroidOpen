@@ -17,7 +17,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import com.opentaxi.android.R.id;
-import com.opentaxi.generated.mysql.tables.pojos.NewRequest;
+import com.stil.generated.mysql.tables.pojos.NewRequest;
 import org.androidannotations.api.BackgroundExecutor;
 import org.androidannotations.api.view.HasViews;
 import org.androidannotations.api.view.OnViewChangedListener;

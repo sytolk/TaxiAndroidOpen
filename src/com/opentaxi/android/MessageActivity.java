@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import com.opentaxi.generated.mysql.tables.pojos.Messages;
+import com.stil.generated.mysql.tables.pojos.Messages;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,7 +18,7 @@ public class MessageActivity extends Activity {
     /**
      * Called when the activity is first created.
      */
-    private static final int MESSAGE = 40;
+    //private static final int MESSAGE = 40;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

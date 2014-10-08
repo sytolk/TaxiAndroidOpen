@@ -10,19 +10,13 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.Toast;
+import android.widget.*;
 import com.google.common.base.Charsets;
 import com.google.common.hash.Hashing;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.TextRule;
 import com.opentaxi.android.utils.AppPreferences;
-import com.opentaxi.generated.mysql.tables.pojos.Contact;
-import com.opentaxi.generated.mysql.tables.pojos.Contactaddress;
-import com.opentaxi.generated.mysql.tables.pojos.FacebookUsers;
 import com.opentaxi.models.NewCUsers;
 import com.opentaxi.models.Users;
 import com.opentaxi.rest.RestClient;
@@ -33,6 +27,9 @@ import com.sromku.simple.fb.entities.Profile;
 import com.sromku.simple.fb.entities.Work;
 import com.sromku.simple.fb.listeners.OnLoginListener;
 import com.sromku.simple.fb.listeners.OnProfileListener;
+import com.stil.generated.mysql.tables.pojos.Contact;
+import com.stil.generated.mysql.tables.pojos.Contactaddress;
+import com.stil.generated.mysql.tables.pojos.FacebookUsers;
 import com.taxibulgaria.enums.Gender;
 import org.androidannotations.annotations.*;
 
@@ -51,8 +48,8 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
     private static final int RESULT_NEW_CLIENT = 1;
     private static final int RESULT_LOST_PASSWORD = 2;
 
-    /*@ViewById(R.id.clientLoginButton)
-    Button submitButton;*/
+    @ViewById(R.id.clientLoginButton)
+    Button submitButton;
 
     @TextRule(order = 1, minLength = 3, message = "Username is too short.Enter at least 3 characters.")
     @ViewById(R.id.userNameField)
@@ -72,8 +69,6 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
 
     SimpleFacebook mSimpleFacebook;
     private int result = Activity.RESULT_OK;
-
-    private static final int SERVER_CHANGE = 12;
 
     @Override
     public void onBackPressed() {
@@ -140,7 +135,7 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
 
     @AfterViews
     void afterLoad() {
-        //submitButton.setClickable(true);
+        submitButton.setClickable(true);
         result = Activity.RESULT_OK;
         validator = new Validator(this);
         validator.setValidationListener(this);
@@ -184,7 +179,11 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
         switch (item.getItemId()) {
             case R.id.options_server:
                 Intent intent = new Intent(this, ServersActivity_.class);
-                startActivityForResult(intent, SERVER_CHANGE);
+                startActivityForResult(intent, MainActivity.SERVER_CHANGE);
+                return true;
+
+            case R.id.options_help:
+                HelpActivity_.intent(this).startForResult(MainActivity.HELP);
                 return true;
 
             case R.id.options_exit:
@@ -483,10 +482,21 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
         //Toast.makeText(UserPassActivity.this, "Грешка! Сигурни ли сте че имате връзка с интернет?", Toast.LENGTH_LONG).show();
     }
 
+    @Click
+    void clientLoginButton() {
+        submitButton.setClickable(false);
+        if (validator != null) {
+            userName.setError(null);
+            pass.setError(null);
+
+            validator.validate();
+        }
+    }
+
     @UiThread
     void setError(String error) {
         pass.setError(error);
-        //submitButton.setClickable(true);
+        submitButton.setClickable(true);
     }
 
     @Override
@@ -504,6 +514,6 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
         } else {
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         }
-        //submitButton.setClickable(true);
+        submitButton.setClickable(true);
     }
 }

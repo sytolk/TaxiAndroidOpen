@@ -13,9 +13,9 @@ import android.widget.*;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.*;
-import com.opentaxi.generated.mysql.tables.pojos.Contact;
-import com.opentaxi.generated.mysql.tables.pojos.Contactaddress;
-import com.opentaxi.generated.mysql.tables.pojos.Users;
+import com.stil.generated.mysql.tables.pojos.Contact;
+import com.stil.generated.mysql.tables.pojos.Contactaddress;
+import com.stil.generated.mysql.tables.pojos.Users;
 import com.opentaxi.models.NewCUsers;
 import com.opentaxi.rest.RestClient;
 import com.taxibulgaria.enums.CommunicationMethod;
@@ -215,7 +215,7 @@ public class NewClientActivity extends Activity implements Validator.ValidationL
                 mPhoneNumber = manager.getLine1Number();
             }
             if (mPhoneNumber != null) {
-                com.opentaxi.generated.mysql.tables.pojos.CommunicationMethod communication = new com.opentaxi.generated.mysql.tables.pojos.CommunicationMethod();
+                com.stil.generated.mysql.tables.pojos.CommunicationMethod communication = new com.stil.generated.mysql.tables.pojos.CommunicationMethod();
                 communication.setContactData(mPhoneNumber);
                 communication.setMethodType(CommunicationMethod.PHONE.getCode());
                 users.setCommunication(communication);

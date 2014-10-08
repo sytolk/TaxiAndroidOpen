@@ -2,7 +2,7 @@ package com.opentaxi.android.asynctask;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import com.opentaxi.generated.mysql.tables.pojos.Regions;
+import com.stil.generated.mysql.tables.pojos.Regions;
 import com.opentaxi.rest.RestClient;
 
 import java.util.LinkedHashMap;

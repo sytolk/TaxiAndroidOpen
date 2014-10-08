@@ -11,13 +11,13 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
-import com.littlefluffytoys.littlefluffylocationlibrary.LocationInfo;
 import com.opentaxi.android.adapters.GroupsAdapter;
 import com.opentaxi.android.adapters.RegionsAdapter;
 import com.opentaxi.android.utils.AppPreferences;
-import com.opentaxi.generated.mysql.tables.pojos.*;
 import com.opentaxi.models.NewRequestDetails;
 import com.opentaxi.rest.RestClient;
+import com.opentaxi.rest.RestClientBase;
+import com.stil.generated.mysql.tables.pojos.*;
 import com.taxibulgaria.enums.RequestSource;
 import org.androidannotations.annotations.*;
 
@@ -41,7 +41,7 @@ public class NewRequestActivity extends Activity {
     @Extra
     Cars cars;
 
-    com.opentaxi.generated.mysql.tables.pojos.NewRequest newRequest;
+    com.stil.generated.mysql.tables.pojos.NewRequest newRequest;
 
     @ViewById(R.id.pricesPicker)
     Spinner pricesPicker;
@@ -85,7 +85,7 @@ public class NewRequestActivity extends Activity {
     @ViewById(R.id.destLayout)
     LinearLayout destLayout;
 
-    LocationInfo latestInfo;
+    //LocationInfo latestInfo;
 
     @AfterViews
     protected void afterActivity() {
@@ -107,7 +107,7 @@ public class NewRequestActivity extends Activity {
         address.setText(R.string.wait_address);
 
         addressText.setVisibility(View.GONE);
-        latestInfo = new LocationInfo(getBaseContext());
+        //latestInfo = new LocationInfo(getBaseContext());
     }
 
     /*@Override
@@ -117,7 +117,7 @@ public class NewRequestActivity extends Activity {
             if (resultCode == Activity.RESULT_OK && data != null) {
                 Bundle extras = data.getExtras();
                 if (extras != null) {
-                    com.opentaxi.generated.mysql.tables.pojos.NewRequest newRequest = (com.opentaxi.generated.mysql.tables.pojos.NewRequest) extras.getSerializable("newRequest");
+                    com.stil.generated.mysql.tables.pojos.NewRequest newRequest = (com.stil.generated.mysql.tables.pojos.NewRequest) extras.getSerializable("newRequest");
                     showAddress(newRequest);
                 }
             } else Log.e(TAG, "" + resultCode);
@@ -130,7 +130,7 @@ public class NewRequestActivity extends Activity {
         if (resultCode == Activity.RESULT_OK && data != null) {
             Bundle extras = data.getExtras();
             if (extras != null) {
-                this.newRequest = (com.opentaxi.generated.mysql.tables.pojos.NewRequest) extras.getSerializable("newRequest");
+                this.newRequest = (com.stil.generated.mysql.tables.pojos.NewRequest) extras.getSerializable("newRequest");
                 showAddress(newRequest);
             }
         } else Log.e(TAG, "" + resultCode);
@@ -261,15 +261,15 @@ public class NewRequestActivity extends Activity {
     void setAddress() {
         Log.i(TAG, "setAddress");
         if (this.newRequest == null && AppPreferences.getInstance() != null) {
-            com.opentaxi.generated.mysql.tables.pojos.NewRequest address = null;
+            com.stil.generated.mysql.tables.pojos.NewRequest address = null;
             Date now = new Date();
             if (AppPreferences.getInstance().getGpsLastTime() > (now.getTime() - 600000)) {  //if last coordinates time is from 5 min interval
                 address = RestClient.getInstance().getAddressByCoordinates(AppPreferences.getInstance().getNorth().floatValue(), AppPreferences.getInstance().getEast().floatValue());
-            } else if (latestInfo != null && latestInfo.lastLocationUpdateTimestamp > (now.getTime() - 600000)) {
+            } /*else if (latestInfo != null && latestInfo.lastLocationUpdateTimestamp > (now.getTime() - 600000)) {
                 latestInfo.refresh(getBaseContext());
                 address = RestClient.getInstance().getAddressByCoordinates(latestInfo.lastLat, latestInfo.lastLong);
-            } else {
-                Log.i(TAG, "GpsLastTime " + AppPreferences.getInstance().getGpsLastTime() + " > " + (now.getTime() - 600000) + " min latestInfo:" + latestInfo);
+            }*/ else {
+                Log.i(TAG, "GpsLastTime " + AppPreferences.getInstance().getGpsLastTime() + " > " + (now.getTime() - 600000) + " min");
             }
 
             if (address != null) showAddress(address);
@@ -283,7 +283,7 @@ public class NewRequestActivity extends Activity {
     }
 
     @UiThread
-    void showAddress(com.opentaxi.generated.mysql.tables.pojos.NewRequest adr) {
+    void showAddress(com.stil.generated.mysql.tables.pojos.NewRequest adr) {
         if (adr != null) {
             // selectRegionsItemById(regionsPicker, adr.getRegionId());
             Regions region = RestClient.getInstance().getRegionById(adr.getRegionId());
@@ -397,8 +397,10 @@ public class NewRequestActivity extends Activity {
             Groups[] visibleGroups = RestClient.getInstance().getClientVisibleGroups();
             if (visibleGroups != null) {
                 for (Groups group : visibleGroups) {
-                    CheckBox cb = (CheckBox) findViewById(group.getGroupsId());
-                    if (cb.isChecked()) filterGroups.add(group);
+                    if (group != null && group.getGroupsId() != null) {
+                        CheckBox cb = (CheckBox) findViewById(group.getGroupsId());
+                        if (cb.isChecked()) filterGroups.add(group);
+                    } else RestClient.getInstance().clearCache(RestClientBase.getVisibleGroupsKey);
                 }
             }
             GroupsAdapter priceAdapter = (GroupsAdapter) pricesPicker.getSelectedItem();
@@ -421,6 +423,9 @@ public class NewRequestActivity extends Activity {
         if (requestId != null && requestId > 0) {
             TaxiApplication.setLastRequestId(requestId);
             SuccessDialog();
+        } else {
+            Log.e(TAG, "sendRequest error");
+            ErrorDialog();
         }
     }
 
@@ -472,6 +477,29 @@ public class NewRequestActivity extends Activity {
 
         Dialog successDialog = alertDialogBuilder.create();
         successDialog.show();
+    }
+
+    @UiThread
+    void ErrorDialog() {
+        reqInfoButtonContainer.setVisibility(View.VISIBLE);
+        pbProgress.setVisibility(View.GONE);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle(getString(R.string.send_request));
+        String txt = addressText.getText().toString();
+        if (txt.length() == 0) txt = address.getText().toString();
+        alertDialogBuilder.setMessage(getString(R.string.request_send_error, txt));
+
+        alertDialogBuilder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        Dialog errorDialog = alertDialogBuilder.create();
+        errorDialog.show();
     }
 
     /*@UiThread

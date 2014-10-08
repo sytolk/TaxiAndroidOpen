@@ -52,7 +52,8 @@
                     android:drawSelectorOnTop="true"
                     android:layout_weight=".6"
                     android:layout_marginRight="40dp"
-                    android:inputType="textPersonName">
+                    android:inputType="textPersonName"
+                    android:singleLine="true">
 
                     <requestFocus/>
                 </EditText>
@@ -138,32 +139,35 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight=".3"/>
+            android:layout_weight=".2"/>
 
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight=".4"
+            android:layout_weight=".3"
+            android:text="ВХОД"
+            android:clickable="true"
+            android:textStyle="bold"
+            android:minHeight="60dp"
+            android:id="@id/clientLoginButton"
+            />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".3"
             android:text="Facebook Login"
             android:clickable="true"
             android:textColor="#5882FA"
             android:textStyle="bold"
+            android:minHeight="60dp"
             android:id="@+id/facebookButton"
             />
-
-       <!-- <Button
-            android:enabled="true"
-            android:id="@id/clientLoginButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="ВХОД"
-            android:textSize="30dp"
-            android:layout_weight=".2"/>-->
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight=".3"/>
+            android:layout_weight=".2"/>
 
     </LinearLayout>
 </LinearLayout>

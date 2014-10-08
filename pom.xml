@@ -147,7 +147,7 @@
         <dependency>
             <groupId>com.taxi-bulgaria.rest</groupId>
             <artifactId>open-rest-client-a</artifactId>
-            <version>1.0.3.BUILD-SNAPSHOT</version>
+            <version>1.0.4.BUILD-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -211,12 +211,25 @@
         <!-- LittleFluffyLocationLibrary -->
         <!-- not in maven central -->
         <!-- http://code.google.com/p/little-fluffy-location-library/ -->
-        <dependency>
+        <!--<dependency>
             <groupId>com.littlefluffytoys.littlefluffylocationlibrary</groupId>
             <artifactId>littlefluffylocationlibrary</artifactId>
             <version>r15</version>
             <scope>system</scope>
             <systemPath>${basedir}/libs/littlefluffylocationlibrary_r15.jar</systemPath>
+        </dependency>-->
+
+        <dependency>
+            <groupId>pl.charmas.android</groupId>
+            <artifactId>android-reactive-location</artifactId>
+            <version>0.2</version>
+            <type>aar</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.android.gms</groupId>
+                    <artifactId>play-services</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>

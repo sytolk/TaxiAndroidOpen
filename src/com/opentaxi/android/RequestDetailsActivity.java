@@ -12,11 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.*;
-import com.opentaxi.generated.mysql.tables.pojos.Feedback;
-import com.opentaxi.generated.mysql.tables.pojos.Groups;
-import com.opentaxi.generated.mysql.tables.pojos.Regions;
 import com.opentaxi.models.NewCRequest;
 import com.opentaxi.rest.RestClient;
+import com.stil.generated.mysql.tables.pojos.Feedback;
+import com.stil.generated.mysql.tables.pojos.Groups;
+import com.stil.generated.mysql.tables.pojos.Regions;
 import com.taxibulgaria.enums.RequestStatus;
 import org.androidannotations.annotations.*;
 
@@ -132,7 +132,7 @@ public class RequestDetailsActivity extends Activity {
                     } else address.setText(newCRequest.getFullAddress());
 
                     if (newCRequest.getCarNumber() != null && !newCRequest.getCarNumber().equals("")) {
-                        car.setText("Стил №" + newCRequest.getCarNumber());
+                        car.setText((newCRequest.getNotes() != null ? newCRequest.getNotes() : "") + " №" + newCRequest.getCarNumber());
 
                         car.setOnClickListener(new View.OnClickListener() {
                             public void onClick(View v) {
@@ -184,21 +184,22 @@ public class RequestDetailsActivity extends Activity {
                                 Log.e(TAG, "Resources.NotFoundException:" + resourceID);
                             }
                         } else state.setText(statusCode);
-                    }
 
-                    if (newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_DELETE.getCode())) {
-                        rejectButton.setVisibility(View.GONE);
-                        editButton.setVisibility(View.GONE);
-                        feedBackButton.setVisibility(View.GONE);
-                    } else if (newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_BEGIN.getCode()) || newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_DONE.getCode())) {
-                        rejectButton.setVisibility(View.GONE);
-                        editButton.setVisibility(View.GONE);
-                        feedBackButton.setVisibility(View.VISIBLE);
-                    } else {
-                        rejectButton.setVisibility(View.VISIBLE);
-                        editButton.setVisibility(View.VISIBLE);
-                        feedBackButton.setVisibility(View.GONE);
-                        scheduleChanges();
+
+                        if (newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_DELETE.getCode())) {
+                            rejectButton.setVisibility(View.GONE);
+                            editButton.setVisibility(View.GONE);
+                            feedBackButton.setVisibility(View.GONE);
+                        } else if (newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_BEGIN.getCode()) || newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_DONE.getCode())) {
+                            rejectButton.setVisibility(View.GONE);
+                            editButton.setVisibility(View.GONE);
+                            feedBackButton.setVisibility(View.VISIBLE);
+                        } else {
+                            rejectButton.setVisibility(View.VISIBLE);
+                            editButton.setVisibility(View.VISIBLE);
+                            feedBackButton.setVisibility(View.GONE);
+                            scheduleChanges();
+                        }
                     }
                 } else scheduleChangesSec();
             } else {
@@ -218,7 +219,7 @@ public class RequestDetailsActivity extends Activity {
     void rejectButton() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle(getString(R.string.request_rejection));
-        alertDialogBuilder.setMessage(getString(R.string.request_reject_confirm,newCRequest.getFullAddress()));
+        alertDialogBuilder.setMessage(getString(R.string.request_reject_confirm, newCRequest.getFullAddress()));
 
         // Set an EditText view to get user input
         final EditText input = new EditText(this);
@@ -260,6 +261,7 @@ public class RequestDetailsActivity extends Activity {
         // proposalIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         // proposalIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         RequestDetailsActivity.this.startActivity(requestsIntent);
+        finish();
     }
 
     @Click

@@ -9,9 +9,8 @@ import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
 import com.opentaxi.android.asynctask.RegionsTask;
-import com.opentaxi.generated.mysql.tables.pojos.Regions;
-import com.opentaxi.models.NewRequest;
 import com.opentaxi.models.Users;
+import com.stil.generated.mysql.tables.pojos.Regions;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import javax.crypto.Cipher;
@@ -46,8 +45,8 @@ public class AppPreferences {
     private static final Object mutex = new Object();
     private Map<Integer, String> regionsMap;
     private Integer cloudMessageId;
-    private NewRequest currentRequest;
-    private NewRequest nextRequest;
+    //private NewRequestDetails currentRequest;
+    //private NewRequestDetails nextRequest;
     private Double north;
     private Double east;
     private long currentLocationTime; //datetime received from GPS
@@ -166,26 +165,6 @@ public class AppPreferences {
         }
         return regionsMap;
     }*/
-
-    public NewRequest getCurrentRequest() {
-        return this.currentRequest;
-    }
-
-    public void setCurrentRequest(NewRequest currentRequest) {
-        this.currentRequest = currentRequest;
-        if (currentRequest != null) Log.i("setCurrentRequest", "setCurrentRequest:" + currentRequest.getRequestsId());
-        else Log.i("setCurrentRequest", "setCurrentRequest:null");
-    }
-
-    public NewRequest getNextRequest() {
-        return nextRequest;
-    }
-
-    public void setNextRequest(NewRequest nextRequest) {
-        this.nextRequest = nextRequest;
-        if (nextRequest != null) Log.i("nextRequest", "nextRequest:" + nextRequest.getRequestsId());
-        else Log.i("nextRequest", "nextRequest:null");
-    }
 
     public synchronized Integer getLastCloudMessage() {
         //if (cloudMessageId == null) cloudMessageId = appSharedPrefs.getInt(CLOUD_MESSAGE_ID, 0);

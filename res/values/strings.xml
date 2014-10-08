@@ -78,6 +78,7 @@
     <string name="changed_request">Changed request</string>
     <string name="request_changed_successful">Request %1$s was changed successful! You can see the real time request status and change/delete after close this dialog or from button REQUEST in the main page</string>
     <string name="request_send_successful">Request %1$s was send successful! You can see the real time request status and change/delete after close this dialog or from button REQUEST in the main page</string>
+    <string name="request_send_error">Request %1$s was not send! You can check your internet connection and try again</string>
     <string name="address_choose">Address choose</string>
     <string name="choose_from_map">Please click on the map and hold down for 1 second on the address</string>
     <string name="check_internet">Check you internet connection</string>
@@ -98,7 +99,7 @@
     <string name="taxi_request">Request taxi</string>
     <string name="taxi_request_to_car">Request taxi to car number: %1$s</string>
     <string name="no_free_cars">No free cars. Please try again later</string>
-    <string name="send_request">Send request</string>
+    <string name="send_request">Sending request</string>
     <string name="request_rejection">Request rejection</string>
     <string name="request_reject_confirm">Are you sure that you want to reject request %1$s ?</string>
     <string name="not_set">not set</string>
@@ -133,4 +134,7 @@
     <string name="destination">Destination</string>
     <string name="burgas">Burgas</string>
     <string name="all_prices">all prices</string>
+    <string name="options_help">Help</string>
+    <string name="request_rejected">Sorry but request: %1$s ( %2$s ) is rejected.</string>
+    <string name="request_edited">Request: %1$s ( %2$s ) is edited.</string>
 </resources>

@@ -72,12 +72,13 @@
     <string name="not_working">Съжаляваме но автомобил %1$s в момента не работи</string>
     <string name="ok">OK</string>
     <string name="required_field">Задължително поле</string>
-    <string name="change_request">Промени заявката</string>
-    <string name="changed_request">Променена заявка</string>
-    <string name="request_changed_successful">Заявката %1$s беше променена успешно! Можете да видите актуалния и статус да я промените или откажете след като затворите този диалог или от бутона ПОРЪЧКИ на главната страница</string>
-    <string name="request_send_successful">Заявката %1$s беше изпратена успешно! Можете да видите актуалния и статус да я промените или откажете след като затворите този диалог или от бутона ПОРЪЧКИ на главната страница</string>
+    <string name="change_request">Промени поръчката</string>
+    <string name="changed_request">Променена поръчка</string>
+    <string name="request_changed_successful">Поръчката %1$s беше променена успешно! Можете да видите актуалния и статус да я промените или откажете след като затворите този диалог или от бутона ПОРЪЧКИ на главната страница</string>
+    <string name="request_send_successful">Поръчката %1$s беше изпратена успешно! Можете да видите актуалния и статус да я промените или откажете след като затворите този диалог или от бутона ПОРЪЧКИ на главната страница</string>
+    <string name="request_send_error">Поръчката %1$s не беше пратена! Моля проверете вашата интернет връзка и опитайте отново</string>
     <string name="address_choose">Избор на адрес</string>
-    <string name="choose_from_map">Моля посочете на картата и задръжте за 1 секунда върху адреса на заявката</string>
+    <string name="choose_from_map">Моля посочете на картата и задръжте за 1 секунда върху адреса на поръчката</string>
     <string name="check_internet">Проверете интернет връзката</string>
     <string name="user_not_exist">Потребител с имейл:  %1$s не съществува.</string>
     <string name="exit_confirm">Наистина ли искате да излезете от системата ?</string>
@@ -96,9 +97,9 @@
     <string name="taxi_request">Поръчка на такси</string>
     <string name="taxi_request_to_car">Поръчка на такси до автомобил номер: %1$s</string>
     <string name="no_free_cars">Няма свободни коли. Моля опитайте по късно</string>
-    <string name="send_request">Изпратена заявка</string>
+    <string name="send_request">Изпращане на поръчка</string>
     <string name="request_rejection">Отказ на заявка</string>
-    <string name="request_reject_confirm">Сигурни ли сте че искате да откажете заявката %1$s ?</string>
+    <string name="request_reject_confirm">Сигурни ли сте че искате да откажете поръчката %1$s ?</string>
     <string name="not_set">не зададено</string>
     <string name="feedback">Обратна Връзка</string>
     <string name="feedback_request">Как оценявате вашете пътуване от ( %1$s )</string>
@@ -113,7 +114,7 @@
     <string name="fb_no_access">нямате позволение за достъп</string>
     <string name="wrong_userpass">Грешно потребителско име или парола!</string>
     <string name="error_check_internet">Грешка! Сигурни ли сте че имате връзка с интернет?</string>
-    <string name="transfer_success">Трансфера на заявката ( %1$s ) е успешен!</string>
+    <string name="transfer_success">Трансфера на поръчката ( %1$s ) е успешен!</string>
     <string name="driver">Шофьор:</string>
     <string name="back">Назад</string>
     <string name="call">Повикай</string>
@@ -131,4 +132,7 @@
     <string name="destination">За къде пътувате</string>
     <string name="burgas">Бургас</string>
     <string name="all_prices">всички цени</string>
+    <string name="options_help">Помощ</string>
+    <string name="request_rejected">Съжаляваме но поръчка %1$s ( %2$s ) е отказана.</string>
+    <string name="request_edited">Поръчка %1$s ( %2$s ) е променена.</string>
 </resources>

@@ -1,17 +1,21 @@
+/*
 package com.opentaxi.android.asynctask;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Build;
 import com.opentaxi.android.utils.AppPreferences;
 import com.opentaxi.rest.RestClient;
 
+*/
 /**
  * Created with IntelliJ IDEA.
  * User: stanimir
  * Date: 3/21/13
  * Time: 3:22 PM
  * developer STANIMIR MARINOV
- */
+ *//*
+
 public class SendCoordinatesTask extends AsyncTask<Context, Void, Integer> {
 
     private static final String TAG = "SendCoordinatesTask";
@@ -49,14 +53,22 @@ public class SendCoordinatesTask extends AsyncTask<Context, Void, Integer> {
 
     private synchronized void processMessage(Integer cloudMessageId) {
         if (AppPreferences.getInstance() != null && cloudMessageId != null) {
-        /*    if (AppPreferences.getInstance().isEnableProcessMsg()) {*/
-         //   Integer lastCloudMessage = AppPreferences.getInstance().getLastCloudMessage();
-            //if (cloudMessageId != null && AppPreferences.getInstance() != null && lastCloudMessage != null && !lastCloudMessage.equals(cloudMessageId) && lastCloudMessage + 5 > cloudMessageId /*if its have more that 10 msg ignore it*/) {
-           // if (lastCloudMessage == null || lastCloudMessage < cloudMessageId) {
-                // for (int i = lastCloudMessage; i <= cloudMessageId; i++) {
-                new ProcessMessageTask(cloudMessageId).execute(context);
-           //     AppPreferences.getInstance().setLastCloudMessage(cloudMessageId);
-          //  }
+        */
+/*    if (AppPreferences.getInstance().isEnableProcessMsg()) {*//*
+
+            //   Integer lastCloudMessage = AppPreferences.getInstance().getLastCloudMessage();
+            //if (cloudMessageId != null && AppPreferences.getInstance() != null && lastCloudMessage != null && !lastCloudMessage.equals(cloudMessageId) && lastCloudMessage + 5 > cloudMessageId */
+/*if its have more that 10 msg ignore it*//*
+) {
+            // if (lastCloudMessage == null || lastCloudMessage < cloudMessageId) {
+            // for (int i = lastCloudMessage; i <= cloudMessageId; i++) {
+            AsyncTask<Context, Void, Boolean> msgTask = new ProcessMessageTask(cloudMessageId);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+                msgTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, context);
+            else msgTask.execute(context);
+            //     AppPreferences.getInstance().setLastCloudMessage(cloudMessageId);
+            //  }
         }
     }
-}
+}*/

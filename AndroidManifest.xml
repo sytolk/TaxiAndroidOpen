@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.opentaxi.android"
-          android:versionName="1.0.24"
-          android:versionCode="24"
+          android:versionName="1.0.25"
+          android:versionCode="25"
           android:installLocation="auto">
 
     <uses-sdk
@@ -164,6 +164,12 @@
             android:taskAffinity=""
             android:excludeFromRecents="true">
         </activity>
+        <activity
+            android:name=".HelpActivity_"
+            android:allowTaskReparenting="false"
+            android:taskAffinity=""
+            android:excludeFromRecents="true">
+        </activity>
 
         <!--osmap-->
         <activity
@@ -199,6 +205,13 @@
             android:excludeFromRecents="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar">
         </activity>
+        <!--<activity
+            android:name="com.opentaxi.android.LongPressMapEditAction_"
+            android:allowTaskReparenting="false"
+            android:taskAffinity=""
+            android:excludeFromRecents="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+        </activity>-->
 
         <activity android:name="org.mapsforge.applications.android.filepicker.FilePicker"/>
         <activity android:name="org.mapsforge.applications.android.mapbg.Settings"/>
@@ -229,12 +242,9 @@
         </receiver>
 
         <service android:name=".GcmIntentService"/>
-        <!--<service android:name=".communication.TaxiDriverService" android:enabled="true"/>-->
-        <!--<service android:name=".service.GPSService" android:process=":gps_coordinates" android:enabled="true"
-                 android:permission="android.permission.ACCESS_FINE_LOCATION"/>-->
-        <!--<service android:name="com.opentaxitaxi.rest.LoginService"/>-->
+        <service android:name=".service.CoordinatesService" />
 
-        <service android:name="com.littlefluffytoys.littlefluffylocationlibrary.LocationBroadcastService"/>
+        <!--<service android:name="com.littlefluffytoys.littlefluffylocationlibrary.LocationBroadcastService"/>
 
         <receiver
             android:name="com.littlefluffytoys.littlefluffylocationlibrary.PassiveLocationChangedReceiver"
@@ -246,7 +256,7 @@
                     android:name="com.opentaxi.android.littlefluffylocationlibrary.LOCATION_CHANGED"
                     android:exported="true"/>
             </intent-filter>
-        </receiver>
+        </receiver>-->
 
     </application>
 

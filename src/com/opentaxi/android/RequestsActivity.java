@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import com.opentaxi.generated.mysql.tables.pojos.Regions;
+import com.stil.generated.mysql.tables.pojos.Regions;
 import com.opentaxi.models.NewCRequest;
 import com.opentaxi.models.RequestCView;
 import com.opentaxi.rest.RestClient;
@@ -216,7 +216,7 @@ public class RequestsActivity extends Activity {
                                 } else address.setText(newCRequest.getFullAddress());
                                 time.setText(newCRequest.getDispTime() + " мин.");
                                 if (newCRequest.getCarNumber() != null && !newCRequest.getCarNumber().equals(""))
-                                    car.setText("Стил №" + newCRequest.getCarNumber());
+                                    car.setText(" №" + newCRequest.getCarNumber()); //newCRequest.getNotes() todo display taxi company
 
                                 if (newCRequest.getStatus() != null) {
                                     String statusCode = RequestStatus.getByCode(newCRequest.getStatus()).toString();

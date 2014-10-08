@@ -1,6 +1,6 @@
 package com.opentaxi.android.adapters;
 
-import com.opentaxi.generated.mysql.tables.pojos.Groups;
+import com.stil.generated.mysql.tables.pojos.Groups;
 
 /**
  * Created with IntelliJ IDEA.

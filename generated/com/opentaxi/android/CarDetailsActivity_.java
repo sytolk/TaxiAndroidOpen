@@ -20,7 +20,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import com.opentaxi.android.R.id;
 import com.opentaxi.android.R.layout;
-import com.opentaxi.generated.mysql.tables.pojos.Cars;
+import com.stil.generated.mysql.tables.pojos.Cars;
 import org.androidannotations.api.BackgroundExecutor;
 import org.androidannotations.api.view.HasViews;
 import org.androidannotations.api.view.OnViewChangedListener;
@@ -77,9 +77,9 @@ public final class CarDetailsActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        rating = ((RatingBar) hasViews.findViewById(id.rating));
-        requestButton = ((Button) hasViews.findViewById(id.requestButton));
         carNumberView = ((TextView) hasViews.findViewById(id.carNumberView));
+        requestButton = ((Button) hasViews.findViewById(id.requestButton));
+        rating = ((RatingBar) hasViews.findViewById(id.rating));
         driver = ((TextView) hasViews.findViewById(id.driver));
         {
             View view = hasViews.findViewById(id.okButton);

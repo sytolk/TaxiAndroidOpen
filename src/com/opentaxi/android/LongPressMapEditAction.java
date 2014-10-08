@@ -1,3 +1,4 @@
+/*
 package com.opentaxi.android;
 
 import android.app.Activity;
@@ -7,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import com.opentaxi.android.utils.AppPreferences;
+import com.opentaxi.models.NewCRequest;
 import com.opentaxi.rest.RestClient;
 import com.stil.generated.mysql.tables.pojos.NewRequest;
 import org.androidannotations.annotations.*;
@@ -26,23 +28,27 @@ import org.mapsforge.map.layer.renderer.TileRendererLayer;
 
 import java.io.File;
 
+*/
 /**
  * Demonstrates how to enable a LongPress on a layer, long press creates/removes
  * circles, tap on a circle toggles the colour.
- */
+ *//*
+
 @EActivity
-public class LongPressMapAction extends LocationOverlayMapViewer {
+public class LongPressMapEditAction extends LocationOverlayMapViewer {
 
     @Extra
-    NewRequest newRequest;
+    NewCRequest newRequest;
 
     private static final Paint GREEN = Utils.createPaint(AndroidGraphicFactory.INSTANCE.createColor(Color.GREEN), 0, Style.FILL);
     int index = -1;
 
     //private NewRequest address = new NewRequest();
-    /*private static final Paint RED = Utils.createPaint(
+    */
+/*private static final Paint RED = Utils.createPaint(
             AndroidGraphicFactory.INSTANCE.createColor(Color.RED), 0,
-            Style.FILL);*/
+            Style.FILL);*//*
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (AppPreferences.getInstance() != null && mapFileName == null) {
@@ -86,11 +92,11 @@ public class LongPressMapAction extends LocationOverlayMapViewer {
                     this.tileCache,
                     this.mapViewPositions.get(0),
                     false,
-                    org.mapsforge.map.android.graphics.AndroidGraphicFactory.INSTANCE) {
+                    AndroidGraphicFactory.INSTANCE) {
                 @Override
                 public boolean onLongPress(LatLong tapLatLong, Point thisXY,
                                            Point tapXY) {
-                    LongPressMapAction.this.onLongPress(tapLatLong);
+                    LongPressMapEditAction.this.onLongPress(tapLatLong);
                     return true;
                 }
             };
@@ -121,7 +127,7 @@ public class LongPressMapAction extends LocationOverlayMapViewer {
     }
 
     protected void onLongPress(LatLong position) {
-        if (this.newRequest == null) this.newRequest = new NewRequest();
+        if (this.newRequest == null) this.newRequest = new NewCRequest();
         this.newRequest.setNorth(position.latitude);
         this.newRequest.setEast(position.longitude);
         showAddress(position);
@@ -138,7 +144,10 @@ public class LongPressMapAction extends LocationOverlayMapViewer {
     void showAddress(LatLong position) {
         NewRequest address = RestClient.getInstance().getAddressByCoordinates((float) position.latitude, (float) position.longitude);
         if (address != null) {
-            this.newRequest = address;
+            if (this.newRequest == null) this.newRequest = new NewCRequest();
+            this.newRequest.setAddressId(address.getAddressId());
+            this.newRequest.setFullAddress(address.getFullAddress());
+            this.newRequest.setRegionId(address.getRegionId());
             this.newRequest.setNorth(position.latitude);
             this.newRequest.setEast(position.longitude);
             showTextCircle(address);
@@ -176,10 +185,11 @@ public class LongPressMapAction extends LocationOverlayMapViewer {
     public void finish() {
         //Log.i(TAG, "Address:" + newRequest.getFullAddress());
         if (getParent() == null) {
-            setResult(Activity.RESULT_OK, new Intent().putExtra("newRequest", this.newRequest));
+            setResult(Activity.RESULT_OK, new Intent().putExtra("newCRequest", this.newRequest));
         } else {
-            getParent().setResult(Activity.RESULT_OK, new Intent().putExtra("newRequest", this.newRequest));
+            getParent().setResult(Activity.RESULT_OK, new Intent().putExtra("newCRequest", this.newRequest));
         }
         super.finish();
     }
 }
+*/

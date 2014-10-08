@@ -16,6 +16,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -86,9 +87,40 @@ public final class UserPassActivity_
     @Override
     public void onViewChanged(HasViews hasViews) {
         loginLayout = ((LinearLayout) hasViews.findViewById(id.loginLayout));
-        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
+        submitButton = ((Button) hasViews.findViewById(id.clientLoginButton));
         pass = ((EditText) hasViews.findViewById(id.passwordField));
         userName = ((EditText) hasViews.findViewById(id.userNameField));
+        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
+        {
+            View view = hasViews.findViewById(id.lostPassword);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        UserPassActivity_.this.lostPassword();
+                    }
+
+                }
+                );
+            }
+        }
+        {
+            View view = hasViews.findViewById(id.clientLoginButton);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        UserPassActivity_.this.clientLoginButton();
+                    }
+
+                }
+                );
+            }
+        }
         {
             View view = hasViews.findViewById(id.facebookButton);
             if (view!= null) {
@@ -119,21 +151,6 @@ public final class UserPassActivity_
                 );
             }
         }
-        {
-            View view = hasViews.findViewById(id.lostPassword);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        UserPassActivity_.this.lostPassword();
-                    }
-
-                }
-                );
-            }
-        }
         afterLoad();
     }
 
@@ -145,6 +162,34 @@ public final class UserPassActivity_
             @Override
             public void run() {
                 UserPassActivity_.super.hideProgress();
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void overFacebookLoginTime(final String title) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                UserPassActivity_.super.overFacebookLoginTime(title);
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void setError(final String error) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                UserPassActivity_.super.setError(error);
             }
 
         }
@@ -180,27 +225,17 @@ public final class UserPassActivity_
     }
 
     @Override
-    public void setError(final String error) {
-        handler_.post(new Runnable() {
+    public void maxFacebookLoginTime() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 15000, "") {
 
 
             @Override
-            public void run() {
-                UserPassActivity_.super.setError(error);
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void overFacebookLoginTime(final String title) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                UserPassActivity_.super.overFacebookLoginTime(title);
+            public void execute() {
+                try {
+                    UserPassActivity_.super.maxFacebookLoginTime();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
             }
 
         }
@@ -234,24 +269,6 @@ public final class UserPassActivity_
             public void execute() {
                 try {
                     UserPassActivity_.super.checkFacebook(token);
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void maxFacebookLoginTime() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 15000, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    UserPassActivity_.super.maxFacebookLoginTime();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

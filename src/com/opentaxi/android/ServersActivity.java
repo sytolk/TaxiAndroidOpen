@@ -6,9 +6,9 @@ import android.view.View;
 import android.view.Window;
 import android.widget.*;
 import com.opentaxi.android.utils.AppPreferences;
-import com.opentaxi.generated.mysql.tables.pojos.Servers;
 import com.opentaxi.models.Users;
 import com.opentaxi.rest.RestClient;
+import com.stil.generated.mysql.tables.pojos.Servers;
 import org.androidannotations.annotations.*;
 
 import java.util.List;
@@ -68,44 +68,49 @@ public class ServersActivity extends Activity {
         rg.setOrientation(RadioGroup.VERTICAL);
         int i = 0;
         for (final Servers socket : sockets) {
-            //Log.i(TAG, socket.getServerHost() + " " + socket.getDescription());
+            if (socket != null) {
+                //Log.i(TAG, socket.getServerHost() + " " + socket.getDescription());
 
-            rb[i] = new RadioButton(this);
-            rg.addView(rb[i]); //the RadioButtons are added to the radioGroup instead of the layout
+                rb[i] = new RadioButton(this);
+                rg.addView(rb[i]); //the RadioButtons are added to the radioGroup instead of the layout
 
-            //CheckBox ch = new CheckBox(this);
-            StringBuilder title = new StringBuilder();
-            title.append(socket.getDescription()).append(" "); //.append(socket.getServerHost());
-            if (socket.getRecordstatus()) {
-                title.append("UP");
-                rb[i].setBackgroundColor(getResources().getColor(R.color.label_color));
-            } else {
-                title.append("DOWN");
-                rb[i].setBackgroundColor(getResources().getColor(R.color.red_color));
-            }
-            rb[i].setText(title.toString());
-
-            if (currSocket.equals(socket.getServerHost())) {
-                rb[i].setChecked(true);
-            }
-
-            rb[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Integer oldType = AppPreferences.getInstance().getSocketType();
-                    Log.i(TAG, "onClick:" + socket.getServerType() + " oldType:" + oldType);
-                    AppPreferences.getInstance().setSocketType(socket.getServerType());
-                    if (RestClient.getInstance().changeServerSockets(socket)) {
-                        if (oldType == null || !oldType.equals(socket.getServerType())) login();
-                        showServers(false);
-                    } else Log.i(TAG, "ServerSockets is not changed");
+                //CheckBox ch = new CheckBox(this);
+                StringBuilder title = new StringBuilder();
+                title.append(socket.getDescription()).append(" "); //.append(socket.getServerHost());
+                if (socket.getRecordstatus()) {
+                    title.append("UP");
+                    rb[i].setBackgroundColor(getResources().getColor(R.color.label_color));
+                } else {
+                    title.append("DOWN");
+                    rb[i].setBackgroundColor(getResources().getColor(R.color.red_color));
                 }
-            });
+                rb[i].setText(title.toString());
 
-            if (testing && socket.getServerType() != null && AppPreferences.getInstance() != null && socket.getServerType().equals(AppPreferences.getInstance().getSocketType()))
-                testServer(socket.getServerHost());
+                if (currSocket.equals(socket.getServerHost())) {
+                    rb[i].setChecked(true);
+                }
 
-            i++;
+                rb[i].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Integer oldType = AppPreferences.getInstance().getSocketType();
+                        Log.i(TAG, "onClick:" + socket.getServerType() + " oldType:" + oldType);
+                        AppPreferences.getInstance().setSocketType(socket.getServerType());
+                        if (RestClient.getInstance().changeServerSockets(socket)) {
+                            if (oldType == null || !oldType.equals(socket.getServerType())) login();
+                            showServers(false);
+                        } else Log.i(TAG, "ServerSockets is not changed");
+                    }
+                });
+
+                if (testing && socket.getServerType() != null && AppPreferences.getInstance() != null && socket.getServerType().equals(AppPreferences.getInstance().getSocketType()))
+                    testServer(socket.getServerHost());
+
+                i++;
+            } else {
+                updateServers();
+                break;
+            }
         }
         serversContent.addView(rg);
     }

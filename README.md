@@ -19,7 +19,7 @@ Using project dependencies:
 
 [androidannotations](http://androidannotations.org/)
 
-[little-fluffy-location-library](https://code.google.com/p/little-fluffy-location-library/)
+[android-reactive-location](https://github.com/mcharmas/Android-ReactiveLocation)
 
 [mapsforge](http://code.google.com/p/mapsforge/)
 

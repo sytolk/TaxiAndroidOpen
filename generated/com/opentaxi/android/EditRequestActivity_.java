@@ -16,19 +16,21 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 import com.opentaxi.android.R.id;
 import com.opentaxi.android.R.layout;
-import com.opentaxi.generated.mysql.tables.pojos.Contactaddress;
-import com.opentaxi.generated.mysql.tables.pojos.Groups;
-import com.opentaxi.generated.mysql.tables.pojos.Regions;
 import com.opentaxi.models.NewCRequest;
 import com.opentaxi.models.NewRequestDetails;
+import com.stil.generated.mysql.tables.pojos.Contactaddress;
+import com.stil.generated.mysql.tables.pojos.Groups;
+import com.stil.generated.mysql.tables.pojos.Regions;
 import org.androidannotations.api.BackgroundExecutor;
 import org.androidannotations.api.view.HasViews;
 import org.androidannotations.api.view.OnViewChangedListener;
@@ -85,32 +87,19 @@ public final class EditRequestActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
+        region = ((TextView) hasViews.findViewById(id.region));
+        addressText = ((EditText) hasViews.findViewById(id.addressText));
+        llFilters = ((LinearLayout) hasViews.findViewById(id.llFilters));
+        pricesPicker = ((Spinner) hasViews.findViewById(id.pricesPicker));
+        destination = ((AutoCompleteTextView) hasViews.findViewById(id.destination));
+        citiesPicker = ((AutoCompleteTextView) hasViews.findViewById(id.citiesPicker));
+        reqInfoButtonContainer = ((LinearLayout) hasViews.findViewById(id.reqInfoButtonContainer));
         addressChange = ((Button) hasViews.findViewById(id.addressChange));
+        regionsPicker = ((AutoCompleteTextView) hasViews.findViewById(id.regionsPicker));
         pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
+        addressImage = ((ToggleButton) hasViews.findViewById(id.addressImage));
         requestSend = ((Button) hasViews.findViewById(id.requestSend));
         address = ((TextView) hasViews.findViewById(id.address));
-        llFilters = ((LinearLayout) hasViews.findViewById(id.llFilters));
-        regionsPicker = ((Spinner) hasViews.findViewById(id.regionsPicker));
-        reqInfoButtonContainer = ((LinearLayout) hasViews.findViewById(id.reqInfoButtonContainer));
-        addressText = ((EditText) hasViews.findViewById(id.addressText));
-        citiesPicker = ((EditText) hasViews.findViewById(id.citiesPicker));
-        region = ((TextView) hasViews.findViewById(id.region));
-        pricesPicker = ((Spinner) hasViews.findViewById(id.pricesPicker));
-        {
-            View view = hasViews.findViewById(id.requestSend);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        EditRequestActivity_.this.requestSend();
-                    }
-
-                }
-                );
-            }
-        }
         {
             View view = hasViews.findViewById(id.addressChange);
             if (view!= null) {
@@ -120,6 +109,21 @@ public final class EditRequestActivity_
                     @Override
                     public void onClick(View view) {
                         EditRequestActivity_.this.addressChange();
+                    }
+
+                }
+                );
+            }
+        }
+        {
+            View view = hasViews.findViewById(id.requestSend);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        EditRequestActivity_.this.requestSend();
                     }
 
                 }
@@ -145,6 +149,16 @@ public final class EditRequestActivity_
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case  990 :
+                EditRequestActivity_.this.onResult(resultCode, data);
+                break;
+        }
+    }
+
+    @Override
     public void showGroups(final Groups[] groups) {
         handler_.post(new Runnable() {
 
@@ -152,34 +166,6 @@ public final class EditRequestActivity_
             @Override
             public void run() {
                 EditRequestActivity_.super.showGroups(groups);
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void SuccessDialog() {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                EditRequestActivity_.super.SuccessDialog();
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void showRegions(final Regions[] regions) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                EditRequestActivity_.super.showRegions(regions);
             }
 
         }
@@ -201,6 +187,48 @@ public final class EditRequestActivity_
     }
 
     @Override
+    public void showRegions(final Regions[] regions) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                EditRequestActivity_.super.showRegions(regions);
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void ErrorDialog() {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                EditRequestActivity_.super.ErrorDialog();
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void SuccessDialog() {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                EditRequestActivity_.super.SuccessDialog();
+            }
+
+        }
+        );
+    }
+
+    @Override
     public void showPrices(final Groups[] prices) {
         handler_.post(new Runnable() {
 
@@ -215,14 +243,32 @@ public final class EditRequestActivity_
     }
 
     @Override
-    public void setCities() {
+    public void sendRequest(final NewRequestDetails newRequest) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    EditRequestActivity_.super.setCities();
+                    EditRequestActivity_.super.sendRequest(newRequest);
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void setPrices() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    EditRequestActivity_.super.setPrices();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -269,32 +315,14 @@ public final class EditRequestActivity_
     }
 
     @Override
-    public void setPrices() {
+    public void setCities() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    EditRequestActivity_.super.setPrices();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void sendRequest(final NewRequestDetails newRequest) {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    EditRequestActivity_.super.sendRequest(newRequest);
+                    EditRequestActivity_.super.setCities();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

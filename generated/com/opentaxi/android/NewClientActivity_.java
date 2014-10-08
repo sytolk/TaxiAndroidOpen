@@ -81,33 +81,18 @@ public final class NewClientActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        pass = ((EditText) hasViews.findViewById(id.passwordField));
-        cityName = ((AutoCompleteTextView) hasViews.findViewById(id.cityName));
-        pass2 = ((EditText) hasViews.findViewById(id.password2Field));
         nameField = ((EditText) hasViews.findViewById(id.nameField));
-        phoneNumber = ((EditText) hasViews.findViewById(id.phoneNumber));
-        iAgreeCheckBox = ((CheckBox) hasViews.findViewById(id.iAgreeCheckBox));
         sendButton = ((Button) hasViews.findViewById(id.sendButton));
+        middleName = ((EditText) hasViews.findViewById(id.middleName));
         email = ((EditText) hasViews.findViewById(id.emailField));
-        userName = ((EditText) hasViews.findViewById(id.userNameField));
         lastName = ((EditText) hasViews.findViewById(id.lastName));
         passwordHint = ((EditText) hasViews.findViewById(id.passwordHint));
-        middleName = ((EditText) hasViews.findViewById(id.middleName));
-        {
-            View view = hasViews.findViewById(id.userAgreement);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        NewClientActivity_.this.userAgreement();
-                    }
-
-                }
-                );
-            }
-        }
+        pass = ((EditText) hasViews.findViewById(id.passwordField));
+        iAgreeCheckBox = ((CheckBox) hasViews.findViewById(id.iAgreeCheckBox));
+        userName = ((EditText) hasViews.findViewById(id.userNameField));
+        cityName = ((AutoCompleteTextView) hasViews.findViewById(id.cityName));
+        phoneNumber = ((EditText) hasViews.findViewById(id.phoneNumber));
+        pass2 = ((EditText) hasViews.findViewById(id.password2Field));
         {
             View view = hasViews.findViewById(id.sendButton);
             if (view!= null) {
@@ -117,6 +102,21 @@ public final class NewClientActivity_
                     @Override
                     public void onClick(View view) {
                         NewClientActivity_.this.sendButton();
+                    }
+
+                }
+                );
+            }
+        }
+        {
+            View view = hasViews.findViewById(id.userAgreement);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        NewClientActivity_.this.userAgreement();
                     }
 
                 }
@@ -186,20 +186,6 @@ public final class NewClientActivity_
     }
 
     @Override
-    public void setUserError(final String error) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                NewClientActivity_.super.setUserError(error);
-            }
-
-        }
-        );
-    }
-
-    @Override
     public void ActivationDialog() {
         handler_.post(new Runnable() {
 
@@ -221,6 +207,20 @@ public final class NewClientActivity_
             @Override
             public void run() {
                 NewClientActivity_.super.finishThis();
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void setUserError(final String error) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                NewClientActivity_.super.setUserError(error);
             }
 
         }

@@ -9,7 +9,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import com.opentaxi.generated.mysql.tables.pojos.Cars;
+import com.stil.generated.mysql.tables.pojos.Cars;
 import com.opentaxi.rest.RestClient;
 import com.taxibulgaria.enums.CarState;
 import org.androidannotations.annotations.*;

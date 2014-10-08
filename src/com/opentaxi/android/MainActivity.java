@@ -10,7 +10,6 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
@@ -21,11 +20,10 @@ import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.littlefluffytoys.littlefluffylocationlibrary.LocationLibrary;
 import com.opentaxi.android.asynctask.LogoutTask;
 import com.opentaxi.android.utils.AppPreferences;
 import com.opentaxi.android.utils.Network;
-import com.opentaxi.generated.mysql.tables.pojos.Servers;
+import com.stil.generated.mysql.tables.pojos.Servers;
 import com.opentaxi.models.Users;
 import com.opentaxi.rest.RestClient;
 import com.sromku.simple.fb.SimpleFacebook;
@@ -39,7 +37,8 @@ import java.io.IOException;
 public class MainActivity extends FragmentActivity {
 
     private static final int REQUEST_USER_PASS_CODE = 10;
-    private static final int SERVER_CHANGE = 12;
+    public static final int HELP = 11;
+    public static final int SERVER_CHANGE = 12;
     private static final int MAP_VIEW = 13;
     private static final int REQUEST_INFO = 14;
     private static final int MESSAGE = 40;
@@ -131,7 +130,7 @@ public class MainActivity extends FragmentActivity {
             String pass = RestClient.getInstance().getPassword();
 
             if (user == null || user.equals("") || pass == null || pass.equals("")) {
-                com.opentaxi.generated.mysql.tables.pojos.Users users = AppPreferences.getInstance().getUsers();
+                com.stil.generated.mysql.tables.pojos.Users users = AppPreferences.getInstance().getUsers();
                 if (users != null) {
                     String username = users.getUsername();
                     String password = users.getPassword();
@@ -238,7 +237,7 @@ public class MainActivity extends FragmentActivity {
     }
 
     // Define a DialogFragment that displays the error dialog
-    public class MainDialogFragment extends DialogFragment {
+    public static class MainDialogFragment extends android.support.v4.app.DialogFragment {
         // Global field to contain the error dialog
         private Dialog mDialog;
 
@@ -447,12 +446,13 @@ public class MainActivity extends FragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.options_server:
-                Intent intent = new Intent(this, ServersActivity_.class);
-                startActivityForResult(intent, SERVER_CHANGE);
+                ServersActivity_.intent(this).startForResult(SERVER_CHANGE);
                 return true;
-
+            case R.id.options_help:
+                HelpActivity_.intent(this).startForResult(HELP);
+                return true;
             case R.id.options_exit:
-                RestClient.getInstance().clearCache();
+                //RestClient.getInstance().clearCache();
                 finish();
                 return true;
             case R.id.options_send_log:
@@ -657,18 +657,13 @@ public class MainActivity extends FragmentActivity {
 
     @Click
     void mapButton() {
-        //if (TaxiApplication.getLastRequestId() != null) {
         BubbleOverlay_.intent(this).start();
-        LocationLibrary.forceLocationUpdate(getBaseContext());
-        /*} else {
-            Intent intent = new Intent(MainActivity.this, LocationOverlayMapViewer.class);
-            MainActivity.this.startActivityForResult(intent, MAP_VIEW);
-        }*/
+        //LocationLibrary.forceLocationUpdate(getBaseContext());
     }
 
     @Click
     void newRequestButton() {
-        LocationLibrary.forceLocationUpdate(getBaseContext());
+        //LocationLibrary.forceLocationUpdate(getBaseContext());
         NewRequestActivity_.intent(this).start();
     }
 

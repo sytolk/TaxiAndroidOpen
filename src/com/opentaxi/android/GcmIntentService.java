@@ -17,12 +17,16 @@
 package com.opentaxi.android;
 
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.opentaxi.android.asynctask.ProcessMessageTask;
-import com.opentaxi.generated.mysql.tables.pojos.CloudMessages;
+import com.stil.generated.mysql.tables.pojos.CloudMessages;
+import com.stil.generated.mysql.tables.pojos.Messages;
 
 /**
  * This {@code IntentService} does the actual handling of the GCM message.
@@ -75,7 +79,11 @@ public class GcmIntentService extends IntentService {
                     if (cloudMsgId > 0) {
                         Log.i(TAG, "Message id:" + cloudMsgId);
                         //AppPreferences.getInstance().setLastCloudMessage(cloudMsgId);
-                        new ProcessMessageTask(cloudMsgId).execute(this);
+                        AsyncTask<Context, Void, Messages> msgTask = new ProcessMessageTask(cloudMsgId);
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+                            msgTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, this);
+                        else msgTask.execute(this);
                     }
                 } else Log.e(TAG, "Received cloudMsg=null");
 
