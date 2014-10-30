@@ -17,6 +17,7 @@ import com.opentaxi.rest.RestClient;
 import com.stil.generated.mysql.tables.pojos.Feedback;
 import com.stil.generated.mysql.tables.pojos.Groups;
 import com.stil.generated.mysql.tables.pojos.Regions;
+import com.taxibulgaria.enums.RegionsType;
 import com.taxibulgaria.enums.RequestStatus;
 import org.androidannotations.annotations.*;
 
@@ -126,7 +127,7 @@ public class RequestDetailsActivity extends Activity {
                 if (requestNumber != null) {
                     requestNumber.setText(newCRequest.getRequestsId().toString());
                     datecreated.setText(DateFormat.getDateInstance(DateFormat.SHORT).format(newCRequest.getDatecreated()));
-                    Regions regions = RestClient.getInstance().getRegionById(newCRequest.getRegionId());
+                    Regions regions = RestClient.getInstance().getRegionById(RegionsType.BURGAS_STATE.getCode(), newCRequest.getRegionId());
                     if (regions != null) {
                         address.setText(regions.getDescription() + " " + newCRequest.getFullAddress());
                     } else address.setText(newCRequest.getFullAddress());

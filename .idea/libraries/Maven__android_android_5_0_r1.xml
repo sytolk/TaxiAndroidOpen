@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Maven: android:android:5.0_r1">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/android/android/5.0_r1/android-5.0_r1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/android/android/5.0_r1/android-5.0_r1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/android/android/5.0_r1/android-5.0_r1-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/android/android/5.0_r1/android-5.0_r1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

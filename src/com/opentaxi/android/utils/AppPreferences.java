@@ -3,14 +3,10 @@ package com.opentaxi.android.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
-import com.opentaxi.android.asynctask.RegionsTask;
 import com.opentaxi.models.Users;
-import com.stil.generated.mysql.tables.pojos.Regions;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import javax.crypto.Cipher;
@@ -18,7 +14,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -43,7 +38,7 @@ public class AppPreferences {
      */
     private static AppPreferences instance;
     private static final Object mutex = new Object();
-    private Map<Integer, String> regionsMap;
+    //private Map<Integer, String> regionsMap;
     private Integer cloudMessageId;
     //private NewRequestDetails currentRequest;
     //private NewRequestDetails nextRequest;
@@ -124,7 +119,7 @@ public class AppPreferences {
         return null;
     }
 
-    public synchronized void setRegions() {
+    /*public synchronized void setRegions() {
         if (regionsMap == null || regionsMap.isEmpty()) {
             AsyncTask<Context, Void, Regions[]> regionsTask = new RegionsTask(new RegionsTask.OnTaskCompleted() {
 
@@ -138,32 +133,6 @@ public class AppPreferences {
                 regionsTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             else regionsTask.execute();
         }
-    }
-
-    /*public Map<Integer, String> getRegions() {
-        if (regionsMap == null || regionsMap.isEmpty()) {
-            setRegions();
-
-            regionsMap = new LinkedHashMap<Integer, String>();
-            regionsMap.put(8, "Славейков");
-            regionsMap.put(9, "Изгрев");
-            regionsMap.put(10, "Зорница");
-            regionsMap.put(7, "Лазур");
-            regionsMap.put(5, "Бр. Миладинови");
-            regionsMap.put(6, "Центъра");
-            regionsMap.put(4, "Възраждане");
-            regionsMap.put(3, "Акациите");
-            regionsMap.put(2, "Победа");
-            regionsMap.put(1, "Меден Рудник");
-            regionsMap.put(11, "Сарафово");
-            regionsMap.put(15, "Крайморие");
-            regionsMap.put(13, "Долно Езерово");
-            regionsMap.put(14, "Горно Езерово");
-            regionsMap.put(12, "Лозово");
-            regionsMap.put(17, "Ветрен");
-            regionsMap.put(18, "Банево");
-        }
-        return regionsMap;
     }*/
 
     public synchronized Integer getLastCloudMessage() {

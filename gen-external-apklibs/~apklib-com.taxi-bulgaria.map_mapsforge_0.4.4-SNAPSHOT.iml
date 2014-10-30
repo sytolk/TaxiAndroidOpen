@@ -23,7 +23,7 @@
       <sourceFolder url="file://$MODULE_DIR$/com.taxi-bulgaria.map_mapsforge_0.4.4-SNAPSHOT/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/com.taxi-bulgaria.map_mapsforge_0.4.4-SNAPSHOT/gen" isTestSource="false" generated="true" />
     </content>
-    <orderEntry type="jdk" jdkName="Maven Android API 17 Platform" jdkType="Android SDK" />
+    <orderEntry type="jdk" jdkName="Maven Android API 17 Platform (1)" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: android:android:4.4.2_r2" level="project" />
     <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-map-android:0.4.3" level="project" />

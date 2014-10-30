@@ -5,7 +5,6 @@
 
 package com.opentaxi.android;
 
-import java.io.Serializable;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -17,7 +16,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import com.opentaxi.android.R.id;
-import com.stil.generated.mysql.tables.pojos.NewRequest;
+import com.opentaxi.models.MapRequest;
 import org.androidannotations.api.BackgroundExecutor;
 import org.androidannotations.api.view.HasViews;
 import org.androidannotations.api.view.OnViewChangedListener;
@@ -30,7 +29,7 @@ public final class LongPressMapAction_
 {
 
     private final OnViewChangedNotifier onViewChangedNotifier_ = new OnViewChangedNotifier();
-    public final static String NEW_REQUEST_EXTRA = "newRequest";
+    public final static String MAP_REQUEST_EXTRA = "mapRequest";
     private Handler handler_ = new Handler(Looper.getMainLooper());
 
     @Override
@@ -94,8 +93,8 @@ public final class LongPressMapAction_
     private void injectExtras_() {
         Bundle extras_ = getIntent().getExtras();
         if (extras_!= null) {
-            if (extras_.containsKey(NEW_REQUEST_EXTRA)) {
-                newRequest = ((NewRequest) extras_.getSerializable(NEW_REQUEST_EXTRA));
+            if (extras_.containsKey(MAP_REQUEST_EXTRA)) {
+                mapRequest = extras_.getParcelable(MAP_REQUEST_EXTRA);
             }
         }
     }
@@ -107,7 +106,7 @@ public final class LongPressMapAction_
     }
 
     @Override
-    public void showTextCircle(final NewRequest address) {
+    public void showTextCircle(final MapRequest address) {
         handler_.post(new Runnable() {
 
 
@@ -180,8 +179,8 @@ public final class LongPressMapAction_
             }
         }
 
-        public LongPressMapAction_.IntentBuilder_ newRequest(NewRequest newRequest) {
-            intent_.putExtra(NEW_REQUEST_EXTRA, ((Serializable) newRequest));
+        public LongPressMapAction_.IntentBuilder_ mapRequest(MapRequest mapRequest) {
+            intent_.putExtra(MAP_REQUEST_EXTRA, mapRequest);
             return this;
         }
 

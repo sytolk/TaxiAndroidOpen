@@ -9,10 +9,11 @@ import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import com.stil.generated.mysql.tables.pojos.Regions;
 import com.opentaxi.models.NewCRequest;
 import com.opentaxi.models.RequestCView;
 import com.opentaxi.rest.RestClient;
+import com.stil.generated.mysql.tables.pojos.Regions;
+import com.taxibulgaria.enums.RegionsType;
 import com.taxibulgaria.enums.RequestStatus;
 import org.androidannotations.annotations.*;
 
@@ -210,7 +211,7 @@ public class RequestsActivity extends Activity {
 
                                 //id.setText(requestMap.get("id").toString());
                                 //date.setText(requestMap.get("datecreated").toString()); //DateFormat.getDateInstance(DateFormat.SHORT).format(requestMap.get("datecreated")));
-                                Regions regions = RestClient.getInstance().getRegionById(newCRequest.getRegionId());
+                                Regions regions = RestClient.getInstance().getRegionById(RegionsType.BURGAS_STATE.getCode(), newCRequest.getRegionId());
                                 if (regions != null) {
                                     address.setText(regions.getDescription() + " " + newCRequest.getFullAddress());
                                 } else address.setText(newCRequest.getFullAddress());

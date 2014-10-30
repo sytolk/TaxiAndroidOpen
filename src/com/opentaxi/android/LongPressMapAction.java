@@ -4,11 +4,18 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import com.opentaxi.android.utils.AppPreferences;
+import com.opentaxi.android.utils.MyGeocoder;
+import com.opentaxi.models.MapRequest;
 import com.opentaxi.rest.RestClient;
 import com.stil.generated.mysql.tables.pojos.NewRequest;
+import com.stil.generated.mysql.tables.pojos.Regions;
+import com.taxibulgaria.enums.RegionsType;
 import org.androidannotations.annotations.*;
 import org.mapsforge.applications.android.mapbg.LocationOverlayMapViewer;
 import org.mapsforge.applications.android.mapbg.TextCircle;
@@ -25,6 +32,8 @@ import org.mapsforge.map.layer.overlay.Circle;
 import org.mapsforge.map.layer.renderer.TileRendererLayer;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Demonstrates how to enable a LongPress on a layer, long press creates/removes
@@ -34,7 +43,7 @@ import java.io.File;
 public class LongPressMapAction extends LocationOverlayMapViewer {
 
     @Extra
-    NewRequest newRequest;
+    MapRequest mapRequest;
 
     private static final Paint GREEN = Utils.createPaint(AndroidGraphicFactory.INSTANCE.createColor(Color.GREEN), 0, Style.FILL);
     int index = -1;
@@ -101,7 +110,7 @@ public class LongPressMapAction extends LocationOverlayMapViewer {
             //allow move to map if its have GPS cooordinates
             invertSnapToLocation();
 
-            if (newRequest != null) showTextCircle(newRequest);
+            if (mapRequest != null) showTextCircle(mapRequest);
             else showAlert();
         }
     }
@@ -121,9 +130,9 @@ public class LongPressMapAction extends LocationOverlayMapViewer {
     }
 
     protected void onLongPress(LatLong position) {
-        if (this.newRequest == null) this.newRequest = new NewRequest();
-        this.newRequest.setNorth(position.latitude);
-        this.newRequest.setEast(position.longitude);
+        if (this.mapRequest == null) this.mapRequest = new MapRequest();
+        this.mapRequest.setNorth(position.latitude);
+        this.mapRequest.setEast(position.longitude);
         showAddress(position);
         Layers layers = this.layerManagers.get(0).getLayers(); //this.mapViews.get(0).getLayerManager().getLayers()
         if (index >= 0) layers.remove(index);
@@ -137,17 +146,63 @@ public class LongPressMapAction extends LocationOverlayMapViewer {
     @Background
     void showAddress(LatLong position) {
         NewRequest address = RestClient.getInstance().getAddressByCoordinates((float) position.latitude, (float) position.longitude);
+        this.mapRequest = new MapRequest();
         if (address != null) {
-            this.newRequest = address;
-            this.newRequest.setNorth(position.latitude);
-            this.newRequest.setEast(position.longitude);
-            showTextCircle(address);
+            this.mapRequest.setCity(getString(R.string.burgas));
+            Regions regions = RestClient.getInstance().getRegionById(RegionsType.BURGAS_STATE.getCode(), address.getRegionId());
+            if (regions != null) this.mapRequest.setRegion(regions.getDescription());
+            this.mapRequest.setAddress(address.getFullAddress());
+            this.mapRequest.setNorth(position.latitude);
+            this.mapRequest.setEast(position.longitude);
+            showTextCircle(this.mapRequest);
+            return;
+        } else Log.i(TAG, "address=null");
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD && Geocoder.isPresent()) {
+            Geocoder geocoder = new Geocoder(this);
+            try {
+                List<Address> addresses = geocoder.getFromLocation(position.latitude, position.longitude, 1);
+                //Log.i(TAG, "Address from Geocoder:" + addresses.toString());
+                if (addresses == null || addresses.isEmpty()) {
+                    addresses = MyGeocoder.getFromLocation(position.latitude, position.longitude, 1);
+                }
+                processAddress(position.latitude, position.longitude, addresses);
+
+            } catch (IOException e) {
+                List<Address> addresses = MyGeocoder.getFromLocation(position.latitude, position.longitude, 1);
+                processAddress(position.latitude, position.longitude, addresses);
+                Log.e(TAG, "IOException:" + e.getMessage());
+            }
+        } else {
+            Log.e(TAG, "Geocoder not present");
+            List<Address> addresses = MyGeocoder.getFromLocation(position.latitude, position.longitude, 1);
+            processAddress(position.latitude, position.longitude, addresses);
+        }
+    }
+
+    private void processAddress(double latitude, double longitude, List<Address> addresses) {
+        if (addresses != null && !addresses.isEmpty()) {
+            Address gAddr = addresses.get(0);
+            Log.i(TAG, gAddr.toString());
+            if (gAddr.getLocality() != null) {
+                this.mapRequest.setCity(gAddr.getLocality());
+                if (gAddr.getMaxAddressLineIndex() >= 0) {
+                    String adr = gAddr.getAddressLine(0);
+                    if (adr != null && !adr.equals("Unnamed Rd"))
+                        this.mapRequest.setAddress(adr);
+                }
+                if (gAddr.getLatitude() > 0) this.mapRequest.setNorth(gAddr.getLatitude());
+                else this.mapRequest.setNorth(latitude);
+                if (gAddr.getLongitude() > 0) this.mapRequest.setEast(gAddr.getLongitude());
+                else this.mapRequest.setEast(longitude);
+                showTextCircle(this.mapRequest);
+            } else Log.i(TAG, "Address from Geocoder no getLocality");
         }
     }
 
     @UiThread
-    void showTextCircle(NewRequest address) {
-        if (address != null && address.getNorth() != null && address.getEast() != null) {
+    void showTextCircle(MapRequest address) {
+        if (address != null && address.getNorth() > 0 && address.getEast() > 0) {
             Layers layers = this.layerManagers.get(0).getLayers(); //this.mapViews.get(0).getLayerManager().getLayers()
             if (layers != null) {
                 if (index >= 0 && index < layers.size()) layers.remove(index);
@@ -156,7 +211,11 @@ public class LongPressMapAction extends LocationOverlayMapViewer {
                 paint.setTextAlign(Align.LEFT);
                 paint.setTextSize(25f);
                 LatLong position = new LatLong(address.getNorth(), address.getEast());
-                TextCircle circle = new TextCircle(position, circleSize, address.getFullAddress(), paint, GREEN, null);
+                StringBuilder fullAddress = new StringBuilder();
+                if (address.getCity() != null) fullAddress.append(address.getCity()).append(" ");
+                if (address.getRegion() != null) fullAddress.append(address.getRegion()).append(" ");
+                if (address.getAddress() != null) fullAddress.append(address.getAddress()).append(" ");
+                TextCircle circle = new TextCircle(position, circleSize, fullAddress.toString(), paint, GREEN, null);
                 circle.setOffsetX(10);
                 layers.add(circle);
                 index = layers.size() - 1;
@@ -176,9 +235,9 @@ public class LongPressMapAction extends LocationOverlayMapViewer {
     public void finish() {
         //Log.i(TAG, "Address:" + newRequest.getFullAddress());
         if (getParent() == null) {
-            setResult(Activity.RESULT_OK, new Intent().putExtra("newRequest", this.newRequest));
+            setResult(Activity.RESULT_OK, new Intent().putExtra("mapRequest", this.mapRequest));
         } else {
-            getParent().setResult(Activity.RESULT_OK, new Intent().putExtra("newRequest", this.newRequest));
+            getParent().setResult(Activity.RESULT_OK, new Intent().putExtra("mapRequest", this.mapRequest));
         }
         super.finish();
     }

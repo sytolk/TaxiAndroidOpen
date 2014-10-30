@@ -6,6 +6,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,13 +16,16 @@ import android.widget.*;
 import com.opentaxi.android.adapters.GroupsAdapter;
 import com.opentaxi.android.adapters.RegionsAdapter;
 import com.opentaxi.android.utils.AppPreferences;
+import com.opentaxi.models.MapRequest;
 import com.opentaxi.models.NewRequestDetails;
 import com.opentaxi.rest.RestClient;
 import com.opentaxi.rest.RestClientBase;
 import com.stil.generated.mysql.tables.pojos.*;
+import com.taxibulgaria.enums.RegionsType;
 import com.taxibulgaria.enums.RequestSource;
 import org.androidannotations.annotations.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,7 +46,7 @@ public class NewRequestActivity extends Activity {
     @Extra
     Cars cars;
 
-    com.stil.generated.mysql.tables.pojos.NewRequest newRequest;
+    MapRequest mapRequest;
 
     @ViewById(R.id.pricesPicker)
     Spinner pricesPicker;
@@ -89,6 +94,7 @@ public class NewRequestActivity extends Activity {
 
     @AfterViews
     protected void afterActivity() {
+        this.mapRequest = null;
         if (cars == null) setTitle(getString(R.string.taxi_request));
         else setTitle(getString(R.string.taxi_request_to_car, cars.getNumber()));
 
@@ -100,8 +106,8 @@ public class NewRequestActivity extends Activity {
         citiesPicker.setAdapter(adapter);
 
         setCities();
+        setAddress();
         //showCities("Бургас");
-        setRegions();
         setPrices();
         setGroups();
         address.setText(R.string.wait_address);
@@ -130,15 +136,25 @@ public class NewRequestActivity extends Activity {
         if (resultCode == Activity.RESULT_OK && data != null) {
             Bundle extras = data.getExtras();
             if (extras != null) {
-                this.newRequest = (com.stil.generated.mysql.tables.pojos.NewRequest) extras.getSerializable("newRequest");
-                showAddress(newRequest);
+                this.mapRequest = extras.getParcelable("mapRequest");
+                if (this.mapRequest != null)
+                    showAddress(this.mapRequest.getCity(), this.mapRequest.getRegion(), this.mapRequest.getAddress());
+                else Log.e(TAG, "mapRequest=null");
             }
         } else Log.e(TAG, "" + resultCode);
     }
 
     @Background
     void setCities() {
-        showCities(RestClient.getInstance().getAddress());
+        if (this.mapRequest == null) {
+            Contactaddress contactAddress = RestClient.getInstance().getAddress();
+            if (contactAddress != null) {
+                showCities(contactAddress);
+                if (contactAddress.getCountryinfogeonamesid() != null) {
+                    showRegions(RestClient.getInstance().getRegionsByGN(contactAddress.getCountryinfogeonamesid()));
+                }
+            }
+        }
     }
 
     @UiThread
@@ -147,24 +163,16 @@ public class NewRequestActivity extends Activity {
             citiesAdapter[0] = new CitiesAdapter(supported);
             ArrayAdapter<CitiesAdapter> adapter2 = new ArrayAdapter<CitiesAdapter>(this, R.layout.spinner_layout, citiesAdapter);
             adapter2.setDropDownViewResource(R.layout.spinner_layout);*/
-        if (contactAddress != null && contactAddress.getCity() != null) {
+        if (this.mapRequest == null && contactAddress != null && contactAddress.getCity() != null) {
             //Log.d(TAG, "Contactaddress:" + address.getCity() + ":" + address.getCountryinfogeonamesid());
-
             citiesPicker.setText(contactAddress.getCity());
             address.setFocusable(true);
             address.setFocusableInTouchMode(true);
             address.requestFocus();
-
-            if (contactAddress.getCountryinfogeonamesid() != null && contactAddress.getCountryinfogeonamesid().equals(732770)) { //Burgas
-                regionsLayout.setVisibility(View.VISIBLE);
-                destLayout.setVisibility(View.GONE);
-            } else {
-                regionsLayout.setVisibility(View.GONE);
-                destLayout.setVisibility(View.VISIBLE);
-            }
         } //else Log.d(TAG, "Contactaddress=null");
         //citiesPicker.setOnTouchListener(Spinner_OnTouch);
     }
+
 
     /*private View.OnTouchListener Spinner_OnTouch = new View.OnTouchListener() {
         public boolean onTouch(View v, MotionEvent event) {
@@ -175,10 +183,10 @@ public class NewRequestActivity extends Activity {
         }
     };*/
 
-    @Background
-    void setRegions() {
-        showRegions(RestClient.getInstance().getRegions());
-    }
+    /*@Background
+    void setRegions(Integer parentId) {
+        showRegions(RestClient.getInstance().getRegions(parentId));
+    }*/
 
     @UiThread
     void showRegions(Regions[] regions) {
@@ -196,8 +204,14 @@ public class NewRequestActivity extends Activity {
             ArrayAdapter<RegionsAdapter> adapter2 = new ArrayAdapter<RegionsAdapter>(this, R.layout.spinner_layout, regionsAdapter);
             adapter2.setDropDownViewResource(R.layout.spinner_layout);
             regionsPicker.setAdapter(adapter2);
+
+            regionsLayout.setVisibility(View.VISIBLE);
+            destLayout.setVisibility(View.GONE);
+        } else {
+            regionsLayout.setVisibility(View.GONE);
+            destLayout.setVisibility(View.VISIBLE);
         }
-        setAddress();
+        //setAddress();
     }
 
     @Background
@@ -260,29 +274,97 @@ public class NewRequestActivity extends Activity {
     @Background
     void setAddress() {
         Log.i(TAG, "setAddress");
-        if (this.newRequest == null && AppPreferences.getInstance() != null) {
-            com.stil.generated.mysql.tables.pojos.NewRequest address = null;
-            Date now = new Date();
-            if (AppPreferences.getInstance().getGpsLastTime() > (now.getTime() - 600000)) {  //if last coordinates time is from 5 min interval
-                address = RestClient.getInstance().getAddressByCoordinates(AppPreferences.getInstance().getNorth().floatValue(), AppPreferences.getInstance().getEast().floatValue());
-            } /*else if (latestInfo != null && latestInfo.lastLocationUpdateTimestamp > (now.getTime() - 600000)) {
-                latestInfo.refresh(getBaseContext());
-                address = RestClient.getInstance().getAddressByCoordinates(latestInfo.lastLat, latestInfo.lastLong);
-            }*/ else {
-                Log.i(TAG, "GpsLastTime " + AppPreferences.getInstance().getGpsLastTime() + " > " + (now.getTime() - 600000) + " min");
-            }
+        if (this.mapRequest == null) {
+            if (AppPreferences.getInstance() != null && AppPreferences.getInstance().getNorth() != null && AppPreferences.getInstance().getEast() != null) {
+                Date now = new Date();
+                if (AppPreferences.getInstance().getGpsLastTime() > (now.getTime() - 600000)) {  //if last coordinates time is from 5 min interval
+                    com.stil.generated.mysql.tables.pojos.NewRequest address = RestClient.getInstance().getAddressByCoordinates(AppPreferences.getInstance().getNorth().floatValue(), AppPreferences.getInstance().getEast().floatValue());
+                    if (address != null) {
+                        this.mapRequest = new MapRequest();
+                        this.mapRequest.setNorth(AppPreferences.getInstance().getNorth());
+                        this.mapRequest.setEast(AppPreferences.getInstance().getEast());
+                        this.mapRequest.setCity(getString(R.string.burgas));
+                        Regions regions = RestClient.getInstance().getRegionById(RegionsType.BURGAS_STATE.getCode(), address.getRegionId());
+                        if (regions != null) {
+                            showRegions(RestClient.getInstance().getRegions(RegionsType.BURGAS_STATE.getCode()));
+                            this.mapRequest.setRegion(regions.getDescription());
+                        }
+                        this.mapRequest.setAddress(address.getFullAddress());
 
-            if (address != null) showAddress(address);
-            else {
+                        showAddress(this.mapRequest.getCity(), this.mapRequest.getRegion(), this.mapRequest.getAddress());
+                        return;
+                    } else Log.i(TAG, "address=null or no coordinates");
+                } else
+                    Log.i(TAG, "GpsLastTime " + AppPreferences.getInstance().getGpsLastTime() + " > " + (now.getTime() - 600000) + " min");
+
+                Geocoder geocoder = new Geocoder(this);
+                try {
+                    List<Address> addresses = geocoder.getFromLocation(AppPreferences.getInstance().getNorth(), AppPreferences.getInstance().getEast(), 1);
+                    if (addresses != null && !addresses.isEmpty()) {
+                        // Get the first address
+                        Address address = addresses.get(0);
+                        if (address.getLocality() != null) {
+                            Log.i(TAG, address.toString());
+                            //Address[addressLines=[0:"улица „Елин Пелин“ 6",1:"8142 Chernomorets",2:"Bulgaria"],feature=6,admin=Burgas,sub-admin=Sozopol,locality=Chernomorets,thoroughfare=улица „Елин Пелин“,postalCode=null,countryCode=BG,countryName=Bulgaria,hasLatitude=true,latitude=42.4429078,hasLongitude=true,longitude=27.6423008,phone=null,url=null,extras=null]
+
+                            this.mapRequest = new MapRequest();
+                            this.mapRequest.setNorth(address.getLatitude());
+                            this.mapRequest.setEast(address.getLongitude());
+                            this.mapRequest.setCity(address.getLocality());
+                            if (address.getMaxAddressLineIndex() > 0)
+                                this.mapRequest.setAddress(address.getAddressLine(0));
+                            showAddress(this.mapRequest.getCity(), null, this.mapRequest.getAddress());
+                            return;
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 //todo make it solr geonames api
                 //address = GoogleApiRestClient.getInstance().getAddress(AppPreferences.getInstance().getNorth(), AppPreferences.getInstance().getEast());
-                //showAddress(address);
-                showAddress(null);
             }
+
+            showAddress(null, null, null);
         }
     }
 
     @UiThread
+    void showAddress(String city, String region, String adr) {
+        Log.i(TAG, city + " " + region + " " + adr);
+        if (city != null) citiesPicker.setText(city);
+        if (region != null) {
+            regionsPicker.setText(region);
+            regionsLayout.setVisibility(View.VISIBLE);
+            destLayout.setVisibility(View.GONE);
+        } else {
+            regionsLayout.setVisibility(View.GONE);
+            destLayout.setVisibility(View.VISIBLE);
+        }
+
+        if (adr != null && !adr.equals("Unnamed Rd")) {
+            address.setText(adr);
+            addressChange.setVisibility(View.VISIBLE);
+            addressText.setVisibility(View.GONE);
+        } else { //unknown address
+            address.setText(R.string.address);
+            addressText.setVisibility(View.VISIBLE);
+        }
+    }
+
+    /*@Background
+    void showAddressByRequest(MapRequest newRequest) {
+        Regions region = RestClient.getInstance().getRegionById(newRequest.getRegionId());
+        if (region != null) {
+            if (region.getParentId() != null && !region.getParentId().equals(region.getId())) {
+                Regions parent = RestClient.getInstance().getRegionById(region.getParentId());
+                if (parent != null) {
+                    showAddress(parent.getDescription(), region.getDescription(), newRequest.getFullAddress());
+                } else showAddress(region.getDescription(), null, newRequest.getFullAddress());
+            } else showAddress(region.getDescription(), null, newRequest.getFullAddress());
+        } else showAddress(null, null, newRequest.getFullAddress());
+    }*/
+
+    /*@UiThread
     void showAddress(com.stil.generated.mysql.tables.pojos.NewRequest adr) {
         if (adr != null) {
             // selectRegionsItemById(regionsPicker, adr.getRegionId());
@@ -296,7 +378,7 @@ public class NewRequestActivity extends Activity {
             address.setText(R.string.address);
             addressText.setVisibility(View.VISIBLE);
         }
-    }
+    }*/
 
     /*public void selectRegionsItemById(AutoCompleteTextView spnr, Integer regionsId) {
         Log.i(TAG, "selectRegionsItemById:" + regionsId);
@@ -359,9 +441,9 @@ public class NewRequestActivity extends Activity {
             pbProgress.setVisibility(View.VISIBLE);
 
             NewRequestDetails newRequest = new NewRequestDetails();
-            if (this.newRequest != null) {
-                newRequest.setNorth(this.newRequest.getNorth());
-                newRequest.setEast(this.newRequest.getEast());
+            if (this.mapRequest != null) {
+                newRequest.setNorth(this.mapRequest.getNorth());
+                newRequest.setEast(this.mapRequest.getEast());
             }
             if (cars != null) newRequest.setCarId(cars.getId());
             RequestsDetails requestsDetails = new RequestsDetails();
@@ -376,7 +458,7 @@ public class NewRequestActivity extends Activity {
                 Integer regionsId = null;
 
                 if (city.equalsIgnoreCase("бургас") || city.equalsIgnoreCase("burgas") || city.equalsIgnoreCase("bourgas")) {
-                    Regions[] regions = RestClient.getInstance().getRegions();
+                    Regions[] regions = RestClient.getInstance().getRegions(RegionsType.BURGAS_STATE.getCode());
                     if (regions != null) {
                         for (Regions regionObj : regions) {
                             if (regionObj.getDescription() != null && regionObj.getDescription().equalsIgnoreCase(regionsPicker.getText().toString())) {
@@ -441,15 +523,24 @@ public class NewRequestActivity extends Activity {
 
     @Click
     void addressImage() {
+        if (this.mapRequest == null) this.mapRequest = new MapRequest();
         if (addressText.getVisibility() == View.VISIBLE) {
+            if (citiesPicker.getText() != null) {
+                String txt = citiesPicker.getText().toString();
+                if (txt != null && txt.length() > 0) this.mapRequest.setCity(txt);
+            }
+            if (regionsPicker.getText() != null) {
+                String txt = regionsPicker.getText().toString();
+                if (txt != null && txt.length() > 0) this.mapRequest.setRegion(txt);
+            }
             if (addressText.getText() != null) {
                 String txt = addressText.getText().toString();
-                if (txt != null && txt.length() > 0 && this.newRequest != null) this.newRequest.setFullAddress(txt);
+                if (txt != null && txt.length() > 0) this.mapRequest.setAddress(txt);
             }
         }
 
         Intent intent = new Intent(this, LongPressMapAction_.class);
-        if (this.newRequest != null) intent.putExtra("newRequest", this.newRequest);
+        if (this.mapRequest != null) intent.putExtra("mapRequest", this.mapRequest);
         startActivityForResult(intent, SHOW_ADDRESS_ON_MAP);
         //LongPressMapAction_.intent(this).startForResult(SHOW_ADDRESS_ON_MAP);
     }

@@ -162,7 +162,7 @@ public class MainActivity extends FragmentActivity {
     @UiThread
     void afterLogin(String username) {
         this.user.setText(username);
-        AppPreferences.getInstance().setRegions();
+        //AppPreferences.getInstance().setRegions();
 
         //appPreferences.registerGCM(getBaseContext());
 

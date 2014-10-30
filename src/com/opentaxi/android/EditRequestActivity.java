@@ -20,6 +20,7 @@ import com.stil.generated.mysql.tables.pojos.Contactaddress;
 import com.stil.generated.mysql.tables.pojos.Groups;
 import com.stil.generated.mysql.tables.pojos.Regions;
 import com.stil.generated.mysql.tables.pojos.RequestsDetails;
+import com.taxibulgaria.enums.RegionsType;
 import com.taxibulgaria.enums.RequestSource;
 import org.androidannotations.annotations.*;
 
@@ -144,7 +145,7 @@ public class EditRequestActivity extends Activity {
 
     @Background
     void setRegions() {
-        showRegions(RestClient.getInstance().getRegions());
+        showRegions(RestClient.getInstance().getRegions(RegionsType.BURGAS_STATE.getCode()));
     }
 
     @UiThread
@@ -339,7 +340,7 @@ public class EditRequestActivity extends Activity {
                 Integer regionsId = null;
 
                 if (city.equalsIgnoreCase("бургас") || city.equalsIgnoreCase("burgas") || city.equalsIgnoreCase("bourgas")) {
-                    Regions[] regions = RestClient.getInstance().getRegions();
+                    Regions[] regions = RestClient.getInstance().getRegions(RegionsType.BURGAS_STATE.getCode());
                     if (regions != null) {
                         for (Regions regionObj : regions) {
                             if (regionObj.getDescription() != null && regionObj.getDescription().equalsIgnoreCase(regionsPicker.getText().toString())) {

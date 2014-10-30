@@ -42,9 +42,7 @@
         <module name="StilAndroidOpen" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="StilAndroidOpen" target="1.7" />
-      <module name="StilRestClient" target="1.7" />
+    <bytecodeTargetLevel target="1.7">
       <module name="TaxiAndroidOpen" target="1.6" />
     </bytecodeTargetLevel>
   </component>

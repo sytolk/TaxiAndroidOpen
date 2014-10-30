@@ -1,3 +1,4 @@
+/*
 package com.opentaxi.android.asynctask;
 
 import android.content.Context;
@@ -8,13 +9,15 @@ import com.opentaxi.rest.RestClient;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+*/
 /**
  * Created with IntelliJ IDEA.
  * User: stanimir
  * Date: 3/21/13
  * Time: 3:22 PM
  * developer STANIMIR MARINOV
- */
+ *//*
+
 public class RegionsTask extends AsyncTask<Context, Void, Regions[]> {
 
     private static final String TAG = "RegionsTask";
@@ -56,4 +59,4 @@ public class RegionsTask extends AsyncTask<Context, Void, Regions[]> {
     public interface OnTaskCompleted {
         void onTaskCompleted(Map<Integer,String> regionsMap);
     }
-}
+}*/

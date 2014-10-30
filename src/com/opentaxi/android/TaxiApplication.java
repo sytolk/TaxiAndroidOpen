@@ -174,23 +174,26 @@ public class TaxiApplication extends Application {
     }
 
     private void doObtainedLocation(Location location) {
+        try {
+            CoordinatesLight coordinates = new CoordinatesLight();
+            coordinates.setN(location.getLatitude());
+            coordinates.setE(location.getLongitude());
+            coordinates.setT(location.getTime());
+            Intent i = new Intent(this, CoordinatesService.class);
+            i.putExtra("coordinates", coordinates);
+            startService(i);
 
-        CoordinatesLight coordinates  = new CoordinatesLight();
-        coordinates.setN(location.getLatitude());
-        coordinates.setE(location.getLongitude());
-        coordinates.setT(location.getTime());
-        Intent i = new Intent(this, CoordinatesService.class);
-        i.putExtra("coordinates", coordinates);
-        startService(i);
+            if (AppPreferences.getInstance() != null) {
 
-        if (AppPreferences.getInstance() != null) {
-
-            Date now = new Date();
-            AppPreferences.getInstance().setNorth(location.getLatitude());
-            AppPreferences.getInstance().setEast(location.getLongitude());
-            AppPreferences.getInstance().setCurrentLocationTime(location.getTime());
-            AppPreferences.getInstance().setGpsLastTime(now.getTime());
+                Date now = new Date();
+                AppPreferences.getInstance().setNorth(location.getLatitude());
+                AppPreferences.getInstance().setEast(location.getLongitude());
+                AppPreferences.getInstance().setCurrentLocationTime(location.getTime());
+                AppPreferences.getInstance().setGpsLastTime(now.getTime());
+            }
+            Log.i("doObtainedLocation", "onReceive: received location update:" + location.getLatitude() + ", " + location.getLongitude());
+        } catch (Exception e) {
+            Log.e("doObtainedLocation", "onReceive:" + e.getMessage());
         }
-        Log.i("doObtainedLocation", "onReceive: received location update:" + location.getLatitude() + ", " + location.getLongitude());
     }
 }
