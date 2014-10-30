@@ -86,21 +86,6 @@ public final class MainActivity_
         version = ((TextView) hasViews.findViewById(id.txt_version));
         bandwidth = ((TextView) hasViews.findViewById(id.bandwidth));
         {
-            View view = hasViews.findViewById(id.mapButton);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        MainActivity_.this.mapButton();
-                    }
-
-                }
-                );
-            }
-        }
-        {
             View view = hasViews.findViewById(id.exitButton);
             if (view!= null) {
                 view.setOnClickListener(new OnClickListener() {
@@ -131,6 +116,21 @@ public final class MainActivity_
             }
         }
         {
+            View view = hasViews.findViewById(id.mapButton);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        MainActivity_.this.mapButton();
+                    }
+
+                }
+                );
+            }
+        }
+        {
             View view = hasViews.findViewById(id.requestButton);
             if (view!= null) {
                 view.setOnClickListener(new OnClickListener() {
@@ -149,20 +149,6 @@ public final class MainActivity_
     }
 
     @Override
-    public void afterLogin(final String username) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                MainActivity_.super.afterLogin(username);
-            }
-
-        }
-        );
-    }
-
-    @Override
     public void startUserPass() {
         handler_.post(new Runnable() {
 
@@ -170,6 +156,20 @@ public final class MainActivity_
             @Override
             public void run() {
                 MainActivity_.super.startUserPass();
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void afterLogin(final String username) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                MainActivity_.super.afterLogin(username);
             }
 
         }
@@ -241,14 +241,14 @@ public final class MainActivity_
     }
 
     @Override
-    public void beforeStartUserPass() {
+    public void setServers() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    MainActivity_.super.beforeStartUserPass();
+                    MainActivity_.super.setServers();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -277,14 +277,14 @@ public final class MainActivity_
     }
 
     @Override
-    public void setServers() {
+    public void beforeStartUserPass() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    MainActivity_.super.setServers();
+                    MainActivity_.super.beforeStartUserPass();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

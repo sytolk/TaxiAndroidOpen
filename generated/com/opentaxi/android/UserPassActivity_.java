@@ -87,10 +87,10 @@ public final class UserPassActivity_
     @Override
     public void onViewChanged(HasViews hasViews) {
         pass = ((EditText) hasViews.findViewById(id.passwordField));
+        userName = ((EditText) hasViews.findViewById(id.userNameField));
         pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
         submitButton = ((Button) hasViews.findViewById(id.clientLoginButton));
         loginLayout = ((LinearLayout) hasViews.findViewById(id.loginLayout));
-        userName = ((EditText) hasViews.findViewById(id.userNameField));
         {
             View view = hasViews.findViewById(id.lostPassword);
             if (view!= null) {
@@ -100,21 +100,6 @@ public final class UserPassActivity_
                     @Override
                     public void onClick(View view) {
                         UserPassActivity_.this.lostPassword();
-                    }
-
-                }
-                );
-            }
-        }
-        {
-            View view = hasViews.findViewById(id.clientLoginButton);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        UserPassActivity_.this.clientLoginButton();
                     }
 
                 }
@@ -151,7 +136,36 @@ public final class UserPassActivity_
                 );
             }
         }
+        {
+            View view = hasViews.findViewById(id.clientLoginButton);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        UserPassActivity_.this.clientLoginButton();
+                    }
+
+                }
+                );
+            }
+        }
         afterLoad();
+    }
+
+    @Override
+    public void showProgress() {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                UserPassActivity_.super.showProgress();
+            }
+
+        }
+        );
     }
 
     @Override
@@ -176,20 +190,6 @@ public final class UserPassActivity_
             @Override
             public void run() {
                 UserPassActivity_.super.overFacebookLoginTime(title);
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void showProgress() {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                UserPassActivity_.super.showProgress();
             }
 
         }
@@ -225,24 +225,6 @@ public final class UserPassActivity_
     }
 
     @Override
-    public void checkFacebook(final String token) {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    UserPassActivity_.super.checkFacebook(token);
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
     public void maxFacebookLoginTime() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 15000, "") {
 
@@ -269,6 +251,24 @@ public final class UserPassActivity_
             public void execute() {
                 try {
                     UserPassActivity_.super.login(username, password);
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void checkFacebook(final String token) {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    UserPassActivity_.super.checkFacebook(token);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

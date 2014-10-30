@@ -86,20 +86,20 @@ public final class NewRequestActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        destination = ((AutoCompleteTextView) hasViews.findViewById(id.destination));
-        citiesPicker = ((AutoCompleteTextView) hasViews.findViewById(id.citiesPicker));
+        llFilters = ((LinearLayout) hasViews.findViewById(id.llFilters));
         pricesPicker = ((Spinner) hasViews.findViewById(id.pricesPicker));
-        addressText = ((EditText) hasViews.findViewById(id.addressText));
-        addressChange = ((Button) hasViews.findViewById(id.addressChange));
-        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
-        regionsPicker = ((AutoCompleteTextView) hasViews.findViewById(id.regionsPicker));
+        citiesPicker = ((AutoCompleteTextView) hasViews.findViewById(id.citiesPicker));
+        reqInfoButtonContainer = ((LinearLayout) hasViews.findViewById(id.reqInfoButtonContainer));
+        requestSend = ((Button) hasViews.findViewById(id.requestSend));
         regionsLayout = ((LinearLayout) hasViews.findViewById(id.regionsLayout));
         address = ((TextView) hasViews.findViewById(id.address));
-        reqInfoButtonContainer = ((LinearLayout) hasViews.findViewById(id.reqInfoButtonContainer));
-        llFilters = ((LinearLayout) hasViews.findViewById(id.llFilters));
+        destination = ((AutoCompleteTextView) hasViews.findViewById(id.destination));
+        addressText = ((EditText) hasViews.findViewById(id.addressText));
         region = ((TextView) hasViews.findViewById(id.region));
-        requestSend = ((Button) hasViews.findViewById(id.requestSend));
+        regionsPicker = ((AutoCompleteTextView) hasViews.findViewById(id.regionsPicker));
+        addressChange = ((Button) hasViews.findViewById(id.addressChange));
         destLayout = ((LinearLayout) hasViews.findViewById(id.destLayout));
+        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
         {
             View view = hasViews.findViewById(id.requestSend);
             if (view!= null) {
@@ -174,13 +174,13 @@ public final class NewRequestActivity_
     }
 
     @Override
-    public void ErrorDialog() {
+    public void showRegions(final Regions[] regions) {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                NewRequestActivity_.super.ErrorDialog();
+                NewRequestActivity_.super.showRegions(regions);
             }
 
         }
@@ -202,13 +202,13 @@ public final class NewRequestActivity_
     }
 
     @Override
-    public void showCities(final Contactaddress contactAddress) {
+    public void showGroups(final Groups[] groups) {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                NewRequestActivity_.super.showCities(contactAddress);
+                NewRequestActivity_.super.showGroups(groups);
             }
 
         }
@@ -230,13 +230,13 @@ public final class NewRequestActivity_
     }
 
     @Override
-    public void showGroups(final Groups[] groups) {
+    public void ErrorDialog() {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                NewRequestActivity_.super.showGroups(groups);
+                NewRequestActivity_.super.ErrorDialog();
             }
 
         }
@@ -244,13 +244,13 @@ public final class NewRequestActivity_
     }
 
     @Override
-    public void showRegions(final Regions[] regions) {
+    public void showCities(final Contactaddress contactAddress) {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                NewRequestActivity_.super.showRegions(regions);
+                NewRequestActivity_.super.showCities(contactAddress);
             }
 
         }
@@ -272,32 +272,14 @@ public final class NewRequestActivity_
     }
 
     @Override
-    public void setAddress() {
+    public void setGroups() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    NewRequestActivity_.super.setAddress();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void sendRequest(final NewRequestDetails newRequest) {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    NewRequestActivity_.super.sendRequest(newRequest);
+                    NewRequestActivity_.super.setGroups();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -344,14 +326,32 @@ public final class NewRequestActivity_
     }
 
     @Override
-    public void setGroups() {
+    public void sendRequest(final NewRequestDetails newRequest) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    NewRequestActivity_.super.setGroups();
+                    NewRequestActivity_.super.sendRequest(newRequest);
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void setAddress() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    NewRequestActivity_.super.setAddress();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

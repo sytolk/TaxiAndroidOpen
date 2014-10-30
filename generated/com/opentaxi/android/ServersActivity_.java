@@ -74,8 +74,8 @@ public final class ServersActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        cancelButton = ((Button) hasViews.findViewById(id.cancelButton));
         serversContent = ((LinearLayout) hasViews.findViewById(id.serversContent));
+        cancelButton = ((Button) hasViews.findViewById(id.cancelButton));
         {
             View view = hasViews.findViewById(id.cancelButton);
             if (view!= null) {
@@ -138,14 +138,14 @@ public final class ServersActivity_
     }
 
     @Override
-    public void testServer(final String socket) {
+    public void updateServers() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    ServersActivity_.super.testServer(socket);
+                    ServersActivity_.super.updateServers();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -156,14 +156,14 @@ public final class ServersActivity_
     }
 
     @Override
-    public void updateServers() {
+    public void testServer(final String socket) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    ServersActivity_.super.updateServers();
+                    ServersActivity_.super.testServer(socket);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

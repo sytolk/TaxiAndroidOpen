@@ -74,8 +74,23 @@ public final class RequestsActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
         requests_table = ((TableLayout) hasViews.findViewById(id.requests_table));
+        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
+        {
+            View view = hasViews.findViewById(id.newRequests);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        RequestsActivity_.this.newRequests();
+                    }
+
+                }
+                );
+            }
+        }
         {
             View view = hasViews.findViewById(id.requestsHistory);
             if (view!= null) {
@@ -106,21 +121,6 @@ public final class RequestsActivity_
                 );
             }
         }
-        {
-            View view = hasViews.findViewById(id.newRequests);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        RequestsActivity_.this.newRequests();
-                    }
-
-                }
-                );
-            }
-        }
         afterRequestsActivity();
     }
 
@@ -132,20 +132,6 @@ public final class RequestsActivity_
                 RequestsActivity_.this.onResult();
                 break;
         }
-    }
-
-    @Override
-    public void setActivityTile(final String title) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                RequestsActivity_.super.setActivityTile(title);
-            }
-
-        }
-        );
     }
 
     @Override
@@ -163,35 +149,13 @@ public final class RequestsActivity_
     }
 
     @Override
-    public void scheduleRequestSec() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 1000, "") {
+    public void setActivityTile(final String title) {
+        handler_.post(new Runnable() {
 
 
             @Override
-            public void execute() {
-                try {
-                    RequestsActivity_.super.scheduleRequestSec();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void getRequests() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    RequestsActivity_.super.getRequests();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
+            public void run() {
+                RequestsActivity_.super.setActivityTile(title);
             }
 
         }
@@ -217,6 +181,24 @@ public final class RequestsActivity_
     }
 
     @Override
+    public void scheduleRequestSec() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 1000, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    RequestsActivity_.super.scheduleRequestSec();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
     public void scheduleRequest() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 10000, "") {
 
@@ -225,6 +207,24 @@ public final class RequestsActivity_
             public void execute() {
                 try {
                     RequestsActivity_.super.scheduleRequest();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void getRequests() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    RequestsActivity_.super.getRequests();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

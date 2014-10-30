@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.*;
 import com.opentaxi.android.adapters.GroupsAdapter;
 import com.opentaxi.android.adapters.RegionsAdapter;
 import com.opentaxi.android.utils.AppPreferences;
+import com.opentaxi.android.utils.MyGeocoder;
 import com.opentaxi.models.MapRequest;
 import com.opentaxi.models.NewRequestDetails;
 import com.opentaxi.rest.RestClient;
@@ -273,7 +275,7 @@ public class NewRequestActivity extends Activity {
 
     @Background
     void setAddress() {
-        Log.i(TAG, "setAddress");
+        //Log.i(TAG, "setAddress");
         if (this.mapRequest == null) {
             if (AppPreferences.getInstance() != null && AppPreferences.getInstance().getNorth() != null && AppPreferences.getInstance().getEast() != null) {
                 Date now = new Date();
@@ -297,31 +299,40 @@ public class NewRequestActivity extends Activity {
                 } else
                     Log.i(TAG, "GpsLastTime " + AppPreferences.getInstance().getGpsLastTime() + " > " + (now.getTime() - 600000) + " min");
 
-                Geocoder geocoder = new Geocoder(this);
-                try {
-                    List<Address> addresses = geocoder.getFromLocation(AppPreferences.getInstance().getNorth(), AppPreferences.getInstance().getEast(), 1);
-                    if (addresses != null && !addresses.isEmpty()) {
-                        // Get the first address
-                        Address address = addresses.get(0);
-                        if (address.getLocality() != null) {
-                            Log.i(TAG, address.toString());
-                            //Address[addressLines=[0:"улица „Елин Пелин“ 6",1:"8142 Chernomorets",2:"Bulgaria"],feature=6,admin=Burgas,sub-admin=Sozopol,locality=Chernomorets,thoroughfare=улица „Елин Пелин“,postalCode=null,countryCode=BG,countryName=Bulgaria,hasLatitude=true,latitude=42.4429078,hasLongitude=true,longitude=27.6423008,phone=null,url=null,extras=null]
+                List<Address> addresses = null;
 
-                            this.mapRequest = new MapRequest();
-                            this.mapRequest.setNorth(address.getLatitude());
-                            this.mapRequest.setEast(address.getLongitude());
-                            this.mapRequest.setCity(address.getLocality());
-                            if (address.getMaxAddressLineIndex() > 0)
-                                this.mapRequest.setAddress(address.getAddressLine(0));
-                            showAddress(this.mapRequest.getCity(), null, this.mapRequest.getAddress());
-                            return;
-                        }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD && Geocoder.isPresent()) {
+                    try {
+                        Geocoder geocoder = new Geocoder(this);
+                        addresses = geocoder.getFromLocation(AppPreferences.getInstance().getNorth(), AppPreferences.getInstance().getEast(), 1);
+                        if (addresses == null || addresses.isEmpty())
+                            addresses = MyGeocoder.getFromLocation(AppPreferences.getInstance().getNorth(), AppPreferences.getInstance().getEast(), 1);
+                    } catch (IOException e) {
+                        addresses = MyGeocoder.getFromLocation(AppPreferences.getInstance().getNorth(), AppPreferences.getInstance().getEast(), 1);
+                        Log.e(TAG, "IOException:" + e.getMessage());
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } else {
+                    addresses = MyGeocoder.getFromLocation(AppPreferences.getInstance().getNorth(), AppPreferences.getInstance().getEast(), 1);
+                    Log.i(TAG, "Geocoder not present");
                 }
-                //todo make it solr geonames api
-                //address = GoogleApiRestClient.getInstance().getAddress(AppPreferences.getInstance().getNorth(), AppPreferences.getInstance().getEast());
+
+                if (addresses != null && !addresses.isEmpty()) {
+                    // Get the first address
+                    Address address = addresses.get(0);
+                    if (address.getLocality() != null) {
+                        Log.i(TAG, address.toString());
+                        //Address[addressLines=[0:"улица „Елин Пелин“ 6",1:"8142 Chernomorets",2:"Bulgaria"],feature=6,admin=Burgas,sub-admin=Sozopol,locality=Chernomorets,thoroughfare=улица „Елин Пелин“,postalCode=null,countryCode=BG,countryName=Bulgaria,hasLatitude=true,latitude=42.4429078,hasLongitude=true,longitude=27.6423008,phone=null,url=null,extras=null]
+
+                        this.mapRequest = new MapRequest();
+                        this.mapRequest.setNorth(address.getLatitude());
+                        this.mapRequest.setEast(address.getLongitude());
+                        this.mapRequest.setCity(address.getLocality());
+                        if (address.getMaxAddressLineIndex() > 0)
+                            this.mapRequest.setAddress(address.getAddressLine(0));
+                        showAddress(this.mapRequest.getCity(), null, this.mapRequest.getAddress());
+                        return;
+                    }
+                }
             }
 
             showAddress(null, null, null);

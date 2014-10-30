@@ -156,31 +156,27 @@ public class LongPressMapAction extends LocationOverlayMapViewer {
             this.mapRequest.setEast(position.longitude);
             showTextCircle(this.mapRequest);
             return;
-        } else Log.i(TAG, "address=null");
+        }
+
+        List<Address> addresses = null;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD && Geocoder.isPresent()) {
-            Geocoder geocoder = new Geocoder(this);
             try {
-                List<Address> addresses = geocoder.getFromLocation(position.latitude, position.longitude, 1);
+                Geocoder geocoder = new Geocoder(this);
+                addresses = geocoder.getFromLocation(position.latitude, position.longitude, 1);
                 //Log.i(TAG, "Address from Geocoder:" + addresses.toString());
-                if (addresses == null || addresses.isEmpty()) {
+                if (addresses == null || addresses.isEmpty())
                     addresses = MyGeocoder.getFromLocation(position.latitude, position.longitude, 1);
-                }
-                processAddress(position.latitude, position.longitude, addresses);
 
             } catch (IOException e) {
-                List<Address> addresses = MyGeocoder.getFromLocation(position.latitude, position.longitude, 1);
-                processAddress(position.latitude, position.longitude, addresses);
+                addresses = MyGeocoder.getFromLocation(position.latitude, position.longitude, 1);
                 Log.e(TAG, "IOException:" + e.getMessage());
             }
         } else {
-            Log.e(TAG, "Geocoder not present");
-            List<Address> addresses = MyGeocoder.getFromLocation(position.latitude, position.longitude, 1);
-            processAddress(position.latitude, position.longitude, addresses);
+            addresses = MyGeocoder.getFromLocation(position.latitude, position.longitude, 1);
+            Log.i(TAG, "Geocoder not present");
         }
-    }
 
-    private void processAddress(double latitude, double longitude, List<Address> addresses) {
         if (addresses != null && !addresses.isEmpty()) {
             Address gAddr = addresses.get(0);
             Log.i(TAG, gAddr.toString());
@@ -192,9 +188,9 @@ public class LongPressMapAction extends LocationOverlayMapViewer {
                         this.mapRequest.setAddress(adr);
                 }
                 if (gAddr.getLatitude() > 0) this.mapRequest.setNorth(gAddr.getLatitude());
-                else this.mapRequest.setNorth(latitude);
+                else this.mapRequest.setNorth(position.latitude);
                 if (gAddr.getLongitude() > 0) this.mapRequest.setEast(gAddr.getLongitude());
-                else this.mapRequest.setEast(longitude);
+                else this.mapRequest.setEast(position.longitude);
                 showTextCircle(this.mapRequest);
             } else Log.i(TAG, "Address from Geocoder no getLocality");
         }
