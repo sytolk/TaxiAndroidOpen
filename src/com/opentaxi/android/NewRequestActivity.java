@@ -154,8 +154,8 @@ public class NewRequestActivity extends Activity {
                 showCities(contactAddress);
                 if (contactAddress.getCountryinfogeonamesid() != null) {
                     showRegions(RestClient.getInstance().getRegionsByGN(contactAddress.getCountryinfogeonamesid()));
-                }
-            }
+                } else showRegions(RestClient.getInstance().getRegions(RegionsType.BURGAS_STATE.getCode()));
+            } else showRegions(RestClient.getInstance().getRegions(RegionsType.BURGAS_STATE.getCode()));
         }
     }
 
@@ -327,8 +327,11 @@ public class NewRequestActivity extends Activity {
                         this.mapRequest.setNorth(address.getLatitude());
                         this.mapRequest.setEast(address.getLongitude());
                         this.mapRequest.setCity(address.getLocality());
-                        if (address.getMaxAddressLineIndex() > 0)
-                            this.mapRequest.setAddress(address.getAddressLine(0));
+                        if (address.getMaxAddressLineIndex() >= 0) {
+                            String adr = address.getAddressLine(0);
+                            if (adr != null && !adr.equals("Unnamed Rd"))
+                                this.mapRequest.setAddress(address.getAddressLine(0));
+                        }
                         showAddress(this.mapRequest.getCity(), null, this.mapRequest.getAddress());
                         return;
                     }
@@ -469,7 +472,7 @@ public class NewRequestActivity extends Activity {
                 Integer regionsId = null;
 
                 if (city.equalsIgnoreCase("бургас") || city.equalsIgnoreCase("burgas") || city.equalsIgnoreCase("bourgas")) {
-                    Regions[] regions = RestClient.getInstance().getRegions(RegionsType.BURGAS_STATE.getCode());
+                    Regions[] regions = RestClient.getInstance().getRegions(RegionsType.BURGAS_STATE.getCode()); //todo in background
                     if (regions != null) {
                         for (Regions regionObj : regions) {
                             if (regionObj.getDescription() != null && regionObj.getDescription().equalsIgnoreCase(regionsPicker.getText().toString())) {

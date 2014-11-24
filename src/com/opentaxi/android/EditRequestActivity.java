@@ -5,17 +5,16 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import com.opentaxi.android.adapters.GroupsAdapter;
 import com.opentaxi.android.adapters.RegionsAdapter;
-import com.opentaxi.models.NewCRequest;
+import com.opentaxi.models.NewCRequestDetails;
 import com.opentaxi.models.NewRequestDetails;
 import com.opentaxi.rest.RestClient;
+import com.opentaxi.rest.RestClientBase;
 import com.stil.generated.mysql.tables.pojos.Contactaddress;
 import com.stil.generated.mysql.tables.pojos.Groups;
 import com.stil.generated.mysql.tables.pojos.Regions;
@@ -41,7 +40,7 @@ public class EditRequestActivity extends Activity {
     private static final String TAG = "EditRequestActivity";
 
     @Extra
-    NewCRequest newCRequest;
+    NewCRequestDetails newCRequest;
 
     @ViewById(R.id.addressImage)
     ToggleButton addressImage;
@@ -82,7 +81,10 @@ public class EditRequestActivity extends Activity {
     @ViewById
     Button requestSend;
 
-    private static final int SHOW_ADDRESS_ON_MAP = 990;
+    @ViewById(R.id.destLayout)
+    LinearLayout destLayout;
+
+    //private static final int SHOW_ADDRESS_ON_MAP = 990;
 
     @AfterViews
     protected void afterActivity() {
@@ -99,15 +101,38 @@ public class EditRequestActivity extends Activity {
 
         addressImage.setVisibility(View.INVISIBLE);
 
-        setCities();
-        setRegions();
+        if (newCRequest != null) {
+            if (newCRequest.getDetails() != null) {
+                if (newCRequest.getDetails().getFromCity() != null)
+                    citiesPicker.setText(newCRequest.getDetails().getFromCity());
+                else setCities();
+
+                if (newCRequest.getDetails().getFromGnId() != null) {
+                    setRegionsByGN(newCRequest.getDetails().getFromGnId());
+                } else setRegions();
+
+                if (newCRequest.getDetails().getDestination() != null) {
+                    destination.setText(newCRequest.getDetails().getDestination());
+                    destLayout.setVisibility(View.VISIBLE);
+                }
+
+            } else {
+                setCities();
+                setRegions();
+            }
+            showAddress(newCRequest.getFullAddress());
+        } else {
+            setCities();
+            showAddress("");
+            setRegions();
+        }
         setPrices();
         setGroups();
         //address.setText("Адреса се определя автоматично според координатите ви. Моля изчакайте...");
         //addressText.setVisibility(View.GONE);
     }
 
-    @OnActivityResult(SHOW_ADDRESS_ON_MAP)
+    /*@OnActivityResult(SHOW_ADDRESS_ON_MAP)
     void onResult(int resultCode, Intent data) {
         //Log.i(TAG, "" + resultCode + " " + data);
         if (resultCode == Activity.RESULT_OK && data != null) {
@@ -117,7 +142,7 @@ public class EditRequestActivity extends Activity {
                 showAddress();
             }
         } else Log.e(TAG, "" + resultCode);
-    }
+    }*/
 
     @Background
     void setCities() {
@@ -148,6 +173,13 @@ public class EditRequestActivity extends Activity {
         showRegions(RestClient.getInstance().getRegions(RegionsType.BURGAS_STATE.getCode()));
     }
 
+    @Background
+    void setRegionsByGN(Integer gnId) {
+        showRegions(RestClient.getInstance().getRegionsByGN(gnId));
+    }
+
+    //todo @FocusChange on city getRegionsByCityName
+
     @UiThread
     void showRegions(Regions[] regions) {
         if (regions != null) {
@@ -169,7 +201,7 @@ public class EditRequestActivity extends Activity {
             adapter2.setDropDownViewResource(R.layout.spinner_layout);
             regionsPicker.setAdapter(adapter2);
         }
-        showAddress();
+        //showAddress();
     }
 
     @Background
@@ -244,9 +276,9 @@ public class EditRequestActivity extends Activity {
         pricesPicker.setAdapter(adapter2);
     }
 
-    void showAddress() {
+    void showAddress(String adr) {
         address.setText(R.string.address);
-        if (newCRequest != null) addressText.setText(newCRequest.getFullAddress());
+        addressText.setText(adr);
         addressText.setVisibility(View.VISIBLE);
     }
 
@@ -289,14 +321,14 @@ public class EditRequestActivity extends Activity {
         }
     }*/
 
-    @Override
+    /*@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-           /* if (requestCode == REJECTION) {
+           *//* if (requestCode == REJECTION) {
                 finish();
-            }*/
+            }*//*
         }
-    }
+    }*/
 
     @Override
     public void onPause() {
@@ -334,6 +366,9 @@ public class EditRequestActivity extends Activity {
 
             RequestsDetails requestsDetails = new RequestsDetails();
             requestsDetails.setFromCity(citiesPicker.getText().toString());
+
+            if (destination.getText() != null && !destination.getText().toString().isEmpty())
+                requestsDetails.setDestination(destination.getText().toString());
             newRequest.setDetails(requestsDetails);
 
             if (regionsPicker.getText() != null && !regionsPicker.getText().toString().isEmpty()) {
@@ -359,9 +394,13 @@ public class EditRequestActivity extends Activity {
 
             List<Groups> filterGroups = new ArrayList<Groups>();
             Groups[] visibleGroups = RestClient.getInstance().getClientVisibleGroups();
-            for (Groups group : visibleGroups) {
-                CheckBox cb = (CheckBox) findViewById(group.getGroupsId());
-                if (cb.isChecked()) filterGroups.add(group);
+            if (visibleGroups != null) {
+                for (Groups group : visibleGroups) {
+                    if (group != null && group.getGroupsId() != null) {
+                        CheckBox cb = (CheckBox) findViewById(group.getGroupsId());
+                        if (cb.isChecked()) filterGroups.add(group);
+                    } else RestClient.getInstance().clearCache(RestClientBase.getVisibleGroupsKey);
+                }
             }
             GroupsAdapter priceAdapter = (GroupsAdapter) pricesPicker.getSelectedItem();
             if (priceAdapter != null) filterGroups.add(priceAdapter.getGroups());
@@ -428,7 +467,7 @@ public class EditRequestActivity extends Activity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                RequestsActivity_.intent(EditRequestActivity.this).start();
+                //RequestsActivity_.intent(EditRequestActivity.this).start();
                 finish();
             }
         });

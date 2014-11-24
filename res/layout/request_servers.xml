@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:id="@id/serversContent"
+        android:id="@+id/serversContent"
         android:paddingTop="5.0px"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>

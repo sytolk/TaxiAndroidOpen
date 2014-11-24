@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.*;
-import com.opentaxi.models.NewCRequest;
+import com.opentaxi.models.NewCRequestDetails;
 import com.opentaxi.rest.RestClient;
 import com.stil.generated.mysql.tables.pojos.Feedback;
 import com.stil.generated.mysql.tables.pojos.Groups;
@@ -40,7 +40,7 @@ public class RequestDetailsActivity extends Activity {
     private static final String TAG = "RequestDetailsActivity";
 
     @Extra
-    NewCRequest newCRequest;
+    NewCRequestDetails newCRequest;
 
     @ViewById
     TextView requestNumber;
@@ -79,11 +79,14 @@ public class RequestDetailsActivity extends Activity {
     TextView state;
 
     private static final int CAR_DETAILS = 9;
+    private static final int EDIT_REQUEST = 10;
+
+    private Regions[] regions;
 
     public void onPause() {
         super.onPause();
         TaxiApplication.requestsDetailsPaused();
-        finish();
+        //finish();
     }
 
     @Override
@@ -93,19 +96,31 @@ public class RequestDetailsActivity extends Activity {
         scheduleChangesSec();
     }
 
-    @OnActivityResult(CAR_DETAILS)
+    /*@OnActivityResult(CAR_DETAILS)
     void onResult() {
     }
 
+    @OnActivityResult(EDIT_REQUEST)
+    void onEditRequest() {
+
+    }*/
+
     @AfterViews
     void afterRequestsActivity() {
-        showDetails();
+        scheduleChangesNow();
+    }
+
+    @Background
+    void scheduleChangesNow() {
+        NewCRequestDetails cRequest = RestClient.getInstance().getRequestDetails(newCRequest.getRequestsId());
+        if (cRequest != null) newCRequest = cRequest;
+        regions = RestClient.getInstance().getRegions(RegionsType.BURGAS_STATE.getCode());
     }
 
     @Background(delay = 1000)
     void scheduleChangesSec() {
         if (TaxiApplication.isRequestsDetailsVisible()) {
-            NewCRequest cRequest = RestClient.getInstance().getRequestDetails(newCRequest.getRequestsId());
+            NewCRequestDetails cRequest = RestClient.getInstance().getRequestDetails(newCRequest.getRequestsId());
             if (cRequest != null) newCRequest = cRequest;
             showDetails();
         }
@@ -114,7 +129,7 @@ public class RequestDetailsActivity extends Activity {
     @Background(delay = 10000)
     void scheduleChanges() {
         if (TaxiApplication.isRequestsDetailsVisible()) {
-            NewCRequest cRequest = RestClient.getInstance().getRequestDetails(newCRequest.getRequestsId());
+            NewCRequestDetails cRequest = RestClient.getInstance().getRequestDetails(newCRequest.getRequestsId());
             if (cRequest != null) newCRequest = cRequest;
             showDetails();
         }
@@ -127,10 +142,22 @@ public class RequestDetailsActivity extends Activity {
                 if (requestNumber != null) {
                     requestNumber.setText(newCRequest.getRequestsId().toString());
                     datecreated.setText(DateFormat.getDateInstance(DateFormat.SHORT).format(newCRequest.getDatecreated()));
-                    Regions regions = RestClient.getInstance().getRegionById(RegionsType.BURGAS_STATE.getCode(), newCRequest.getRegionId());
-                    if (regions != null) {
-                        address.setText(regions.getDescription() + " " + newCRequest.getFullAddress());
-                    } else address.setText(newCRequest.getFullAddress());
+                    StringBuilder adr = new StringBuilder();
+                    String destination = null;
+                    if (newCRequest.getDetails() != null && newCRequest.getDetails().getFromCity() != null) {
+                        adr.append(newCRequest.getDetails().getFromCity()).append(" ");
+                        destination = newCRequest.getDetails().getDestination();
+                    }
+
+                    //Regions regions = RestClient.getInstance().getRegionById(RegionsType.BURGAS_STATE.getCode(), newCRequest.getRegionId());
+                    if(regions!=null) {
+                        Regions region = getRegionById(regions, newCRequest.getRegionId());
+                        if (region != null) adr.append(region.getDescription()).append(" ");
+                    }
+
+                    adr.append(newCRequest.getFullAddress());
+                    if (destination != null) adr.append(" \\").append(destination).append("\\");
+                    address.setText(adr.toString());
 
                     if (newCRequest.getCarNumber() != null && !newCRequest.getCarNumber().equals("")) {
                         car.setText((newCRequest.getNotes() != null ? newCRequest.getNotes() : "") + " №" + newCRequest.getCarNumber());
@@ -210,6 +237,17 @@ public class RequestDetailsActivity extends Activity {
         }
     }
 
+    private Regions getRegionById(Regions[] regions, Integer regionId) {
+        if (regionId != null) {
+            if (regions != null) {
+                for (Regions region : regions) {
+                    if (region != null && region.getId().equals(regionId)) return region;
+                }
+            }
+        }
+        return null;
+    }
+
     @Click
     void okButton() {
         TaxiApplication.requestsDetailsPaused();
@@ -261,7 +299,7 @@ public class RequestDetailsActivity extends Activity {
         requestsIntent.putExtra("newCRequest", newCRequest);
         // proposalIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         // proposalIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        RequestDetailsActivity.this.startActivity(requestsIntent);
+        RequestDetailsActivity.this.startActivityForResult(requestsIntent, EDIT_REQUEST);
         finish();
     }
 

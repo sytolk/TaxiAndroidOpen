@@ -21,7 +21,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
-import com.opentaxi.rest.RestClient;
+import com.opentaxi.android.service.GCMRegisterService;
 
 
 /**
@@ -42,9 +42,10 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
             if (regId != null && !regId.equals("")) {
       /* Do what ever you want with the regId eg. send it to your server */
                 Log.i("GcmBroadcastReceiver", "onReceive:" + regId);
-                //String oldRegid = RestClient.getInstance().getGCMRegistrationId();
-                //if (oldRegid == null || !oldRegid.equals(regId))
-                RestClient.getInstance().gcmRegister(regId);
+                //RestClient.getInstance().gcmRegister(regId);
+                Intent i = new Intent(context, GCMRegisterService.class);
+                i.putExtra("regId", regId);
+                context.startService(i);
             }
         }
 

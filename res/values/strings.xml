@@ -39,6 +39,7 @@
     <string name="NEW_REQUEST_REJECTED">Rejected from car</string>
     <string name="NEW_REQUEST_EDIT">Edit</string>
     <string name="NEW_REQUEST_DELETE">Deleted</string>
+    <string name="NEW_REQUEST_SCHEDULED">Scheduled request</string>
     <string name="ERROR_NO_FREE_CARS">No free cars</string>
 
     <string name="new_version">New version available</string>

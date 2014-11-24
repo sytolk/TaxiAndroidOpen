@@ -31,6 +31,8 @@ Using project dependencies:
 
 for map export view osmosis.txt in doc.
 
+About translating, please visit https://hosted.weblate.org/projects/taxi-android-open/strings/ 
+
 ##License
 
 Copyright [2013] [Stanimir Marinov]

@@ -20,6 +20,7 @@ import android.widget.TableLayout;
 import com.opentaxi.android.R.id;
 import com.opentaxi.android.R.layout;
 import com.opentaxi.models.RequestCView;
+import com.stil.generated.mysql.tables.pojos.Regions;
 import org.androidannotations.api.BackgroundExecutor;
 import org.androidannotations.api.view.HasViews;
 import org.androidannotations.api.view.OnViewChangedListener;
@@ -74,8 +75,8 @@ public final class RequestsActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        requests_table = ((TableLayout) hasViews.findViewById(id.requests_table));
         pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
+        requests_table = ((TableLayout) hasViews.findViewById(id.requests_table));
         {
             View view = hasViews.findViewById(id.newRequests);
             if (view!= null) {
@@ -85,21 +86,6 @@ public final class RequestsActivity_
                     @Override
                     public void onClick(View view) {
                         RequestsActivity_.this.newRequests();
-                    }
-
-                }
-                );
-            }
-        }
-        {
-            View view = hasViews.findViewById(id.requestsHistory);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        RequestsActivity_.this.requestsHistory();
                     }
 
                 }
@@ -121,6 +107,21 @@ public final class RequestsActivity_
                 );
             }
         }
+        {
+            View view = hasViews.findViewById(id.requestsHistory);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        RequestsActivity_.this.requestsHistory();
+                    }
+
+                }
+                );
+            }
+        }
         afterRequestsActivity();
     }
 
@@ -135,13 +136,13 @@ public final class RequestsActivity_
     }
 
     @Override
-    public void showRequests(final RequestCView requests) {
+    public void showRequests(final Regions[] regions, final RequestCView requests) {
         handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                RequestsActivity_.super.showRequests(requests);
+                RequestsActivity_.super.showRequests(regions, requests);
             }
 
         }
@@ -156,24 +157,6 @@ public final class RequestsActivity_
             @Override
             public void run() {
                 RequestsActivity_.super.setActivityTile(title);
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void getRequestHistory() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    RequestsActivity_.super.getRequestHistory();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
             }
 
         }
@@ -207,6 +190,24 @@ public final class RequestsActivity_
             public void execute() {
                 try {
                     RequestsActivity_.super.scheduleRequest();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void getRequestHistory() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    RequestsActivity_.super.getRequestHistory();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

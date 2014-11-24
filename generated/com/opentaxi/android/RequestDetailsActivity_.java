@@ -21,7 +21,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.opentaxi.android.R.id;
 import com.opentaxi.android.R.layout;
-import com.opentaxi.models.NewCRequest;
+import com.opentaxi.models.NewCRequestDetails;
 import com.stil.generated.mysql.tables.pojos.Feedback;
 import org.androidannotations.api.BackgroundExecutor;
 import org.androidannotations.api.view.HasViews;
@@ -80,33 +80,18 @@ public final class RequestDetailsActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        requestNumber = ((TextView) hasViews.findViewById(id.requestNumber));
-        price_group = ((TextView) hasViews.findViewById(id.price_group));
-        car = ((TextView) hasViews.findViewById(id.car));
-        remaining_time = ((TextView) hasViews.findViewById(id.remaining_time));
-        editButton = ((Button) hasViews.findViewById(id.editButton));
-        rejectButton = ((Button) hasViews.findViewById(id.rejectButton));
-        feedBackButton = ((Button) hasViews.findViewById(id.feedBackButton));
         arrive_time = ((TextView) hasViews.findViewById(id.arrive_time));
-        address = ((TextView) hasViews.findViewById(id.address));
-        datecreated = ((TextView) hasViews.findViewById(id.datecreated));
-        chosen_group = ((TextView) hasViews.findViewById(id.chosen_group));
+        feedBackButton = ((Button) hasViews.findViewById(id.feedBackButton));
         state = ((TextView) hasViews.findViewById(id.state));
-        {
-            View view = hasViews.findViewById(id.rejectButton);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        RequestDetailsActivity_.this.rejectButton();
-                    }
-
-                }
-                );
-            }
-        }
+        car = ((TextView) hasViews.findViewById(id.car));
+        rejectButton = ((Button) hasViews.findViewById(id.rejectButton));
+        price_group = ((TextView) hasViews.findViewById(id.price_group));
+        remaining_time = ((TextView) hasViews.findViewById(id.remaining_time));
+        requestNumber = ((TextView) hasViews.findViewById(id.requestNumber));
+        datecreated = ((TextView) hasViews.findViewById(id.datecreated));
+        editButton = ((Button) hasViews.findViewById(id.editButton));
+        address = ((TextView) hasViews.findViewById(id.address));
+        chosen_group = ((TextView) hasViews.findViewById(id.chosen_group));
         {
             View view = hasViews.findViewById(id.feedBackButton);
             if (view!= null) {
@@ -116,21 +101,6 @@ public final class RequestDetailsActivity_
                     @Override
                     public void onClick(View view) {
                         RequestDetailsActivity_.this.feedBackButton();
-                    }
-
-                }
-                );
-            }
-        }
-        {
-            View view = hasViews.findViewById(id.editButton);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        RequestDetailsActivity_.this.editButton();
                     }
 
                 }
@@ -152,6 +122,36 @@ public final class RequestDetailsActivity_
                 );
             }
         }
+        {
+            View view = hasViews.findViewById(id.rejectButton);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        RequestDetailsActivity_.this.rejectButton();
+                    }
+
+                }
+                );
+            }
+        }
+        {
+            View view = hasViews.findViewById(id.editButton);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        RequestDetailsActivity_.this.editButton();
+                    }
+
+                }
+                );
+            }
+        }
         afterRequestsActivity();
     }
 
@@ -159,7 +159,7 @@ public final class RequestDetailsActivity_
         Bundle extras_ = getIntent().getExtras();
         if (extras_!= null) {
             if (extras_.containsKey(NEW_C_REQUEST_EXTRA)) {
-                newCRequest = ((NewCRequest) extras_.getSerializable(NEW_C_REQUEST_EXTRA));
+                newCRequest = ((NewCRequestDetails) extras_.getSerializable(NEW_C_REQUEST_EXTRA));
             }
         }
     }
@@ -168,16 +168,6 @@ public final class RequestDetailsActivity_
     public void setIntent(Intent newIntent) {
         super.setIntent(newIntent);
         injectExtras_();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case  9 :
-                RequestDetailsActivity_.this.onResult();
-                break;
-        }
     }
 
     @Override
@@ -209,6 +199,42 @@ public final class RequestDetailsActivity_
     }
 
     @Override
+    public void scheduleChanges() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 10000, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    RequestDetailsActivity_.super.scheduleChanges();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void scheduleChangesNow() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    RequestDetailsActivity_.super.scheduleChangesNow();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
     public void scheduleChangesSec() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 1000, "") {
 
@@ -217,6 +243,24 @@ public final class RequestDetailsActivity_
             public void execute() {
                 try {
                     RequestDetailsActivity_.super.scheduleChangesSec();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void rejectRequest(final String reason) {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    RequestDetailsActivity_.super.rejectRequest(reason);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -253,42 +297,6 @@ public final class RequestDetailsActivity_
             public void execute() {
                 try {
                     RequestDetailsActivity_.super.setFeedBack();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void scheduleChanges() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 10000, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    RequestDetailsActivity_.super.scheduleChanges();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void rejectRequest(final String reason) {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    RequestDetailsActivity_.super.rejectRequest(reason);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -340,7 +348,7 @@ public final class RequestDetailsActivity_
             }
         }
 
-        public RequestDetailsActivity_.IntentBuilder_ newCRequest(NewCRequest newCRequest) {
+        public RequestDetailsActivity_.IntentBuilder_ newCRequest(NewCRequestDetails newCRequest) {
             intent_.putExtra(NEW_C_REQUEST_EXTRA, ((Serializable) newCRequest));
             return this;
         }

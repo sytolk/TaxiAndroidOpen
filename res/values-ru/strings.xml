@@ -29,6 +29,7 @@
     <string name="NEW_REQUEST_REJECTED">Отказался на машине</string>
     <string name="NEW_REQUEST_EDIT">Изменен</string>
     <string name="NEW_REQUEST_DELETE">Удаленные</string>
+    <string name="NEW_REQUEST_SCHEDULED">Запланированные запрос</string>
     <string name="ERROR_NO_FREE_CARS">Нет доступных такси</string>
 
     <string name="new_version">Новая версия</string>

@@ -29,6 +29,7 @@
     <string name="NEW_REQUEST_REJECTED">Отказана от колата</string>
     <string name="NEW_REQUEST_EDIT">Променена</string>
     <string name="NEW_REQUEST_DELETE">Изтрита</string>
+    <string name="NEW_REQUEST_SCHEDULED">Планирана поръчка</string>
     <string name="ERROR_NO_FREE_CARS">Няма свободни коли</string>
 
     <string name="new_version">Налична нова версия</string>

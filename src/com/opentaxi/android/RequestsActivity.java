@@ -10,6 +10,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import com.opentaxi.models.NewCRequest;
+import com.opentaxi.models.NewCRequestDetails;
 import com.opentaxi.models.RequestCView;
 import com.opentaxi.rest.RestClient;
 import com.stil.generated.mysql.tables.pojos.Regions;
@@ -104,7 +105,7 @@ public class RequestsActivity extends Activity {
         requestView.setSearchString(searchString);
         requestView.setSearchOper(searchOper);*/
             requestView.setMy(true);
-            showRequests(RestClient.getInstance().getRequests(requestView));
+            showRequests(RestClient.getInstance().getRegions(RegionsType.BURGAS_STATE.getCode()),RestClient.getInstance().getRequests(requestView));
         }
         scheduleRequest();
     }
@@ -116,7 +117,7 @@ public class RequestsActivity extends Activity {
         requestView.setPage(1);
         requestView.setMy(true);
         requestView.setRequestStatus(RequestStatus.NEW_REQUEST_DONE.getCode());
-        showRequests(RestClient.getInstance().getRequests(requestView));
+        showRequests(RestClient.getInstance().getRegions(RegionsType.BURGAS_STATE.getCode()),RestClient.getInstance().getRequests(requestView));
     }
 
     @UiThread
@@ -125,7 +126,7 @@ public class RequestsActivity extends Activity {
     }
 
     @UiThread
-    void showRequests(RequestCView requests) {
+    void showRequests(Regions[] regions, RequestCView requests) {
         synchronized (this) {
             long currDate = new Date().getTime();
             if (TaxiApplication.isRequestsVisible() && currDate > (lastShowRequests + 5000)) {
@@ -211,9 +212,10 @@ public class RequestsActivity extends Activity {
 
                                 //id.setText(requestMap.get("id").toString());
                                 //date.setText(requestMap.get("datecreated").toString()); //DateFormat.getDateInstance(DateFormat.SHORT).format(requestMap.get("datecreated")));
-                                Regions regions = RestClient.getInstance().getRegionById(RegionsType.BURGAS_STATE.getCode(), newCRequest.getRegionId());
-                                if (regions != null) {
-                                    address.setText(regions.getDescription() + " " + newCRequest.getFullAddress());
+                                //Regions regions = RestClient.getInstance().getRegionById(RegionsType.BURGAS_STATE.getCode(), newCRequest.getRegionId());
+                                Regions region = getRegionById(regions, newCRequest.getRegionId());
+                                if (region != null) {
+                                    address.setText(region.getDescription() + " " + newCRequest.getFullAddress());
                                 } else address.setText(newCRequest.getFullAddress());
                                 time.setText(newCRequest.getDispTime() + " мин.");
                                 if (newCRequest.getCarNumber() != null && !newCRequest.getCarNumber().equals(""))
@@ -238,7 +240,7 @@ public class RequestsActivity extends Activity {
                                         // RequestDetailsActivity_.intent(RequestsActivity.this).myDateExtra().
                                         //InquiryQuestionActivity_.intent(InquiryActivity.this).myDataExtra().startForResult();
                                         Intent requestsIntent = new Intent(RequestsActivity.this, RequestDetailsActivity_.class);
-                                        requestsIntent.putExtra("newCRequest", newCRequest);
+                                        requestsIntent.putExtra("newCRequest", toRequestDetails(newCRequest));
                                         // proposalIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         // proposalIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                         RequestsActivity.this.startActivityForResult(requestsIntent, REQUEST_DETAILS);
@@ -271,6 +273,47 @@ public class RequestsActivity extends Activity {
                 }
             }
         }
+    }
+
+    private Regions getRegionById(Regions[] regions, Integer regionId) {
+        if (regionId != null) {
+            if (regions != null) {
+                for (Regions region : regions) {
+                    if (region != null && region.getId().equals(regionId)) return region;
+                }
+            }
+        }
+        return null;
+    }
+
+    private NewCRequestDetails toRequestDetails(NewCRequest newRequest){
+        NewCRequestDetails nrd = new NewCRequestDetails();
+        nrd.setId(newRequest.getId());
+        nrd.setRequestsId(newRequest.getRequestsId());
+        nrd.setDatecreated(newRequest.getDatecreated());
+        nrd.setDispId(newRequest.getDispId());
+        nrd.setDispTime(newRequest.getDispTime());
+        nrd.setSource(newRequest.getSource());
+        nrd.setRegionId(newRequest.getRegionId());
+        nrd.setNorth(newRequest.getNorth());
+        nrd.setEast(newRequest.getEast());
+        nrd.setAddressId(newRequest.getAddressId());
+        nrd.setFullAddress(newRequest.getFullAddress());
+        nrd.setCarId(newRequest.getCarId());
+        nrd.setOperatorId(newRequest.getOperatorId());
+        nrd.setAcceptType(newRequest.getAcceptType());
+        nrd.setPerformanceTime(newRequest.getPerformanceTime());
+        nrd.setWaitingTime(newRequest.getWaitingTime());
+        nrd.setDuration(newRequest.getDuration());
+        nrd.setStatus(newRequest.getStatus());
+        nrd.setRequestGroups(newRequest.getRequestGroups());
+        nrd.setPriceGroup(newRequest.getPriceGroup());
+        nrd.setProposalTime(newRequest.getProposalTime());
+        nrd.setOwner(newRequest.getOwner());
+        nrd.setCarNumber(newRequest.getCarNumber());
+        nrd.setExecTime(newRequest.getExecTime());
+        nrd.setNotes(newRequest.getNotes());
+        return nrd;
     }
 
     @Click

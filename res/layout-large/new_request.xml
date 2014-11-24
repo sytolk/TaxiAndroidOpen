@@ -193,7 +193,7 @@
 
             <LinearLayout
                 android:orientation="vertical"
-                android:id="@id/llFilters"
+                android:id="@+id/llFilters"
                 android:paddingTop="5.0px"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"/>

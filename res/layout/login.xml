@@ -18,7 +18,6 @@
 
             <TextView
                 android:textSize="30dp"
-                android:id="@id/newClientContainerTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/enter"
@@ -34,7 +33,7 @@
                 android:layout_margin="10dp">
 
                 <TextView
-                    android:id="@id/newClientUserLabel"
+                    android:id="@+id/newClientUserLabel"
                     android:clickable="false"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
@@ -46,7 +45,7 @@
                     android:layout_marginRight="10dp"/>
 
                 <EditText
-                    android:id="@id/userNameField"
+                    android:id="@+id/userNameField"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
                     android:drawSelectorOnTop="true"
@@ -66,7 +65,7 @@
                 android:layout_margin="10dp">
 
                 <TextView
-                    android:id="@id/passwordLabel"
+                    android:id="@+id/passwordLabel"
                     android:clickable="false"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -78,7 +77,7 @@
                     android:layout_marginRight="10dp"/>
 
                 <EditText
-                    android:id="@id/passwordField"
+                    android:id="@+id/passwordField"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text=""
@@ -97,7 +96,7 @@
                 android:layout_margin="10dp">
 
                 <TextView
-                    android:id="@id/newClient"
+                    android:id="@+id/newClient"
                     android:clickable="true"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -106,7 +105,7 @@
                     android:gravity="left"/>
 
                 <TextView
-                    android:id="@id/lostPassword"
+                    android:id="@+id/lostPassword"
                     android:clickable="true"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -149,7 +148,7 @@
             android:clickable="true"
             android:textStyle="bold"
             android:minHeight="60dp"
-            android:id="@id/clientLoginButton"
+            android:id="@+id/clientLoginButton"
             />
 
         <Button

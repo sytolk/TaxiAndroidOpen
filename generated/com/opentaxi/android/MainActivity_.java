@@ -82,9 +82,9 @@ public final class MainActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        user = ((TextView) hasViews.findViewById(id.user));
-        version = ((TextView) hasViews.findViewById(id.txt_version));
         bandwidth = ((TextView) hasViews.findViewById(id.bandwidth));
+        version = ((TextView) hasViews.findViewById(id.txt_version));
+        user = ((TextView) hasViews.findViewById(id.user));
         {
             View view = hasViews.findViewById(id.exitButton);
             if (view!= null) {
@@ -116,21 +116,6 @@ public final class MainActivity_
             }
         }
         {
-            View view = hasViews.findViewById(id.mapButton);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        MainActivity_.this.mapButton();
-                    }
-
-                }
-                );
-            }
-        }
-        {
             View view = hasViews.findViewById(id.requestButton);
             if (view!= null) {
                 view.setOnClickListener(new OnClickListener() {
@@ -145,21 +130,36 @@ public final class MainActivity_
                 );
             }
         }
+        {
+            View view = hasViews.findViewById(id.mapButton);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        MainActivity_.this.mapButton();
+                    }
+
+                }
+                );
+            }
+        }
         afterMain();
     }
 
     @Override
-    public void startUserPass() {
-        handler_.post(new Runnable() {
+    public void changeNetworkState() {
+        handler_.postDelayed(new Runnable() {
 
 
             @Override
             public void run() {
-                MainActivity_.super.startUserPass();
+                MainActivity_.super.changeNetworkState();
             }
 
         }
-        );
+        , 1000L);
     }
 
     @Override
@@ -191,28 +191,28 @@ public final class MainActivity_
     }
 
     @Override
-    public void changeNetworkState() {
-        handler_.postDelayed(new Runnable() {
+    public void startUserPass() {
+        handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
-                MainActivity_.super.changeNetworkState();
+                MainActivity_.super.startUserPass();
             }
 
         }
-        , 1000L);
+        );
     }
 
     @Override
-    public void facebookLogout() {
+    public void sendVersion(final String version, final Integer code) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    MainActivity_.super.facebookLogout();
+                    MainActivity_.super.sendVersion(version, code);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -241,14 +241,14 @@ public final class MainActivity_
     }
 
     @Override
-    public void setServers() {
+    public void facebookLogout() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    MainActivity_.super.setServers();
+                    MainActivity_.super.facebookLogout();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -259,14 +259,14 @@ public final class MainActivity_
     }
 
     @Override
-    public void sendVersion(final String version, final Integer code) {
+    public void setServers() {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    MainActivity_.super.sendVersion(version, code);
+                    MainActivity_.super.setServers();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
