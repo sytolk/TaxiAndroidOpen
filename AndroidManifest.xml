@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.opentaxi.android"
-          android:versionName="1.0.27"
+          android:versionName="1.0.28"
           android:versionCode="27"
           android:installLocation="auto">
 
     <uses-sdk
         android:minSdkVersion="9"
-        android:targetSdkVersion="19"/>
+        android:targetSdkVersion="21"/>
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -173,7 +173,7 @@
 
         <!--osmap-->
         <activity
-            android:name="org.mapsforge.applications.android.mapbg.LocationOverlayMapViewer"
+            android:name="org.mapsforge.applications.android.LocationOverlayMapViewer"
             android:allowTaskReparenting="false"
             android:taskAffinity=""
             android:excludeFromRecents="true"
@@ -214,7 +214,7 @@
         </activity>-->
 
         <activity android:name="org.mapsforge.applications.android.filepicker.FilePicker"/>
-        <activity android:name="org.mapsforge.applications.android.mapbg.Settings"/>
+        <activity android:name="org.mapsforge.applications.android.Settings"/>
 
         <!--
           WakefulBroadcastReceiver that will receive intents from GCM

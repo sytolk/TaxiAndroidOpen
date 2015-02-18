@@ -8,7 +8,6 @@
     </JAVADOC>
     <SOURCES>
       <root url="jar://$MAVEN_REPOSITORY$/android/android/5.0_r1/android-5.0_r1-sources.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/android/android/5.0_r1/android-5.0_r1-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

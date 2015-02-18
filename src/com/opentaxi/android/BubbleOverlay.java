@@ -20,15 +20,15 @@ import android.util.Log;
 import android.view.Gravity;
 import android.widget.TextView;
 import com.opentaxi.android.utils.AppPreferences;
-import com.stil.generated.mysql.tables.pojos.Cars;
 import com.opentaxi.models.NewCRequest;
 import com.opentaxi.models.RequestCView;
 import com.opentaxi.rest.RestClient;
+import com.stil.generated.mysql.tables.pojos.Cars;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
-import org.mapsforge.applications.android.mapbg.LocationOverlayMapViewer;
-import org.mapsforge.applications.android.mapbg.Utils;
+import org.mapsforge.applications.android.LocationOverlayMapViewer;
+import org.mapsforge.applications.android.Utils;
 import org.mapsforge.core.graphics.Bitmap;
 import org.mapsforge.core.model.LatLong;
 import org.mapsforge.map.layer.Layer;
@@ -51,18 +51,23 @@ public class BubbleOverlay extends LocationOverlayMapViewer {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (AppPreferences.getInstance() != null && mapFileName == null) {
+        if (AppPreferences.getInstance() != null && getMapFileName() == null) {
             setMapFile(AppPreferences.getInstance().getMapFile());
         }
-        super.onCreate(savedInstanceState);
+        try {
+            super.onCreate(savedInstanceState);
+        } catch (IllegalArgumentException e) { //invalid map file
+            e.printStackTrace();
+            startMapFilePicker();
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
         TaxiApplication.mapPaused();
-        if (AppPreferences.getInstance() != null && mapFileName != null) {
-            AppPreferences.getInstance().setMapFile(mapFileName);
+        if (AppPreferences.getInstance() != null && getMapFileName() != null) {
+            AppPreferences.getInstance().setMapFile(getMapFileName());
         }
     }
 
@@ -118,7 +123,7 @@ public class BubbleOverlay extends LocationOverlayMapViewer {
                 Marker marker = new Marker(new LatLong(cars.getCurrPosNorth(), cars.getCurrPosEast()), bubble, 0, -bubble.getHeight() / 2);
                 //marker.setDisplayModel(this.mapViews.get(0).getModel().displayModel);
                 carsOverlay.add(marker);
-                this.layerManagers.get(0).getLayers().add(marker);
+                mapView.getLayerManager().getLayers().add(marker);
                 //Log.i(TAG, "Car:" + cars.getNumber());
             }
 
@@ -132,14 +137,14 @@ public class BubbleOverlay extends LocationOverlayMapViewer {
             //final List<Layer> overlayItems = addressOverlay.getOverlayItems();
             //overlayItems.clear();
             if (addressOverlay.size() > 0) {
-                for(Layer layer:this.addressOverlay) {
-                    this.layerManagers.get(0).getLayers().remove(layer);
+                for (Layer layer : this.addressOverlay) {
+                    mapView.getLayerManager().getLayers().remove(layer);
                 }
                 addressOverlay.clear();
             }
             if (carsOverlay.size() > 0) {
-                for(Layer layer:this.carsOverlay) {
-                    this.layerManagers.get(0).getLayers().remove(layer);
+                for (Layer layer : this.carsOverlay) {
+                    mapView.getLayerManager().getLayers().remove(layer);
                 }
                 carsOverlay.clear();
             }
@@ -170,7 +175,7 @@ public class BubbleOverlay extends LocationOverlayMapViewer {
                     }
                 }
             }
-            this.layerManagers.get(0).getLayers().addAll(addressOverlay);
+            mapView.getLayerManager().getLayers().addAll(addressOverlay);
             //this.layerManagers.get(0).getLayers().setGroup("requests", overlayItems);
             //addressOverlay.requestRedraw();
         }

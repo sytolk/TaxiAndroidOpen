@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Maven: pl.charmas.android:android-reactive-location:aar:0.4">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/gen-external-apklibs/pl.charmas.android_android-reactive-location_0.4/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/gen-external-apklibs/pl.charmas.android_android-reactive-location_0.4/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/pl/charmas/android/android-reactive-location/0.4/android-reactive-location-0.4-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/pl/charmas/android/android-reactive-location/0.4/android-reactive-location-0.4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

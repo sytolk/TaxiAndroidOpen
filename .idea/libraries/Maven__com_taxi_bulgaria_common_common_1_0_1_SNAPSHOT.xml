@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: com.taxi-bulgaria.common:common:1.0.1-SNAPSHOT">
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/com/taxi-bulgaria/common/common/1.0.1-SNAPSHOT/common-1.0.1-20141027.140149-21.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/taxi-bulgaria/common/common/1.0.1-SNAPSHOT/common-1.0.1-SNAPSHOT.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$MAVEN_REPOSITORY$/com/taxi-bulgaria/common/common/1.0.1-SNAPSHOT/common-1.0.1-20141027.140149-21-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/taxi-bulgaria/common/common/1.0.1-SNAPSHOT/common-1.0.1-SNAPSHOT-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$MAVEN_REPOSITORY$/com/taxi-bulgaria/common/common/1.0.1-SNAPSHOT/common-1.0.1-20141027.140149-21-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/taxi-bulgaria/common/common/1.0.1-SNAPSHOT/common-1.0.1-SNAPSHOT-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

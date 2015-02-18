@@ -17,9 +17,9 @@ import com.stil.generated.mysql.tables.pojos.NewRequest;
 import com.stil.generated.mysql.tables.pojos.Regions;
 import com.taxibulgaria.enums.RegionsType;
 import org.androidannotations.annotations.*;
-import org.mapsforge.applications.android.mapbg.LocationOverlayMapViewer;
-import org.mapsforge.applications.android.mapbg.TextCircle;
-import org.mapsforge.applications.android.mapbg.Utils;
+import org.mapsforge.applications.android.LocationOverlayMapViewer;
+import org.mapsforge.applications.android.TextCircle;
+import org.mapsforge.applications.android.Utils;
 import org.mapsforge.core.graphics.Align;
 import org.mapsforge.core.graphics.Color;
 import org.mapsforge.core.graphics.Paint;
@@ -54,7 +54,7 @@ public class LongPressMapAction extends LocationOverlayMapViewer {
             Style.FILL);*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (AppPreferences.getInstance() != null && mapFileName == null) {
+        if (AppPreferences.getInstance() != null && getMapFileName() == null) {
             setMapFile(AppPreferences.getInstance().getMapFile());
         }
         super.onCreate(savedInstanceState);
@@ -64,8 +64,8 @@ public class LongPressMapAction extends LocationOverlayMapViewer {
     public void onPause() {
         super.onPause();
         TaxiApplication.mapPaused();
-        if (AppPreferences.getInstance() != null && mapFileName != null) {
-            AppPreferences.getInstance().setMapFile(mapFileName);
+        if (AppPreferences.getInstance() != null && getMapFileName() != null) {
+            AppPreferences.getInstance().setMapFile(getMapFileName());
         }
     }
 
@@ -87,14 +87,14 @@ public class LongPressMapAction extends LocationOverlayMapViewer {
             if (e.getMessage() != null) Log.e(TAG, "Invalid map file? " + e.getMessage());
             startMapFilePicker();
         }
-        Layers layers = this.layerManagers.get(0).getLayers();
+        Layers layers = mapView.getLayerManager().getLayers();
         File mapFile = this.getMapFile();
         if (mapFile != null) {
             Log.i(TAG, "createLayers " + mapFile.getAbsolutePath());
             TileRendererLayer tileRendererLayer = new TileRendererLayer(
-                    this.tileCache,
-                    this.mapViewPositions.get(0),
-                    false,
+                    this.tileCaches.get(0),
+                    this.mapView.getModel().mapViewPosition,
+                    false, true,
                     org.mapsforge.map.android.graphics.AndroidGraphicFactory.INSTANCE) {
                 @Override
                 public boolean onLongPress(LatLong tapLatLong, Point thisXY,
@@ -103,7 +103,13 @@ public class LongPressMapAction extends LocationOverlayMapViewer {
                     return true;
                 }
             };
-            tileRendererLayer.setMapFile(mapFile);
+
+            try {
+                tileRendererLayer.setMapFile(mapFile);
+            } catch (IllegalArgumentException e) { //invalid file size
+                e.printStackTrace();
+                startMapFilePicker();
+            }
             tileRendererLayer.setXmlRenderTheme(this.getRenderTheme());
             layers.add(tileRendererLayer);
 
@@ -134,9 +140,9 @@ public class LongPressMapAction extends LocationOverlayMapViewer {
         this.mapRequest.setNorth(position.latitude);
         this.mapRequest.setEast(position.longitude);
         showAddress(position);
-        Layers layers = this.layerManagers.get(0).getLayers(); //this.mapViews.get(0).getLayerManager().getLayers()
+        Layers layers = mapView.getLayerManager().getLayers(); //this.mapViews.get(0).getLayerManager().getLayers()
         if (index >= 0) layers.remove(index);
-        float circleSize = 8 * this.mapViews.get(0).getModel().displayModel.getScaleFactor();
+        float circleSize = 8 * this.mapView.getModel().displayModel.getScaleFactor();
         Circle circle = new Circle(position, circleSize, GREEN, null);
         layers.add(circle);
         index = layers.size() - 1;
@@ -199,10 +205,10 @@ public class LongPressMapAction extends LocationOverlayMapViewer {
     @UiThread
     void showTextCircle(MapRequest address) {
         if (address != null && address.getNorth() > 0 && address.getEast() > 0) {
-            Layers layers = this.layerManagers.get(0).getLayers(); //this.mapViews.get(0).getLayerManager().getLayers()
+            Layers layers = mapView.getLayerManager().getLayers(); //this.mapViews.get(0).getLayerManager().getLayers()
             if (layers != null) {
                 if (index >= 0 && index < layers.size()) layers.remove(index);
-                float circleSize = 6 * this.mapViews.get(0).getModel().displayModel.getScaleFactor();
+                float circleSize = 6 * this.mapView.getModel().displayModel.getScaleFactor();
                 Paint paint = Utils.createPaint(AndroidGraphicFactory.INSTANCE.createColor(Color.BLACK), 0, Style.FILL); //android.graphics.Paint.ANTI_ALIAS_FLAG);
                 paint.setTextAlign(Align.LEFT);
                 paint.setTextSize(25f);
@@ -216,7 +222,7 @@ public class LongPressMapAction extends LocationOverlayMapViewer {
                 layers.add(circle);
                 index = layers.size() - 1;
                 circle.requestRedraw();
-                this.mapViews.get(0).getModel().mapViewPosition.setCenter(position);
+                this.mapView.getModel().mapViewPosition.setCenter(position);
             }
         }
     }

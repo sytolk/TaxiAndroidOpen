@@ -330,11 +330,11 @@ public class EditRequestActivity extends Activity {
         }
     }*/
 
-    @Override
+    /*@Override
     public void onPause() {
         super.onPause();
         finish();
-    }
+    }*/
 
     @Override
     public void finish() {

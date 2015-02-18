@@ -40,11 +40,11 @@ public class MessageActivity extends Activity {
         }
     }
 
-    @Override
+    /*@Override
     public void onPause() {
         super.onPause();
         finish();
-    }
+    }*/
 
     @Override
     public void finish() {

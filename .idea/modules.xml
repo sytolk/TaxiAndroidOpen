@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/TaxiAndroidOpen.iml" filepath="$PROJECT_DIR$/TaxiAndroidOpen.iml" />
-      <module fileurl="file://$PROJECT_DIR$/gen-external-apklibs/~apklib-com.taxi-bulgaria.map_mapsforge_0.4.4-SNAPSHOT.iml" filepath="$PROJECT_DIR$/gen-external-apklibs/~apklib-com.taxi-bulgaria.map_mapsforge_0.4.4-SNAPSHOT.iml" />
     </modules>
   </component>
 </project>

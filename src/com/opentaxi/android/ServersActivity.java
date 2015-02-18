@@ -150,7 +150,7 @@ public class ServersActivity extends Activity {
             refreshScheduler.shutdown();
             refreshScheduler = null;
         }
-        finish();
+        //finish();
     }
 
     @Override
