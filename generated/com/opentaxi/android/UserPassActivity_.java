@@ -85,11 +85,26 @@ public final class UserPassActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        pass = ((EditText) hasViews.findViewById(id.passwordField));
+        userName = ((EditText) hasViews.findViewById(id.userNameField));
         loginLayout = ((LinearLayout) hasViews.findViewById(id.loginLayout));
         submitButton = ((Button) hasViews.findViewById(id.clientLoginButton));
-        userName = ((EditText) hasViews.findViewById(id.userNameField));
         pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
+        pass = ((EditText) hasViews.findViewById(id.passwordField));
+        {
+            View view = hasViews.findViewById(id.newClient);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        UserPassActivity_.this.newClient();
+                    }
+
+                }
+                );
+            }
+        }
         {
             View view = hasViews.findViewById(id.facebookButton);
             if (view!= null) {
@@ -99,6 +114,21 @@ public final class UserPassActivity_
                     @Override
                     public void onClick(View view) {
                         UserPassActivity_.this.facebookButton();
+                    }
+
+                }
+                );
+            }
+        }
+        {
+            View view = hasViews.findViewById(id.lostPassword);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        UserPassActivity_.this.lostPassword();
                     }
 
                 }
@@ -116,36 +146,6 @@ public final class UserPassActivity_
 
             }
             );
-        }
-        {
-            View view = hasViews.findViewById(id.lostPassword);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        UserPassActivity_.this.lostPassword();
-                    }
-
-                }
-                );
-            }
-        }
-        {
-            View view = hasViews.findViewById(id.newClient);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        UserPassActivity_.this.newClient();
-                    }
-
-                }
-                );
-            }
         }
         afterLoad();
     }
@@ -193,20 +193,6 @@ public final class UserPassActivity_
     }
 
     @Override
-    public void overFacebookLoginTime(final String title) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                UserPassActivity_.super.overFacebookLoginTime(title);
-            }
-
-        }
-        );
-    }
-
-    @Override
     public void hideProgress() {
         handler_.post(new Runnable() {
 
@@ -214,6 +200,20 @@ public final class UserPassActivity_
             @Override
             public void run() {
                 UserPassActivity_.super.hideProgress();
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void overFacebookLoginTime(final String title) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                UserPassActivity_.super.overFacebookLoginTime(title);
             }
 
         }

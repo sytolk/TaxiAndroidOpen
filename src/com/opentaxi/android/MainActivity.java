@@ -4,6 +4,7 @@ import android.app.*;
 import android.content.*;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -20,16 +21,24 @@ import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.android.gms.location.LocationRequest;
 import com.opentaxi.android.asynctask.LogoutTask;
+import com.opentaxi.android.service.CoordinatesService;
 import com.opentaxi.android.utils.AppPreferences;
 import com.opentaxi.android.utils.Network;
-import com.stil.generated.mysql.tables.pojos.Servers;
+import com.opentaxi.models.CoordinatesLight;
 import com.opentaxi.models.Users;
 import com.opentaxi.rest.RestClient;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.listeners.OnLogoutListener;
+import com.stil.generated.mysql.tables.pojos.Servers;
 import com.taxibulgaria.enums.Applications;
 import org.androidannotations.annotations.*;
+import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
+import rx.Observable;
+import rx.Subscription;
+import rx.functions.Action1;
+import rx.functions.Func1;
 
 import java.io.IOException;
 
@@ -59,10 +68,39 @@ public class MainActivity extends FragmentActivity {
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     GoogleCloudMessaging gcm;
+
+    private Observable<Location> lastKnownLocationObservable;
+    private Observable<Location> locationUpdatesObservable;
+    private Subscription lastKnownLocationSubscription;
+    private Subscription updatableLocationSubscription;
+
+    private float SUFFICIENT_ACCURACY = 300; //meters
+    private long UPDATE_LOCATION_INTERVAL = 5000; //millis
+    private long FASTEST_LOCATION_INTERVAL = 10000; //millis
+
     //private boolean havePlayService = true;
 
     public MainActivity() {
 
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext()) == ConnectionResult.SUCCESS) {
+
+            ReactiveLocationProvider locationProvider = new ReactiveLocationProvider(getApplicationContext());
+
+            lastKnownLocationObservable = locationProvider.getLastKnownLocation();
+
+            LocationRequest request = LocationRequest.create() //standard GMS LocationRequest
+                    .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                    .setInterval(UPDATE_LOCATION_INTERVAL)
+                    .setFastestInterval(FASTEST_LOCATION_INTERVAL);
+
+            locationUpdatesObservable = locationProvider.getUpdatedLocation(request);
+        }
     }
 
     /**
@@ -425,9 +463,82 @@ public class MainActivity extends FragmentActivity {
     }
 */
     @Override
+    protected void onStart() {
+        super.onStart();
+        lastKnownLocationSubscription = lastKnownLocationObservable
+                .subscribe(new Action1<Location>() {
+                    @Override
+                    public void call(Location location) {
+                        doObtainedLocation(location);
+                    }
+                }, new ErrorHandler());
+
+        updatableLocationSubscription = locationUpdatesObservable
+                .doOnError(new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        String message = "Error on location update: " + throwable.getMessage();
+                        Log.e("updateLocation", message, throwable);
+                        //Crashlytics.logException(throwable);
+                    }
+                })
+                .onErrorReturn(new Func1<Throwable, Location>() {
+                    @Override
+                    public Location call(Throwable throwable) {
+                        //locationUnSubscribe();
+                        return null;
+                    }
+                }).filter(new Func1<Location, Boolean>() {
+                    @Override
+                    public Boolean call(Location location) {
+                        return location.getAccuracy() < SUFFICIENT_ACCURACY;
+                    }
+                })
+                .subscribe(new Action1<Location>() {
+                    @Override
+                    public void call(Location location) {
+                        doObtainedLocation(location);
+                    }
+                }, new ErrorHandler());
+    }
+
+    private void doObtainedLocation(Location location) {
+        try {
+            CoordinatesLight coordinates = new CoordinatesLight();
+            coordinates.setN(location.getLatitude());
+            coordinates.setE(location.getLongitude());
+            coordinates.setT(location.getTime());
+            Intent i = new Intent(this, CoordinatesService.class);
+            i.putExtra("coordinates", coordinates);
+            startService(i);
+
+            /*if (AppPreferences.getInstance() != null) {
+
+                Date now = new Date();
+                AppPreferences.getInstance().setNorth(location.getLatitude());
+                AppPreferences.getInstance().setEast(location.getLongitude());
+                AppPreferences.getInstance().setCurrentLocationTime(location.getTime());
+                AppPreferences.getInstance().setGpsLastTime(now.getTime());
+            }
+            Log.i("doObtainedLocation", "onReceive: received location update:" + location.getLatitude() + ", " + location.getLongitude());*/
+        } catch (Exception e) {
+            Log.e("doObtainedLocation", "onReceive:" + e.getMessage());
+        }
+    }
+
+    @Override
     protected void onStop() {
-        Log.i(TAG, "onStop");
+        //Log.i(TAG, "onStop");
         super.onStop();
+        updatableLocationSubscription.unsubscribe();
+        lastKnownLocationSubscription.unsubscribe();
+    }
+
+    private class ErrorHandler implements Action1<Throwable> {
+        @Override
+        public void call(Throwable throwable) {
+            Log.d("MainActivity", "Error occurred", throwable);
+        }
     }
 
     @Override

@@ -1,24 +1,10 @@
 package com.opentaxi.android;
 
 import android.app.Application;
-import android.content.Intent;
-import android.location.Location;
-import android.util.Log;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.location.LocationRequest;
-import com.opentaxi.android.service.CoordinatesService;
-import com.opentaxi.android.utils.AppPreferences;
-import com.opentaxi.models.CoordinatesLight;
+import com.opentaxi.android.utils.CrashReportSender;
 import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
-import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
-import rx.Subscription;
-import rx.functions.Action1;
-import rx.functions.Func1;
-
-import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,7 +13,8 @@ import java.util.Date;
  * Time: 2:02 PM
  * To change this template use File | Settings | File Templates.
  */
-@ReportsCrashes(formKey = "dF8wOUJYbFhCeDVlMG1JT3FkN2xXM0E6MQ", logcatFilterByPid = true)
+//@ReportsCrashes(formKey = "dF8wOUJYbFhCeDVlMG1JT3FkN2xXM0E6MQ", logcatFilterByPid = true)
+@ReportsCrashes(formKey = "", logcatFilterByPid = true)
 public class TaxiApplication extends Application {
 
     private static boolean havePlayService = true;
@@ -110,10 +97,6 @@ public class TaxiApplication extends Application {
         TaxiApplication.lastRequestId = lastRequestId;
     }
 
-    private float SUFFICIENT_ACCURACY = 300; //meters
-    private long UPDATE_LOCATION_INTERVAL = 30000; //millis
-    private long FASTEST_LOCATION_INTERVAL = 10000; //millis
-
     @Override
     public void onCreate() {
 
@@ -125,7 +108,7 @@ public class TaxiApplication extends Application {
 
         super.onCreate();
 
-        //RestClient.getInstance().clearCache(); //todo temp
+        //RestClient.getInstance().clearCache();
 
         AndroidGraphicFactory.createInstance(this);
 
@@ -133,6 +116,8 @@ public class TaxiApplication extends Application {
 
         // The following line triggers the initialization of ACRA
         ACRA.init(this);
+        CrashReportSender mySender = new CrashReportSender();
+        ACRA.getErrorReporter().setReportSender(mySender);
 
         /*// output debug to LogCat, with tag LittleFluffyLocationLibrary
         //LocationLibrary.showDebugOutput(true);
@@ -148,52 +133,5 @@ public class TaxiApplication extends Application {
         LocationLibrary.showDebugOutput(true);
         //LocationLibrary.forceLocationUpdate(getBaseContext());
         LocationLibrary.startAlarmAndListener(getBaseContext());*/
-
-        if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(this.getApplicationContext()) == ConnectionResult.SUCCESS) {
-
-            LocationRequest request = LocationRequest.create() //standard GMS LocationRequest
-                    .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                    .setInterval(UPDATE_LOCATION_INTERVAL)
-                    .setFastestInterval(FASTEST_LOCATION_INTERVAL);
-
-            ReactiveLocationProvider locationProvider = new ReactiveLocationProvider(this.getApplicationContext());
-            Subscription subscription = locationProvider.getUpdatedLocation(request)
-                    .filter(new Func1<Location, Boolean>() {
-                        @Override
-                        public Boolean call(Location location) {
-                            return location.getAccuracy() < SUFFICIENT_ACCURACY;
-                        }
-                    })    // you can filter location updates
-                    .subscribe(new Action1<Location>() {
-                        @Override
-                        public void call(Location location) {
-                            doObtainedLocation(location);
-                        }
-                    });
-        }
-    }
-
-    private void doObtainedLocation(Location location) {
-        try {
-            CoordinatesLight coordinates = new CoordinatesLight();
-            coordinates.setN(location.getLatitude());
-            coordinates.setE(location.getLongitude());
-            coordinates.setT(location.getTime());
-            Intent i = new Intent(this, CoordinatesService.class);
-            i.putExtra("coordinates", coordinates);
-            startService(i);
-
-            if (AppPreferences.getInstance() != null) {
-
-                Date now = new Date();
-                AppPreferences.getInstance().setNorth(location.getLatitude());
-                AppPreferences.getInstance().setEast(location.getLongitude());
-                AppPreferences.getInstance().setCurrentLocationTime(location.getTime());
-                AppPreferences.getInstance().setGpsLastTime(now.getTime());
-            }
-            Log.i("doObtainedLocation", "onReceive: received location update:" + location.getLatitude() + ", " + location.getLongitude());
-        } catch (Exception e) {
-            Log.e("doObtainedLocation", "onReceive:" + e.getMessage());
-        }
     }
 }

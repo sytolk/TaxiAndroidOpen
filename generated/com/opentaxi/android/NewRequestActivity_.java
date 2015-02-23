@@ -8,6 +8,7 @@ package com.opentaxi.android;
 import java.io.Serializable;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -86,20 +87,20 @@ public final class NewRequestActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        pricesPicker = ((Spinner) hasViews.findViewById(id.pricesPicker));
-        addressText = ((EditText) hasViews.findViewById(id.addressText));
-        address = ((TextView) hasViews.findViewById(id.address));
-        destination = ((AutoCompleteTextView) hasViews.findViewById(id.destination));
-        region = ((TextView) hasViews.findViewById(id.region));
-        requestSend = ((Button) hasViews.findViewById(id.requestSend));
         reqInfoButtonContainer = ((LinearLayout) hasViews.findViewById(id.reqInfoButtonContainer));
-        regionsLayout = ((LinearLayout) hasViews.findViewById(id.regionsLayout));
-        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
         llFilters = ((LinearLayout) hasViews.findViewById(id.llFilters));
         citiesPicker = ((AutoCompleteTextView) hasViews.findViewById(id.citiesPicker));
-        addressChange = ((Button) hasViews.findViewById(id.addressChange));
-        regionsPicker = ((AutoCompleteTextView) hasViews.findViewById(id.regionsPicker));
+        region = ((TextView) hasViews.findViewById(id.region));
+        destination = ((AutoCompleteTextView) hasViews.findViewById(id.destination));
+        address = ((TextView) hasViews.findViewById(id.address));
         destLayout = ((LinearLayout) hasViews.findViewById(id.destLayout));
+        addressChange = ((Button) hasViews.findViewById(id.addressChange));
+        requestSend = ((Button) hasViews.findViewById(id.requestSend));
+        regionsPicker = ((AutoCompleteTextView) hasViews.findViewById(id.regionsPicker));
+        addressText = ((EditText) hasViews.findViewById(id.addressText));
+        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
+        regionsLayout = ((LinearLayout) hasViews.findViewById(id.regionsLayout));
+        pricesPicker = ((Spinner) hasViews.findViewById(id.pricesPicker));
         {
             View view = hasViews.findViewById(id.addressImage);
             if (view!= null) {
@@ -168,48 +169,6 @@ public final class NewRequestActivity_
     }
 
     @Override
-    public void showGroups(final Groups[] groups) {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                NewRequestActivity_.super.showGroups(groups);
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void SuccessDialog() {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                NewRequestActivity_.super.SuccessDialog();
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void ErrorDialog() {
-        handler_.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                NewRequestActivity_.super.ErrorDialog();
-            }
-
-        }
-        );
-    }
-
-    @Override
     public void showPrices(final Groups[] prices) {
         handler_.post(new Runnable() {
 
@@ -238,6 +197,20 @@ public final class NewRequestActivity_
     }
 
     @Override
+    public void SuccessDialog() {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                NewRequestActivity_.super.SuccessDialog();
+            }
+
+        }
+        );
+    }
+
+    @Override
     public void showCities(final Contactaddress contactAddress) {
         handler_.post(new Runnable() {
 
@@ -245,6 +218,34 @@ public final class NewRequestActivity_
             @Override
             public void run() {
                 NewRequestActivity_.super.showCities(contactAddress);
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void showGroups(final Groups[] groups) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                NewRequestActivity_.super.showGroups(groups);
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void ErrorDialog() {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                NewRequestActivity_.super.ErrorDialog();
             }
 
         }
@@ -266,32 +267,14 @@ public final class NewRequestActivity_
     }
 
     @Override
-    public void setAddress() {
+    public void setAddress(final Location location) {
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
 
 
             @Override
             public void execute() {
                 try {
-                    NewRequestActivity_.super.setAddress();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void setCities() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    NewRequestActivity_.super.setCities();
+                    NewRequestActivity_.super.setAddress(location);
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
@@ -346,6 +329,24 @@ public final class NewRequestActivity_
             public void execute() {
                 try {
                     NewRequestActivity_.super.sendRequest(newRequest);
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void setCities() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    NewRequestActivity_.super.setCities();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }

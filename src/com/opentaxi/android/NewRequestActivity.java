@@ -8,15 +8,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.opentaxi.android.adapters.GroupsAdapter;
 import com.opentaxi.android.adapters.RegionsAdapter;
-import com.opentaxi.android.utils.AppPreferences;
 import com.opentaxi.android.utils.MyGeocoder;
 import com.opentaxi.models.MapRequest;
 import com.opentaxi.models.NewRequestDetails;
@@ -26,6 +28,10 @@ import com.stil.generated.mysql.tables.pojos.*;
 import com.taxibulgaria.enums.RegionsType;
 import com.taxibulgaria.enums.RequestSource;
 import org.androidannotations.annotations.*;
+import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
+import rx.Observable;
+import rx.Subscription;
+import rx.functions.Action1;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -94,6 +100,47 @@ public class NewRequestActivity extends Activity {
 
     //LocationInfo latestInfo;
 
+    private Observable<Location> lastKnownLocationObservable;
+    private Subscription lastKnownLocationSubscription;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext()) == ConnectionResult.SUCCESS) {
+
+            ReactiveLocationProvider locationProvider = new ReactiveLocationProvider(getApplicationContext());
+
+            lastKnownLocationObservable = locationProvider.getLastKnownLocation();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        lastKnownLocationSubscription = lastKnownLocationObservable
+                .subscribe(new Action1<Location>() {
+                    @Override
+                    public void call(Location location) {
+                        setAddress(location);
+                    }
+                }, new ErrorHandler());
+    }
+
+    @Override
+    protected void onStop() {
+        //Log.i(TAG, "onStop");
+        super.onStop();
+        lastKnownLocationSubscription.unsubscribe();
+    }
+
+    private class ErrorHandler implements Action1<Throwable> {
+        @Override
+        public void call(Throwable throwable) {
+            Log.d("MainActivity", "Error occurred", throwable);
+        }
+    }
+
     @AfterViews
     protected void afterActivity() {
         this.mapRequest = null;
@@ -108,7 +155,7 @@ public class NewRequestActivity extends Activity {
         citiesPicker.setAdapter(adapter);
 
         setCities();
-        setAddress();
+        //setAddress();
         //showCities("Бургас");
         setPrices();
         setGroups();
@@ -274,45 +321,44 @@ public class NewRequestActivity extends Activity {
     }
 
     @Background
-    void setAddress() {
+    void setAddress(Location location) {
         //Log.i(TAG, "setAddress");
         if (this.mapRequest == null) {
-            if (AppPreferences.getInstance() != null && AppPreferences.getInstance().getNorth() != null && AppPreferences.getInstance().getEast() != null) {
+            if (location != null && location.getLatitude() > 0 && location.getLongitude() > 0) {
                 Date now = new Date();
-                if (AppPreferences.getInstance().getGpsLastTime() > (now.getTime() - 600000)) {  //if last coordinates time is from 5 min interval
-                    com.stil.generated.mysql.tables.pojos.NewRequest address = RestClient.getInstance().getAddressByCoordinates(AppPreferences.getInstance().getNorth().floatValue(), AppPreferences.getInstance().getEast().floatValue());
-                    if (address != null) {
-                        this.mapRequest = new MapRequest();
-                        this.mapRequest.setNorth(AppPreferences.getInstance().getNorth());
-                        this.mapRequest.setEast(AppPreferences.getInstance().getEast());
-                        this.mapRequest.setCity(getString(R.string.burgas));
-                        Regions regions = RestClient.getInstance().getRegionById(RegionsType.BURGAS_STATE.getCode(), address.getRegionId());
-                        if (regions != null) {
-                            showRegions(RestClient.getInstance().getRegions(RegionsType.BURGAS_STATE.getCode()));
-                            this.mapRequest.setRegion(regions.getDescription());
-                        }
-                        this.mapRequest.setAddress(address.getFullAddress());
+                //if (AppPreferences.getInstance().getGpsLastTime() > (now.getTime() - 600000)) {  //if last coordinates time is from 5 min interval
+                com.stil.generated.mysql.tables.pojos.NewRequest newRequest = RestClient.getInstance().getAddressByCoordinates(location.getLatitude(), location.getLongitude());
+                if (newRequest != null) {
+                    this.mapRequest = new MapRequest();
+                    this.mapRequest.setNorth(location.getLatitude());
+                    this.mapRequest.setEast(location.getLongitude());
+                    this.mapRequest.setCity(getString(R.string.burgas));
+                    Regions regions = RestClient.getInstance().getRegionById(RegionsType.BURGAS_STATE.getCode(), newRequest.getRegionId());
+                    if (regions != null) {
+                        showRegions(RestClient.getInstance().getRegions(RegionsType.BURGAS_STATE.getCode()));
+                        this.mapRequest.setRegion(regions.getDescription());
+                    }
+                    this.mapRequest.setAddress(newRequest.getFullAddress());
 
-                        showAddress(this.mapRequest.getCity(), this.mapRequest.getRegion(), this.mapRequest.getAddress());
-                        return;
-                    } else Log.i(TAG, "address=null or no coordinates");
-                } else
-                    Log.i(TAG, "GpsLastTime " + AppPreferences.getInstance().getGpsLastTime() + " > " + (now.getTime() - 600000) + " min");
+                    showAddress(this.mapRequest.getCity(), this.mapRequest.getRegion(), this.mapRequest.getAddress());
+                    return;
+                } else Log.i(TAG, "address=null or no coordinates");
+                //} else Log.i(TAG, "GpsLastTime " + AppPreferences.getInstance().getGpsLastTime() + " > " + (now.getTime() - 600000) + " min");
 
                 List<Address> addresses = null;
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD && Geocoder.isPresent()) {
                     try {
                         Geocoder geocoder = new Geocoder(this);
-                        addresses = geocoder.getFromLocation(AppPreferences.getInstance().getNorth(), AppPreferences.getInstance().getEast(), 1);
+                        addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                         if (addresses == null || addresses.isEmpty())
-                            addresses = MyGeocoder.getFromLocation(AppPreferences.getInstance().getNorth(), AppPreferences.getInstance().getEast(), 1);
+                            addresses = MyGeocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                     } catch (IOException e) {
-                        addresses = MyGeocoder.getFromLocation(AppPreferences.getInstance().getNorth(), AppPreferences.getInstance().getEast(), 1);
+                        addresses = MyGeocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                         Log.e(TAG, "IOException:" + e.getMessage());
                     }
                 } else {
-                    addresses = MyGeocoder.getFromLocation(AppPreferences.getInstance().getNorth(), AppPreferences.getInstance().getEast(), 1);
+                    addresses = MyGeocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                     Log.i(TAG, "Geocoder not present");
                 }
 

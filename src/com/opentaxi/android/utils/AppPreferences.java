@@ -42,10 +42,10 @@ public class AppPreferences {
     private Integer cloudMessageId;
     //private NewRequestDetails currentRequest;
     //private NewRequestDetails nextRequest;
-    private Double north;
-    private Double east;
-    private long currentLocationTime; //datetime received from GPS
-    private long gpsLastTime = 0; //local Android datetime of last received coordinates
+    //private Double north;
+    //private Double east;
+    //private long currentLocationTime; //datetime received from GPS
+    //private long gpsLastTime = 0; //local Android datetime of last received coordinates
 
     private String mapFile;
     private String token;
@@ -151,34 +151,6 @@ public class AppPreferences {
 
     public ObjectMapper getMapper() {
         return mapper;
-    }
-
-    public Double getNorth() {
-        return north;
-    }
-
-    public void setNorth(Double north) {
-        this.north = north;
-    }
-
-    public Double getEast() {
-        return east;
-    }
-
-    public void setEast(Double east) {
-        this.east = east;
-    }
-
-    public long getGpsLastTime() {
-        return gpsLastTime;
-    }
-
-    public void setGpsLastTime(long gpsLastTime) {
-        this.gpsLastTime = gpsLastTime;
-    }
-
-    public void setCurrentLocationTime(long currentLocationTime) {
-        this.currentLocationTime = currentLocationTime;
     }
 
     public String getMapFile() {

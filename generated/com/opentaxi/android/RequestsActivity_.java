@@ -75,17 +75,17 @@ public final class RequestsActivity_
 
     @Override
     public void onViewChanged(HasViews hasViews) {
-        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
         requests_table = ((TableLayout) hasViews.findViewById(id.requests_table));
+        pbProgress = ((ProgressBar) hasViews.findViewById(id.pbProgress));
         {
-            View view = hasViews.findViewById(id.requestsHistory);
+            View view = hasViews.findViewById(id.backButton);
             if (view!= null) {
                 view.setOnClickListener(new OnClickListener() {
 
 
                     @Override
                     public void onClick(View view) {
-                        RequestsActivity_.this.requestsHistory();
+                        RequestsActivity_.this.backButton();
                     }
 
                 }
@@ -108,14 +108,14 @@ public final class RequestsActivity_
             }
         }
         {
-            View view = hasViews.findViewById(id.backButton);
+            View view = hasViews.findViewById(id.requestsHistory);
             if (view!= null) {
                 view.setOnClickListener(new OnClickListener() {
 
 
                     @Override
                     public void onClick(View view) {
-                        RequestsActivity_.this.backButton();
+                        RequestsActivity_.this.requestsHistory();
                     }
 
                 }
@@ -157,6 +157,24 @@ public final class RequestsActivity_
             @Override
             public void run() {
                 RequestsActivity_.super.showRequests(regions, requests);
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void getRequests() {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
+
+
+            @Override
+            public void execute() {
+                try {
+                    RequestsActivity_.super.getRequests();
+                } catch (Throwable e) {
+                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                }
             }
 
         }
@@ -208,24 +226,6 @@ public final class RequestsActivity_
             public void execute() {
                 try {
                     RequestsActivity_.super.getRequestHistory();
-                } catch (Throwable e) {
-                    Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-                }
-            }
-
-        }
-        );
-    }
-
-    @Override
-    public void getRequests() {
-        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0, "") {
-
-
-            @Override
-            public void execute() {
-                try {
-                    RequestsActivity_.super.getRequests();
                 } catch (Throwable e) {
                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                 }
