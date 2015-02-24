@@ -583,19 +583,27 @@ public class NewRequestActivity extends Activity {
 
     @Click
     void addressImage() {
-        if (this.mapRequest == null) this.mapRequest = new MapRequest();
         if (addressText.getVisibility() == View.VISIBLE) {
             if (citiesPicker.getText() != null) {
                 String txt = citiesPicker.getText().toString();
-                if (txt != null && txt.length() > 0) this.mapRequest.setCity(txt);
+                if (txt != null && txt.length() > 0) {
+                    if (this.mapRequest == null) this.mapRequest = new MapRequest();
+                    this.mapRequest.setCity(txt);
+                }
             }
             if (regionsPicker.getText() != null) {
                 String txt = regionsPicker.getText().toString();
-                if (txt != null && txt.length() > 0) this.mapRequest.setRegion(txt);
+                if (txt != null && txt.length() > 0) {
+                    if (this.mapRequest == null) this.mapRequest = new MapRequest();
+                    this.mapRequest.setRegion(txt);
+                }
             }
             if (addressText.getText() != null) {
                 String txt = addressText.getText().toString();
-                if (txt != null && txt.length() > 0) this.mapRequest.setAddress(txt);
+                if (txt != null && txt.length() > 0) {
+                    if (this.mapRequest == null) this.mapRequest = new MapRequest();
+                    this.mapRequest.setAddress(txt);
+                }
             }
         }
 
