@@ -35,7 +35,7 @@ for map export view osmosis.txt in doc.
 
 About translating, please visit https://hosted.weblate.org/projects/taxi-android-open/strings/ 
 
-![Package Dependency](https://github.com/sytolk/TaxiAndroidOpen/tree/master/doc/dependency.png)
+![Package Dependency](https://github.com/sytolk/TaxiAndroidOpen/blob/master/doc/dependency.png)
 
 ##License
 
