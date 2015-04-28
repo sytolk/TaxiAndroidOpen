@@ -8,7 +8,7 @@ This open source application is for clients of taxi companies. It`s using array 
 With this application its easy to send request, view request status and can help clients to find taxi.
 Supported Android from 2.2 and up.
 
-Currently the cloud web services (they are private) provide taxi support for city of Burgas, Bulgaria.
+Currently the cloud web services (they are private) provide taxi support for city of Burgas and Blagoevgrad.
 
 [taxi-bulgaria](http://taxi-bulgaria.com)
 
@@ -34,6 +34,8 @@ Using project dependencies:
 for map export view osmosis.txt in doc.
 
 About translating, please visit https://hosted.weblate.org/projects/taxi-android-open/strings/ 
+
+![Package Dependency](https://github.com/sytolk/TaxiAndroidOpen/tree/master/doc/dependency.png)
 
 ##License
 
