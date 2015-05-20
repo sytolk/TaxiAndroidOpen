@@ -57,7 +57,12 @@ public class LongPressMapAction extends LocationOverlayMapViewer {
         if (AppPreferences.getInstance() != null && getMapFileName() == null) {
             setMapFile(AppPreferences.getInstance().getMapFile());
         }
-        super.onCreate(savedInstanceState);
+        try {
+            super.onCreate(savedInstanceState);
+        } catch (IllegalArgumentException e) { //invalid map file
+            e.printStackTrace();
+            startMapFilePicker();
+        }
     }
 
     @Override

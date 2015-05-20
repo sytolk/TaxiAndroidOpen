@@ -1,5 +1,6 @@
 package com.opentaxi.android.utils;
 
+import android.content.Context;
 import com.opentaxi.rest.RestClient;
 import com.stil.generated.mysql.tables.pojos.DebuggerLog;
 import org.acra.ReportField;
@@ -25,7 +26,7 @@ public class CrashReportSender implements ReportSender {
     //private static final String CRASHES_PATH = "/crashes";
 
     @Override
-    public void send(CrashReportData report) throws ReportSenderException {
+    public void send(Context context, CrashReportData report) throws ReportSenderException {
         DebuggerLog log = new DebuggerLog();
         log.setAppVersionCode(Integer.parseInt(report.get(ReportField.APP_VERSION_CODE)));
         log.setAppVersionName(report.get(ReportField.APP_VERSION_NAME));

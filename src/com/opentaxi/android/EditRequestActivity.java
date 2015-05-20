@@ -5,24 +5,24 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
-import com.opentaxi.android.adapters.GroupsAdapter;
 import com.opentaxi.android.adapters.RegionsAdapter;
+import com.opentaxi.android.adapters.TaxiClientPricesAdapter;
 import com.opentaxi.models.NewCRequestDetails;
 import com.opentaxi.models.NewRequestDetails;
 import com.opentaxi.rest.RestClient;
 import com.opentaxi.rest.RestClientBase;
-import com.stil.generated.mysql.tables.pojos.Contactaddress;
-import com.stil.generated.mysql.tables.pojos.Groups;
-import com.stil.generated.mysql.tables.pojos.Regions;
-import com.stil.generated.mysql.tables.pojos.RequestsDetails;
+import com.stil.generated.mysql.tables.pojos.*;
 import com.taxibulgaria.enums.RegionsType;
 import com.taxibulgaria.enums.RequestSource;
 import org.androidannotations.annotations.*;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -84,6 +84,9 @@ public class EditRequestActivity extends Activity {
     @ViewById(R.id.destLayout)
     LinearLayout destLayout;
 
+    @ViewById(R.id.priceLayout)
+    LinearLayout priceLayout;
+
     //private static final int SHOW_ADDRESS_ON_MAP = 990;
 
     @AfterViews
@@ -126,7 +129,7 @@ public class EditRequestActivity extends Activity {
             showAddress("");
             setRegions();
         }
-        setPrices();
+        //setPrices();
         setGroups();
         //address.setText("Адреса се определя автоматично според координатите ви. Моля изчакайте...");
         //addressText.setVisibility(View.GONE);
@@ -155,7 +158,10 @@ public class EditRequestActivity extends Activity {
             citiesAdapter[0] = new CitiesAdapter(supported);
             ArrayAdapter<CitiesAdapter> adapter2 = new ArrayAdapter<CitiesAdapter>(this, R.layout.spinner_layout, citiesAdapter);
             adapter2.setDropDownViewResource(R.layout.spinner_layout);*/
-        if (address != null) citiesPicker.setText(address.getCity());
+        if (address != null) {
+            citiesPicker.setText(address.getCity());
+            setPrices(address.getCity());
+        }
         //citiesPicker.setOnTouchListener(Spinner_OnTouch);
     }
 
@@ -226,52 +232,62 @@ public class EditRequestActivity extends Activity {
         }
     }
 
+    @AfterTextChange(R.id.citiesPicker)
+    void afterTextChangedOncitiesPicker(Editable text, TextView hello) {
+        setPrices(text.toString());
+    }
+
     @Background
-    void setPrices() {
-        Log.i(TAG, "getPrices");
-        showPrices(RestClient.getInstance().getPrices());
+    void setPrices(String city) {
+        //Log.i(TAG, "getPrices");
+        if (city != null) showPrices(RestClient.getInstance().getPrices(city));
     }
 
     @UiThread
-    void showPrices(Groups[] prices) {
-        GroupsAdapter[] groupsAdapters;
-        if (prices != null && prices.length > 0 && newCRequest != null) {
-            Groups chooseGroup = null;
-            Map<String, List<Groups>> groupsMap = newCRequest.getRequestGroups();
-            if (groupsMap.containsKey("PRICE_GROUPS")) {
-                List<Groups> priceGroups = groupsMap.get("PRICE_GROUPS");
-                if (priceGroups.size() > 0) {
-                    chooseGroup = priceGroups.get(0);
-                    //if (priceGroup != null)
-                    //selectPriceItemById(pricesPicker, priceGroup);
-                }
-            }
+    void showPrices(TaxiClientPrices[] prices) {
+        TaxiClientPricesAdapter[] pricesAdapters;
+        if (prices != null && prices.length > 0) {
+            priceLayout.setVisibility(View.VISIBLE);
+            pricesAdapters = new TaxiClientPricesAdapter[prices.length + 1];
 
-            groupsAdapters = new GroupsAdapter[prices.length + 1];
-            Groups all_prices = new Groups();
+            TaxiClientPrices all_prices = new TaxiClientPrices();
             all_prices.setGroupsId(0);
-            all_prices.setDescription(getString(R.string.all_prices));
-            groupsAdapters[0] = new GroupsAdapter(all_prices);
+            all_prices.setShortname(getString(R.string.all_prices));
+            pricesAdapters[0] = new TaxiClientPricesAdapter(all_prices);
+
+            DecimalFormat df = new DecimalFormat();
+            df.setMaximumFractionDigits(2);
+            df.setMinimumFractionDigits(0);
+            df.setGroupingUsed(false);
+
             int i = 1;
-            int spinnerPosition = 0;
-            for (Groups group : prices) {
-                groupsAdapters[i] = new GroupsAdapter(group);
-                if (chooseGroup != null && chooseGroup.getGroupsId().equals(group.getGroupsId())) spinnerPosition = i;
+            for (TaxiClientPrices price : prices) {
+                StringBuilder priceString = new StringBuilder();
+                if (price.getShortname() != null) priceString.append(price.getShortname());
+                if (price.getDayPrice() != null)
+                    priceString.append(" ").append(getString(R.string.day_price)).append(":").append(df.format(price.getDayPrice().setScale(2, RoundingMode.HALF_UP)));
+                if (price.getNightPrice() != null)
+                    priceString.append(" ").append(getString(R.string.night_price)).append(":").append(df.format(price.getNightPrice().setScale(2, RoundingMode.HALF_UP)));
+                if (price.getStartPrice() != null)
+                    priceString.append(" ").append(getString(R.string.start_price)).append(":").append(df.format(price.getStartPrice().setScale(2, RoundingMode.HALF_UP)));
+                if (price.getStayPrice() != null)
+                    priceString.append(" ").append(getString(R.string.stay_price)).append(":").append(df.format(price.getStayPrice().setScale(2, RoundingMode.HALF_UP)));
+                price.setShortname(priceString.toString());
+                pricesAdapters[i] = new TaxiClientPricesAdapter(price);
                 i++;
             }
-            pricesPicker.setSelection(spinnerPosition);
-
         } else {
+            priceLayout.setVisibility(View.GONE);
             Log.e(TAG, "prices=null");
-            groupsAdapters = new GroupsAdapter[1];
-            Groups group = new Groups();
-            group.setGroupsId(0);
-            group.setDescription(getString(R.string.all_prices)); //.no_free_cars));
-            groupsAdapters[0] = new GroupsAdapter(group);
-            requestSend.setVisibility(View.VISIBLE); //.GONE);
+            pricesAdapters = new TaxiClientPricesAdapter[1];
+
+            TaxiClientPrices all_prices = new TaxiClientPrices();
+            all_prices.setGroupsId(0);
+            all_prices.setShortname(getString(R.string.all_prices));
+            pricesAdapters[0] = new TaxiClientPricesAdapter(all_prices);
         }
 
-        ArrayAdapter<GroupsAdapter> adapter2 = new ArrayAdapter<GroupsAdapter>(this, R.layout.spinner_layout, groupsAdapters);
+        ArrayAdapter<TaxiClientPricesAdapter> adapter2 = new ArrayAdapter<TaxiClientPricesAdapter>(this, R.layout.spinner_layout, pricesAdapters);
         adapter2.setDropDownViewResource(R.layout.spinner_layout);
         pricesPicker.setAdapter(adapter2);
     }
@@ -402,8 +418,12 @@ public class EditRequestActivity extends Activity {
                     } else RestClient.getInstance().clearCache(RestClientBase.getVisibleGroupsKey);
                 }
             }
-            GroupsAdapter priceAdapter = (GroupsAdapter) pricesPicker.getSelectedItem();
-            if (priceAdapter != null) filterGroups.add(priceAdapter.getGroups());
+            TaxiClientPricesAdapter priceAdapter = (TaxiClientPricesAdapter) pricesPicker.getSelectedItem();
+            if (priceAdapter != null) {
+                Groups priceGroup = new Groups();
+                priceGroup.setGroupsId(priceAdapter.getTaxiClientPrices().getGroupsId());
+                filterGroups.add(priceGroup);
+            }
 
             newRequest.setRequestGroups(filterGroups);
             newRequest.setSource(RequestSource.ANDROID.getCode());

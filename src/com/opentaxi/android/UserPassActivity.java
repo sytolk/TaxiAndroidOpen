@@ -31,6 +31,7 @@ import com.stil.generated.mysql.tables.pojos.Contact;
 import com.stil.generated.mysql.tables.pojos.Contactaddress;
 import com.stil.generated.mysql.tables.pojos.FacebookUsers;
 import com.taxibulgaria.enums.Gender;
+import org.acra.ACRA;
 import org.androidannotations.annotations.*;
 
 /**
@@ -203,7 +204,8 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
                             file.delete();
                         }
                 }*/
-                int i = 2 / 0;
+                ACRA.getErrorReporter().handleSilentException(new Exception("Developer Report"));
+               // int i = 2 / 0;
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

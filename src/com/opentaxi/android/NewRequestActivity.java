@@ -11,14 +11,15 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.opentaxi.android.adapters.GroupsAdapter;
 import com.opentaxi.android.adapters.RegionsAdapter;
+import com.opentaxi.android.adapters.TaxiClientPricesAdapter;
 import com.opentaxi.android.utils.MyGeocoder;
 import com.opentaxi.models.MapRequest;
 import com.opentaxi.models.NewRequestDetails;
@@ -34,6 +35,8 @@ import rx.Subscription;
 import rx.functions.Action1;
 
 import java.io.IOException;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -98,6 +101,9 @@ public class NewRequestActivity extends Activity {
     @ViewById(R.id.destLayout)
     LinearLayout destLayout;
 
+    @ViewById(R.id.priceLayout)
+    LinearLayout priceLayout;
+
     //LocationInfo latestInfo;
 
     private Observable<Location> lastKnownLocationObservable;
@@ -118,25 +124,29 @@ public class NewRequestActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        lastKnownLocationSubscription = lastKnownLocationObservable
-                .subscribe(new Action1<Location>() {
-                    @Override
-                    public void call(Location location) {
-                        setAddress(location);
-                    }
-                }, new ErrorHandler());
+        if (lastKnownLocationObservable != null) {
+            lastKnownLocationSubscription = lastKnownLocationObservable
+                    .subscribe(new Action1<Location>() {
+                        @Override
+                        public void call(Location location) {
+                            setAddress(location);
+                        }
+                    }, new ErrorHandler());
+        } else setAddress(null);
     }
 
     @Override
     protected void onStop() {
         //Log.i(TAG, "onStop");
         super.onStop();
-        lastKnownLocationSubscription.unsubscribe();
+        if (lastKnownLocationSubscription != null)
+            lastKnownLocationSubscription.unsubscribe();
     }
 
     private class ErrorHandler implements Action1<Throwable> {
         @Override
         public void call(Throwable throwable) {
+            setAddress(null);
             Log.d("MainActivity", "Error occurred", throwable);
         }
     }
@@ -157,7 +167,7 @@ public class NewRequestActivity extends Activity {
         setCities();
         //setAddress();
         //showCities("Бургас");
-        setPrices();
+        //setPrices();
         setGroups();
         address.setText(R.string.wait_address);
 
@@ -283,40 +293,63 @@ public class NewRequestActivity extends Activity {
         }
     }
 
+    @AfterTextChange(R.id.citiesPicker)
+    void afterTextChangedOncitiesPicker(Editable text, TextView hello) {
+        setPrices(text.toString());
+    }
+
     @Background
-    void setPrices() {
-        Log.i(TAG, "getPrices");
-        showPrices(RestClient.getInstance().getPrices());
+    void setPrices(String city) {
+        //Log.i(TAG, "getPrices");
+        if (city != null) showPrices(RestClient.getInstance().getPrices(city));
     }
 
     @UiThread
-    void showPrices(Groups[] prices) {
-        GroupsAdapter[] groupsAdapters;
+    void showPrices(TaxiClientPrices[] prices) {
+        TaxiClientPricesAdapter[] pricesAdapters;
         if (prices != null && prices.length > 0) {
-            groupsAdapters = new GroupsAdapter[prices.length + 1];
-            Groups all_prices = new Groups();
+            priceLayout.setVisibility(View.VISIBLE);
+            pricesAdapters = new TaxiClientPricesAdapter[prices.length + 1];
+
+            TaxiClientPrices all_prices = new TaxiClientPrices();
             all_prices.setGroupsId(0);
-            all_prices.setDescription(getString(R.string.all_prices));
-            groupsAdapters[0] = new GroupsAdapter(all_prices);
+            all_prices.setShortname(getString(R.string.all_prices));
+            pricesAdapters[0] = new TaxiClientPricesAdapter(all_prices);
+
+            DecimalFormat df = new DecimalFormat();
+            df.setMaximumFractionDigits(2);
+            df.setMinimumFractionDigits(0);
+            df.setGroupingUsed(false);
 
             int i = 1;
-            for (Groups group : prices) {
-                groupsAdapters[i] = new GroupsAdapter(group);
+            for (TaxiClientPrices price : prices) {
+                StringBuilder priceString = new StringBuilder();
+                if (price.getShortname() != null) priceString.append(price.getShortname());
+                if (price.getDayPrice() != null)
+                    priceString.append(" ").append(getString(R.string.day_price)).append(":").append(df.format(price.getDayPrice().setScale(2, RoundingMode.HALF_UP)));
+                if (price.getNightPrice() != null)
+                    priceString.append(" ").append(getString(R.string.night_price)).append(":").append(df.format(price.getNightPrice().setScale(2, RoundingMode.HALF_UP)));
+                if (price.getStartPrice() != null)
+                    priceString.append(" ").append(getString(R.string.start_price)).append(":").append(df.format(price.getStartPrice().setScale(2, RoundingMode.HALF_UP)));
+                if (price.getStayPrice() != null)
+                    priceString.append(" ").append(getString(R.string.stay_price)).append(":").append(df.format(price.getStayPrice().setScale(2, RoundingMode.HALF_UP)));
+                price.setShortname(priceString.toString());
+                pricesAdapters[i] = new TaxiClientPricesAdapter(price);
                 i++;
             }
-            requestSend.setVisibility(View.VISIBLE);
         } else {
+            priceLayout.setVisibility(View.GONE);
             Log.e(TAG, "prices=null");
-            groupsAdapters = new GroupsAdapter[1];
-            Groups group = new Groups();
-            group.setGroupsId(0);
-            group.setDescription(getString(R.string.all_prices)); //.no_free_cars));
-            groupsAdapters[0] = new GroupsAdapter(group);
-            requestSend.setVisibility(View.VISIBLE); //.GONE);
+            pricesAdapters = new TaxiClientPricesAdapter[1];
+
+            TaxiClientPrices all_prices = new TaxiClientPrices();
+            all_prices.setGroupsId(0);
+            all_prices.setShortname(getString(R.string.all_prices));
+            pricesAdapters[0] = new TaxiClientPricesAdapter(all_prices);
         }
 
-        ArrayAdapter<GroupsAdapter> adapter2 = new ArrayAdapter<GroupsAdapter>(this, R.layout.spinner_layout, groupsAdapters);
-        adapter2.setDropDownViewResource(R.layout.spinner_layout);
+        ArrayAdapter<TaxiClientPricesAdapter> adapter2 = new ArrayAdapter<TaxiClientPricesAdapter>(this, R.layout.spinner_layout, pricesAdapters);
+        adapter2.setDropDownViewResource(R.layout.multiline_spinner_layout);
         pricesPicker.setAdapter(adapter2);
     }
 
@@ -545,8 +578,12 @@ public class NewRequestActivity extends Activity {
                     } else RestClient.getInstance().clearCache(RestClientBase.getVisibleGroupsKey);
                 }
             }
-            GroupsAdapter priceAdapter = (GroupsAdapter) pricesPicker.getSelectedItem();
-            if (priceAdapter != null) filterGroups.add(priceAdapter.getGroups());
+            TaxiClientPricesAdapter priceAdapter = (TaxiClientPricesAdapter) pricesPicker.getSelectedItem();
+            if (priceAdapter != null) {
+                Groups priceGroup = new Groups();
+                priceGroup.setGroupsId(priceAdapter.getTaxiClientPrices().getGroupsId());
+                filterGroups.add(priceGroup);
+            }
 
             newRequest.setRequestGroups(filterGroups);
             newRequest.setSource(RequestSource.ANDROID.getCode());

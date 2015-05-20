@@ -39,7 +39,8 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (intent != null && intent.getExtras() != null) {
             String regId = intent.getExtras().getString("registration_id");
-            if (regId != null && !regId.equals("")) {
+            if (regId != null && !regId.equals("") && !regId.equals(TaxiApplication.gcmId)) {
+                TaxiApplication.gcmId = regId;
       /* Do what ever you want with the regId eg. send it to your server */
                 Log.i("GcmBroadcastReceiver", "onReceive:" + regId);
                 //RestClient.getInstance().gcmRegister(regId);

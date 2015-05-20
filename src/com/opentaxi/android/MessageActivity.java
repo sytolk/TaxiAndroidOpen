@@ -19,7 +19,6 @@ public class MessageActivity extends Activity {
      * Called when the activity is first created.
      */
     //private static final int MESSAGE = 40;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +35,19 @@ public class MessageActivity extends Activity {
 
                 TextView requestView = (TextView) findViewById(R.id.confirmText);
                 requestView.setText(messages.getMsg());
+
+                //todo set from
+                //if (messages.getUsersFromId() != null) {
+
+                    /*Users userFrom = AppPreferences.getInstance(getApplicationContext()).getUserById(messages.getUsersFromId());
+                    if (userFrom != null) {
+                        TextView fromView = (TextView) findViewById(R.id.requestGroups);
+                        StringBuilder fromTxt = new StringBuilder();
+                        fromTxt.append("От: ").append(userFrom.getUsername());
+                        if (userFrom.getContact() != null)
+                            fromTxt.append(" (").append(userFrom.getContact().getFirstname()).append(" ").append(userFrom.getContact().getLastname()).append(")");
+                        fromView.setText(fromTxt);
+                    }*/
             }
         }
     }

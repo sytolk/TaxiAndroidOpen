@@ -64,7 +64,7 @@ public class ProcessMessageTask extends AsyncTask<Context, Void, Messages> {
                 CloudMessages cloudMessages = RestClient.getInstance().getCloudMessage(cloudMsgId);
                 if (cloudMessages != null) {
                     Log.i(TAG, "ProcessMessage:" + cloudMessages.getClassName() + " msg:" + cloudMessages.getMsg());
-                    if (cloudMessages.getClassName().equals(NewRequestDetails.class.getName())) {
+                    if (cloudMessages.getClassName().equals(NewRequestDetails.class.getName()) || cloudMessages.getClassName().equals(NewRequestDetails.class.getSimpleName())) {
 
                         NewRequestDetails request = null;
                         try {
@@ -100,7 +100,7 @@ public class ProcessMessageTask extends AsyncTask<Context, Void, Messages> {
                                     context.startActivity(proposalIntent);*/
                             }
                         }
-                    } else if (cloudMessages.getClassName().equals(Messages.class.getName())) {
+                    } else if (cloudMessages.getClassName().equals(Messages.class.getName()) || cloudMessages.getClassName().equals(Messages.class.getSimpleName())) {
                         try {
                             Messages messages = AppPreferences.getInstance().getMapper().readValue(cloudMessages.getMsg(), Messages.class);
                             messages.setMsg(URLDecoder.decode(messages.getMsg(), "UTF-8"));

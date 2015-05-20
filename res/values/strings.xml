@@ -135,6 +135,10 @@
     <string name="destination">Destination</string>
     <string name="burgas">Burgas</string>
     <string name="all_prices">all prices</string>
+    <string name="day_price">day price</string>
+    <string name="night_price">night price</string>
+    <string name="stay_price">stay price</string>
+    <string name="start_price">start price</string>
     <string name="options_help">Help</string>
     <string name="request_rejected">Sorry but request: %1$s ( %2$s ) is rejected.</string>
     <string name="request_edited">Request: %1$s ( %2$s ) is edited.</string>

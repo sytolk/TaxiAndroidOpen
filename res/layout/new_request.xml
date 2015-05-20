@@ -30,8 +30,9 @@
                     android:layout_height="wrap_content"
                     android:textColor="#ffffff"
                     android:layout_weight=".3"
-                    android:gravity="right"
-                    android:layout_marginRight="20dp"/>
+                    android:gravity="end"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginEnd="20dp"/>
 
                 <AutoCompleteTextView
                     android:id="@+id/citiesPicker"
@@ -58,8 +59,9 @@
                     android:layout_height="wrap_content"
                     android:textColor="#ffffff"
                     android:layout_weight=".3"
-                    android:gravity="right"
-                    android:layout_marginRight="20dp"/>
+                    android:gravity="end"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginEnd="20dp"/>
 
                 <AutoCompleteTextView
                     android:id="@+id/regionsPicker"
@@ -86,8 +88,9 @@
                     android:text="@string/address"
                     android:textColor="#ffffff"
                     android:layout_weight=".2"
-                    android:gravity="right"
-                    android:layout_marginRight="20dp"/>
+                    android:gravity="end"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginEnd="20dp"/>
 
                 <EditText
                     android:layout_width="0dp"
@@ -130,8 +133,9 @@
                     android:layout_height="wrap_content"
                     android:textColor="#ffffff"
                     android:layout_weight=".3"
-                    android:gravity="right"
-                    android:layout_marginRight="20dp"/>
+                    android:gravity="end"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginEnd="20dp"/>
 
                 <AutoCompleteTextView
                     android:id="@+id/destination"
@@ -145,11 +149,13 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/priceLayout"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/price"
@@ -158,13 +164,15 @@
                     android:text="@string/car_price"
                     android:textColor="#ffffff"
                     android:layout_weight=".3"
-                    android:gravity="right"
+                    android:gravity="end"
+                    android:layout_marginEnd="20dp"
                     android:layout_marginRight="20dp"/>
 
                 <Spinner
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/pricesPicker"
+                    android:spinnerMode="dialog"
                     android:layout_weight=".7"/>
 
             </LinearLayout>
@@ -175,7 +183,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/needs_from"
                 android:textColor="@color/label_color"
-                android:layout_marginLeft="20dp"/>
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"/>
 
             <LinearLayout
                 android:orientation="vertical"
@@ -183,30 +192,8 @@
                 android:paddingTop="5.0px"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"/>
-            <!--<CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Фактура"
-                android:id="@+id/checkInvoice"
-                android:textColor="#ffffff"
-                android:layout_marginLeft="20dp"/>
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Автомобил с голям багажник"
-                android:id="@+id/checkBigBag"
-                android:textColor="#ffffff"
-                android:layout_marginLeft="20dp"/>
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Доставка до адрес"
-                android:id="@+id/checkDelivery"
-                android:textColor="#ffffff"
-                android:layout_marginLeft="20dp"/>-->
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"/>
         </LinearLayout>
     </ScrollView>
 

@@ -8,3 +8,41 @@ https://play.google.com/store/apps/details?id=com.cocoapps.screenrecorder&hl=bg
 версия: 1.0.3 добавена е възможност да се логнете директно през вашия Facebook
 версия: 1.0.2 поправени грешки и подобрения.
 версия: 1.0.1 (стартова)
+
+
+/bin/sh -c cd /home/stanimir/Stil-Projects/TaxiAndroidOpen && /usr/lib/jvm/java-7-oracle/jre/bin/java -Xmx1024M -jar
+/home/stanimir/android-sdk-linux/build-tools/21.1.2/lib/dx.jar --dex --output=/home/stanimir/Stil-Projects/TaxiAndroidOpen/target/classes.dex
+/home/stanimir/.m2/repository/org/codehaus/jackson/jackson-mapper-asl/1.9.13/jackson-mapper-asl-1.9.13.jar
+/home/stanimir/.m2/repository/com/taxi-bulgaria/rest/open-rest-client/1.0.4.BUILD-SNAPSHOT/open-rest-client-1.0.4.BUILD-SNAPSHOT.jar
+/home/stanimir/.m2/repository/org/androidannotations/androidannotations-api/3.2/androidannotations-api-3.2.jar
+/home/stanimir/.m2/repository/com/google/code/findbugs/annotations/3.0.0/annotations-3.0.0.jar
+/home/stanimir/.m2/repository/com/parse/bolts/bolts-android/1.1.2/bolts-android-1.1.2.jar
+/home/stanimir/Stil-Projects/TaxiAndroidOpen/target/unpacked-libs/cas_support-v4_22.1.1/classes.jar
+/home/stanimir/.m2/repository/net/java/truelicense/truelicense-obfuscate/2.4.1/truelicense-obfuscate-2.4.1.jar
+/home/stanimir/.m2/repository/org/mapsforge/mapsforge-map-android/0.5.0/mapsforge-map-android-0.5.0.jar
+/home/stanimir/.m2/repository/org/springframework/android/spring-android-rest-template/1.0.2.BUILD-SNAPSHOT/spring-android-rest-template-1.0.2.BUILD-SNAPSHOT.jar
+/home/stanimir/.m2/repository/org/mapsforge/mapsforge-map/0.5.0/mapsforge-map-0.5.0.jar
+/home/stanimir/.m2/repository/com/mobsandgeeks/android-saripaar/1.0.7-SNAPSHOT/android-saripaar-1.0.7-SNAPSHOT.jar
+/home/stanimir/.m2/repository/org/mapsforge/mapsforge-core/0.5.0/mapsforge-core-0.5.0.jar
+/home/stanimir/Stil-Projects/TaxiAndroidOpen/target/unpacked-libs/cgag_play-services-location_7.3.0/classes.jar
+/home/stanimir/Stil-Projects/TaxiAndroidOpen/target/unpacked-libs/pca_android-reactive-location_0.6/classes.jar
+/home/stanimir/.m2/repository/com/jakewharton/disklrucache/2.0.2/disklrucache-2.0.2.jar
+/home/stanimir/.m2/repository/org/mapsforge/mapsforge-map-reader/0.5.0/mapsforge-map-reader-0.5.0.jar
+/home/stanimir/Stil-Projects/TaxiAndroidOpen/target/unpacked-libs/cgag_play-services-gcm_7.3.0/classes.jar
+/home/stanimir/.m2/repository/com/android/support/support-annotations/22.1.1/support-annotations-22.1.1.jar
+/home/stanimir/Stil-Projects/TaxiAndroidOpen/target/unpacked-libs/fa_facebook-android-api_3.18.0/classes.jar
+/home/stanimir/.m2/repository/com/taxi-bulgaria/rest/open-rest-client-a/1.0.4.BUILD-SNAPSHOT/open-rest-client-a-1.0.4.BUILD-SNAPSHOT.jar
+/home/stanimir/Stil-Projects/TaxiAndroidOpen/target/unpacked-libs/cgag_play-services-base_7.3.0/classes.jar
+/home/stanimir/.m2/repository/com/github/sromku/android-simple-facebook/2.1-SNAPSHOT/android-simple-facebook-2.1-SNAPSHOT.jar
+/home/stanimir/.m2/repository/com/google/guava/guava/11.0.2/guava-11.0.2.jar
+/home/stanimir/.m2/repository/com/taxi-bulgaria/common/common/1.0.1-SNAPSHOT/common-1.0.1-SNAPSHOT.jar
+/home/stanimir/.m2/repository/org/codehaus/jackson/jackson-core-asl/1.9.13/jackson-core-asl-1.9.13.jar
+/home/stanimir/Stil-Projects/TaxiAndroidOpen/target/unpacked-libs/ctm_mapsforge_0.5.1/classes.jar
+/home/stanimir/Stil-Projects/TaxiAndroidOpen/target/unpacked-libs/cas_support-v4_22.1.1/libs/internal_impl-22.1.1.jar
+/home/stanimir/.m2/repository/io/reactivex/rxjava/1.0.10/rxjava-1.0.10.jar
+/home/stanimir/.m2/repository/ch/acra/acra/4.6.2/acra-4.6.2.jar
+/home/stanimir/Stil-Projects/TaxiAndroidOpen/target/classes
+/home/stanimir/.m2/repository/net/sf/kxml/kxml2/2.3.0/kxml2-2.3.0.jar
+/home/stanimir/.m2/repository/com/caverock/androidsvg/1.2.2-beta-1/androidsvg-1.2.2-beta-1.jar
+/home/stanimir/.m2/repository/com/google/code/findbugs/jsr305/1.3.9/jsr305-1.3.9.jar
+/home/stanimir/.m2/repository/org/springframework/android/spring-android-core/1.0.2.BUILD-SNAPSHOT/spring-android-core-1.0.2.BUILD-SNAPSHOT.jar, Result = 1

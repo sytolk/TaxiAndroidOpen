@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Maven: com.taxi-bulgaria.map:mapsforge:aar:0.5.1">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/gen-external-apklibs/com.taxi-bulgaria.map_mapsforge_0.5.1/res" />
+      <root url="jar://$PROJECT_DIR$/gen-external-apklibs/com.taxi-bulgaria.map_mapsforge_0.5.1/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/taxi-bulgaria/map/mapsforge/0.5.1/mapsforge-0.5.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/taxi-bulgaria/map/mapsforge/0.5.1/mapsforge-0.5.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -14,9 +14,10 @@ import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
  * To change this template use File | Settings | File Templates.
  */
 //@ReportsCrashes(formKey = "dF8wOUJYbFhCeDVlMG1JT3FkN2xXM0E6MQ", logcatFilterByPid = true)
-@ReportsCrashes(formKey = "", logcatFilterByPid = true)
+@ReportsCrashes(logcatFilterByPid = true) //formKey = "",
 public class TaxiApplication extends Application {
 
+    public static String gcmId = "";
     private static boolean havePlayService = true;
     private static boolean requestsVisible = false;
     private static boolean requestsHistory = false;

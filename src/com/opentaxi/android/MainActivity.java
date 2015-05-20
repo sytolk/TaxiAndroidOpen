@@ -33,6 +33,7 @@ import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.listeners.OnLogoutListener;
 import com.stil.generated.mysql.tables.pojos.Servers;
 import com.taxibulgaria.enums.Applications;
+import org.acra.ACRA;
 import org.androidannotations.annotations.*;
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 import rx.Observable;
@@ -465,41 +466,44 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        lastKnownLocationSubscription = lastKnownLocationObservable
-                .subscribe(new Action1<Location>() {
-                    @Override
-                    public void call(Location location) {
-                        doObtainedLocation(location);
-                    }
-                }, new ErrorHandler());
-
-        updatableLocationSubscription = locationUpdatesObservable
-                .doOnError(new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        String message = "Error on location update: " + throwable.getMessage();
-                        Log.e("updateLocation", message, throwable);
-                        //Crashlytics.logException(throwable);
-                    }
-                })
-                .onErrorReturn(new Func1<Throwable, Location>() {
-                    @Override
-                    public Location call(Throwable throwable) {
-                        //locationUnSubscribe();
-                        return null;
-                    }
-                }).filter(new Func1<Location, Boolean>() {
-                    @Override
-                    public Boolean call(Location location) {
-                        return location.getAccuracy() < SUFFICIENT_ACCURACY;
-                    }
-                })
-                .subscribe(new Action1<Location>() {
-                    @Override
-                    public void call(Location location) {
-                        doObtainedLocation(location);
-                    }
-                }, new ErrorHandler());
+        if (lastKnownLocationObservable != null) {
+            lastKnownLocationSubscription = lastKnownLocationObservable
+                    .subscribe(new Action1<Location>() {
+                        @Override
+                        public void call(Location location) {
+                            doObtainedLocation(location);
+                        }
+                    }, new ErrorHandler());
+        }
+        if (locationUpdatesObservable != null) {
+            updatableLocationSubscription = locationUpdatesObservable
+                    .doOnError(new Action1<Throwable>() {
+                        @Override
+                        public void call(Throwable throwable) {
+                            String message = "Error on location update: " + throwable.getMessage();
+                            Log.e("updateLocation", message, throwable);
+                            //Crashlytics.logException(throwable);
+                        }
+                    })
+                    .onErrorReturn(new Func1<Throwable, Location>() {
+                        @Override
+                        public Location call(Throwable throwable) {
+                            //locationUnSubscribe();
+                            return null;
+                        }
+                    }).filter(new Func1<Location, Boolean>() {
+                        @Override
+                        public Boolean call(Location location) {
+                            return location.getAccuracy() < SUFFICIENT_ACCURACY;
+                        }
+                    })
+                    .subscribe(new Action1<Location>() {
+                        @Override
+                        public void call(Location location) {
+                            doObtainedLocation(location);
+                        }
+                    }, new ErrorHandler());
+        }
     }
 
     private void doObtainedLocation(Location location) {
@@ -530,8 +534,8 @@ public class MainActivity extends FragmentActivity {
     protected void onStop() {
         //Log.i(TAG, "onStop");
         super.onStop();
-        updatableLocationSubscription.unsubscribe();
-        lastKnownLocationSubscription.unsubscribe();
+        if (updatableLocationSubscription != null) updatableLocationSubscription.unsubscribe();
+        if (lastKnownLocationSubscription != null) lastKnownLocationSubscription.unsubscribe();
     }
 
     private class ErrorHandler implements Action1<Throwable> {
@@ -578,7 +582,8 @@ public class MainActivity extends FragmentActivity {
                             file.delete();
                         }
                 }*/
-                int i = 2 / 0;
+                ACRA.getErrorReporter().handleSilentException(new Exception("Developer Report"));
+                //int i = 2 / 0;
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
