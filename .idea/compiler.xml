@@ -25,6 +25,8 @@
     </wildcardResourcePatterns>
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true">
           <entry name="$MAVEN_REPOSITORY$/com/googlecode/androidannotations/androidannotations/2.7.1/androidannotations-2.7.1.jar" />
@@ -40,6 +42,7 @@
         <module name="RESTfulXmlBeans" />
         <module name="StilAndroid" />
         <module name="StilAndroidOpen" />
+        <module name="TaxiAndroidOpen" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="1.7">
