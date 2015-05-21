@@ -5,7 +5,6 @@ import android.content.*;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -20,8 +19,12 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.opentaxi.android.asynctask.LogoutTask;
 import com.opentaxi.android.service.CoordinatesService;
 import com.opentaxi.android.utils.AppPreferences;
@@ -70,14 +73,18 @@ public class MainActivity extends FragmentActivity {
 
     GoogleCloudMessaging gcm;
 
+    private ReactiveLocationProvider locationProvider;
+
     private Observable<Location> lastKnownLocationObservable;
     private Observable<Location> locationUpdatesObservable;
     private Subscription lastKnownLocationSubscription;
     private Subscription updatableLocationSubscription;
+    private static final int REQUEST_CHECK_SETTINGS = 0;
 
     private float SUFFICIENT_ACCURACY = 300; //meters
     private long UPDATE_LOCATION_INTERVAL = 5000; //millis
     private long FASTEST_LOCATION_INTERVAL = 10000; //millis
+
 
     //private boolean havePlayService = true;
 
@@ -88,19 +95,46 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+            if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext()) == ConnectionResult.SUCCESS) {
 
-        if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext()) == ConnectionResult.SUCCESS) {
+                locationProvider = new ReactiveLocationProvider(getApplicationContext());
 
-            ReactiveLocationProvider locationProvider = new ReactiveLocationProvider(getApplicationContext());
+                lastKnownLocationObservable = locationProvider.getLastKnownLocation();
 
-            lastKnownLocationObservable = locationProvider.getLastKnownLocation();
+                final LocationRequest locationRequest = LocationRequest.create() //standard GMS LocationRequest
+                        .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                        .setInterval(UPDATE_LOCATION_INTERVAL)
+                        .setFastestInterval(FASTEST_LOCATION_INTERVAL);
 
-            LocationRequest request = LocationRequest.create() //standard GMS LocationRequest
-                    .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                    .setInterval(UPDATE_LOCATION_INTERVAL)
-                    .setFastestInterval(FASTEST_LOCATION_INTERVAL);
-
-            locationUpdatesObservable = locationProvider.getUpdatedLocation(request);
+                locationUpdatesObservable = locationProvider.checkLocationSettings(
+                        new LocationSettingsRequest.Builder()
+                                .addLocationRequest(locationRequest)
+                                .setAlwaysShow(true)
+                                .build()
+                )
+                        .doOnNext(new Action1<LocationSettingsResult>() {
+                            @Override
+                            public void call(LocationSettingsResult locationSettingsResult) {
+                                Status status = locationSettingsResult.getStatus();
+                                if (status.getStatusCode() == LocationSettingsStatusCodes.RESOLUTION_REQUIRED) {
+                                    try {
+                                        status.startResolutionForResult(MainActivity.this, REQUEST_CHECK_SETTINGS);
+                                    } catch (IntentSender.SendIntentException th) {
+                                        Log.e(TAG, "Error opening settings activity.", th);
+                                    }
+                                }
+                            }
+                        })
+                        .flatMap(new Func1<LocationSettingsResult, Observable<Location>>() {
+                            @Override
+                            public Observable<Location> call(LocationSettingsResult locationSettingsResult) {
+                                return locationProvider.getUpdatedLocation(locationRequest);
+                            }
+                        });
+            }
+        } catch (IllegalStateException e) {
+            Log.e("stilActivity", "IllegalStateException", e);
         }
     }
 
@@ -132,13 +166,13 @@ public class MainActivity extends FragmentActivity {
         RestClient.getInstance().setSocketsType(appPreferences.getSocketType());
         checkUser();
 
-        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        /*final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             alertMessageNoGps();
-        }
+        }*/
     }
 
-    void alertMessageNoGps() {
+    /*void alertMessageNoGps() {
         //showDialog(DIALOG_EXIT);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle(R.string.no_gps_title);
@@ -161,7 +195,7 @@ public class MainActivity extends FragmentActivity {
 
         Dialog exitDialog = alertDialogBuilder.create();
         exitDialog.show();
-    }
+    }*/
 
     private void checkUser() {
         if (AppPreferences.getInstance() != null) {
@@ -301,36 +335,38 @@ public class MainActivity extends FragmentActivity {
 
 
     private boolean servicesConnected() {
-        // Check that Google Play services is available
-        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-        // If Google Play services is available
-        if (ConnectionResult.SUCCESS == resultCode) {
-            // In debug mode, log the status
-            Log.d("Activity Recognition",
-                    "Google Play services is available.");
-            TaxiApplication.setHavePlayService(true);
-            // Continue
-            return true;
-            // Google Play services was not available for some reason
-        } else if (TaxiApplication.isHavePlayService()) {
-            // Get the error dialog from Google Play services
-            Dialog errorDialog = GooglePlayServicesUtil.getErrorDialog(resultCode, this, PLAY_SERVICES_RESOLUTION_REQUEST);
+        try {
+            // Check that Google Play services is available
+            int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+            // If Google Play services is available
+            if (ConnectionResult.SUCCESS == resultCode) {
+                // In debug mode, log the status
+                Log.d("Activity Recognition", "Google Play services is available.");
+                //TaxiApplication.setHavePlayService(true);
+                // Continue
+                return true;
+                // Google Play services was not available for some reason
+            } else if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                // Get the error dialog from Google Play services
+                Dialog errorDialog = GooglePlayServicesUtil.getErrorDialog(resultCode, this, PLAY_SERVICES_RESOLUTION_REQUEST);
 
-            // If Google Play services can provide an error dialog
-            if (errorDialog != null) {
-                try {
-                    // Create a new DialogFragment for the error dialog
-                    MainDialogFragment errorFragment = new MainDialogFragment();
-                    // Set the dialog in the DialogFragment
-                    errorFragment.setDialog(errorDialog);
-                    // Show the error dialog in the DialogFragment
-                    errorFragment.show(getSupportFragmentManager(), "Activity Recognition");
-                } catch (Exception e) {
-                    if (e.getMessage() != null) Log.e(TAG, e.getMessage());
+                // If Google Play services can provide an error dialog
+                if (errorDialog != null) {
+                    try {
+                        // Create a new DialogFragment for the error dialog
+                        MainDialogFragment errorFragment = new MainDialogFragment();
+                        // Set the dialog in the DialogFragment
+                        errorFragment.setDialog(errorDialog);
+                        // Show the error dialog in the DialogFragment
+                        errorFragment.show(getSupportFragmentManager(), "Activity Recognition");
+                    } catch (Exception e) {
+                        if (e.getMessage() != null) Log.e(TAG, e.getMessage());
+                    }
                 }
             }
+        } catch (IllegalStateException e) {
+            Log.e("servicesConnected", "IllegalStateException", e);
         }
-
         return false;
     }
 
@@ -680,7 +716,7 @@ public class MainActivity extends FragmentActivity {
                     case Activity.RESULT_OK:
                         break;
                     case Activity.RESULT_CANCELED:
-                        TaxiApplication.setHavePlayService(false);
+                        //TaxiApplication.setHavePlayService(false);
                         break;
                 }
                 break;

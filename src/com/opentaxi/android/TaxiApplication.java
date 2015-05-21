@@ -18,7 +18,7 @@ import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
 public class TaxiApplication extends Application {
 
     public static String gcmId = "";
-    private static boolean havePlayService = true;
+    //private static boolean havePlayService = true;
     private static boolean requestsVisible = false;
     private static boolean requestsHistory = false;
     private static boolean requestsDetailsVisible = false;
@@ -26,13 +26,13 @@ public class TaxiApplication extends Application {
     private static boolean mapVisible = false;
     private static Integer lastRequestId;
 
-    public static void setHavePlayService(boolean havePlayService) {
+    /*public static void setHavePlayService(boolean havePlayService) {
         TaxiApplication.havePlayService = havePlayService;
     }
 
     public static boolean isHavePlayService() {
         return havePlayService;
-    }
+    }*/
 
     public static boolean isRequestsVisible() {
         return requestsVisible;

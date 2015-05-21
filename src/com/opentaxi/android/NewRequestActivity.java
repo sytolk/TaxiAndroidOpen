@@ -132,7 +132,15 @@ public class NewRequestActivity extends Activity {
                             setAddress(location);
                         }
                     }, new ErrorHandler());
+            startAddressTimer();
         } else setAddress(null);
+    }
+
+    @UiThread(delay = 4000)
+    void startAddressTimer() {
+        if (address != null && address.getText() != null && address.getText().toString().equals(getString(R.string.wait_address))) {
+            setAddress(null);
+        }
     }
 
     @Override
