@@ -20,6 +20,7 @@ import com.stil.generated.mysql.tables.pojos.Regions;
 import com.taxibulgaria.enums.RegionsType;
 import com.taxibulgaria.enums.RequestStatus;
 import org.androidannotations.annotations.*;
+import org.androidannotations.api.BackgroundExecutor;
 
 import java.text.DateFormat;
 import java.util.HashMap;
@@ -86,6 +87,8 @@ public class RequestDetailsActivity extends Activity {
     public void onPause() {
         super.onPause();
         TaxiApplication.requestsDetailsPaused();
+        BackgroundExecutor.cancelAll("cancel_sec", true);
+        BackgroundExecutor.cancelAll("cancel_changes", true);
         //finish();
     }
 
@@ -117,21 +120,29 @@ public class RequestDetailsActivity extends Activity {
         regions = RestClient.getInstance().getRegions(RegionsType.BURGAS_STATE.getCode());
     }
 
-    @Background(delay = 1000)
+    @Background(delay = 1000, id = "cancel_sec")
     void scheduleChangesSec() {
-        if (TaxiApplication.isRequestsDetailsVisible()) {
-            NewCRequestDetails cRequest = RestClient.getInstance().getRequestDetails(newCRequest.getRequestsId());
-            if (cRequest != null) newCRequest = cRequest;
-            showDetails();
+        try {
+            if (TaxiApplication.isRequestsDetailsVisible()) {
+                NewCRequestDetails cRequest = RestClient.getInstance().getRequestDetails(newCRequest.getRequestsId());
+                if (cRequest != null) newCRequest = cRequest;
+                showDetails();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "scheduleChangesSec Exception", e);
         }
     }
 
-    @Background(delay = 10000)
+    @Background(delay = 10000, id = "cancel_changes")
     void scheduleChanges() {
-        if (TaxiApplication.isRequestsDetailsVisible()) {
-            NewCRequestDetails cRequest = RestClient.getInstance().getRequestDetails(newCRequest.getRequestsId());
-            if (cRequest != null) newCRequest = cRequest;
-            showDetails();
+        try {
+            if (TaxiApplication.isRequestsDetailsVisible()) {
+                NewCRequestDetails cRequest = RestClient.getInstance().getRequestDetails(newCRequest.getRequestsId());
+                if (cRequest != null) newCRequest = cRequest;
+                showDetails();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "scheduleChanges Exception", e);
         }
     }
 
@@ -150,7 +161,7 @@ public class RequestDetailsActivity extends Activity {
                     }
 
                     //Regions regions = RestClient.getInstance().getRegionById(RegionsType.BURGAS_STATE.getCode(), newCRequest.getRegionId());
-                    if(regions!=null) {
+                    if (regions != null) {
                         Regions region = getRegionById(regions, newCRequest.getRegionId());
                         if (region != null) adr.append(region.getDescription()).append(" ");
                     }

@@ -205,7 +205,7 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
                         }
                 }*/
                 ACRA.getErrorReporter().handleSilentException(new Exception("Developer Report"));
-               // int i = 2 / 0;
+                // int i = 2 / 0;
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -315,7 +315,7 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
             TaxiApplication.userPassPaused();
             hideProgress();
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setTitle(getString(R.string.fb_login) + title);
+            alertDialogBuilder.setTitle(getString(R.string.fb_login) + " " + title);
             alertDialogBuilder.setMessage(getString(R.string.new_account_question));
             //null should be your on click listener
             alertDialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
@@ -370,7 +370,7 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
 
                 @Override
                 public void onException(Throwable throwable) {
-                    Log.i(TAG, "New facebookUser onException");
+                    Log.i(TAG, "New facebookUser onException", throwable);
                     //facebookLogout();
                     overFacebookLoginTime("повдигнато е изключение");
                 }
@@ -464,7 +464,7 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
                         String userEncrypt = AppPreferences.getInstance().encrypt(username, "user_salt");
                         String passEncrypt = AppPreferences.getInstance().encrypt(password, username);
                         if (userEncrypt != null && passEncrypt != null) {
-                            if(!RestClient.getInstance().saveAuthorization(userEncrypt, passEncrypt)){
+                            if (!RestClient.getInstance().saveAuthorization(userEncrypt, passEncrypt)) {
                                 user.setUsername(username);
                                 user.setPassword(Hashing.sha1().hashString(password, Charsets.UTF_8).toString());
                                 AppPreferences.getInstance().setUsers(user);

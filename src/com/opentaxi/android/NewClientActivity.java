@@ -13,6 +13,7 @@ import android.widget.*;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.*;
+import com.opentaxi.android.utils.AppPreferences;
 import com.stil.generated.mysql.tables.pojos.Contact;
 import com.stil.generated.mysql.tables.pojos.Contactaddress;
 import com.stil.generated.mysql.tables.pojos.Users;
@@ -90,7 +91,7 @@ public class NewClientActivity extends Activity implements Validator.ValidationL
     @AfterViews
     void afterLoad() {
 
-        if (newCUsers != null) {
+        if (newCUsers != null) { //from facebook -> UserPassActivity
             userName.setText(newCUsers.getUsername());
             email.setText(newCUsers.getEmail());
             createNewUser(newCUsers);
@@ -167,8 +168,10 @@ public class NewClientActivity extends Activity implements Validator.ValidationL
         Log.i(TAG, "createNewUser:" + users.getUsername());
         Users userPojo = RestClient.getInstance().createNewUser(users);
         if (userPojo != null) {
-            if (userPojo.getRecordstatus() != null && userPojo.getRecordstatus()) {  //account is already active
+            if (userPojo.getRecordstatus() != null && userPojo.getRecordstatus()) {  //account is already active (facebook)
                 RestClient.getInstance().setAuthHeadersEncoded(userPojo.getUsername(), userPojo.getPassword());
+                //facebook user exist
+                if (AppPreferences.getInstance() != null) AppPreferences.getInstance().setUsers(new com.opentaxi.models.Users(userPojo));
                 finishThis();
             } else ActivationDialog();
         } else setUserError("Error, check you internet connection and try again.");

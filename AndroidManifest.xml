@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.opentaxi.android"
-          android:versionName="1.0.32"
-          android:versionCode="32"
+          android:versionName="1.0.34"
+          android:versionCode="34"
           android:installLocation="auto">
 
     <uses-sdk
@@ -172,7 +172,7 @@
         </activity>
 
         <!--osmap-->
-        <activity
+        <!--<activity
             android:name="org.mapsforge.applications.android.LocationOverlayMapViewer"
             android:allowTaskReparenting="false"
             android:taskAffinity=""
@@ -184,7 +184,7 @@
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
-        </activity>
+        </activity>-->
         <activity
             android:name="com.opentaxi.android.BubbleOverlay_"
             android:allowTaskReparenting="false"

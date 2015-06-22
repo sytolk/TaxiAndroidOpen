@@ -21,10 +21,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResult;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.location.*;
 import com.opentaxi.android.asynctask.LogoutTask;
 import com.opentaxi.android.service.CoordinatesService;
 import com.opentaxi.android.utils.AppPreferences;
@@ -110,18 +107,22 @@ public class MainActivity extends FragmentActivity {
                 locationUpdatesObservable = locationProvider.checkLocationSettings(
                         new LocationSettingsRequest.Builder()
                                 .addLocationRequest(locationRequest)
-                                .setAlwaysShow(true)
+                                        //.setAlwaysShow(true)
                                 .build()
                 )
                         .doOnNext(new Action1<LocationSettingsResult>() {
                             @Override
                             public void call(LocationSettingsResult locationSettingsResult) {
-                                Status status = locationSettingsResult.getStatus();
-                                if (status.getStatusCode() == LocationSettingsStatusCodes.RESOLUTION_REQUIRED) {
-                                    try {
-                                        status.startResolutionForResult(MainActivity.this, REQUEST_CHECK_SETTINGS);
-                                    } catch (IntentSender.SendIntentException th) {
-                                        Log.e(TAG, "Error opening settings activity.", th);
+                                LocationSettingsStates locationSettingsStates = locationSettingsResult.getLocationSettingsStates();
+                                if (locationSettingsStates != null && (!locationSettingsStates.isGpsPresent() || !locationSettingsStates.isGpsUsable())) {
+
+                                    Status status = locationSettingsResult.getStatus();
+                                    if (status.getStatusCode() == LocationSettingsStatusCodes.RESOLUTION_REQUIRED) {
+                                        try {
+                                            status.startResolutionForResult(MainActivity.this, REQUEST_CHECK_SETTINGS);
+                                        } catch (IntentSender.SendIntentException th) {
+                                            Log.e(TAG, "Error opening settings activity.", th);
+                                        }
                                     }
                                 }
                             }
