@@ -37,6 +37,10 @@ for map export view osmosis.txt in doc.
 
 About translating, please visit https://hosted.weblate.org/projects/taxi-android-open/strings/ 
 
+##Support
+
+[![PayPayl donate button](https://img.shields.io/badge/paypal-donate-yellow.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2W5ZTX3VEH9D2 "Donate once-off to this project using Paypal")
+
 ##License
 
 Copyright [2013] [Stanimir Marinov]

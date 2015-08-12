@@ -13,6 +13,7 @@ android:
       - build-tools-21.1.2
       - sys-img-armeabi-v7a-android-22
       - extra-android-m2repository
+      - extra-google-google_play_services
   licenses:
     - android-sdk-license-5be876d5
 
