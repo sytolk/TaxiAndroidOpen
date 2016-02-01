@@ -15,7 +15,6 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -37,7 +36,6 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.*;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.iconics.context.IconicsLayoutInflater;
 import com.opentaxi.android.asynctask.LogoutTask;
 import com.opentaxi.android.fragments.*;
 import com.opentaxi.android.service.CoordinatesService;
@@ -206,13 +204,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (navMenu != null) {
             MenuItem navHome = navMenu.findItem(R.id.nav_home);
             if (navHome != null)
-                navHome.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_home).actionBar().color(Color.YELLOW));
+                navHome.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_home).actionBar().color(Color.BLACK));
             MenuItem navMap = navMenu.findItem(R.id.nav_map);
             if (navMap != null)
                 navMap.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_map).actionBar().color(Color.BLUE));
             MenuItem navRequest = navMenu.findItem(R.id.nav_request);
             if (navRequest != null)
-                navRequest.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_local_taxi).actionBar().color(Color.YELLOW));
+                navRequest.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_local_taxi).actionBar().color(Color.RED));
             MenuItem navHistory = navMenu.findItem(R.id.nav_history);
             if (navHistory != null)
                 navHistory.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_info).actionBar().color(Color.GREEN));
@@ -703,7 +701,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                         .insidePolicy(true, false)
                                         .outsidePolicy(true, false), 20000)
                                 //.activateDelay(1800)
-                                .showDelay(4000)
+                                .showDelay(3000)
                                 .text(getResources(), R.string.taxi_tooltip) //"Поръчай такси с едно кликване"
                                 //.maxWidth(500)
                                 .withArrow(true)
@@ -809,7 +807,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void startRequests(boolean history) {
         if (!isFinishing()) {
             android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            RequestsFragment fragment = RequestsFragment_.builder().build();
+            RequestsHistoryFragment fragment = RequestsHistoryFragment_.builder().build();
             Bundle bundle = new Bundle();
             bundle.putBoolean("history", history);
             fragment.setArguments(bundle);

@@ -110,6 +110,7 @@
     <string name="active_requests">Active requests</string>
     <string name="execution_time">Execution time</string>
     <string name="car">Car</string>
+    <string name="filters">Filters</string>
     <string name="status">Status</string>
     <string name="no_requests">No requests.</string>
     <string name="exception">exception</string>

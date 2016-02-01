@@ -108,6 +108,7 @@
     <string name="active_requests">Активни поръчки</string>
     <string name="execution_time">Време за изпълнение</string>
     <string name="car">Автомобил</string>
+    <string name="filters">Филтри</string>
     <string name="status">Статус</string>
     <string name="no_requests">Нямате поръчки.</string>
     <string name="exception">повдигнато е изключение</string>

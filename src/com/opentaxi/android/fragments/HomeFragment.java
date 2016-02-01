@@ -91,7 +91,7 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        if (mListener != null) mListener.setBarTitle(getString(R.string.app_name));
+        if (mListener != null) mListener.setBarTitle(mActivity.getString(R.string.app_name));
         if (!TaxiApplication.isServersUpdated()) {
             updateServers();
         }

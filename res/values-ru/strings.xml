@@ -118,6 +118,7 @@
     <string name="active_requests">Объем активных заявок</string>
     <string name="execution_time">Время выполнения</string>
     <string name="car">автомобилей</string>
+    <string name="filters">Филтри</string>
     <string name="status">Статус</string>
     <string name="no_requests">у вас нет заказов.</string>
     <string name="exception">поднял исключение</string>

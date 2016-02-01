@@ -514,7 +514,7 @@ public class NewRequestFragment extends Fragment {
                 Date now = new Date();
                 //if (AppPreferences.getInstance().getGpsLastTime() > (now.getTime() - 600000)) {  //if last coordinates time is from 5 min interval
                 com.stil.generated.mysql.tables.pojos.NewRequest newRequest = RestClient.getInstance().getAddressByCoordinates(location.getLatitude(), location.getLongitude());
-                if (newRequest != null) {
+                if (newRequest != null) { //todo wrong for varna addresses
                     this.mapRequest = new MapRequest();
                     this.mapRequest.setNorth(location.getLatitude());
                     this.mapRequest.setEast(location.getLongitude());

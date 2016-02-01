@@ -458,8 +458,8 @@ public class UserPassFragment extends android.support.v4.app.Fragment implements
             showProgress(false);
             //hideProgress();
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mActivity);
-            alertDialogBuilder.setTitle(getString(R.string.fb_login) + " " + title);
-            alertDialogBuilder.setMessage(getString(R.string.new_account_question));
+            alertDialogBuilder.setTitle(mActivity.getString(R.string.fb_login) + " " + title);
+            alertDialogBuilder.setMessage(mActivity.getString(R.string.new_account_question));
             //null should be your on click listener
             alertDialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 
@@ -549,10 +549,10 @@ public class UserPassFragment extends android.support.v4.app.Fragment implements
                 startHome();
                 //Toast.makeText(UserPassActivity.this, "Влязохте в системата успешно!", Toast.LENGTH_LONG).show();
                 //finish();
-            } else setError(getString(R.string.wrong_userpass));
+            } else setError(mActivity.getString(R.string.wrong_userpass));
             // Toast.makeText(UserPassActivity.this, "Грешно потребителско име или парола!", Toast.LENGTH_LONG).show();
 
-        } else setError(getString(R.string.error_check_internet));
+        } else setError(mActivity.getString(R.string.error_check_internet));
         //Toast.makeText(UserPassActivity.this, "Грешка! Сигурни ли сте че имате връзка с интернет?", Toast.LENGTH_LONG).show();
     }
 

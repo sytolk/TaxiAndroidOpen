@@ -124,7 +124,7 @@ public class CarDetailsFragment extends Fragment {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mActivity);
         alertDialogBuilder.setTitle(R.string.new_request);
         if (cars != null && (cars.getCurrState().equals(CarState.STATE_FREE.getCode()) || cars.getCurrState().equals(CarState.STATE_BUSY.getCode()))) {
-            alertDialogBuilder.setMessage(getString(R.string.private_request_question, carNumber));
+            alertDialogBuilder.setMessage(mActivity.getString(R.string.private_request_question, carNumber));
             alertDialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 
                 @Override
@@ -148,8 +148,8 @@ public class CarDetailsFragment extends Fragment {
                 }
             });
         } else {
-            alertDialogBuilder.setMessage(getString(R.string.not_working, carNumber));
-            alertDialogBuilder.setNeutralButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+            alertDialogBuilder.setMessage(mActivity.getString(R.string.not_working, carNumber));
+            alertDialogBuilder.setNeutralButton(mActivity.getString(R.string.ok), new DialogInterface.OnClickListener() {
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {

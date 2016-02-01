@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/black_color"
+              android:divider="?android:dividerHorizontal"
+              android:showDividers="middle">
+
+    <TextView
+        android:id="@+id/list_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/main_button"
+        android:layout_gravity="center" />
+
+    <com.paging.listview.PagingListView
+        android:id="@+id/paging_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="1"
+        android:divider="@color/white_color"
+        android:dividerHeight="3dp"/>
+
+    <LinearLayout
+        android:id="@+id/buttonPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        style="?android:buttonBarStyle">
+
+        <Button
+            android:id="@+id/okButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/okbutton"
+            android:textSize="@dimen/main_button"
+            style="?android:attr/buttonBarButtonStyle"/>
+
+    </LinearLayout>
+</LinearLayout>
