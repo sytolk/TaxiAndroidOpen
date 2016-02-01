@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Taxi</string>
+    <string name="app_name">Taxi Bulgaria</string>
 
     <string name="show_map_text">Map</string>
     <string name="exit">Exit</string>
@@ -11,7 +11,7 @@
     <string name="options_server">Server</string>
     <string name="options_send_log">Send Log</string>
 
-    <string name="app_id">550947981660612</string>
+    <string name="facebook_app_id">550947981660612</string>
 
     <!--mapsforge rescue-->
     <string name="cancelbutton">Cancel</string>
@@ -55,7 +55,7 @@
     <string name="car_price">Price</string>
     <string name="needs_from">I need more:</string>
     <string name="request_taxi">Book Taxi</string>
-    <string name="new_user">New User</string>
+    <string name="new_user">Register</string>
     <string name="username">Username:</string>
     <string name="password">Password:</string>
     <string name="re_password">Repeat password:</string>
@@ -121,9 +121,8 @@
     <string name="driver">Driver:</string>
     <string name="back">Back</string>
     <string name="call">Call</string>
-    <string name="enter">Enter in system</string>
     <string name="login_user">User/email:</string>
-    <string name="lost_password">Lost password</string>
+    <string name="lost_password">Forgot Password?</string>
     <string name="lost_pass_email">Enter the registration Email</string>
     <string name="request_number">Request number:</string>
     <string name="datetime">Date and time:</string>
@@ -142,4 +141,11 @@
     <string name="options_help">Help</string>
     <string name="request_rejected">Sorry but request: %1$s ( %2$s ) is rejected.</string>
     <string name="request_edited">Request: %1$s ( %2$s ) is edited.</string>
+    <string name="action_sign_in">Sign In</string>
+    <string name="different_login">or</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="user_preferences">User Preferences</string>
+    <string name="home">Home</string>
+    <string name="taxi_tooltip">Take a taxi with just one click</string>
 </resources>

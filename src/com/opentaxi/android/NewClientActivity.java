@@ -14,11 +14,11 @@ import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.*;
 import com.opentaxi.android.utils.AppPreferences;
+import com.opentaxi.models.NewCUsers;
+import com.opentaxi.rest.RestClient;
 import com.stil.generated.mysql.tables.pojos.Contact;
 import com.stil.generated.mysql.tables.pojos.Contactaddress;
 import com.stil.generated.mysql.tables.pojos.Users;
-import com.opentaxi.models.NewCUsers;
-import com.opentaxi.rest.RestClient;
 import com.taxibulgaria.enums.CommunicationMethod;
 import org.androidannotations.annotations.*;
 
@@ -169,7 +169,7 @@ public class NewClientActivity extends Activity implements Validator.ValidationL
         Users userPojo = RestClient.getInstance().createNewUser(users);
         if (userPojo != null) {
             if (userPojo.getRecordstatus() != null && userPojo.getRecordstatus()) {  //account is already active (facebook)
-                RestClient.getInstance().setAuthHeadersEncoded(userPojo.getUsername(), userPojo.getPassword());
+                RestClient.getInstance().setAuthHeaders(userPojo.getUsername(), userPojo.getPassword());
                 //facebook user exist
                 if (AppPreferences.getInstance() != null) AppPreferences.getInstance().setUsers(new com.opentaxi.models.Users(userPojo));
                 finishThis();

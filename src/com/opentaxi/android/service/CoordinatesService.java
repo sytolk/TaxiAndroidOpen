@@ -7,9 +7,9 @@ import android.os.AsyncTask;
 import android.os.Build;
 import com.opentaxi.android.asynctask.ProcessMessageTask;
 import com.opentaxi.android.utils.AppPreferences;
-import com.stil.generated.mysql.tables.pojos.Messages;
 import com.opentaxi.models.CoordinatesLight;
 import com.opentaxi.rest.RestClient;
+import com.stil.generated.mysql.tables.pojos.Messages;
 
 
 public class CoordinatesService extends IntentService {

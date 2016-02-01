@@ -45,7 +45,8 @@
     <string name="no_gps_title">Нет GPS</string>
     <string name="no_gps_msg">Ваш GPS выключен, вы хотите, чтобы включить его?</string>
     <string name="show_address">Показать адрес на карте</string>
-    <string name="wait_address">Адрес определяется автоматически в зависимости от контакта. Пожалуйста, подождите …</string>
+    <string name="wait_address">Адрес определяется автоматически в зависимости от контакта. Пожалуйста, подождите …
+    </string>
     <string name="city">Город</string>
     <string name="region">Квартал</string>
     <string name="address">Адрес</string>
@@ -75,28 +76,37 @@
     <string name="required_field">Обязательное поле</string>
     <string name="change_request">Заказ на изменение</string>
     <string name="changed_request">Изменен заказ</string>
-    <string name="request_changed_successful">Заказ %1$s  был успешно изменен! Вы можете просмотреть текущее состояние и изменить или отменить после закрытия этого диалогового окна или кнопку заказа главную страницу</string>
-    <string name="request_send_successful">Заказ %1$s был успешно отправлен! Вы можете просмотреть текущее состояние и изменить или отменить после закрытия этого диалогового окна или кнопку заказа главную страницу</string>
-    <string name="request_send_error">Заказ %1$s не был послать! Вы можете проверить ваш интернет и попробуйте еще раз</string>
+    <string name="request_changed_successful">Заказ %1$s был успешно изменен! Вы можете просмотреть текущее состояние и
+        изменить или отменить после закрытия этого диалогового окна или кнопку заказа главную страницу
+    </string>
+    <string name="request_send_successful">Заказ %1$s был успешно отправлен! Вы можете просмотреть текущее состояние и
+        изменить или отменить после закрытия этого диалогового окна или кнопку заказа главную страницу
+    </string>
+    <string name="request_send_error">Заказ %1$s не был послать! Вы можете проверить ваш интернет и попробуйте еще раз
+    </string>
     <string name="address_choose">Выберите адрес</string>
-    <string name="choose_from_map">Укажите, пожалуйста, на карте и удерживайте в течение 1 секунды адресу по применению</string>
+    <string name="choose_from_map">Укажите, пожалуйста, на карте и удерживайте в течение 1 секунды адресу по
+        применению
+    </string>
     <string name="check_internet">Проверьте подключение к Интернету</string>
-    <string name="user_not_exist">Пользователь электронной почты:  %1$s не существует.</string>
+    <string name="user_not_exist">Пользователь электронной почты: %1$s не существует.</string>
     <string name="exit_confirm">Вы хотите выйти?</string>
-    <string name="fb_login">Войти с Facebook </string>
+    <string name="fb_login">Войти с Facebook</string>
     <string name="new_account_question">Хотите создать учетную запись пользователя в системе такси Болгарии?</string>
     <string name="email_confirmation">Подтверждение по электронной почте</string>
-    <string name="new_account_confirmation">Ваш аккаунт был успешно создан, но нужно подтвердить адрес электронной почты ( %1$s ).Это может быть сделано, нажав на ссылку на который вы отправили.</string>
+    <string name="new_account_confirmation">Ваш аккаунт был успешно создан, но нужно подтвердить адрес электронной почты
+        ( %1$s ).Это может быть сделано, нажав на ссылку на который вы отправили.
+    </string>
     <string name="email_exist">Этот адрес электронной существует</string>
     <string name="city_required">Город является обязательным полем.</string>
     <string name="phone_required">Телефон является обязательным полем.</string>
-    <string name="email_not_valid">Неверный адрес электронной </string>
+    <string name="email_not_valid">Неверный адрес электронной</string>
     <string name="agree_required">Вы должны принять условия использования.</string>
     <string name="username_exist">Имя пользователя существует</string>
     <string name="your_comment">Ваш комментарий:</string>
     <string name="later">Позже</string>
     <string name="taxi_request">Заказать такси</string>
-    <string name="taxi_request_to_car"> Заказать на номер автомобиля: %1$s</string>
+    <string name="taxi_request_to_car">Заказать на номер автомобиля: %1$s</string>
     <string name="no_free_cars">Никакие свободные автомобили. Пожалуйста, повторите попытку позже</string>
     <string name="send_request">Заказ</string>
     <string name="request_rejection">Отменить заказ</string>
@@ -119,7 +129,6 @@
     <string name="driver">Водитель:</string>
     <string name="back">Вернуться</string>
     <string name="call">Вызов</string>
-    <string name="enter">Войти СИСТЕМА</string>
     <string name="login_user">Имя пользователя / E-mail:</string>
     <string name="lost_password">Забыли пароль</string>
     <string name="lost_pass_email">Въведите адрес электронной почты, зарегистрированный</string>
@@ -140,4 +149,11 @@
     <string name="options_help">Помочь</string>
     <string name="request_rejected">К сожалению заказ %1$s ( %2$s ) аннулируется.</string>
     <string name="request_edited">Заказ %1$s ( %2$s ) обновлен.</string>
+    <string name="action_sign_in">Войти</string>
+    <string name="different_login">или</string>
+    <string name="navigation_drawer_open">Открой меню</string>
+    <string name="navigation_drawer_close">Закрой меню</string>
+    <string name="user_preferences">Настройки пользователя</string>
+    <string name="home">Начало</string>
+    <string name="taxi_tooltip">Найти такси с только одним кликом</string>
 </resources>

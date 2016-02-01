@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.opentaxi.android"
-          android:versionName="1.0.34"
+          android:versionName="1.0.35"
           android:versionCode="34"
           android:installLocation="auto">
 
     <uses-sdk
-        android:minSdkVersion="9"
-        android:targetSdkVersion="22"/>
+        android:minSdkVersion="14"
+        android:targetSdkVersion="23"/>
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -67,22 +67,25 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
-        android:name=".TaxiApplication"
+        android:name="TaxiApplication"
         android:label="@string/app_name"
         android:icon="@drawable/icon"
-        android:persistent="true">
+        android:persistent="true"
+        android:allowBackup="true"
+        android:theme="@style/AppTheme">
 
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/app_id"/>
+            android:value="@string/facebook_app_id"/>
 
         <activity
             android:name=".MainActivity_"
             android:label="@string/app_name"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
-            android:finishOnTaskLaunch="true">
+            android:finishOnTaskLaunch="true"
+            android:theme="@style/AppTheme.NoActionBar">
             <!--android:launchMode="singleInstance"-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -92,21 +95,23 @@
                 <action android:name="android.intent.action.CREATE_SHORTCUT"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
-            </intent-filter>
         </activity>
 
-        <activity
+        <activity android:name="com.facebook.FacebookActivity"
+                  android:configChanges=
+                      "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar"
+                  android:label="@string/app_name" />
+        <!--<activity
             android:name=".UserPassActivity_"
             android:allowTaskReparenting="false"
             android:taskAffinity=""
             android:excludeFromRecents="true">
-        </activity>
-        <activity
+        </activity>-->
+        <!--<activity
             android:name="com.facebook.LoginActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:label="@string/app_name"/>
+            android:label="@string/app_name"/>-->
         <activity
             android:name=".NewClientActivity_"
             android:allowTaskReparenting="false"
@@ -128,13 +133,13 @@
             android:noHistory="true">
         </activity>
 
-        <activity
+        <!--<activity
             android:name=".NewRequestActivity_"
             android:allowTaskReparenting="false"
             android:taskAffinity=""
             android:excludeFromRecents="true">
-        </activity>
-        <activity
+        </activity>-->
+        <!--<activity
             android:name=".RequestsActivity_"
             android:allowTaskReparenting="false"
             android:taskAffinity=""
@@ -158,6 +163,7 @@
             android:taskAffinity=""
             android:excludeFromRecents="true">
         </activity>
+-->
         <activity
             android:name=".ServersActivity_"
             android:allowTaskReparenting="false"
@@ -223,15 +229,26 @@
           The com.google.android.c2dm.permission.SEND permission is necessary
           so only GCM services can send data messages for the app.
         -->
-        <receiver
+        <!--<receiver
             android:name=".GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
-                <!-- Receives the actual messages. -->
+                &lt;!&ndash; Receives the actual messages. &ndash;&gt;
                 <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
 
                 <category android:name="com.opentaxi.android"/>
+            </intent-filter>
+        </receiver>-->
+
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+                <category android:name="com.opentaxi.android" />
             </intent-filter>
         </receiver>
 
@@ -241,7 +258,21 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".GcmIntentService"/>
+        <service
+            android:name=".gcm.GcmMessageHandler"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+        <!--<service android:name=".GcmIntentService"/>-->
+        <service
+            android:name=".gcm.InstanceIdListener"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
+            </intent-filter>
+        </service>
         <service android:name=".service.CoordinatesService" />
 
         <!--<service android:name="com.littlefluffytoys.littlefluffylocationlibrary.LocationBroadcastService"/>

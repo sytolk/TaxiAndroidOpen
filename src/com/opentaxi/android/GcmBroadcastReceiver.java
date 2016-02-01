@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 package com.opentaxi.android;
 
 import android.app.Activity;
@@ -21,9 +22,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
-import com.opentaxi.android.service.GCMRegisterService;
+import com.opentaxi.android.gcm.GCMRegisterService;
 
 
+*/
 /**
  * This {@code WakefulBroadcastReceiver} takes care of creating and managing a
  * partial wake lock for your app. It passes off the work of processing the GCM
@@ -31,7 +33,8 @@ import com.opentaxi.android.service.GCMRegisterService;
  * go back to sleep in the transition. The {@code IntentService} calls
  * {@code GcmBroadcastReceiver.completeWakefulIntent()} when it is ready to
  * release the wake lock.
- */
+ *//*
+
 
 public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
 
@@ -41,7 +44,9 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
             String regId = intent.getExtras().getString("registration_id");
             if (regId != null && !regId.equals("") && !regId.equals(TaxiApplication.gcmId)) {
                 TaxiApplication.gcmId = regId;
-      /* Do what ever you want with the regId eg. send it to your server */
+      */
+/* Do what ever you want with the regId eg. send it to your server *//*
+
                 Log.i("GcmBroadcastReceiver", "onReceive:" + regId);
                 //RestClient.getInstance().gcmRegister(regId);
                 Intent i = new Intent(context, GCMRegisterService.class);
@@ -57,3 +62,4 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
         setResultCode(Activity.RESULT_OK);
     }
 }
+*/

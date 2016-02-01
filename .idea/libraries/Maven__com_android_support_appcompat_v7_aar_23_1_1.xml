@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Maven: com.android.support:appcompat-v7:aar:23.1.1">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/gen-external-apklibs/com.android.support_appcompat-v7_23.1.1/res" />
+      <root url="jar://$PROJECT_DIR$/gen-external-apklibs/com.android.support_appcompat-v7_23.1.1/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/android/support/appcompat-v7/23.1.1/appcompat-v7-23.1.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/android/support/appcompat-v7/23.1.1/appcompat-v7-23.1.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

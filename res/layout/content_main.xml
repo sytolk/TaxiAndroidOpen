@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:id="@+id/container"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="@color/white_color"
+             tools:context="com.taxibulgaria.android.MainActivity"
+             tools:ignore="MergeRootFrame">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/opentaxi"
+        android:scaleType="fitCenter"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="5sp">
+
+        <TextView
+            android:id="@+id/user"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_margin="10dp"/>
+
+       <!-- <LinearLayout
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/mapButton"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@string/show_map_text"
+                android:drawableStart="@android:drawable/ic_menu_mapmode"
+                android:drawableLeft="@android:drawable/ic_menu_mapmode"
+                android:textSize="@dimen/main_button"/>
+
+            <Button
+                android:id="@+id/requestButton"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@string/request"
+                android:textSize="@dimen/main_button"/>
+
+            <Button
+                android:id="@+id/exitButton"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@string/exit"
+                android:textSize="@dimen/main_button"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/newRequestButton"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:minHeight="80dp"
+                android:text="@string/request_taxi"
+                android:textSize="@dimen/main_button"/>
+
+            <TextView
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"/>-->
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:layout_margin="10dp"
+                  android:gravity="bottom">
+
+        <TextView
+            android:id="@+id/txt_version"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight=".5"
+            android:gravity="start"
+        />
+
+        <TextView
+            android:id="@+id/bandwidth"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight=".5"
+            android:gravity="end"
+        />
+    </LinearLayout>
+
+</FrameLayout>

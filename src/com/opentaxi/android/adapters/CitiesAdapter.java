@@ -1,5 +1,7 @@
 package com.opentaxi.android.adapters;
 
+import com.stil.generated.mysql.tables.pojos.GeonameAdmin1;
+
 /**
  * Created with IntelliJ IDEA.
  * User: stanimir
@@ -9,40 +11,33 @@ package com.opentaxi.android.adapters;
  */
 public class CitiesAdapter {
 
-    private Integer id;
-    private String description;
+    private GeonameAdmin1 geonameAdmin1;
+    private boolean isAscii;
 
-    public CitiesAdapter() {
-
-    }
-
-    public CitiesAdapter(String city) {
-        this.id = 1;
-        this.description = city;
+    public CitiesAdapter(GeonameAdmin1 geonameAdmin1, boolean isAscii) {
+        this.geonameAdmin1 = geonameAdmin1;
+        this.isAscii = isAscii;
     }
 
     @Override
     public String toString() {
-        return this.description; //what you want displayed for each row in the listview
+        if (geonameAdmin1 != null) {
+            if (isAscii) return this.geonameAdmin1.getNameascii();
+            else return this.geonameAdmin1.getName(); //what you want displayed for each row in the listview
+        }
+        return "";
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null || this.id == null) return false;
-        if (!(obj instanceof CitiesAdapter)) return false;
-        CitiesAdapter regionsAdapter = (CitiesAdapter) obj;
-        return this.id.equals(regionsAdapter.getId());
+        if (obj == null || this.geonameAdmin1 == null) return false;
+        if (!(obj instanceof RegionsAdapter)) return false;
+        CitiesAdapter citiesAdapter = (CitiesAdapter) obj;
+        if (citiesAdapter.getGeonameAdmin1() == null) return false;
+        return this.geonameAdmin1.getGeonameid().equals(citiesAdapter.getGeonameAdmin1().getGeonameid());
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
+    public GeonameAdmin1 getGeonameAdmin1() {
+        return geonameAdmin1;
     }
 }

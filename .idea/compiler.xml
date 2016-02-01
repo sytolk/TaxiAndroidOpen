@@ -42,11 +42,10 @@
         <module name="RESTfulXmlBeans" />
         <module name="StilAndroid" />
         <module name="StilAndroidOpen" />
-        <module name="TaxiAndroidOpen" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="1.7">
-      <module name="TaxiAndroidOpen" target="1.6" />
+      <module name="TaxiAndroidOpen" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>

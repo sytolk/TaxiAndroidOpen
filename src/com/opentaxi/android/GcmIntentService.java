@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 
 package com.opentaxi.android;
 
@@ -28,17 +29,21 @@ import com.opentaxi.android.asynctask.ProcessMessageTask;
 import com.stil.generated.mysql.tables.pojos.CloudMessages;
 import com.stil.generated.mysql.tables.pojos.Messages;
 
+*/
 /**
  * This {@code IntentService} does the actual handling of the GCM message.
  * {@code GcmBroadcastReceiver} (a {@code WakefulBroadcastReceiver}) holds a
  * partial wake lock for this service while the service does its work. When the
  * service is finished, it calls {@code completeWakefulIntent()} to release the
  * wake lock.
- */
+ *//*
+
 public class GcmIntentService extends IntentService {
-    /*public static final int NOTIFICATION_ID = 1;
+    */
+/*public static final int NOTIFICATION_ID = 1;
     private NotificationManager mNotificationManager;
-    NotificationCompat.Builder builder;*/
+    NotificationCompat.Builder builder;*//*
+
 
     public GcmIntentService() {
         super("GcmIntentService");
@@ -55,11 +60,13 @@ public class GcmIntentService extends IntentService {
         String messageType = gcm.getMessageType(intent);
 
         if (messageType != null && extras != null && !extras.isEmpty()) {  // has effect of unparcelling Bundle
-            /*
+            */
+/*
              * Filter messages based on message type. Since it is likely that GCM will be
              * extended in the future with new message types, just ignore any message types you're
              * not interested in, or that you don't recognize.
-             */
+             *//*
+
             if (messageType.equals(GoogleCloudMessaging.MESSAGE_TYPE_SEND_ERROR)) {
                 Log.e(TAG, "Send error: " + extras.toString());
 
@@ -98,7 +105,8 @@ public class GcmIntentService extends IntentService {
     // Put the message into a notification and post it.
     // This is just one simple example of what you might choose to do with
     // a GCM message.
-    /*private void sendNotification(String msg) {
+    */
+/*private void sendNotification(String msg) {
         mNotificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -115,5 +123,7 @@ public class GcmIntentService extends IntentService {
 
         mBuilder.setContentIntent(contentIntent);
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
-    }*/
+    }*//*
+
 }
+*/

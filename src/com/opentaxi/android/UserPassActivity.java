@@ -1,16 +1,32 @@
+/*
 package com.opentaxi.android;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
+import android.app.*;
+import android.content.*;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
+import android.view.inputmethod.EditorInfo;
 import android.widget.*;
+import com.facebook.*;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.plus.Plus;
+import com.google.android.gms.plus.model.people.Person;
 import com.google.common.base.Charsets;
 import com.google.common.hash.Hashing;
 import com.mobsandgeeks.saripaar.Rule;
@@ -20,29 +36,34 @@ import com.opentaxi.android.utils.AppPreferences;
 import com.opentaxi.models.NewCUsers;
 import com.opentaxi.models.Users;
 import com.opentaxi.rest.RestClient;
-import com.sromku.simple.fb.Permission;
-import com.sromku.simple.fb.SimpleFacebook;
-import com.sromku.simple.fb.SimpleFacebookConfiguration;
-import com.sromku.simple.fb.entities.Profile;
-import com.sromku.simple.fb.entities.Work;
-import com.sromku.simple.fb.listeners.OnLoginListener;
-import com.sromku.simple.fb.listeners.OnProfileListener;
 import com.stil.generated.mysql.tables.pojos.Contact;
 import com.stil.generated.mysql.tables.pojos.Contactaddress;
 import com.stil.generated.mysql.tables.pojos.FacebookUsers;
 import com.taxibulgaria.enums.Gender;
+import de.greenrobot.event.EventBus;
 import org.acra.ACRA;
 import org.androidannotations.annotations.*;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
+*/
 /**
  * Created with IntelliJ IDEA.
  * User: stanimir
  * Date: 1/8/13
  * Time: 8:02 PM
  * To change this template use File | Settings | File Templates.
- */
+ *//*
+
 @EActivity(R.layout.login)
-public class UserPassActivity extends Activity implements Validator.ValidationListener {
+public class UserPassActivity extends AppCompatActivity implements
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        LoaderManager.LoaderCallbacks<Cursor>,
+        Validator.ValidationListener {
 
     private static final String TAG = "UserPassActivity";
 
@@ -54,27 +75,322 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
 
     @TextRule(order = 1, minLength = 3, message = "Username is too short.Enter at least 3 characters.")
     @ViewById(R.id.userNameField)
-    EditText userName;
+    AutoCompleteTextView userName;
 
     @TextRule(order = 2, minLength = 6, message = "Password is too short.Enter at least 6 characters.")
     @ViewById(R.id.passwordField)
     EditText pass;
 
-    @ViewById(R.id.pbProgress)
+    @ViewById(R.id.login_progress)
     ProgressBar pbProgress;
 
-    @ViewById(R.id.loginLayout)
-    LinearLayout loginLayout;
+    @ViewById(R.id.login_form)
+    View mLoginFormView;
+
+    */
+/*@ViewById(R.id.lostPassword)
+    TextView lostPassword;
+
+    @ViewById(R.id.newClient)
+    TextView newClient;*//*
+
+
+    */
+/*@ViewById(R.id.loginLayout)
+    LinearLayout loginLayout;*//*
+
+
+    */
+/*@ViewById(R.id.clientLoginButton)
+    Button clientLoginButton;*//*
+
+
+    @ViewById(R.id.g_sign_in_button)
+    SignInButton mPlusSignInButton;
+
+    @ViewById(R.id.facebookLoginButton)
+    LoginButton facebookLoginButton;
 
     Validator validator;
+    private CallbackManager callbackManager;
 
-    SimpleFacebook mSimpleFacebook;
+    */
+/* Client used to interact with Google APIs. *//*
+
+    private GoogleApiClient mGoogleApiClient;
+    */
+/* Request code used to invoke sign in user interactions. *//*
+
+    private static final int RC_SIGN_IN = 0;
+    */
+/* Is there a ConnectionResult resolution in progress? *//*
+
+    private boolean mIsResolving = false;
+    */
+/* Should we automatically resolve ConnectionResults when possible? *//*
+
+    private boolean mShouldResolve = false;
+
+    ProgressDialog ringProgressDialog;
+
     private int result = Activity.RESULT_OK;
 
     @Override
     public void onBackPressed() {
         result = Activity.RESULT_CANCELED;
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //FacebookSdk.sdkInitialize(getApplicationContext());
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        if (accessToken != null) fbLoggedId(accessToken);
+    }
+
+    @AfterViews
+    void afterLoad() {
+        submitButton.setClickable(true);
+        result = Activity.RESULT_OK;
+        validator = new Validator(this);
+        validator.setValidationListener(this);
+
+        initInstances();
+    }
+
+    private void initInstances() {
+
+        //populateAutoComplete();
+
+        pass.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                    userName.setError(null);
+                    pass.setError(null);
+                    validator.validateAsync();
+
+                    return true;  //this will keep keyboard open
+                }
+                return false;
+            }
+        });
+
+        //newClient.setOnClickListener(this);
+        //lostPassword.setOnClickListener(this);
+        //clientLoginButton.setOnClickListener(this);
+
+        //Google+ Login
+        mPlusSignInButton.setSize(SignInButton.SIZE_WIDE);
+        //mPlusSignInButton.setOnClickListener(this);
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(Plus.API)
+                .addScope(new Scope(Scopes.PROFILE))
+                .build();
+
+        List<String> fPermissions = new ArrayList<>();
+        fPermissions.add("public_profile");
+        fPermissions.add("email");
+        fPermissions.add("user_hometown");
+        //Facebook Login
+        facebookLoginButton.setReadPermissions(fPermissions); //user_birthday
+
+        callbackManager = CallbackManager.Factory.create();
+        // Callback registration
+        facebookLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(final LoginResult loginResult) {
+                fbLoggedId(loginResult.getAccessToken());
+            }
+
+            @Override
+            public void onCancel() {
+                Log.i(TAG, "facebookLoginButton onCancel");
+                //Toast.makeText(UserPassActivity.this, "User cancelled", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                Log.i(TAG, "facebookLoginButton onError", exception);
+                //Toast.makeText(UserPassActivity.this, "Error on Login, check your facebook app_id", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
+
+    private void fbLoggedId(AccessToken accessToken) {
+        final String token = accessToken.getToken();
+        //AppPreferences.getInstance(getApplicationContext()).setAccessToken(token);
+        GraphRequest request = GraphRequest.newMeRequest(accessToken,
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        // Application code
+                        //Log.i(TAG, "facebookLoginButton object:" + object.toString());
+                        //Log.i(TAG, "facebookLoginButton response:" + object.toString());
+                        //object:{"id":"1173223717","first_name":"Stanimir","last_name":"Marinov","locale":"bg_BG","email":"smarinov@abv.bg","gender":"male","age_range":{"min":21},"hometown":{"id":"114964575187249","name":"Burgas, Bulgaria"}}
+                        NewCUsers users = new NewCUsers();
+                        try {
+                            users.setUsername(object.getString("email")); //profile.getUsername());
+                            users.setEmail(object.getString("email"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        //users.setImage(profile.getPicture());
+
+                        Contact contact = new Contact();
+                        try {
+                            contact.setFirstname(object.getString("first_name"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        //contact.setMiddlename(profile.getMiddleName());
+                        try {
+                            contact.setLastname(object.getString("last_name"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        // contact.setNotes(profile.getBio());
+                                */
+/*if (profile.getWork() != null) {
+                                    for (Work work : profile.getWork()) {
+                                        String workTitle = work.getEmployer() + " " + work.getDescription();
+                                        if (contact.getJobtitle() != null)
+                                            contact.setJobtitle(contact.getJobtitle() + " " + workTitle);
+                                        else contact.setJobtitle(workTitle);
+                                    }
+                                }*//*
+
+                        try {
+                            String gender = object.getString("gender");
+                            if (gender != null) {
+                                if (gender.equals("male"))
+                                    contact.setGender(Gender.MALE.getCode());
+                                else if (gender.equals("female"))
+                                    contact.setGender(Gender.FEMALE.getCode());
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        users.setContact(contact);
+
+                        try {
+                            JSONObject hometown = object.getJSONObject("hometown");
+                            if (hometown != null) {
+                                String city = hometown.getString("name");
+                                if (city != null) {
+                                    int comma = city.indexOf(",");
+                                    if (comma > -1) {
+                                        city = city.substring(0, comma);
+                                    }
+                                    Contactaddress address = new Contactaddress();
+                                    address.setCity(city);
+                                    users.setAddress(address);
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        FacebookUsers facebookUsers = new FacebookUsers();
+                        try {
+                            facebookUsers.setToken(token);
+                            facebookUsers.setFacebookId(object.getLong("id"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        users.setfUsers(facebookUsers);
+                        showProgress(true);
+                        createNewUser(users);
+                                */
+/*Intent newClient = new Intent(UserPassActivity.this, NewClientActivity_.class);
+                                newClient.putExtra("newCUsers", users);
+                                newClient.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                UserPassActivity.this.startActivity(newClient);*//*
+
+                        //finish();
+                    }
+                });
+
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,first_name,last_name,locale,email,gender,age_range,hometown");//birthday
+        request.setParameters(parameters);
+        request.executeAsync();
+    }
+
+    @Background
+    void createNewUser(NewCUsers users) {
+        Log.i(TAG, "createNewUser:" + users.getUsername());
+        com.stil.generated.mysql.tables.pojos.Users userPojo = RestClient.getInstance().createNewUser(users);
+        if (userPojo != null) {
+            if (userPojo.getRecordstatus() != null && userPojo.getRecordstatus()) {  //account is already active (facebook)
+                RestClient.getInstance().setAuthHeadersEncoded(userPojo.getUsername(), userPojo.getPassword());
+                com.opentaxi.models.Users user = new com.opentaxi.models.Users(userPojo);
+                //facebook user exist
+                if (AppPreferences.getInstance() != null)
+                    AppPreferences.getInstance().setUsers(user);
+
+                EventBus.getDefault().post(user);
+                finishThis();
+            } //else ActivationDialog();
+        } else overFacebookLoginTime("Error");
+    }
+
+    @UiThread
+    void finishThis() {
+        showProgress(false);
+        finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (callbackManager != null) callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    */
+/**
+     * Shows the progress UI and hides the login form.
+     *//*
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+
+            pbProgress.setVisibility(show ? View.VISIBLE : View.GONE);
+            pbProgress.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    pbProgress.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            pbProgress.setVisibility(show ? View.VISIBLE : View.GONE);
+            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
     }
 
     @Override
@@ -99,74 +415,8 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
     public void onResume() {
         super.onResume();
         TaxiApplication.userPassResumed();
-        hideProgress();
-    }
-
-    /*@InstanceState
-    Bundle savedInstanceState;
-
-    private Session.StatusCallback statusCallback = new SessionStatusCallback();
-
-
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Session.getActiveSession().addCallback(statusCallback);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Session.getActiveSession().removeCallback(statusCallback);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Session session = Session.getActiveSession();
-        Session.saveSession(session, outState);
-    }*/
-
-    @AfterViews
-    void afterLoad() {
-        submitButton.setClickable(true);
-        result = Activity.RESULT_OK;
-        validator = new Validator(this);
-        validator.setValidationListener(this);
-
-        pass.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(final View v, final int keyCode, final KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_ENTER) {
-                    userName.setError(null);
-                    pass.setError(null);
-                    validator.validateAsync();
-                    //return true; //this will keep keyboard open
-                }
-
-                return false;
-            }
-        });
-        /*Session session = Session.getActiveSession();
-        if (session == null) {
-            if (savedInstanceState != null) {
-                session = Session.restoreSession(this, null, statusCallback, savedInstanceState);
-            }
-            if (session == null) {
-                session = new Session(this);
-            }
-            Session.setActiveSession(session);
-            if (session.getState().equals(SessionState.CREATED_TOKEN_LOADED)) {
-                session.openForRead(new Session.OpenRequest(this).setCallback(statusCallback));
-            }
-        }*/
+        //hideProgress();
+        showProgress(false);
     }
 
     @Override
@@ -195,7 +445,8 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
             case R.id.options_send_log:
 
                 RestClient.getInstance().clearCache();
-                /*String javaTmpDir = System.getProperty("java.io.tmpdir");
+                */
+/*String javaTmpDir = System.getProperty("java.io.tmpdir");
                 File cacheDir = new File(javaTmpDir, "DiskLruCacheDir");
                 if (cacheDir.exists()) {
                     File[] files = cacheDir.listFiles();
@@ -203,7 +454,8 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
                         for (File file : files) {
                             file.delete();
                         }
-                }*/
+                }*//*
+
                 ACRA.getErrorReporter().handleSilentException(new Exception("Developer Report"));
                 // int i = 2 / 0;
                 return true;
@@ -212,15 +464,8 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (mSimpleFacebook == null) mSimpleFacebook = SimpleFacebook.getInstance(this);
-        mSimpleFacebook.onActivityResult(this, requestCode, resultCode, data);
-
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @UiThread
+    */
+/*@UiThread
     void showProgress() {
         if (pbProgress != null) {
             pbProgress.setVisibility(View.VISIBLE);
@@ -234,86 +479,15 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
             pbProgress.setVisibility(View.GONE);
             loginLayout.setVisibility(View.VISIBLE);
         }
-    }
+    }*//*
 
-    @Click
-    void facebookButton() {
-
-        mSimpleFacebook = SimpleFacebook.getInstance(this); // Permissions.USER_BIRTHDAY
-        Permission[] permissions = new Permission[]{Permission.EMAIL, Permission.USER_WEBSITE, Permission.USER_WORK_HISTORY, Permission.USER_ABOUT_ME, Permission.USER_HOMETOWN};
-        SimpleFacebookConfiguration configuration = new SimpleFacebookConfiguration.Builder()
-                .setAppId("550947981660612")
-                .setNamespace("taxi-bulgaria")
-                .setPermissions(permissions)
-                .setAskForAllPermissionsAtOnce(false)
-                .build();
-        SimpleFacebook.setConfiguration(configuration);
-
-        final OnLoginListener onLoginListener = new OnLoginListener() {
-
-            @Override
-            public void onFail(String reason) {
-                Log.e(TAG, "onFail:" + reason);
-                overFacebookLoginTime(reason);
-            }
-
-            @Override
-            public void onException(Throwable throwable) {
-                Log.e(TAG, "onException:" + throwable.getMessage());
-                overFacebookLoginTime(getString(R.string.exception));
-            }
-
-            @Override
-            public void onThinking() {
-                Log.i(TAG, "onThinking");
-                showProgress();
-            }
-
-            @Override
-            public void onLogin() {
-                Log.i(TAG, "onLogin");
-                showProgress();
-                if (AppPreferences.getInstance() != null && mSimpleFacebook.getSession() != null) {
-                    AppPreferences.getInstance().setAccessToken(mSimpleFacebook.getSession().getAccessToken());  //todo move this to disk cache
-                    checkFacebook(mSimpleFacebook.getSession().getAccessToken());
-                } else {
-                    overFacebookLoginTime(getString(R.string.fb_session_error));
-                    Log.e(TAG, "onLogin getSession=" + mSimpleFacebook.getSession());
-                }
-            }
-
-            @Override
-            public void onNotAcceptingPermissions(Permission.Type type) {
-                if (mSimpleFacebook.getSession() != null)
-                    Log.e(TAG, "onNotAcceptingPermissions token:" + mSimpleFacebook.getSession().getAccessToken());
-                overFacebookLoginTime(getString(R.string.fb_no_access));
-            }
-        };
-        mSimpleFacebook.login(onLoginListener);
-        if (mSimpleFacebook.getSession() != null)
-            Log.i(TAG, "mSimpleFacebook.login:" + mSimpleFacebook.getSession().getAccessToken());
-
-        /*Session session = Session.getActiveSession();
-        if (!session.isOpened() && !session.isClosed()) {
-            session.openForRead(new Session.OpenRequest(this).setCallback(statusCallback));
-        } else {
-            Session.openActiveSession(this, true, statusCallback);
-        }*/
-    }
-
-    @Background(delay = 15000)
-    void maxFacebookLoginTime() {
-        Log.e(TAG, "maxFacebookLoginTime");
-        if (mSimpleFacebook.getSession() == null || mSimpleFacebook.getSession().getAccessToken() == null || mSimpleFacebook.getSession().getAccessToken().equals("")) {
-            overFacebookLoginTime("времето изтече");
-        } else Log.i(TAG, "maxFacebookLoginTime have token:" + mSimpleFacebook.getSession().getAccessToken());
-    }
 
     @UiThread
     void overFacebookLoginTime(String title) {
         if (TaxiApplication.isUserPassVisible()) {
             TaxiApplication.userPassPaused();
-            hideProgress();
+            showProgress(false);
+            //hideProgress();
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setTitle(getString(R.string.fb_login) + " " + title);
             alertDialogBuilder.setMessage(getString(R.string.new_account_question));
@@ -340,14 +514,17 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
     }
 
 
-    @Background
-    void checkFacebook(String token) {
+    */
+/*@Background
+    void checkFacebook(AccessToken token) {
         Log.i(TAG, "checkFacebook token:" + token);
-        facebookUser(RestClient.getInstance().FacebookLogin(token));
-    }
+        facebookUser(RestClient.getInstance().FacebookLogin(token.getToken()), token);
+    }*//*
 
-    @UiThread
-    void facebookUser(Users user) {
+
+    */
+/*@UiThread
+    void facebookUser(Users user, AccessToken token) {
         if (user != null) { //user already exist in taxi-bulgaria service
             Log.i(TAG, "facebookUser user:" + user.getUsername());
             if (user.getId() != null && user.getId() > 0) {
@@ -358,93 +535,21 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
 
             //facebookLogout();
         } else { //new Facebook User
-            Log.i(TAG, "New facebookUser");
-            OnProfileListener profileListener = new OnProfileListener() {
 
-                @Override
-                public void onThinking() {
-                    Log.i(TAG, "New facebookUser onThinking");
-                    showProgress();
-                    maxFacebookLoginTime();
-                }
-
-                @Override
-                public void onException(Throwable throwable) {
-                    Log.i(TAG, "New facebookUser onException", throwable);
-                    //facebookLogout();
-                    overFacebookLoginTime("повдигнато е изключение");
-                }
-
-                @Override
-                public void onFail(String reason) {
-                    Log.i(TAG, "New facebookUser onFail");
-                    overFacebookLoginTime(reason);
-                }
-
-                @Override
-                public void onComplete(Profile profile) {
-                    Log.i(TAG, "New facebookUser onComplete");
-                    if (profile != null) { //&& profile.getVerified()) {
-                        NewCUsers users = new NewCUsers();
-                        users.setUsername(profile.getUsername());
-                        users.setEmail(profile.getEmail());
-                        users.setImage(profile.getPicture());
-
-                        Contact contact = new Contact();
-                        contact.setFirstname(profile.getFirstName());
-                        contact.setMiddlename(profile.getMiddleName());
-                        contact.setLastname(profile.getLastName());
-                        contact.setNotes(profile.getBio());
-                        if (profile.getWork() != null) {
-                            for (Work work : profile.getWork()) {
-                                String workTitle = work.getEmployer() + " " + work.getDescription();
-                                if (contact.getJobtitle() != null)
-                                    contact.setJobtitle(contact.getJobtitle() + " " + workTitle);
-                                else contact.setJobtitle(workTitle);
-                            }
-                        }
-                        if (profile.getGender() != null) {
-                            if (profile.getGender().equals("male"))
-                                contact.setGender(Gender.MALE.getCode());
-                            else if (profile.getGender().equals("female")) contact.setGender(Gender.FEMALE.getCode());
-                        }
-
-                        users.setContact(contact);
-
-                        Contactaddress address = new Contactaddress();
-                        address.setCity(profile.getHometown());
-                        users.setAddress(address);
-
-                        FacebookUsers facebookUsers = new FacebookUsers();
-                        facebookUsers.setFacebookId(Long.parseLong(profile.getId()));
-                        facebookUsers.setToken(mSimpleFacebook.getSession().getAccessToken());
-                        users.setfUsers(facebookUsers);
-
-                        Intent newClient = new Intent(UserPassActivity.this, NewClientActivity_.class);
-                        newClient.putExtra("newCUsers", users);
-                        newClient.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        UserPassActivity.this.startActivity(newClient);
-                        finish();
-                    } else Log.e(TAG, "profile is null or not verified");
-
-                    //facebookLogout();
-                }
-            };
-
-            mSimpleFacebook.getProfile(profileListener);
         }
-    }
+    }*//*
+
 
     @Click
     void newClient() {
-        Log.i("newClient", "newClient");
+        //Log.i("newClient", "newClient");
 
         NewClientActivity_.intent(this).startForResult(RESULT_NEW_CLIENT);
     }
 
     @Click
     void lostPassword() {
-        Log.i("lostPassword", "lostPassword");
+        //Log.i("lostPassword", "lostPassword");
 
         LostPasswordActivity_.intent(this).startForResult(RESULT_LOST_PASSWORD);
     }
@@ -475,6 +580,7 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
                         if (e.getMessage() != null) Log.e(TAG, "Exception:" + e.getMessage());
                     }
                 }
+                EventBus.getDefault().post(user);
                 //Toast.makeText(UserPassActivity.this, "Влязохте в системата успешно!", Toast.LENGTH_LONG).show();
                 finish();
             } else setError(getString(R.string.wrong_userpass));
@@ -518,4 +624,153 @@ public class UserPassActivity extends Activity implements Validator.ValidationLi
         }
         submitButton.setClickable(true);
     }
+
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        mShouldResolve = false;
+        getProfileInformation();
+    }
+
+    @Override
+    public void onConnectionSuspended(int arg0) {
+        ringProgressDialog.dismiss();
+        mGoogleApiClient.connect();
+    }
+
+    */
+/**
+     * Fetching user's information name, email, profile pic
+     *//*
+
+    private void getProfileInformation() {
+        ringProgressDialog.dismiss();
+        if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+            Person currentPerson = Plus.PeopleApi
+                    .getCurrentPerson(mGoogleApiClient);
+            String personName = currentPerson.getDisplayName();
+            String personPhotoUrl = currentPerson.getImage().getUrl();
+            String personGooglePlusProfile = currentPerson.getUrl();
+            String birth = currentPerson.getBirthday();
+            String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
+
+            // by default the profile url gives 50x50 px image only
+            // we can replace the value with whatever dimension we want by
+            // replacing sz=X
+//                personPhotoUrl = personPhotoUrl.substring(0,
+//                        personPhotoUrl.length() - 2)
+//                        + PROFILE_PIC_SIZE;
+
+            //new LoadProfileImage().execute(personPhotoUrl);
+
+        } else {
+            Toast.makeText(getApplicationContext(),
+                    "Person information is null", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        return new CursorLoader(this,
+                // Retrieve data rows for the device user's 'profile' contact.
+                Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
+                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
+
+                // Select only email addresses.
+                ContactsContract.Contacts.Data.MIMETYPE +
+                        " = ?", new String[]{ContactsContract.CommonDataKinds.Email
+                .CONTENT_ITEM_TYPE},
+
+                // Show primary email addresses first. Note that there won't be
+                // a primary email address if the user hasn't specified one.
+                ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+        List<String> emails = new ArrayList<>();
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            emails.add(cursor.getString(ProfileQuery.ADDRESS));
+            cursor.moveToNext();
+        }
+
+        addEmailsToAutoComplete(emails);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> cursorLoader) {
+
+    }
+
+    private interface ProfileQuery {
+        String[] PROJECTION = {
+                ContactsContract.CommonDataKinds.Email.ADDRESS,
+                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
+        };
+
+        int ADDRESS = 0;
+        int IS_PRIMARY = 1;
+    }
+
+    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
+        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<>(UserPassActivity.this,
+                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
+
+        userName.setAdapter(adapter);
+    }
+
+    @Click
+    void g_sign_in_button() {
+//        toastLoading.show();
+        // User clicked the sign-in button, so begin the sign-in process and automatically
+        // attempt to resolve any errors that occur.
+        ringProgressDialog = ProgressDialog.show(UserPassActivity.this, "Connecting...", "Atempting to connect", true);
+        ringProgressDialog.setCancelable(false);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    mShouldResolve = true;
+                    mGoogleApiClient.connect();
+                } catch (Exception e) {
+                    ringProgressDialog.dismiss();
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        // Could not connect to Google Play Services.  The user needs to select an account,
+        // grant permissions or resolve an error in order to sign in. Refer to the javadoc for
+        // ConnectionResult to see possible error codes.
+        Log.d("TAG_LOGIN", "onConnectionFailed:" + connectionResult);
+        ringProgressDialog.dismiss();
+
+        if (!mIsResolving && mShouldResolve) {
+            if (connectionResult.hasResolution()) {
+                try {
+                    connectionResult.startResolutionForResult(this, RC_SIGN_IN);
+                    mIsResolving = true;
+                } catch (IntentSender.SendIntentException e) {
+                    Log.e("TAG_LOGIN", "Could not resolve ConnectionResult.", e);
+                    Toast.makeText(UserPassActivity.this, "Could not resolve ConnectionResult", Toast.LENGTH_LONG).show();
+                    mIsResolving = false;
+                }
+            } else {
+                // Could not resolve the connection result, show the user an
+                // error dialog.
+                Toast.makeText(UserPassActivity.this, "Error on Login, check your google + login method", Toast.LENGTH_LONG).show();
+            }
+        } else {
+            // Show the signed-out UI
+        }
+    }
+
 }
+*/

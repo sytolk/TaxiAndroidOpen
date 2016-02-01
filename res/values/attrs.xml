@@ -2,7 +2,7 @@
 <resources>
 
 	<!-- View styles -->
-	<attr name="pageBackground" format="reference" />
+	<!--<attr name="pageBackground" format="reference" />
 	<attr name="pagePaddingLayout" format="reference" />
 	<attr name="textTitle" format="reference" />
 
@@ -19,8 +19,8 @@
 	<attr name="listDivider" format="reference" />
 	<attr name="editText" format="reference"/>
 	
-	<!-- Attributes -->
+	&lt;!&ndash; Attributes &ndash;&gt;
 	<attr name="pageMargin" format="reference|dimension" />
-	<attr name="contentLeftMargin" format="reference|dimension" />
+	<attr name="contentLeftMargin" format="reference|dimension" />-->
 
 </resources>

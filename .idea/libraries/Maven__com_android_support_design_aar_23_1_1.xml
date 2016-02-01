@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Maven: com.android.support:design:aar:23.1.1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/gen-external-apklibs/com.android.support_design_23.1.1/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/gen-external-apklibs/com.android.support_design_23.1.1/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/android/support/design/23.1.1/design-23.1.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/android/support/design/23.1.1/design-23.1.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

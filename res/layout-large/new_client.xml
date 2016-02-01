@@ -33,7 +33,7 @@
                 android:layout_margin="10dp">
 
                 <TextView
-                    android:id="@id/newClientUserLabel"
+                    android:id="@+id/newClientUserLabel"
                     android:clickable="false"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
                 android:layout_margin="10dp">
 
                 <TextView
-                    android:id="@id/passwordLabel"
+                    android:id="@+id/passwordLabel"
                     android:clickable="false"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

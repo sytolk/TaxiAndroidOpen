@@ -31,6 +31,7 @@ import org.mapsforge.applications.android.LocationOverlayMapViewer;
 import org.mapsforge.applications.android.Utils;
 import org.mapsforge.core.graphics.Bitmap;
 import org.mapsforge.core.model.LatLong;
+import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
 import org.mapsforge.map.layer.Layer;
 import org.mapsforge.map.layer.overlay.Marker;
 
@@ -51,15 +52,38 @@ public class BubbleOverlay extends LocationOverlayMapViewer {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (AppPreferences.getInstance() != null && getMapFileName() == null) {
-            setMapFile(AppPreferences.getInstance().getMapFile());
+        AndroidGraphicFactory.createInstance(this.getApplication());
+        if (getMapFileName() == null) {
+            try {
+                setMapFile(AppPreferences.getInstance().getMapFile());
+            } catch (Exception e) {
+                Log.e(TAG, "BubbleOverlay", e);
+            }
         }
         try {
             super.onCreate(savedInstanceState);
         } catch (IllegalArgumentException e) { //invalid map file
             e.printStackTrace();
             startMapFilePicker();
+        } catch (RuntimeException e) { //invalid map file
+            e.printStackTrace();
+            startMapFilePicker();
+        } catch (Exception e) { //invalid map file
+            e.printStackTrace();
+            startMapFilePicker();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (bubble != null) bubble.decrementRefCount();
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        //finish();
     }
 
     @Override
@@ -202,10 +226,10 @@ public class BubbleOverlay extends LocationOverlayMapViewer {
         this.mapViews.get(0).getModel().mapViewPosition.setCenter(new LatLong(42.5, 27.468));
     }*/
 
-    @Override
+    /*@Override
     protected void destroyLayers() {
         if (bubble != null) bubble.decrementRefCount();
-    }
+    }*/
 
    /* @Override
     protected void onStart() {

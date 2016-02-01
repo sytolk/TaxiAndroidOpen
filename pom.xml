@@ -14,9 +14,10 @@
     </organization>
 
     <properties>
-        <android-platform>17</android-platform>
-        <android-emulator>8</android-emulator>
-        <java.version>1.6</java.version>
+        <android-platform>23</android-platform>
+        <android-emulator>API21</android-emulator>
+        <play-service-version>8.4.0</play-service-version>
+        <java.version>1.7</java.version>
     </properties>
     <build>
         <sourceDirectory>src</sourceDirectory>
@@ -25,26 +26,65 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <version>3.3</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <compilerArgument>-proc:none</compilerArgument>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>com.simpligility.maven.plugins</groupId>
-                <!--<groupId>com.jayway.maven.plugins.android.generation2</groupId>-->
                 <artifactId>android-maven-plugin</artifactId>
-                <version>4.2.1</version>
-                <!--<version>3.8.2</version>-->
+                <version>4.4.1</version>
                 <extensions>true</extensions>
+
+                <executions>
+                    <execution>
+                        <id>merge-manifest</id>
+                        <goals>
+                            <goal>manifest-merger</goal>
+                        </goals>
+                        <configuration>
+                            <manifestMerger>
+                                <versionName>1.0.35</versionName>
+                                <versionCode>35</versionCode>
+                                <versionCodeUpdateFromVersion>true</versionCodeUpdateFromVersion>
+                                <mergeLibraries>true</mergeLibraries>
+                                <mergeReportFile>${project.build.directory}/ManifestMergeReport.txt</mergeReportFile>
+                                <usesSdk>
+                                    <minSdkVersion>14</minSdkVersion>
+                                    <targetSdkVersion>23</targetSdkVersion>
+                                </usesSdk>
+                            </manifestMerger>
+                        </configuration>
+                    </execution>
+                </executions>
+
                 <configuration>
+                    <proguard>
+                        <skip>false</skip>
+                        <configs>
+                            <config>${env.ANDROID_HOME}/tools/proguard/proguard-android.txt</config>
+                            <config>${project.basedir}/proguard.cfg</config>
+                            <config>${project.basedir}/proguard-google-play-services.pro</config>
+                            <config>${project.basedir}/proguard-support-v7-appcompat.pro</config>
+                            <config>${project.basedir}/proguard-support_design.pro</config>
+                            <config>${project.basedir}/proguard-rx-java.pro</config>
+                            <config>${project.basedir}/proguard-jackson-2.pro</config>
+                            <config>${project.basedir}/proguard-acra.pro</config>
+                            <config>${project.basedir}/proguard-eventbus.pro</config>
+                        </configs>
+                    </proguard>
+                    <dex>
+                        <multi-dex>false</multi-dex>
+                        <minimal-main-dex>true</minimal-main-dex>
+                        <dex-arguments>--set-max-idx-number=40000</dex-arguments>
+                        <main-dex-list>${project.basedir}/mainDexClasses.txt</main-dex-list>
+                    </dex>
                     <androidManifestFile>${project.basedir}/AndroidManifest.xml</androidManifestFile>
                     <assetsDirectory>${project.basedir}/assets</assetsDirectory>
                     <resourceDirectory>${project.basedir}/res</resourceDirectory>
-                    <!--<genDirectory>gen</genDirectory>
-                    <genDirectoryAidl>gen</genDirectoryAidl>-->
-
                     <sdk>
                         <platform>${android-platform}</platform>
                         <path>/home/stanimir/android-sdk-linux</path>
@@ -56,132 +96,34 @@
                     <nativeLibrariesDirectory>ignored</nativeLibrariesDirectory>
                     <undeployBeforeDeploy>true</undeployBeforeDeploy>
                     <extractDuplicates>true</extractDuplicates>
-                    <!--<proguard>
-                        <skip>true</skip>
-                        <config>proguard.cfg</config>
-                    </proguard>-->
-                </configuration>
-                <!--<executions>
-                    <execution>
-                        <id>unpack</id>
-                        <phase>process-classes</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                    </execution>
-                </executions>-->
-            </plugin>
-            <!--<plugin>
-                <groupId>com.pyx4me</groupId>
-                <artifactId>proguard-maven-plugin</artifactId>
-                <version>2.0.4</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals><goal>proguard</goal></goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <obfuscate>false</obfuscate>
-                    <options>
-                        <option> -keep public class * extends android.app.Activity</option>
-                        <option>-keep public class * extends android.app.Application</option>
-                        <option>-keep public class * extends android.app.Service</option>
-                        <option>-keep public class * extends
-                            android.content.BroadcastReceiver</option>
-                        <option>-keep public class * extends
-                            android.content.ContentProvider</option>
-                        <option>-dontskipnonpubliclibraryclasses</option>
-                        <option>-dontoptimize</option>
-                        <option>-printmapping map.txt</option>
-                        <option>-printseeds seed.txt</option>
-                        <option>-ignorewarnings</option>
-                    </options>
-                    <libs>
-                        <lib>${java.home}/lib/rt.jar</lib>
-                    </libs>
-                </configuration>
-            </plugin>-->
-            <plugin>
-                <groupId>com.github.wvengen</groupId>
-                <artifactId>proguard-maven-plugin</artifactId>
-                <version>2.0.8</version>
-                <!--<executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals><goal>proguard</goal></goals>
-                    </execution>
-                </executions>-->
-                <!--<executions>
-                    <execution>
-                        <phase>process-classes</phase>
-                        <goals>
-                            <goal>proguard</goal>
-                        </goals>
-                    </execution>
-                </executions>-->
-
-                <configuration>
-
-                    <options>
-                        <!-- General options which should apply to most
-                             standalone Java apps. -->
-                        <option>
-                            -dontshrink
-                            -optimizationpasses 3
-                            -overloadaggressively
-                            -repackageclasses
-                            -allowaccessmodification
-                            -keepclasseswithmembers public class * {
-                            public static void main(java.lang.String[]);
-                            }
-                            -keepclassmembers enum * {
-                            public static **[] values();
-                            public static ** valueOf(java.lang.String);
-                            }
-                        </option>
-                    </options>
-                    <libs>
-                        <lib>${java.home}/lib/rt.jar</lib>
-                        <!--<lib>${java.home}/lib/jsse.jar</lib>-->
-                    </libs>
+                    <includeLibsJarsFromAar>true</includeLibsJarsFromAar>
                 </configuration>
             </plugin>
         </plugins>
     </build>
 
     <dependencies>
-        <dependency>
-            <groupId>com.taxi-bulgaria.rest</groupId>
-            <artifactId>open-rest-client-a</artifactId>
-            <version>1.0.4</version>
-        </dependency>
 
         <dependency>
             <groupId>android</groupId>
             <artifactId>android</artifactId>
-            <version>5.1.1_r2</version>
+            <version>6.0_r2</version>
             <scope>provided</scope>
-            <!--<exclusions>
-                <exclusion>
-                    <groupId>xpp3</groupId>
-                    <artifactId>xpp3</artifactId>
-                </exclusion>
-            </exclusions>-->
+        </dependency>
+
+        <dependency>
+            <groupId>com.taxi-bulgaria.rest</groupId>
+            <artifactId>open-rest-client-a</artifactId>
+            <version>1.0.5</version>
+            <!--<type>jar</type>-->
         </dependency>
 
         <dependency>
             <groupId>com.google.android.gms</groupId>
             <artifactId>play-services-location</artifactId>
-            <!--<version>5.0.89</version>-->
-            <!--<version>6.5.87</version>-->
-            <version>7.3.0</version>
+            <version>${play-service-version}</version>
             <type>aar</type>
             <exclusions>
-                <!--<exclusion>
-                    <groupId>com.android.support</groupId>
-                    <artifactId>support-v4</artifactId>
-                </exclusion>-->
                 <exclusion>
                     <groupId>com.google.android.gms</groupId>
                     <artifactId>play-services-base</artifactId>
@@ -196,7 +138,7 @@
         <dependency>
             <groupId>com.google.android.gms</groupId>
             <artifactId>play-services-base</artifactId>
-            <version>7.3.0</version>
+            <version>${play-service-version}</version>
             <type>aar</type>
             <exclusions>
                 <exclusion>
@@ -209,21 +151,42 @@
         <dependency>
             <groupId>com.google.android.gms</groupId>
             <artifactId>play-services-gcm</artifactId>
-            <version>7.3.0</version>
+            <version>${play-service-version}</version>
+            <type>aar</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.android.gms</groupId>
+            <artifactId>play-services-plus</artifactId>
+            <version>${play-service-version}</version>
+            <type>aar</type>
+        </dependency>
+
+        <!--<dependency>
+            <groupId>com.android.support</groupId>
+            <artifactId>support-v4</artifactId>
+            <version>23.1.1</version>
+            <type>aar</type>
+        </dependency>-->
+
+        <dependency>
+            <groupId>com.android.support</groupId>
+            <artifactId>appcompat-v7</artifactId>
+            <version>23.1.1</version>
             <type>aar</type>
         </dependency>
 
         <dependency>
             <groupId>com.android.support</groupId>
-            <artifactId>support-v4</artifactId>
-            <version>22.1.1</version>
+            <artifactId>design</artifactId>
+            <version>23.1.1</version>
             <type>aar</type>
         </dependency>
 
         <dependency>
             <groupId>pl.charmas.android</groupId>
             <artifactId>android-reactive-location</artifactId>
-            <version>0.6</version>
+            <version>0.8</version>
             <type>aar</type>
             <exclusions>
                 <exclusion>
@@ -237,13 +200,13 @@
             <groupId>com.taxi-bulgaria.map</groupId>
             <artifactId>mapsforge</artifactId>
             <type>aar</type>
-            <version>0.5.1</version>
-            <!--<exclusions>
+            <version>0.6.0</version>
+            <exclusions>
                 <exclusion>
-                    <groupId>com.google.android</groupId>
-                    <artifactId>support-v4</artifactId>
+                    <groupId>android.support</groupId>
+                    <artifactId>compatibility-v4</artifactId>
                 </exclusion>
-            </exclusions>-->
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -255,34 +218,131 @@
         <dependency>
             <groupId>org.androidannotations</groupId>
             <artifactId>androidannotations</artifactId>
-            <version>3.3.1</version>
+            <version>3.3.2</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.androidannotations</groupId>
             <artifactId>androidannotations-api</artifactId>
-            <version>3.3.1</version>
+            <version>3.3.2</version>
         </dependency>
 
         <dependency>
             <groupId>ch.acra</groupId>
             <artifactId>acra</artifactId>
-            <version>4.6.2</version>
+            <version>4.7.0</version>
+            <type>aar</type>
         </dependency>
 
         <dependency>
+            <groupId>de.greenrobot</groupId>
+            <artifactId>eventbus</artifactId>
+            <version>2.4.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.getbase</groupId>
+            <artifactId>floatingactionbutton</artifactId>
+            <version>1.10.1</version>
+            <type>aar</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.facebook.android</groupId>
+            <artifactId>facebook-android-sdk</artifactId>
+            <version>4.5.0</version>
+            <type>aar</type>
+            <!--<exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>-->
+            <exclusions>
+                <exclusion>
+                    <groupId>com.android.support</groupId>
+                    <artifactId>support-v4</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.android.support</groupId>
+                    <artifactId>multidex</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.nicolasjafelle</groupId>
+            <artifactId>paginglistview</artifactId>
+            <version>1.3</version>
+            <type>aar</type>
+        </dependency>
+
+        <dependency>
+            <groupId>it.sephiroth.android.library.targettooltip</groupId>
+            <artifactId>target-tooltip-library</artifactId>
+            <version>1.3.11</version>
+            <type>aar</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.android.support</groupId>
+                    <artifactId>appcompat-v7</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mikepenz</groupId>
+            <artifactId>iconics-core</artifactId>
+            <version>2.5.5</version>
+            <type>aar</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.android.support</groupId>
+                    <artifactId>appcompat-v7</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mikepenz</groupId>
+            <artifactId>google-material-typeface</artifactId>
+            <!--<artifactId>material-design-iconic-typeface</artifactId>-->
+            <!--<version>2.2.0.1</version>-->
+            <version>2.1.0.1.original</version>
+            <type>aar</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>Android-Iconics</groupId>
+                    <artifactId>library-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!--<dependency>
+            <groupId>com.android.support</groupId>
+            <artifactId>multidex</artifactId>
+            <version>1.0.1</version>
+            <type>aar</type>
+        </dependency>-->
+
+
+        <!--<dependency>
             <groupId>com.github.sromku</groupId>
             <artifactId>android-simple-facebook</artifactId>
+            &lt;!&ndash;<version>4.1.1-SNAPSHOT</version>&ndash;&gt;
             <version>2.1-SNAPSHOT</version>
-            <!--<type>apklib</type>-->
+            &lt;!&ndash;<type>apklib</type>&ndash;&gt;
+            &lt;!&ndash;<type>jar</type>
             <exclusions>
                 <exclusion>
                     <groupId>com.google.android</groupId>
                     <artifactId>support-v4</artifactId>
                 </exclusion>
-            </exclusions>
-        </dependency>
+            </exclusions>&ndash;&gt;
+        </dependency>-->
+
+
         <!--<dependency>
             <groupId>com.facebook.android</groupId>
             <artifactId>facebook-android-sdk</artifactId>

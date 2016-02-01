@@ -2,9 +2,10 @@
 
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
           android:id="@+id/spinnerTarget"
-          android:layout_width="fill_parent"
+          style="?android:attr/dropDownItemStyle"
+          android:textAppearance="?android:attr/textAppearanceLargePopupMenu"
+          android:singleLine="true"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:textSize="30dp"
-          android:background="@color/black_color"
-          android:textColor="#FFFFFF"
-          android:gravity="center"/>
+          android:ellipsize="marquee"
+          android:textSize="30sp"/>

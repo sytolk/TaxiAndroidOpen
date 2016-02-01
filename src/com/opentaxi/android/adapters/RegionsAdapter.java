@@ -11,40 +11,29 @@ import com.stil.generated.mysql.tables.pojos.Regions;
  */
 public class RegionsAdapter {
 
-    private java.lang.Integer id;
-    private java.lang.String description;
+    private Regions regions;
 
-    public RegionsAdapter() {
-
-    }
-
-    public RegionsAdapter(Regions region) {
-        this.id = region.getId();
-        this.description = region.getDescription();
+    public RegionsAdapter(Regions regions) {
+        this.regions = regions;
     }
 
     @Override
     public String toString() {
-        return this.description; //what you want displayed for each row in the listview
+        if (regions != null)
+            return this.regions.getDescription(); //what you want displayed for each row in the listview
+        return "";
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null || this.id == null) return false;
+        if (obj == null || this.regions == null) return false;
         if (!(obj instanceof RegionsAdapter)) return false;
         RegionsAdapter regionsAdapter = (RegionsAdapter) obj;
-        return this.id.equals(regionsAdapter.getId());
+        if (regionsAdapter.getRegions() == null) return false;
+        return this.regions.getId().equals(regionsAdapter.getRegions().getId());
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
+    public Regions getRegions() {
+        return regions;
     }
 }

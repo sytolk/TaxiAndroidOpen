@@ -6,14 +6,15 @@ import android.content.SharedPreferences;
 import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opentaxi.models.Users;
-import org.codehaus.jackson.map.ObjectMapper;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
+import java.io.IOException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -31,7 +32,7 @@ public class AppPreferences {
 
     private static final String SOCKET_TYPE = "SOCKET_TYPE";
     private static final String MAP_FILE = "MAP_FILE";
-    private static final String ACCESS_TOKEN = "ACCESS_TOKEN";
+    //private static final String ACCESS_TOKEN = "ACCESS_TOKEN";
 
     /**
      * Singleton reference to this class.
@@ -48,7 +49,7 @@ public class AppPreferences {
     //private long gpsLastTime = 0; //local Android datetime of last received coordinates
 
     private String mapFile;
-    private String token;
+    //private String token;
     private Integer socketType;
     private Context context;
     private Users users;
@@ -73,13 +74,45 @@ public class AppPreferences {
         return instance;
     }
 
+    private final Object users_lock = new Object();
+
     public Users getUsers() {
-        return users;
+        synchronized (users_lock) {
+            if (users == null) {
+                try {
+                    String usersJson = appSharedPrefs.getString(Users.class.getSimpleName(), "");
+                    if (!usersJson.equals("")) users = mapper.readValue(usersJson, Users.class);
+                    if (users == null) users = new Users();
+                } catch (IOException e) {
+                    users = new Users();
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+            }
+            return users;
+        }
     }
 
+    /**
+     * @param users users
+     */
     public void setUsers(Users users) {
-        this.users = users;
+        synchronized (users_lock) {
+            //if (this.users != null) {
+            this.users = users;
+            //if(getCarState().equals(CarState.STATE_INEFFICIENT.getCode())) setCarState(CarState.STATE_FREE.getCode());
+            try {
+                this.prefsEditor = appSharedPrefs.edit();
+                prefsEditor.putString(Users.class.getSimpleName(), mapper.writeValueAsString(users));
+                prefsEditor.apply();
+                //return !(this.users.getCurrCars() == null);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //}
+            // return false;
+        }
     }
+
 
     public String encrypt(String value, String salt) {
         if (value != null && salt != null) {
@@ -167,7 +200,7 @@ public class AppPreferences {
         prefsEditor.commit();
     }
 
-    public String getAccessToken() {
+    /*public String getAccessToken() {
         if (token == null) {
             token = appSharedPrefs.getString(ACCESS_TOKEN, "");
         }
@@ -179,7 +212,7 @@ public class AppPreferences {
         this.prefsEditor = appSharedPrefs.edit();
         prefsEditor.putString(ACCESS_TOKEN, token);
         prefsEditor.commit();
-    }
+    }*/
 
     public Integer getSocketType() {
         if (socketType == null) {

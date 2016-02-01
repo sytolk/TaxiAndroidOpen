@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<resources>
 
-	<color name="background_color">#C03F7FFF</color>
-	<color name="white_color">#FFFFFFFF</color>
+	<color name="background_color">#EFEFEF</color>
+	<color name="white_color">#FFFFFF</color>
 	<color name="black_color">#000000</color>
 	<color name="label_color">#FF3FFF3F</color>
-	<color name="ch1_color">#FFFFFF00</color>
+	<color name="yellow_color">#FFF300</color>
 	<color name="red_color">#FFFF0000</color>
 	<color name="timebase_color">#FFFF7F1F</color>
     <color name="transparent_blue">#80004488</color>
+
+	<color name="app_primary">#008080</color>
+    <color name="app_primary_dark">#45645C</color>
+	<color name="material_deep_orange_700">#ffc53929</color>
 
 </resources>

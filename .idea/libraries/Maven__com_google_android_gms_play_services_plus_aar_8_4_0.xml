@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Maven: com.google.android.gms:play-services-plus:aar:8.4.0">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/gen-external-apklibs/com.google.android.gms_play-services-plus_8.4.0/res" />
+      <root url="jar://$PROJECT_DIR$/gen-external-apklibs/com.google.android.gms_play-services-plus_8.4.0/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/google/android/gms/play-services-plus/8.4.0/play-services-plus-8.4.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/google/android/gms/play-services-plus/8.4.0/play-services-plus-8.4.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

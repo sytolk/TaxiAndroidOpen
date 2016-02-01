@@ -1,10 +1,10 @@
 package com.opentaxi.android;
 
 import android.app.Application;
+import com.facebook.FacebookSdk;
 import com.opentaxi.android.utils.CrashReportSender;
 import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;
-import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,16 +15,19 @@ import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
  */
 //@ReportsCrashes(formKey = "dF8wOUJYbFhCeDVlMG1JT3FkN2xXM0E6MQ", logcatFilterByPid = true)
 @ReportsCrashes(logcatFilterByPid = true) //formKey = "",
-public class TaxiApplication extends Application {
+public class TaxiApplication extends Application { //extends MultiDexApplication {
 
     public static String gcmId = "";
     //private static boolean havePlayService = true;
     private static boolean requestsVisible = false;
-    private static boolean requestsHistory = false;
+    //private static boolean requestsHistory = false;
     private static boolean requestsDetailsVisible = false;
     private static boolean userPassVisible = false;
     private static boolean mapVisible = false;
     private static Integer lastRequestId;
+    private static boolean versionSend = false;
+    private static boolean serversUpdated = false;
+    private static String GCMRegistrationId;
 
     /*public static void setHavePlayService(boolean havePlayService) {
         TaxiApplication.havePlayService = havePlayService;
@@ -44,14 +47,6 @@ public class TaxiApplication extends Application {
 
     public static void requestsPaused() {
         requestsVisible = false;
-    }
-
-    public static boolean isRequestsHistory() {
-        return requestsHistory;
-    }
-
-    public static void requestsHistory(boolean history) {
-        requestsHistory = history;
     }
 
     public static boolean isRequestsDetailsVisible() {
@@ -98,6 +93,30 @@ public class TaxiApplication extends Application {
         TaxiApplication.lastRequestId = lastRequestId;
     }
 
+    public static boolean isVersionSend() {
+        return versionSend;
+    }
+
+    public static void setVersionSend(boolean versionSend) {
+        TaxiApplication.versionSend = versionSend;
+    }
+
+    public static boolean isServersUpdated() {
+        return serversUpdated;
+    }
+
+    public static void setServersUpdated(boolean serversUpdated) {
+        TaxiApplication.serversUpdated = serversUpdated;
+    }
+
+    public static String getGCMRegistrationId() {
+        return GCMRegistrationId;
+    }
+
+    public static void setGCMRegistrationId(String GCMRegistrationId) {
+        TaxiApplication.GCMRegistrationId = GCMRegistrationId;
+    }
+
     @Override
     public void onCreate() {
 
@@ -109,9 +128,11 @@ public class TaxiApplication extends Application {
 
         super.onCreate();
 
+        FacebookSdk.sdkInitialize(getApplicationContext()); //this must be here! its have usage in MainActivity and UserPass
+
         //RestClient.getInstance().clearCache();
 
-        AndroidGraphicFactory.createInstance(this);
+        //AndroidGraphicFactory.createInstance(this);
 
         //Log.d("TaxiApplication", "onCreate()");
 
@@ -119,6 +140,8 @@ public class TaxiApplication extends Application {
         ACRA.init(this);
         CrashReportSender mySender = new CrashReportSender();
         ACRA.getErrorReporter().setReportSender(mySender);
+
+        //Iconics.registerFont(new GoogleMaterial());
 
         /*// output debug to LogCat, with tag LittleFluffyLocationLibrary
         //LocationLibrary.showDebugOutput(true);

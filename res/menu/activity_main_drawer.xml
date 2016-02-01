@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/nav_home"
+              android:title="@string/home"/>
+        <item android:id="@+id/nav_map"
+              android:title="@string/show_map_text"/>
+        <item android:id="@+id/nav_request"
+              android:title="@string/request"/>
+        <item android:id="@+id/nav_history"
+              android:title="@string/history"/>
+        <item android:id="@+id/nav_servers"
+              android:title="@string/options_server"/>
+        <!--<item android:id="@+id/nav_book_taxi" android:icon="@android:drawable/ic_menu_send"
+              android:title="@string/request_taxi"/>-->
+    </group>
+
+    <item android:title="@string/user_preferences">
+        <menu>
+            <item android:id="@+id/nav_send_log"
+                  android:title="@string/options_send_log"/>
+            <item android:id="@+id/nav_exit"
+                  android:title="@string/exit"/>
+        </menu>
+    </item>
+
+</menu>

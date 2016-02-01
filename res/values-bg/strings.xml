@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-    <string name="app_name">Такси</string>
+    <string name="app_name">Такси България</string>
 
     <string name="show_map_text">Карта</string>
     <string name="exit">Изход</string>
-    <string name="request">Поръчки</string>
+    <string name="request">Активни Поръчки</string>
 
     <string name="options_update">Обновяване</string>
     <string name="options_exit">Изход</string>
@@ -119,7 +119,6 @@
     <string name="driver">Шофьор:</string>
     <string name="back">Назад</string>
     <string name="call">Повикай</string>
-    <string name="enter">ВХОД В СИТЕМАТА</string>
     <string name="login_user">Потребител/email:</string>
     <string name="lost_password">Забравена парола</string>
     <string name="lost_pass_email">Въведете имейла с който сте се регистрирали</string>
@@ -140,4 +139,11 @@
     <string name="options_help">Помощ</string>
     <string name="request_rejected">Съжаляваме но поръчка %1$s ( %2$s ) е отказана.</string>
     <string name="request_edited">Поръчка %1$s ( %2$s ) е променена.</string>
+    <string name="action_sign_in">Вход</string>
+    <string name="different_login">или</string>
+    <string name="navigation_drawer_open">Отвори менюто</string>
+    <string name="navigation_drawer_close">Затвори менюто</string>
+    <string name="user_preferences">Потребителски настройки</string>
+    <string name="home">Начало</string>
+    <string name="taxi_tooltip">Намерете такси само с едно кликване</string>
 </resources>

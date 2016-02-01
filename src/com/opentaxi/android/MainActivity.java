@@ -1,38 +1,52 @@
 package com.opentaxi.android;
 
 import android.app.*;
-import android.content.*;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentSender;
+import android.content.res.Configuration;
+import android.graphics.Color;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.NotificationCompat;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.view.LayoutInflaterCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.NotificationCompat;
+import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import com.facebook.AccessToken;
+import com.facebook.login.LoginManager;
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.ErrorDialogFragment;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.location.*;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.iconics.context.IconicsLayoutInflater;
 import com.opentaxi.android.asynctask.LogoutTask;
+import com.opentaxi.android.fragments.*;
 import com.opentaxi.android.service.CoordinatesService;
 import com.opentaxi.android.utils.AppPreferences;
-import com.opentaxi.android.utils.Network;
-import com.opentaxi.models.CoordinatesLight;
-import com.opentaxi.models.Users;
+import com.opentaxi.models.*;
 import com.opentaxi.rest.RestClient;
-import com.sromku.simple.fb.SimpleFacebook;
-import com.sromku.simple.fb.listeners.OnLogoutListener;
-import com.stil.generated.mysql.tables.pojos.Servers;
-import com.taxibulgaria.enums.Applications;
+import com.stil.generated.mysql.tables.pojos.Cars;
+import de.greenrobot.event.EventBus;
+import it.sephiroth.android.library.tooltip.Tooltip;
 import org.acra.ACRA;
 import org.androidannotations.annotations.*;
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
@@ -41,34 +55,31 @@ import rx.Subscription;
 import rx.functions.Action1;
 import rx.functions.Func1;
 
-import java.io.IOException;
-
 @EActivity(R.layout.main)
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnCommandListener {
 
     private static final int REQUEST_USER_PASS_CODE = 10;
     public static final int HELP = 11;
     public static final int SERVER_CHANGE = 12;
-    private static final int MAP_VIEW = 13;
-    private static final int REQUEST_INFO = 14;
-    private static final int MESSAGE = 40;
 
-    @ViewById
-    TextView user;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private CharSequence mTitle;
 
-    @ViewById(R.id.txt_version)
-    TextView version;
+    @ViewById(R.id.toolbar)
+    Toolbar toolbar;
 
-    @ViewById(R.id.bandwidth)
-    TextView bandwidth;
+    @ViewById(R.id.drawer_layout)
+    DrawerLayout drawer;
+
+    @ViewById(R.id.nav_view)
+    NavigationView navigationView;
+
+    @ViewById(R.id.fab)
+    FloatingActionButton fab;
 
     private static final String TAG = "MainActivity";
 
-    private boolean oneTime = false;
-
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-
-    GoogleCloudMessaging gcm;
 
     private ReactiveLocationProvider locationProvider;
 
@@ -85,15 +96,18 @@ public class MainActivity extends FragmentActivity {
 
     //private boolean havePlayService = true;
 
-    public MainActivity() {
-
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        //LayoutInflaterCompat.setFactory(getLayoutInflater(), new IconicsLayoutInflater(getDelegate()));
+
         super.onCreate(savedInstanceState);
+
+        // Tell the activity we have menu items to contribute to the toolbar
+        //setHasOptionsMenu(true);
+
         try {
-            if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext()) == ConnectionResult.SUCCESS) {
+            if (playServicesConnected()) {
 
                 locationProvider = new ReactiveLocationProvider(getApplicationContext());
 
@@ -107,7 +121,7 @@ public class MainActivity extends FragmentActivity {
                 locationUpdatesObservable = locationProvider.checkLocationSettings(
                         new LocationSettingsRequest.Builder()
                                 .addLocationRequest(locationRequest)
-                                        //.setAlwaysShow(true)
+                                //.setAlwaysShow(true)
                                 .build()
                 )
                         .doOnNext(new Action1<LocationSettingsResult>() {
@@ -139,66 +153,91 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+            return;
+        } else {
+            android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+            if (fm.getBackStackEntryCount() == 1) {
+                //fm.popBackStackImmediate();
+                supportFinishAfterTransition();
+                return;
+            }
+        }
+
+        super.onBackPressed();
+    }
+
+    android.support.v4.app.Fragment redirectFragment = null;
+
+    @Override
+    protected void onNewIntent(Intent newIntent) {
+        Bundle extras = newIntent.getExtras();
+        if (extras != null) {
+            MapRequest mapRequest = extras.getParcelable("mapRequest");
+            if (mapRequest != null) {
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("mapRequest", mapRequest);
+                redirectFragment = NewRequestFragment_.builder().build();
+                redirectFragment.setArguments(bundle);
+            }
+        }
+        super.onNewIntent(newIntent);
+    }
+
     /**
      * Called when the activity is first created.
      */
     @AfterViews
     void afterMain() {
-        /*PackageInfo info;
-        try {
-            info = getPackageManager().getPackageInfo("com.opentaxi.android", PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md;
-                md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                String something = new String(Base64.encode(md.digest(), 0));
-                //String something = new String(Base64.encodeBytes(md.digest()));
-                Log.e("hash key", something);
-            }
-        } catch (PackageManager.NameNotFoundException e1) {
-            Log.e("name not found", e1.toString());
-        } catch (NoSuchAlgorithmException e) {
-            Log.e("no such an algorithm", e.toString());
-        } catch (Exception e) {
-            Log.e("exception", e.toString());
-        }*/
+
+        setSupportActionBar(toolbar);
+
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(mDrawerToggle);
+        mDrawerToggle.syncState();
+
+        navigationView.setNavigationItemSelectedListener(this);
+
+        Menu navMenu = navigationView.getMenu();
+        if (navMenu != null) {
+            MenuItem navHome = navMenu.findItem(R.id.nav_home);
+            if (navHome != null)
+                navHome.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_home).actionBar().color(Color.YELLOW));
+            MenuItem navMap = navMenu.findItem(R.id.nav_map);
+            if (navMap != null)
+                navMap.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_map).actionBar().color(Color.BLUE));
+            MenuItem navRequest = navMenu.findItem(R.id.nav_request);
+            if (navRequest != null)
+                navRequest.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_local_taxi).actionBar().color(Color.YELLOW));
+            MenuItem navHistory = navMenu.findItem(R.id.nav_history);
+            if (navHistory != null)
+                navHistory.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_info).actionBar().color(Color.GREEN));
+            MenuItem navServers = navMenu.findItem(R.id.nav_servers);
+            if (navServers != null)
+                navServers.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_cloud).actionBar().color(Color.BLUE));
+            MenuItem navLog = navMenu.findItem(R.id.nav_send_log);
+            if (navLog != null)
+                navLog.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_bug_report).actionBar().color(Color.RED));
+            MenuItem navExit = navMenu.findItem(R.id.nav_exit);
+            if (navExit != null)
+                navExit.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_exit_to_app).actionBar().color(Color.BLACK));
+        }
+
+        fab.setIconDrawable(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_local_taxi).sizeDp(35).color(Color.GREEN));
 
         AppPreferences appPreferences = AppPreferences.getInstance(this);
         RestClient.getInstance().setSocketsType(appPreferences.getSocketType());
-        checkUser();
+        //checkUser();
+        //playServicesConnected();
 
-        /*final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            alertMessageNoGps();
-        }*/
+        if (!checkUserLogin()) checkFbLogin();
     }
 
-    /*void alertMessageNoGps() {
-        //showDialog(DIALOG_EXIT);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle(R.string.no_gps_title);
-        alertDialogBuilder.setMessage(R.string.no_gps_msg);
-        //null should be your on click listener
-        alertDialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-            }
-        });
-        alertDialogBuilder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        Dialog exitDialog = alertDialogBuilder.create();
-        exitDialog.show();
-    }*/
-
-    private void checkUser() {
+    /*private void checkUser() {
         if (AppPreferences.getInstance() != null) {
             String user = RestClient.getInstance().getUsername();
             String pass = RestClient.getInstance().getPassword();
@@ -231,278 +270,13 @@ public class MainActivity extends FragmentActivity {
                 }
             }
         }
-    }
+    }*/
 
-    @UiThread
-    void afterLogin(String username) {
-        this.user.setText(username);
-        //AppPreferences.getInstance().setRegions();
-
-        //appPreferences.registerGCM(getBaseContext());
-
-        if (!oneTime) {
-            setVersion();
-            Log.i(TAG, "Updating servers");
-            oneTime = true;
-            setServers();
-        }
-
-        if (servicesConnected()) {
-            gcm = GoogleCloudMessaging.getInstance(this);
-            String regid = RestClient.getInstance().getGCMRegistrationId(); //AppPreferences.getInstance().getGCMRegId();
-
-            if (regid == null || regid.equals("")) {
-                gcmRegister();
-            } //else sendRegistration(regid);
-        } else {
-            Log.i(TAG, "No valid Google Play Services APK found.");
-        }
-    }
-
-    @Background
-    void beforeStartUserPass() {
-        String token = AppPreferences.getInstance().getAccessToken();
-        if (token != null && !token.equals("")) {
-            Log.i(TAG, "already authorized token=" + token);
-            if (!RestClient.getInstance().haveAuthorization()) {
-                //Log.i(TAG, "AppPreferences.getInstance().getAccessToken=" + token);
-                Users user = RestClient.getInstance().FacebookLogin(token);
-                if (user != null) { //user already exist
-                    if (user.getId() != null && user.getId() > 0) {
-                        RestClient.getInstance().setAuthHeadersEncoded(user.getUsername(), user.getPassword());
-                        afterLogin(user.getUsername());
-                    } else startUserPass();
-                } else startUserPass();
-            } else {
-                Users user = AppPreferences.getInstance().getUsers();
-                if (user != null) afterLogin(user.getUsername());
-                else Log.e(TAG, "facebook no user");
-            }
-        } else startUserPass();
-    }
-
-    @UiThread
-    void startUserPass() {
-        UserPassActivity_.intent(this).startForResult(REQUEST_USER_PASS_CODE);
-    }
-
-    @Background
-    void gcmRegister() {
-        Log.i(TAG, "gcmRegister");
-        if (gcm == null) {
-            gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
-        }
-        try {
-            String regId = gcm.register(RestClient.getInstance().getGCMsenderIds());
-            if (regId != null && regId.length() > 0) {
-                //String oldRegid = RestClient.getInstance().getGCMRegistrationId();
-                //if (oldRegid == null || !oldRegid.equals(regId)) {
-                Boolean isRegister = RestClient.getInstance().gcmRegister(regId);
-                if (isRegister != null && isRegister) Log.i(TAG, "gcmRegister successful");
-                else {
-                    Log.e(TAG, "gcmRegister not registered");
-                }
-                // }
-            }
-        } catch (IOException e) {
-            if (e.getMessage() != null) Log.e(TAG, e.getMessage());
-            else Log.e(TAG, "gcmRegister IOException");
-        }
-    }
-
-    // Define a DialogFragment that displays the error dialog
-    public static class MainDialogFragment extends android.support.v4.app.DialogFragment {
-        // Global field to contain the error dialog
-        private Dialog mDialog;
-
-        // Default constructor. Sets the dialog field to null
-        public MainDialogFragment() {
-            super();
-            mDialog = null;
-        }
-
-        // Set the dialog to display
-        public void setDialog(Dialog dialog) {
-            mDialog = dialog;
-        }
-
-        // Return a Dialog to the DialogFragment.
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            if (mDialog == null) super.setShowsDialog(false);
-            return mDialog;
-        }
-    }
-
-
-    private boolean servicesConnected() {
-        try {
-            // Check that Google Play services is available
-            int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-            // If Google Play services is available
-            if (ConnectionResult.SUCCESS == resultCode) {
-                // In debug mode, log the status
-                Log.d("Activity Recognition", "Google Play services is available.");
-                //TaxiApplication.setHavePlayService(true);
-                // Continue
-                return true;
-                // Google Play services was not available for some reason
-            } else if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-                // Get the error dialog from Google Play services
-                Dialog errorDialog = GooglePlayServicesUtil.getErrorDialog(resultCode, this, PLAY_SERVICES_RESOLUTION_REQUEST);
-
-                // If Google Play services can provide an error dialog
-                if (errorDialog != null) {
-                    try {
-                        // Create a new DialogFragment for the error dialog
-                        MainDialogFragment errorFragment = new MainDialogFragment();
-                        // Set the dialog in the DialogFragment
-                        errorFragment.setDialog(errorDialog);
-                        // Show the error dialog in the DialogFragment
-                        errorFragment.show(getSupportFragmentManager(), "Activity Recognition");
-                    } catch (Exception e) {
-                        if (e.getMessage() != null) Log.e(TAG, e.getMessage());
-                    }
-                }
-            }
-        } catch (IllegalStateException e) {
-            Log.e("servicesConnected", "IllegalStateException", e);
-        }
-        return false;
-    }
-
-
-    @Background
-    void setServers() {
-        Servers[] serverList = RestClient.getInstance().getServers();
-        if (serverList != null) {
-            RestClient.getInstance().setServerSockets(serverList);
-            RestClient.getInstance().cleanSocketCheck();
-        }
-    }
-
-
-    private void setVersion() {
-        try {
-            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            version.setText(pInfo.versionName);
-            //if (AppPreferences.getInstance() != null && !AppPreferences.getInstance().getAppVersion().equals(pInfo.versionName)) {
-            //    AppPreferences.getInstance().setAppVersion(pInfo.versionName);
-            sendVersion(pInfo.versionName, pInfo.versionCode);
-            //}
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.e(TAG, "setVersion:" + e.getMessage());
-        }
-    }
-
-    @Background
-    void sendVersion(String version, Integer code) {
-        Boolean isActual = RestClient.getInstance().sendVersion(Applications.ANDROID_CLIENT.getCode(), version, code);
-        if (isActual != null && !isActual) {
-            //updateVersionDialog(); todo
-            createNotification();
-        } else Log.i(TAG, "You have last version");
-    }
-
-    @UiThread
-    public void createNotification() {
-        // Prepare intent which is triggered if the
-        // notification is selected
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("market://details?id=com.opentaxi.android"));
-        PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
-
-        // Build notification
-        Notification noti = new NotificationCompat.Builder(this)
-                .setContentTitle(getString(R.string.new_version))
-                        //.setContentText("Version")
-                .setSmallIcon(R.drawable.icon)
-                .setContentIntent(pIntent)
-                .addAction(R.drawable.icon, "Update", pIntent).build();
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        // hide the notification after its selected
-        noti.flags |= Notification.FLAG_AUTO_CANCEL;
-
-        notificationManager.notify(0, noti);
-    }
-
-    /*@UiThread
-    void updateVersionDialog() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Нова версия на Такси България!");
-        alertDialogBuilder.setMessage("Налична е нова версия. Желаете ли да актуализирате ?");
-        //null should be your on click listener
-        alertDialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                downloadUpdate();
-            }
-        });
-        alertDialogBuilder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        Dialog updateDialog = alertDialogBuilder.create();
-        updateDialog.show();
-    }
-
-    @Background
-    void downloadUpdate() {
-        try {
-            URL url = new URL("http://taxi-bulgaria.com:8888/TaxiAndroidOpen.apk");
-            HttpURLConnection c = (HttpURLConnection) url.openConnection();
-            c.setRequestMethod("GET");
-            c.setDoOutput(true);
-            c.connect();
-
-            //String PATH = "/mnt/sdcard/Download/";
-            File file = new File(Environment.getExternalStorageDirectory(), "Download/");
-            file.mkdirs();
-            File outputFile = new File(file, "update.apk");
-            if (outputFile.exists()) {
-                outputFile.delete();
-            }
-            FileOutputStream fos = new FileOutputStream(outputFile);
-
-            InputStream is = c.getInputStream();
-
-            byte[] buffer = new byte[1024];
-            int len1 = 0;
-            while ((len1 = is.read(buffer)) != -1) {
-                fos.write(buffer, 0, len1);
-            }
-            fos.close();
-            is.close();
-
-            // Check if app was updated; if so, it must clear the GCM registration ID
-            // since the existing regID is not guaranteed to work with the new app version.
-            RestClient.getInstance().setGCMRegistrationId("");
-
-            startUpdate();
-        } catch (Exception e) {
-            Log.e("UpdateAPP", "Update error! " + e.getMessage());
-        }
-    }
-
-    @UiThread
-    void startUpdate() {
-        File newVersion = new File(Environment.getExternalStorageDirectory(), "Download/update.apk");
-        if (newVersion.exists()) {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setDataAndType(Uri.fromFile(newVersion), "application/vnd.android.package-archive");
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // without this flag android returned a intent error!
-            startActivity(intent);
-        }
-    }
-*/
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
+        EventBus.getDefault().register(this);
+
         if (lastKnownLocationObservable != null) {
             lastKnownLocationSubscription = lastKnownLocationObservable
                     .subscribe(new Action1<Location>() {
@@ -531,7 +305,7 @@ public class MainActivity extends FragmentActivity {
                     }).filter(new Func1<Location, Boolean>() {
                         @Override
                         public Boolean call(Location location) {
-                            return location.getAccuracy() < SUFFICIENT_ACCURACY;
+                            return location != null && location.getAccuracy() < SUFFICIENT_ACCURACY;
                         }
                     })
                     .subscribe(new Action1<Location>() {
@@ -541,6 +315,194 @@ public class MainActivity extends FragmentActivity {
                         }
                     }, new ErrorHandler());
         }
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+
+        if (updatableLocationSubscription != null) updatableLocationSubscription.unsubscribe();
+        if (lastKnownLocationSubscription != null) lastKnownLocationSubscription.unsubscribe();
+
+        super.onStop();
+    }
+
+    /**
+     * greenEvent after user login
+     *
+     * @param users
+     */
+    public void onEvent(Users users) {
+        //setServers();
+    }
+
+    /*@Background
+    void beforeStartUserPass() {
+        //String token = AppPreferences.getInstance().getAccessToken();
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        if (accessToken != null) {
+            //if (token != null && !token.equals("")) {
+            //Log.i(TAG, "already authorized fb token=" + accessToken.getToken());
+            if (!RestClient.getInstance().haveAuthorization()) {
+                //Log.i(TAG, "AppPreferences.getInstance().getAccessToken=" + token);
+                Users user = RestClient.getInstance().FacebookLogin(accessToken.getToken());
+                if (user != null) { //user already exist
+                    if (user.getId() != null && user.getId() > 0) {
+                        RestClient.getInstance().setAuthHeadersEncoded(user.getUsername(), user.getPassword());
+                        afterLogin(user.getUsername());
+                    } else startUserPass();
+                } else startUserPass();
+            } else {
+                Users user = AppPreferences.getInstance().getUsers();
+                if (user != null) afterLogin(user.getUsername());
+                else Log.e(TAG, "facebook no user");
+            }
+        } else startUserPass();
+    }*/
+
+    /*@Background
+    void gcmRegister() {
+        if (playServicesConnected()) {
+
+            if (TaxiApplication.getGCMRegistrationId() == null) {
+                GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
+                try {
+                    String regId = gcm.register(RestClient.getInstance().getGCMsenderIds());
+                    if (regId != null && regId.length() > 0) {
+                        //String oldRegid = RestClient.getInstance().getGCMRegistrationId();
+                        //if (oldRegid == null || !oldRegid.equals(regId)) {
+                        Boolean isRegister = RestClient.getInstance().gcmRegister(regId);
+                        if (isRegister){
+                            Log.i("gcmRegister", "gcmRegister successful");
+                            TaxiApplication.setGCMRegistrationId(regId);
+                        }
+                        else {
+                            Log.e("gcmRegister", "gcmRegister not registered");
+                        }
+                        // }
+                    }
+                } catch (IOException e) {
+                    Log.e("gcmRegister", "gcmRegister IOException", e);
+                }
+            }
+        } else {
+            Log.i("playServicesConnected", "No valid Google Play Services APK found.");
+        }
+    }*/
+
+    public boolean playServicesConnected() {
+        try {
+            // Check that Google Play services is available
+            GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
+            int result = googleAPI.isGooglePlayServicesAvailable(this);
+            // If Google Play services is available
+            if (ConnectionResult.SUCCESS == result) {
+                // Continue
+                return true;
+
+            } else if (googleAPI.isUserResolvableError(result)) {
+                setPlayServicesResolutionRequest(result);
+            } else Log.e("playServicesConnected", "result:" + result);
+        } catch (IllegalStateException e) {
+            Log.e("playServicesConnected", "IllegalStateException", e);
+        } catch (Exception e) {
+            Log.e("playServicesConnected", "Exception", e);
+        }
+
+        return false;
+    }
+
+    @UiThread
+    void setPlayServicesResolutionRequest(int result) {
+        GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
+        Dialog errorDialog = googleAPI.getErrorDialog(this, result, PLAY_SERVICES_RESOLUTION_REQUEST);
+
+        // If Google Play services can provide an error dialog
+        if (errorDialog != null) {
+            try {
+                ErrorDialogFragment.newInstance(errorDialog).show(getFragmentManager(), "Play Service");
+            } catch (Exception e) {
+                Log.e("playServicesConnected", "Exception", e);
+            }
+        }
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_home) {
+            startHome();
+        } else if (id == R.id.nav_map) {
+            BubbleOverlay_.intent(this).start();
+        } else if (id == R.id.nav_request) {
+            startRequests(false);
+            //RequestsActivity_.intent(this).startForResult(REQUEST_INFO);
+        } else if (id == R.id.nav_history) {
+            startRequests(true);
+            //TaxiApplication.requestsHistory(true);
+            //RequestsActivity_.intent(this).startForResult(REQUEST_INFO);
+        } else if (id == R.id.nav_servers) {
+            ServersActivity_.intent(this).startForResult(SERVER_CHANGE);
+        } //else if (id == R.id.nav_book_taxi) NewRequestActivity_.intent(this).start();
+        else if (id == R.id.nav_send_log) {
+            RestClient.getInstance().clearCache();
+            ACRA.getErrorReporter().handleSilentException(new Exception("Developer Report"));
+        } else if (id == R.id.nav_exit) {
+            exitButton();
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    // Define a DialogFragment that displays the error dialog
+    public static class MainDialogFragment extends android.support.v4.app.DialogFragment {
+        // Global field to contain the error dialog
+        private Dialog mDialog;
+
+        // Default constructor. Sets the dialog field to null
+        public MainDialogFragment() {
+            super();
+            mDialog = null;
+        }
+
+        // Set the dialog to display
+        public void setDialog(Dialog dialog) {
+            mDialog = dialog;
+        }
+
+        // Return a Dialog to the DialogFragment.
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            if (mDialog == null) super.setShowsDialog(false);
+            return mDialog;
+        }
+    }
+
+    @UiThread
+    public void createNotification() {
+        // Prepare intent which is triggered if the
+        // notification is selected
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("market://details?id=com.opentaxi.android"));
+        PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        // Build notification
+        Notification noti = new NotificationCompat.Builder(this)
+                .setContentTitle(getString(R.string.new_version))
+                //.setContentText("Version")
+                .setSmallIcon(R.drawable.icon)
+                .setContentIntent(pIntent)
+                .addAction(R.drawable.icon, "Update", pIntent).build();
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        // hide the notification after its selected
+        noti.flags |= Notification.FLAG_AUTO_CANCEL;
+
+        notificationManager.notify(0, noti);
     }
 
     private void doObtainedLocation(Location location) {
@@ -567,14 +529,6 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-    @Override
-    protected void onStop() {
-        //Log.i(TAG, "onStop");
-        super.onStop();
-        if (updatableLocationSubscription != null) updatableLocationSubscription.unsubscribe();
-        if (lastKnownLocationSubscription != null) lastKnownLocationSubscription.unsubscribe();
-    }
-
     private class ErrorHandler implements Action1<Throwable> {
         @Override
         public void call(Throwable throwable) {
@@ -590,12 +544,22 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
+
+        //menu.findItem(R.id.options_server).setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_3d_rotation).actionBar().color(Color.BLACK));
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
         switch (item.getItemId()) {
             case R.id.options_server:
                 ServersActivity_.intent(this).startForResult(SERVER_CHANGE);
@@ -630,80 +594,245 @@ public class MainActivity extends FragmentActivity {
     @Override
     public void onPause() {
         Log.i(TAG, "onPause");
-        unregisterReceiver(networkState);
         super.onPause();
     }
 
     @Override
     protected void onResume() {
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-        registerReceiver(networkState, filter);
         super.onResume();
+        Log.i(TAG, "onResume");
         // Check device for Play Services APK.
         //servicesConnected();
-
-        //Check Internet connection
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();
-
-        if (activeNetInfo != null) {
-            //Toast.makeText( context, "Active Network Type : " + activeNetInfo.getTypeName(), Toast.LENGTH_SHORT ).show();
-            if (activeNetInfo.isConnected()) {
-                StringBuilder network = new StringBuilder();
-                if (activeNetInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-                    WifiManager wm = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-                    RestClient.getInstance().setBandwidth(wm.getConnectionInfo().getLinkSpeed());
-                    network.append(activeNetInfo.getTypeName()).append(" ").append(wm.getConnectionInfo().getLinkSpeed()).append("Mbps");
-                } else if (activeNetInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
-                    TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-                    RestClient.getInstance().setBandwidth(tm.getNetworkType());
-                    network.append(activeNetInfo.getTypeName()).append(" ").append(Network.getNetworkTypeName(tm.getNetworkType()));
-                } else RestClient.getInstance().setBandwidth(0);
-
-                onConnected(network.toString());
-
-            } else onDisconnected();
-
-        } else onDisconnected();
-
-        changeNetworkState();
+        startHome();
     }
 
-    private void onConnected(String typeName) {
-        RestClient.getInstance().setHaveConnection(true);
-        RestClient.getInstance().setConnectionTypeName(typeName);
-        /*String gcmRegId = RestClient.getInstance().getGCMRegistrationId();
-        if (gcmRegId != null && gcmRegId.length() > 0) sendRegistration(gcmRegId);*/
-    }
+    /**
+     * @return true if User is login false is not
+     */
+    private boolean checkUserLogin() {
 
-    private void onDisconnected() {
-        RestClient.getInstance().setHaveConnection(false);
-        RestClient.getInstance().setConnectionTypeName("");
-    }
+        String user = AppPreferences.getInstance(getApplicationContext()).getUsers().getUsername();
+        String pass = AppPreferences.getInstance(getApplicationContext()).getUsers().getPassword();
 
-    private BroadcastReceiver networkState = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            changeNetworkState();
-        }
-    };
-
-    @UiThread(delay = 1000)
-    void changeNetworkState() {
-        if (bandwidth != null) {
-            if (RestClient.getInstance().isHaveConnection()) {
-                bandwidth.setText(RestClient.getInstance().getConnectionTypeName()); //+ " strength:" + RestClient.getInstance().getBandwidth());
-            } else bandwidth.setText("no connection");
+        if (user == null || user.isEmpty() || pass == null || pass.isEmpty()) {
+            return false;
+        } else {
+            if (!RestClient.getInstance().haveAuthorization()) { //autologin
+                try {
+                    /*if (SecurityLevel.HIGH.getCode().equals(AppPreferences.getInstance().getUsers().getCookieexpire()))
+                        RestClient.getInstance().setAuthHeadersSecure(user, pass);
+                    else*/
+                    RestClient.getInstance().setAuthHeaders(user, pass);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            return true;
         }
     }
 
+    @Background
+    void checkFbLogin() {
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        if (accessToken != null) {
+            //if (token != null && !token.equals("")) {
+            //Log.i(TAG, "already authorized fb token=" + accessToken.getToken());
+            //if (!RestClient.getInstance().haveAuthorization()) {
+            //Log.i(TAG, "AppPreferences.getInstance().getAccessToken=" + token);
+            Users user = RestClient.getInstance().FacebookLogin(accessToken.getToken());
+            if (user != null) { //user already exist
+                if (user.getId() != null && user.getId() > 0) {
+                    RestClient.getInstance().setAuthHeaders(user.getUsername(), user.getPassword());
+                    startHomeUI();
+                }
+            }
+        }
+    }
+
+    @UiThread
+    void startHomeUI() {
+        startHome();
+    }
+
+    @Override
+    public void startHome() {
+        Log.i(TAG, "startHome");
+        android.support.v4.app.Fragment fragment = null;
+
+        if (checkUserLogin()) {
+            //showNewRequest(true);
+
+            if (redirectFragment != null) {
+                fragment = redirectFragment;
+                redirectFragment = null;
+            } else {
+                //getSupportFragmentManager().popBackStack(null, android.support.v4.app.FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                fragment = HomeFragment_.builder().build();
+            }
+        } else {
+            //checkFbLogin();
+            // Log.i(TAG, "startHome no user");
+            fragment = UserPassFragment_.builder().build();
+        }
+
+        if (fragment != null && !isFinishing()) {
+            //Log.i("startHome", fragment.toString());
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    //.disallowAddToBackStack()
+                    .commitAllowingStateLoss();
+        } /*else if (redirectFragment != null && !isFinishing()) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, redirectFragment)
+                    .addToBackStack(null)
+                    .commitAllowingStateLoss();
+            redirectFragment = null;*/ else Log.i("startHome", "no fragment isFinishing=" + isFinishing());
+    }
+
+    @UiThread
+    void showNewRequest(boolean show) {
+        Log.i(TAG, "showNewRequest");
+        if (fab != null) {
+            if (show) {
+                fab.setVisibility(View.VISIBLE);
+                Tooltip.make(this,
+                        new Tooltip.Builder(101)
+                                .anchor(fab, Tooltip.Gravity.LEFT)
+                                .closePolicy(new Tooltip.ClosePolicy()
+                                        .insidePolicy(true, false)
+                                        .outsidePolicy(true, false), 20000)
+                                //.activateDelay(1800)
+                                .showDelay(4000)
+                                .text(getResources(), R.string.taxi_tooltip) //"Поръчай такси с едно кликване"
+                                //.maxWidth(500)
+                                .withArrow(true)
+                                .withOverlay(true)
+                                //.floatingAnimation(Tooltip.AnimationBuilder.SLOW)
+                                .withStyleId(R.style.ToolTipLayoutCustomStyle)
+                                .build()
+                ).show();
+            } else fab.setVisibility(View.INVISIBLE);
+        } else Log.e(TAG, "fab=null");
+    }
+
+    @Override
+    public void fabVisible(boolean isVisible) {
+        showNewRequest(isVisible);
+    }
+
+    @Override
+    public void closeKeyboard() {
+        // Check if no view has focus:
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+    @Override
+    public void startNewRequest(Cars cars) {
+        if (!isFinishing()) {
+            android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            NewRequestFragment fragment = NewRequestFragment_.builder().build();
+            if (cars != null) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("cars", cars);
+                fragment.setArguments(bundle);
+            }
+// Replace whatever is in the fragment_container view with this fragment,
+// and add the transaction to the back stack so the user can navigate back
+            transaction.replace(R.id.fragment_container, fragment);
+            transaction.addToBackStack(null);
+
+// Commit the transaction
+            transaction.commitAllowingStateLoss();
+        }
+    }
+
+    @Override
+    public void startCarDetails(String carNumber) {
+        if (!isFinishing()) {
+            android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            CarDetailsFragment fragment = CarDetailsFragment_.builder().build();
+            Bundle bundle = new Bundle();
+            bundle.putString("carNumber", carNumber);
+            fragment.setArguments(bundle);
+// Replace whatever is in the fragment_container view with this fragment,
+// and add the transaction to the back stack so the user can navigate back
+            transaction.replace(R.id.fragment_container, fragment);
+            transaction.addToBackStack(null);
+
+// Commit the transaction
+            transaction.commitAllowingStateLoss();
+        }
+    }
+
+    @Override
+    public void startRequestDetails(NewCRequest newCRequest) {
+        if (!isFinishing()) {
+            android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            RequestDetailsFragment fragment = RequestDetailsFragment_.builder().build();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("newCRequest", newCRequest);
+            fragment.setArguments(bundle);
+// Replace whatever is in the fragment_container view with this fragment,
+// and add the transaction to the back stack so the user can navigate back
+            transaction.replace(R.id.fragment_container, fragment);
+            transaction.addToBackStack(null);
+
+// Commit the transaction
+            transaction.commitAllowingStateLoss();
+        }
+    }
+
+    @Override
+    public void startEditRequest(NewCRequestDetails newCRequest) {
+        if (!isFinishing()) {
+            android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            NewRequestFragment fragment = NewRequestFragment_.builder().build();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("newCRequest", newCRequest);
+            fragment.setArguments(bundle);
+// Replace whatever is in the fragment_container view with this fragment,
+// and add the transaction to the back stack so the user can navigate back
+            transaction.replace(R.id.fragment_container, fragment);
+            transaction.addToBackStack(null);
+
+// Commit the transaction
+            transaction.commitAllowingStateLoss();
+        }
+    }
+
+    @Override
+    public void startRequests(boolean history) {
+        if (!isFinishing()) {
+            android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            RequestsFragment fragment = RequestsFragment_.builder().build();
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("history", history);
+            fragment.setArguments(bundle);
+// Replace whatever is in the fragment_container view with this fragment,
+// and add the transaction to the back stack so the user can navigate back
+            transaction.replace(R.id.fragment_container, fragment);
+            transaction.addToBackStack(null);
+
+// Commit the transaction
+            transaction.commitAllowingStateLoss();
+        }
+    }
+
+    @Override
+    public void setBarTitle(String title) {
+        setTitle(title);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
-        SimpleFacebook.getInstance(this).onActivityResult(this, requestCode, resultCode, data);
+        //SimpleFacebook.getInstance(this).onActivityResult(this, requestCode, resultCode, data);
 
         switch (requestCode) {
 
@@ -730,12 +859,12 @@ public class MainActivity extends FragmentActivity {
                 //Log.e(TAG, "REQUEST_USER_PASS_CODE onActivityResult requestCode:" + requestCode + " resultCode:" + resultCode);
                 if (resultCode == RESULT_OK) {
                     //userLogin(data);
-                    setVersion();
+                    //setVersion();
                 } else if (resultCode == RESULT_CANCELED) {
                     finish();
                     break;
                 }
-                checkUser();
+                //checkUser();
                 break;
             default:
                 Log.e(TAG, "onActivityResult requestCode:" + requestCode + " resultCode:" + resultCode);
@@ -743,8 +872,8 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-    @Click
-    void exitButton() {
+    //@Click
+    private void exitButton() {
         //showDialog(DIALOG_EXIT);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle(R.string.exit);
@@ -755,11 +884,13 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 new LogoutTask().execute();
-                AppPreferences.getInstance().setAccessToken("");
+                //AppPreferences.getInstance().setAccessToken("");
                 AppPreferences.getInstance().setLastCloudMessage(null);
                 AppPreferences.getInstance().setUsers(null);
                 RestClient.getInstance().removeAuthorization();
-                facebookLogout();
+
+                LoginManager.getInstance().logOut();
+                //facebookLogout();
                 finish();
             }
         });
@@ -775,7 +906,7 @@ public class MainActivity extends FragmentActivity {
         exitDialog.show();
     }
 
-    @Background
+   /* @Background
     void facebookLogout() {
         final OnLogoutListener onLogoutListener = new OnLogoutListener() {
 
@@ -799,25 +930,30 @@ public class MainActivity extends FragmentActivity {
 
         };
         SimpleFacebook.getInstance(this).logout(onLogoutListener);
-    }
+    }*/
 
-    @Click
+    /*@Click
     void requestButton() {
         //Intent msgIntent = new Intent(getBaseContext(), NewRequestActivity_.class);
         //startActivityForResult(msgIntent, REQUEST_INFO);
         RequestsActivity_.intent(this).startForResult(REQUEST_INFO);
-    }
+    }*/
 
-    @Click
+    /*@Click
     void mapButton() {
         BubbleOverlay_.intent(this).start();
         //LocationLibrary.forceLocationUpdate(getBaseContext());
-    }
+    }*/
 
-    @Click
+    /*@Click
     void newRequestButton() {
         //LocationLibrary.forceLocationUpdate(getBaseContext());
         NewRequestActivity_.intent(this).start();
+    }*/
+
+    @Click
+    void fab() {
+        startNewRequest(null);
     }
 
     private boolean isDataConnected() {
@@ -842,23 +978,34 @@ public class MainActivity extends FragmentActivity {
         return 0;
     }
 
-    /**
-     * Uses the UI thread to display the given text message as toast notification.
-     *
-     * @param text the text message to display
-     */
-    /*void showToastOnUiThread(final String text) {
-        if (AndroidUtil.currentThreadIsUiThread()) {
-            Toast toast = Toast.makeText(this, text, Toast.LENGTH_LONG);
-            toast.show();
-        } else {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast toast = Toast.makeText(MainActivity.this, text, Toast.LENGTH_LONG);
-                    toast.show();
-                }
-            });
-        }
-    }*/
+
+    @Override
+    public void setTitle(CharSequence title) {
+        mTitle = title;
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) actionBar.setTitle(mTitle);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        if (mDrawerToggle != null)
+            mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggls
+        if (mDrawerToggle != null)
+            mDrawerToggle.onConfigurationChanged(newConfig);
+
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // If the nav drawer is open, hide action items related to the content view
+        return super.onPrepareOptionsMenu(menu);
+    }
 }
