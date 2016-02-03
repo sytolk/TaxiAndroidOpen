@@ -31,7 +31,7 @@ public class CarDetailsFragment extends Fragment {
     private static final String TAG = "CarDetailsFragment";
 
     //@Extra
-    String carNumber;
+    int carsId;
 
     @ViewById
     TextView carNumberView;
@@ -77,7 +77,7 @@ public class CarDetailsFragment extends Fragment {
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            carNumber = bundle.getString("carNumber");
+            carsId = bundle.getInt("carsId");
         }
     }
 
@@ -88,14 +88,14 @@ public class CarDetailsFragment extends Fragment {
 
     @Background
     void setDetails() {
-        showDetails(RestClient.getInstance().getCarsInfo(carNumber));
+        showDetails(RestClient.getInstance().getCarsInfo(carsId));
     }
 
     @UiThread
     void showDetails(Cars cars) {
         if (cars != null) {
             carNumberView.setText(cars.getNumber());
-            requestButton.append(" " + cars.getNumber());
+            //requestButton.append(" " + cars.getNumber());
             driver.setText(cars.getAuthKey());
             if (cars.getDescription() != null && !cars.getDescription().equals("")) {
                /* rating.setFocusable(false);
@@ -122,8 +122,11 @@ public class CarDetailsFragment extends Fragment {
     @Click
     void requestButton() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mActivity);
-        alertDialogBuilder.setTitle(R.string.new_request);
+        alertDialogBuilder.setTitle(R.string.NEW_REQUEST_NEW);
+        String carNumber = carNumberView != null ? carNumberView.getText().toString() : "";
+
         if (cars != null && (cars.getCurrState().equals(CarState.STATE_FREE.getCode()) || cars.getCurrState().equals(CarState.STATE_BUSY.getCode()))) {
+
             alertDialogBuilder.setMessage(mActivity.getString(R.string.private_request_question, carNumber));
             alertDialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 
@@ -131,7 +134,7 @@ public class CarDetailsFragment extends Fragment {
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
 
-                    if(mListener!=null) mListener.startNewRequest(cars);
+                    if (mListener != null) mListener.startNewRequest(cars);
                    /* Intent requestsIntent = new Intent(CarDetailsFragment.this, NewRequestActivity_.class);
                     requestsIntent.putExtra("cars", cars);
                     CarDetailsFragment.this.startActivity(requestsIntent);*/

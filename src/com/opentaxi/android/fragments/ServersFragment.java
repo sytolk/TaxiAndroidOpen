@@ -1,51 +1,81 @@
-/*
-package com.opentaxi.android;
+package com.opentaxi.android.fragments;
 
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.widget.*;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
+import com.opentaxi.android.R;
 import com.opentaxi.android.utils.AppPreferences;
 import com.opentaxi.models.Users;
 import com.opentaxi.rest.RestClient;
 import com.stil.generated.mysql.tables.pojos.Servers;
+import com.taxibulgaria.enums.UsersGroupEnum;
 import org.androidannotations.annotations.*;
+import org.androidannotations.api.BackgroundExecutor;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
-@WindowFeature(Window.FEATURE_NO_TITLE)
-@EActivity(R.layout.request_servers)
-public class ServersActivity extends Activity {
+/**
+ * Created with IntelliJ IDEA.
+ * User: stanimir
+ * Date: 4/17/13
+ * Time: 10:18 AM
+ * developer STANIMIR MARINOV
+ */
+//@WindowFeature(Window.FEATURE_NO_TITLE)
+@EFragment(R.layout.request_servers)
+public class ServersFragment extends Fragment {
 
     private static final String TAG = "ServersActivity";
 
-    private ScheduledExecutorService refreshScheduler;
-
-    @ViewById(R.id.cancelButton)
-    Button cancelButton;
+    /*@ViewById(R.id.cancelButton)
+    Button cancelButton;*/
 
     @ViewById(R.id.serversContent)
     LinearLayout serversContent;
+
+    OnCommandListener mListener;
+
+    Activity mActivity;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (context instanceof Activity) {
+            try {
+                mListener = (OnCommandListener) context;
+            } catch (ClassCastException e) {
+                throw new ClassCastException(context.toString() + " must implement OnRequestEventsListener");
+            }
+            mActivity = (Activity) context;
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+
+    }
 
     @AfterViews
     void afterServers() {
         RestClient.getInstance().cleanSocketCheck();
         showServers(true);
-        refreshScheduler = Executors.newSingleThreadScheduledExecutor();
-        refreshScheduler.scheduleWithFixedDelay(new Runnable() {
+    }
 
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        showServers(false);
-                    }
-                });
-            }
-        }, 2, 2, TimeUnit.SECONDS);
+    @Background(delay = 2000, id = "timeout_check")
+    void scheduleTimeoutCheck() {
+        if (isVisible()) showServers(false);
     }
 
     @UiThread
@@ -57,14 +87,17 @@ public class ServersActivity extends Activity {
         String currSocket = RestClient.getInstance().getCurrentSocket();
 
         final RadioButton[] rb = new RadioButton[sockets.size()];
-        RadioGroup rg = new RadioGroup(this); //create the RadioGroup
+        RadioGroup rg = new RadioGroup(mActivity); //create the RadioGroup
         rg.setOrientation(RadioGroup.VERTICAL);
         int i = 0;
         for (final Servers socket : sockets) {
-            if (socket != null) {
+            if (socket.getDescription() != null) {
                 //Log.i(TAG, socket.getServerHost() + " " + socket.getDescription());
+                if (socket.getDescription().toLowerCase().contains("cloud")) {
+                    if (!isAdmin()) continue;
+                } //else Log.i(TAG, "not contains " + socket.getDescription());
 
-                rb[i] = new RadioButton(this);
+                rb[i] = new RadioButton(mActivity);
                 rg.addView(rb[i]); //the RadioButtons are added to the radioGroup instead of the layout
 
                 //CheckBox ch = new CheckBox(this);
@@ -72,10 +105,10 @@ public class ServersActivity extends Activity {
                 title.append(socket.getDescription()).append(" "); //.append(socket.getServerHost());
                 if (socket.getRecordstatus()) {
                     title.append("UP");
-                    rb[i].setBackgroundColor(getResources().getColor(R.color.label_color));
+                    rb[i].setBackgroundColor(ContextCompat.getColor(mActivity, R.color.label_color));
                 } else {
                     title.append("DOWN");
-                    rb[i].setBackgroundColor(getResources().getColor(R.color.red_color));
+                    rb[i].setBackgroundColor(ContextCompat.getColor(mActivity, R.color.red_color));
                 }
                 rb[i].setText(title.toString());
 
@@ -86,26 +119,24 @@ public class ServersActivity extends Activity {
                 rb[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Integer oldType = AppPreferences.getInstance().getSocketType();
-                        Log.i(TAG, "onClick:" + socket.getServerType() + " oldType:" + oldType);
-                        AppPreferences.getInstance().setSocketType(socket.getServerType());
+                        Integer oldType = AppPreferences.getInstance(mActivity).getSocketType();
+                        AppPreferences.getInstance(mActivity).setSocketType(socket.getServerType());
                         if (RestClient.getInstance().changeServerSockets(socket)) {
                             if (oldType == null || !oldType.equals(socket.getServerType())) login();
                             showServers(false);
-                        } else Log.i(TAG, "ServerSockets is not changed");
+                        }
                     }
                 });
 
-                if (testing && socket.getServerType() != null && AppPreferences.getInstance() != null && socket.getServerType().equals(AppPreferences.getInstance().getSocketType()))
+                if (testing && socket.getServerType().equals(AppPreferences.getInstance(mActivity).getSocketType()))
                     testServer(socket.getServerHost());
 
                 i++;
-            } else {
-                updateServers();
-                break;
             }
         }
         serversContent.addView(rg);
+        scheduleTimeoutCheck();
+        //serversContent.invalidate();
     }
 
     @Background
@@ -117,26 +148,32 @@ public class ServersActivity extends Activity {
     @Override
     public void onPause() {
         super.onPause();
-        if (refreshScheduler != null) {
-            refreshScheduler.shutdown();
-            refreshScheduler = null;
-        }
-        //finish();
+        BackgroundExecutor.cancelAll("timeout_check", true);
     }
 
-    @Override
-    public void finish() {
-        if (getParent() == null) {
-            setResult(Activity.RESULT_OK);
-        } else {
-            getParent().setResult(Activity.RESULT_OK);
+    private boolean isAdmin() {
+        try {
+            String strUsersGroup = AppPreferences.getInstance().getUsers().getUrllogin();
+            if (strUsersGroup != null && !strUsersGroup.equals("") && AppPreferences.getInstance() != null) {
+                try {
+                    Integer[] usersGroup = AppPreferences.getInstance().getMapper().readValue(strUsersGroup, Integer[].class);
+                    if (usersGroup != null) {
+                        if (Arrays.asList(usersGroup).contains(UsersGroupEnum.ADMINISTRATORS.getCode())) return true;
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        super.finish();
+
+        return false;
     }
 
     @Click
     void cancelButton() {
-        finish();
+        mListener.startHome();
     }
 
     @Click
@@ -156,24 +193,22 @@ public class ServersActivity extends Activity {
 
     @Background
     void login() {
-        Log.i(TAG, "login");
         Users user = RestClient.getInstance().Login();
 
         if (user != null) {
             if (user.getId() != null && user.getId() > 0) {
-                //Toast.makeText(UserPassActivity.this, "Влязохте в системата успешно!", Toast.LENGTH_LONG).show();
-                //AppPreferences.getInstance().setUsers(user);
-                //finish();
+                AppPreferences.getInstance(mActivity).setUsers(user);
+                if (mListener != null) {
+                    mListener.startHome();
+                }
             } else loginError("Грешно потребителско име или парола!");
             // Toast.makeText(UserPassActivity.this, "Грешно потребителско име или парола!", Toast.LENGTH_LONG).show();
 
         } else loginError("Грешка! Сигурни ли сте че имате връзка с интернет?");
-        //Toast.makeText(UserPassActivity.this, "Грешка! Сигурни ли сте че имате връзка с интернет?", Toast.LENGTH_LONG).show();
     }
 
     @UiThread
     void loginError(String error) {
-        Toast.makeText(ServersActivity.this, error, Toast.LENGTH_LONG).show();
+        Toast.makeText(mActivity, error, Toast.LENGTH_LONG).show();
     }
 }
-*/

@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/options_server"
+    <!--<item android:id="@+id/options_server"
           android:title="@string/options_server">
-        <!-- app:showAsAction="always"-->
-    </item>
+        &lt;!&ndash; app:showAsAction="always"&ndash;&gt;
+    </item>-->
     <item android:id="@+id/options_help"
           android:title="@string/options_help">
     </item>
     <item android:id="@+id/options_exit"
           android:title="@string/options_exit">
     </item>
-    <item android:id="@+id/options_send_log"
+    <!--<item android:id="@+id/options_send_log"
           android:title="@string/options_send_log">
-    </item>
+    </item>-->
 
 </menu>

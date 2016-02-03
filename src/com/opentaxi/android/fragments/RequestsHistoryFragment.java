@@ -4,16 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import com.opentaxi.android.R;
 import com.opentaxi.android.TaxiApplication;
 import com.opentaxi.android.adapters.RequestPagingAdapter;
 import com.opentaxi.models.NewCRequest;
+import com.opentaxi.models.NewCRequestDetails;
 import com.opentaxi.models.RequestCView;
 import com.opentaxi.rest.RestClient;
 import com.paging.listview.PagingListView;
@@ -38,20 +37,20 @@ public class RequestsHistoryFragment extends Fragment {
     private static final String TAG = "RequestsHistoryFragment";
     //private static final int REQUEST_DETAILS = 100;
 
-    @ViewById(R.id.list_title)
-    TextView title;
+    /*@ViewById(R.id.list_title)
+    TextView title;*/
 
     @ViewById(R.id.paging_list_view)
     PagingListView listView;
 
     RequestPagingAdapter adapter;
-    private int pager = 0;
+    private int pager = 1;
 
     /*@ViewById
     android.widget.ProgressBar pbProgress;*/
 
-    @ViewById(R.id.buttonPanel)
-    LinearLayout buttonPanel;
+    @ViewById(R.id.history)
+    Button buttonHistory;
 
     Activity mActivity;
 
@@ -91,23 +90,9 @@ public class RequestsHistoryFragment extends Fragment {
     @AfterViews
     void afterView() {
         //pbProgress.setVisibility(View.VISIBLE);
+        if (history) buttonHistory.setText(R.string.active_requests);
+        else buttonHistory.setText(R.string.history);
 
-        Button btnTag = new Button(mActivity);
-        btnTag.setLayoutParams(new ViewGroup.LayoutParams(ViewPager.LayoutParams.WRAP_CONTENT, ViewPager.LayoutParams.WRAP_CONTENT));
-        btnTag.setText(R.string.history);
-        btnTag.setId(1234);
-        btnTag.setTag(history);
-        btnTag.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Boolean historyClick = (Boolean) v.getTag();
-                if (historyClick) history = false;
-                else history = true;
-                setAdapter();
-                //if (mListener != null) mListener.startRequests(true);
-            }
-        });
-        buttonPanel.addView(btnTag);
         setAdapter();
     }
 
@@ -118,7 +103,7 @@ public class RequestsHistoryFragment extends Fragment {
 
     @UiThread
     void setAdapterUI(Regions[] regions) {
-        adapter = new RequestPagingAdapter(mActivity, regions);
+        adapter = new RequestPagingAdapter(mActivity, regions, history);
 
         listView.setAdapter(adapter);
         listView.setHasMoreItems(true);
@@ -128,6 +113,31 @@ public class RequestsHistoryFragment extends Fragment {
                 loadMoreItems();
             }
         });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Log.i(TAG, "setOnItemClickListener:" + parent.getItemAtPosition(position));
+                if (mListener != null) {
+                    NewCRequestDetails newCRequestDetails = new NewCRequestDetails();
+                    newCRequestDetails.setRequestsId((int) id);
+                    if (adapter != null) {
+                        NewCRequest newCRequest = adapter.getRequest(position);
+                        newCRequestDetails.setRegionId(newCRequest.getRegionId());
+                        newCRequestDetails.setFullAddress(newCRequest.getFullAddress());
+                        newCRequestDetails.setDatecreated(newCRequest.getDatecreated());
+                        newCRequestDetails.setRequestGroups(newCRequest.getRequestGroups());
+                        newCRequestDetails.setCarNumber(newCRequest.getCarNumber());
+                        newCRequestDetails.setStatus(newCRequest.getStatus());
+                        //Log.i(TAG, "setOnItemClickListener:" + newCRequest);
+                    }
+
+                    mListener.startRequestDetails(newCRequestDetails);
+                }
+            }
+        });
+        listView.setItemsCanFocus(true);
     }
 
     @Background
@@ -136,10 +146,12 @@ public class RequestsHistoryFragment extends Fragment {
         requestView.setPage(pager);
         requestView.setMy(true);
         if (history) {
-            title.setText(mActivity.getString(R.string.request_history));
+            //title.setText(mActivity.getString(R.string.request_history));
+            setActivityTile(mActivity.getString(R.string.request_history));
             requestView.setRequestStatus(RequestStatus.NEW_REQUEST_DONE.getCode());
         } else {
-            title.setText(mActivity.getString(R.string.active_requests));
+            setActivityTile(mActivity.getString(R.string.active_requests));
+            //title.setText(mActivity.getString(R.string.active_requests));
             //todo update items
         }
         showItems(RestClient.getInstance().getRequests(requestView));
@@ -149,12 +161,17 @@ public class RequestsHistoryFragment extends Fragment {
     void showItems(RequestCView newItems) {
         //pbProgress.setVisibility(View.GONE);
         if (newItems != null) {
+            Log.i(TAG, "newItems page:" + pager);
             List<NewCRequest> newCRequest = newItems.getGridModel();
             if (newCRequest != null && newCRequest.size() > 0) {
                 pager++;
-                listView.onFinishLoading(true, newCRequest);
-            } else listView.onFinishLoading(false, null);
-        }
+                boolean hasMoreItems = newCRequest.size() == newItems.getRows();
+                listView.onFinishLoading(hasMoreItems, newCRequest);
+            } else {
+                Log.i(TAG, "newItems size=0");
+                listView.onFinishLoading(false, null);
+            }
+        } //else Log.i(TAG, "newItems==null");
     }
 
     @Override
@@ -166,6 +183,7 @@ public class RequestsHistoryFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        pager = 1;
         TaxiApplication.requestsResumed();
     }
 
@@ -178,5 +196,19 @@ public class RequestsHistoryFragment extends Fragment {
     @Click
     void okButton() {
         if (mListener != null) mListener.startHome();
+    }
+
+    @Click
+    void history() {
+        if (history) {
+            history = false;
+            if (buttonHistory != null) buttonHistory.setText(R.string.history);
+
+        } else {
+            history = true;
+            if (buttonHistory != null) buttonHistory.setText(R.string.active_requests);
+        }
+        pager = 1;
+        setAdapter();
     }
 }

@@ -41,6 +41,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -200,14 +201,13 @@ public class NewRequestFragment extends Fragment {
         }
 
         if (newCRequest != null) {
+            if (newCRequest.getRequestsId() != null) requestSend.setText(R.string.change_request);
+
             if (newCRequest.getDetails() != null) {
                 if (newCRequest.getDetails().getFromCity() != null)
                     citiesPicker.setText(newCRequest.getDetails().getFromCity());
-                else setCities();
 
-                if (newCRequest.getDetails().getFromGnId() != null) {
-                    setRegionsByGN(newCRequest.getDetails().getFromGnId());
-                } else setRegions();
+                setCitiesRegions(newCRequest.getDetails().getFromGnId(), newCRequest.getRegionId());
 
                 if (newCRequest.getDetails().getDestination() != null) {
                     destination.setText(newCRequest.getDetails().getDestination());
@@ -215,15 +215,13 @@ public class NewRequestFragment extends Fragment {
                 }
 
             } else {
-                setCities();
-                setRegions();
+                setCitiesRegions(null, newCRequest.getRegionId());
             }
             addressText.setText(newCRequest.getFullAddress());
-        } else if (this.mapRequest != null){
+        } else if (this.mapRequest != null) {
             showAddress(this.mapRequest.getCity(), this.mapRequest.getRegion(), this.mapRequest.getAddress());
         } else {
-            setCities();
-            setRegions();
+            setCitiesRegions(null, null);
         }
 
         //setAddress();
@@ -231,12 +229,12 @@ public class NewRequestFragment extends Fragment {
         //setPrices();
         setGroups();
 
-        if(mListener!=null) mListener.fabVisible(false);
+        if (mListener != null) mListener.fabVisible(false);
     }
 
     @Background
-    void setRegionsByGN(Integer gnId) {
-        showRegions(RestClient.getInstance().getRegionsByGN(gnId));
+    void setRegionsByGN(Integer gnId, Integer selRegionId) {
+        showRegions(RestClient.getInstance().getRegionsByGN(gnId), selRegionId);
     }
 
     /*@Override
@@ -268,17 +266,23 @@ public class NewRequestFragment extends Fragment {
     }*/
 
     @Background
-    void setCities() {
+    void setCitiesRegions(Integer selCityGNId, Integer selRegionId) {
         setCitiesAdapter(RestClient.getInstance().getAdmin1Cities(), false);
-        if (this.mapRequest == null) {
+        //if (this.mapRequest == null) {
+
+        if (selCityGNId != null) {
+            showRegions(RestClient.getInstance().getRegionsByGN(selCityGNId), selRegionId);
+        } else { //default city
             Contactaddress contactAddress = RestClient.getInstance().getAddress();
             if (contactAddress != null) {
-                showCities(contactAddress);
+                showCities(contactAddress.getCity());
                 if (contactAddress.getCountryinfogeonamesid() != null) {
-                    showRegions(RestClient.getInstance().getRegionsByGN(contactAddress.getCountryinfogeonamesid()));
-                } else showRegions(RestClient.getInstance().getRegions());//RegionsType.BURGAS_STATE.getCode()));
-            } else showRegions(RestClient.getInstance().getRegions());//RegionsType.BURGAS_STATE.getCode()));
+                    showRegions(RestClient.getInstance().getRegionsByGN(contactAddress.getCountryinfogeonamesid()), selRegionId);
+                } else
+                    showRegions(RestClient.getInstance().getRegions(), selRegionId);//RegionsType.BURGAS_STATE.getCode()));
+            }
         }
+        //}
     }
 
     private boolean isAscii = false;
@@ -305,24 +309,18 @@ public class NewRequestFragment extends Fragment {
     }
 
     @Background
-    void setRegions() {
-        showRegions(RestClient.getInstance().getRegions());
+    void setRegions(Integer selRegionId) {
+        showRegions(RestClient.getInstance().getRegions(), selRegionId);
     }
 
     @UiThread
-    void showCities(Contactaddress contactAddress) {
-            /*CitiesAdapter[] citiesAdapter = new CitiesAdapter[1];
-            citiesAdapter[0] = new CitiesAdapter(supported);
-            ArrayAdapter<CitiesAdapter> adapter2 = new ArrayAdapter<CitiesAdapter>(this, R.layout.spinner_layout, citiesAdapter);
-            adapter2.setDropDownViewResource(R.layout.spinner_layout);*/
-        if (this.mapRequest == null && contactAddress != null && contactAddress.getCity() != null) {
-            //Log.d(TAG, "Contactaddress:" + address.getCity() + ":" + address.getCountryinfogeonamesid());
-            if (citiesPicker.getText().length() == 0) citiesPicker.setText(contactAddress.getCity());
-            addressText.setFocusable(true);
-            addressText.setFocusableInTouchMode(true);
-            addressText.requestFocus();
-        } //else Log.d(TAG, "Contactaddress=null");
-        //citiesPicker.setOnTouchListener(Spinner_OnTouch);
+    void showCities(String city) {
+        if (city != null) {
+            if (citiesPicker.getText().length() == 0) citiesPicker.setText(city);
+        }
+        addressText.setFocusable(true);
+        addressText.setFocusableInTouchMode(true);
+        addressText.requestFocus();
     }
 
 
@@ -341,7 +339,7 @@ public class NewRequestFragment extends Fragment {
     }*/
 
     @UiThread
-    void showRegions(Regions[] regions) {
+    void showRegions(Regions[] regions, Integer selRegionId) {
         Log.i(TAG, "showRegions");
         if (regions != null && regions.length > 0) {
             RegionsAdapter[] regionsAdapter = new RegionsAdapter[regions.length];// + 1];
@@ -350,6 +348,7 @@ public class NewRequestFragment extends Fragment {
             emptyRegion.setDescription("");
             regionsAdapter[0] = new RegionsAdapter(emptyRegion);*/
             boolean cityChanged = true;
+            String selRegion = "";
             int i = 0;
             for (Regions regionObj : regions) {
                 regionsAdapter[i] = new RegionsAdapter(regionObj);
@@ -357,8 +356,9 @@ public class NewRequestFragment extends Fragment {
                 if (regionsPicker.getText() != null) {
                     if (regionObj.getDescription().equals(regionsPicker.getText().toString())) cityChanged = false;
                 }
+                if (regionObj.getId().equals(selRegionId)) selRegion = regionObj.getDescription();
             }
-            if (cityChanged) regionsPicker.setText("");
+            if (cityChanged) regionsPicker.setText(selRegion);
             ArrayAdapter<RegionsAdapter> adapter = new ArrayAdapter<>(mActivity, R.layout.spinner_layout, regionsAdapter); //android.R.layout.simple_dropdown_item_1line
             regionsPicker.setAdapter(adapter);
             adapter.notifyDataSetChanged();
@@ -410,16 +410,37 @@ public class NewRequestFragment extends Fragment {
     @UiThread
     void showGroups(Groups[] groups) {
         if (groups != null) {
+            Map<String, List<Groups>> groupsMap = null;
+            if (newCRequest != null) {
+                groupsMap = newCRequest.getRequestGroups();
+                //for (String key : groupsMap.keySet()) Log.i(TAG, "key:" + key);
+            }
+
             for (Groups group : groups) {
                 //Log.i(TAG, "showGroups:" + group.getGroupsId() + " " + group.getDescription());
                 if (group.getGroupsId() != null && group.getDescription() != null) {
                     CheckBox cb = new CheckBox(mActivity);
                     cb.setText(group.getDescription());
                     cb.setId(group.getGroupsId());
+                    if (groupsMap != null && containsGroup(groupsMap, group.getGroupsId())) {
+                        cb.setChecked(true);
+                        //Log.i(TAG, "checked:" + group.getName());
+                    } //else Log.i(TAG, "groupsMap:" + groupsMap + " not contains:" + group.getName());
                     llFilters.addView(cb);
                 }
             }
         }
+    }
+
+    private boolean containsGroup(Map<String, List<Groups>> groupsMap, Integer groupsId) {
+        for (List<Groups> groups : groupsMap.values()) {
+            if (groups != null) {
+                for (Groups group : groups) {
+                    if (group.getGroupsId().equals(groupsId)) return true;
+                }
+            }
+        }
+        return false;
     }
 
     @AfterTextChange(R.id.citiesPicker)
@@ -436,12 +457,12 @@ public class NewRequestFragment extends Fragment {
             if (admin1Cities != null) {
                 for (GeonameAdmin1 geonameAdmin1 : admin1Cities) {
                     if (geonameAdmin1.getName().toLowerCase().contains(city.toLowerCase())) {
-                        showRegions(RestClient.getInstance().getRegionsByGN(geonameAdmin1.getGeonameid()));
+                        showRegions(RestClient.getInstance().getRegionsByGN(geonameAdmin1.getGeonameid()), null);
                         showPrices(RestClient.getInstance().getPrices(geonameAdmin1.getGeonameid()));
                         setCitiesAdapter(admin1Cities, false);
                         break;
                     } else if (geonameAdmin1.getNameascii().toLowerCase().contains(city.toLowerCase())) {
-                        showRegions(RestClient.getInstance().getRegionsByGN(geonameAdmin1.getGeonameid()));
+                        showRegions(RestClient.getInstance().getRegionsByGN(geonameAdmin1.getGeonameid()), null);
                         showPrices(RestClient.getInstance().getPrices(geonameAdmin1.getGeonameid()));
                         setCitiesAdapter(admin1Cities, true);
                         break;
@@ -521,7 +542,7 @@ public class NewRequestFragment extends Fragment {
                     this.mapRequest.setCity(mActivity.getString(R.string.burgas));
                     Regions regions = RestClient.getInstance().getRegionById(RegionsType.BURGAS_STATE.getCode(), newRequest.getRegionId());
                     if (regions != null) {
-                        showRegions(RestClient.getInstance().getRegions(RegionsType.BURGAS_STATE.getCode()));
+                        showRegions(RestClient.getInstance().getRegions(RegionsType.BURGAS_STATE.getCode()), null);
                         this.mapRequest.setRegion(regions.getDescription());
                     }
                     this.mapRequest.setAddress(newRequest.getFullAddress());
@@ -655,12 +676,6 @@ public class NewRequestFragment extends Fragment {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        finish();
-    }
-
-    @Override
     public void finish() {
         if (getParent() == null) {
             setResult(Activity.RESULT_OK);
@@ -670,6 +685,12 @@ public class NewRequestFragment extends Fragment {
         super.finish();
     }*/
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mListener != null) mListener.fabVisible(true);
+    }
+
     @Click
     void requestSend() {
         String txt = addressText.getText().toString();
@@ -678,7 +699,8 @@ public class NewRequestFragment extends Fragment {
 
         String city = citiesPicker.getText().toString().trim();
         if (city.isEmpty()) {
-            if (citiesPicker.getVisibility() == View.VISIBLE) citiesPicker.setError(mActivity.getString(R.string.required_field));
+            if (citiesPicker.getVisibility() == View.VISIBLE)
+                citiesPicker.setError(mActivity.getString(R.string.required_field));
             else
                 Toast.makeText(mActivity, mActivity.getString(R.string.required_field) + ": " + mActivity.getString(R.string.city), Toast.LENGTH_SHORT).show();
         } else if (txt.length() > 1 && !txt.equals(mActivity.getString(R.string.wait_address))) {
@@ -686,6 +708,8 @@ public class NewRequestFragment extends Fragment {
             pbProgress.setVisibility(View.VISIBLE);
 
             NewRequestDetails newRequest = new NewRequestDetails();
+            if (newCRequest != null) newRequest.setRequestsId(newCRequest.getRequestsId());//edit
+
             if (this.mapRequest != null) {
                 newRequest.setNorth(this.mapRequest.getNorth());
                 newRequest.setEast(this.mapRequest.getEast());
@@ -742,7 +766,8 @@ public class NewRequestFragment extends Fragment {
 
             sendRequest(newRequest);
         } else {
-            if (addressText.getVisibility() == View.VISIBLE) addressText.setError(mActivity.getString(R.string.required_field));
+            if (addressText.getVisibility() == View.VISIBLE)
+                addressText.setError(mActivity.getString(R.string.required_field));
             else
                 Toast.makeText(mActivity, mActivity.getString(R.string.required_field) + ": " + mActivity.getString(R.string.address), Toast.LENGTH_SHORT).show();
         }
@@ -753,7 +778,10 @@ public class NewRequestFragment extends Fragment {
         Integer requestId = RestClient.getInstance().sendNewRequest(newRequest);
         if (requestId != null && requestId > 0) {
             TaxiApplication.setLastRequestId(requestId);
-            SuccessDialog();
+            if (newRequest.getRequestsId() == null) {
+                newRequest.setRequestsId(requestId);
+                SuccessDialog(R.string.request_send_successful, newRequest);
+            } else SuccessDialog(R.string.request_changed_successful, newRequest);
         } else {
             Log.e(TAG, "sendRequest error");
             ErrorDialog();
@@ -803,7 +831,7 @@ public class NewRequestFragment extends Fragment {
     }
 
     @UiThread
-    void SuccessDialog() {
+    void SuccessDialog(int titleRes, final NewRequestDetails newRequest) {
         //reqInfoButtonContainer.setVisibility(View.VISIBLE);
         pbProgress.setVisibility(View.GONE);
 
@@ -811,14 +839,25 @@ public class NewRequestFragment extends Fragment {
         alertDialogBuilder.setTitle(mActivity.getString(R.string.send_request));
         String txt = addressText.getText().toString();
         //if (txt.length() == 0) txt = address.getText().toString();
-        alertDialogBuilder.setMessage(mActivity.getString(R.string.request_send_successful, txt));
+        alertDialogBuilder.setMessage(mActivity.getString(titleRes, txt));
 
         alertDialogBuilder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                if (mListener != null) mListener.startRequests(false);
+                if (mListener != null) {
+                    mListener.closeKeyboard();
+
+                    NewCRequestDetails newCRequestDetails = new NewCRequestDetails();
+                    newCRequestDetails.setRequestsId(newRequest.getRequestsId());
+                    newCRequestDetails.setRegionId(newRequest.getRegionId());
+                    newCRequestDetails.setFullAddress(newRequest.getFullAddress());
+                    newCRequestDetails.setDatecreated(newRequest.getDatecreated());
+                    //newCRequestDetails.setRequestGroups(newRequest.getRequestGroups());
+                    newCRequestDetails.setStatus(newRequest.getStatus());
+                    mListener.startRequestDetails(newCRequestDetails);
+                }
                 //RequestsActivity_.intent(NewRequestFragment.this).start();
                 //finish();
             }

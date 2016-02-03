@@ -2,6 +2,7 @@ package com.opentaxi.android.fragments;
 
 import com.opentaxi.models.NewCRequest;
 import com.opentaxi.models.NewCRequestDetails;
+import com.opentaxi.models.NewRequestDetails;
 import com.stil.generated.mysql.tables.pojos.Cars;
 
 /**
@@ -23,9 +24,9 @@ public interface OnCommandListener {
 
     void startNewRequest(Cars cars);
 
-    void startCarDetails(String carNumber);
+    void startCarDetails(Integer carsId);
 
-    void startRequestDetails(NewCRequest newCRequest);
+    void startRequestDetails(NewCRequestDetails newRequest);
 
     void startEditRequest(NewCRequestDetails newCRequest);
 

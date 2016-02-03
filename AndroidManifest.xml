@@ -18,7 +18,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <!--<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>-->
-   <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>-->
+    <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>-->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <!--ACRA If the READ_PHONE_STATE permission is granted, reports include the Unique Device Identifier (IMEI)-->
@@ -72,9 +72,10 @@
         android:icon="@drawable/icon"
         android:persistent="true"
         android:allowBackup="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:largeHeap="true">
 
-        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
+        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
@@ -101,7 +102,7 @@
                   android:configChanges=
                       "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
                   android:theme="@android:style/Theme.Translucent.NoTitleBar"
-                  android:label="@string/app_name" />
+                  android:label="@string/app_name"/>
         <!--<activity
             android:name=".UserPassActivity_"
             android:allowTaskReparenting="false"
@@ -164,12 +165,12 @@
             android:excludeFromRecents="true">
         </activity>
 -->
-        <activity
+        <!--<activity
             android:name=".ServersActivity_"
             android:allowTaskReparenting="false"
             android:taskAffinity=""
             android:excludeFromRecents="true">
-        </activity>
+        </activity>-->
         <activity
             android:name=".HelpActivity_"
             android:allowTaskReparenting="false"
@@ -243,12 +244,12 @@
 
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
 
-                <category android:name="com.opentaxi.android" />
+                <category android:name="com.opentaxi.android"/>
             </intent-filter>
         </receiver>
 
@@ -260,20 +261,20 @@
 
         <service
             android:name=".gcm.GcmMessageHandler"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
             </intent-filter>
         </service>
         <!--<service android:name=".GcmIntentService"/>-->
         <service
             android:name=".gcm.InstanceIdListener"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
-                <action android:name="com.google.android.gms.iid.InstanceID" />
+                <action android:name="com.google.android.gms.iid.InstanceID"/>
             </intent-filter>
         </service>
-        <service android:name=".service.CoordinatesService" />
+        <service android:name=".service.CoordinatesService"/>
 
         <!--<service android:name="com.littlefluffytoys.littlefluffylocationlibrary.LocationBroadcastService"/>
 

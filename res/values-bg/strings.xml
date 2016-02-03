@@ -12,7 +12,7 @@
     <string name="options_send_log">Изпрати Log</string>
 
     <!--REQUEST STATUS-->
-    <string name="NEW_REQUEST_NEW">Нова заявка</string>
+    <string name="NEW_REQUEST_NEW">Нова поръчка</string>
     <string name="NEW_REQUEST_PROCESSING">Обработва се</string>
     <string name="NEW_REQUEST_GREEN">Изпращане на автомобил..</string>
     <string name="NEW_REQUEST_YELLOW">Повторно изпращане..</string>
@@ -35,12 +35,12 @@
     <string name="new_version">Налична нова версия</string>
 
     <!--mapsforge rescue-->
-    <string name="cancelbutton">Отмени</string>
+    <!--<string name="cancelbutton">Отмени</string>
     <string name="preferences_scale">Покажи скалата</string>
     <string name="preferences_scale_desc">Настрой скалата на картата</string>
     <string name="dialog_location_title">Координати</string>
     <string name="okbutton">Да</string>
-    <string name="zoomlevel">Ниво на мащаба</string>
+    <string name="zoomlevel">Ниво на мащаба</string>-->
 
     <string name="no_gps_title">Нямате GPS</string>
     <string name="no_gps_msg">Вашият GPS е изключен, желаете ли да го включите?</string>
@@ -66,8 +66,9 @@
     <string name="agreement">Условия за ползване</string>
     <string name="accept_agreement">Съгласен съм с условията</string>
     <string name="send">ИЗПРАТИ</string>
-    <string name="new_request">Нова заявка</string>
-    <string name="private_request_question">Сигурни ли сте че искате да направите лична заявка до автомобил %1$s ?</string>
+    <string name="private_request">Кликнете тук за лична поръчка до автомобил %1$s</string>
+    <string name="private_request_question">Сигурни ли сте че искате да направите лична поръчка до автомобил %1$s ?
+    </string>
     <string name="yes">ДА</string>
     <string name="no">НЕ</string>
     <string name="not_working">Съжаляваме но автомобил %1$s в момента не работи</string>
@@ -75,18 +76,28 @@
     <string name="required_field">Задължително поле</string>
     <string name="change_request">Промени поръчката</string>
     <string name="changed_request">Променена поръчка</string>
-    <string name="request_changed_successful">Поръчката %1$s беше променена успешно! Можете да видите актуалния и статус да я промените или откажете след като затворите този диалог или от бутона ПОРЪЧКИ на главната страница</string>
-    <string name="request_send_successful">Поръчката %1$s беше изпратена успешно! Можете да видите актуалния и статус да я промените или откажете след като затворите този диалог или от бутона ПОРЪЧКИ на главната страница</string>
-    <string name="request_send_error">Поръчката %1$s не беше пратена! Моля проверете вашата интернет връзка и опитайте отново</string>
+    <string name="request_changed_successful">Поръчката %1$s беше променена успешно! Можете да видите актуалния и статус
+        да я промените/откажете след като затворите този диалог или изберете от менюто АКТИВНИ ПОРЪЧКИ
+    </string>
+    <string name="request_send_successful">Поръчката %1$s беше изпратена успешно! Можете да видите актуалния и статус да
+        я промените/откажете след като затворите този диалог или изберете от менюто АКТИВНИ ПОРЪЧКИ
+    </string>
+    <string name="request_send_error">Поръчката %1$s не беше пратена! Моля проверете вашата интернет връзка и опитайте
+        отново
+    </string>
     <string name="address_choose">Избор на адрес</string>
     <string name="choose_from_map">Моля посочете на картата и задръжте за 1 секунда върху адреса на поръчката</string>
     <string name="check_internet">Проверете интернет връзката</string>
-    <string name="user_not_exist">Потребител с имейл:  %1$s не съществува.</string>
+    <string name="user_not_exist">Потребител с имейл: %1$s не съществува.</string>
     <string name="exit_confirm">Наистина ли искате да излезете от системата ?</string>
-    <string name="fb_login">Вход през Facebook </string>
-    <string name="new_account_question">Искате ли да създадете свой потребителски акаунт в системата на Taxi Bulgaria ?</string>
+    <string name="fb_login">Вход през Facebook</string>
+    <string name="new_account_question">Искате ли да създадете свой потребителски акаунт в системата на Taxi Bulgaria
+        ?
+    </string>
     <string name="email_confirmation">Потвърждение на имейл</string>
-    <string name="new_account_confirmation">Вашият акунт е създаден успешно но е нужно да потвърдите имейла си ( %1$s ). Това може да стане като кликнете на линка който ви изпратихме.</string>
+    <string name="new_account_confirmation">Вашият акунт е създаден успешно но е нужно да потвърдите имейла си ( %1$s ).
+        Това може да стане като кликнете на линка който ви изпратихме.
+    </string>
     <string name="email_exist">Този имейл съществува</string>
     <string name="city_required">Града е задължително поле.</string>
     <string name="phone_required">Телефона е задължително поле.</string>
@@ -99,7 +110,7 @@
     <string name="taxi_request_to_car">Поръчка на такси до автомобил номер: %1$s</string>
     <string name="no_free_cars">Няма свободни коли. Моля опитайте по късно</string>
     <string name="send_request">Изпращане на поръчка</string>
-    <string name="request_rejection">Отказ на заявка</string>
+    <string name="request_rejection">Отказ на поръчка</string>
     <string name="request_reject_confirm">Сигурни ли сте че искате да откажете поръчката %1$s ?</string>
     <string name="not_set">не зададено</string>
     <string name="feedback">Обратна Връзка</string>
@@ -123,10 +134,10 @@
     <string name="login_user">Потребител/email:</string>
     <string name="lost_password">Забравена парола</string>
     <string name="lost_pass_email">Въведете имейла с който сте се регистрирали</string>
-    <string name="request_number">Заявка Номер:</string>
-    <string name="datetime">Дата и час:</string>
-    <string name="car_arrive_time">Време за пристигане на автомобила:</string>
-    <string name="time_remaining">Оставащо време:</string>
+    <string name="request_number">Поръчка Номер</string>
+    <string name="datetime">Дата и час</string>
+    <string name="car_arrive_time">Време за пристигане на автомобила</string>
+    <string name="time_remaining">Оставащо време</string>
     <string name="reject">Откажи</string>
     <string name="download">ИЗТЕГЛИ</string>
     <string name="history">История</string>
@@ -147,4 +158,7 @@
     <string name="user_preferences">Потребителски настройки</string>
     <string name="home">Начало</string>
     <string name="taxi_tooltip">Намерете такси само с едно кликване</string>
+    <string name="default_preference">Стандартни Настройки</string>
+    <string name="resend">Изпрати Отново</string>
+    <string name="rating">Рейтинг:</string>
 </resources>

@@ -38,7 +38,8 @@
                     android:padding="8dp"
                     android:singleLine="true"
                     android:completionThreshold="1"
-                    android:textColorHint="@color/white_color"/>
+                    android:textColorHint="@color/white_color"
+                    android:imeOptions="actionNext"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
@@ -54,7 +55,8 @@
                     android:singleLine="true"
                     android:completionThreshold="1"
                     android:textColorHint="@color/white_color"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    android:imeOptions="actionNext"/>
             </android.support.design.widget.TextInputLayout>
 
             <LinearLayout

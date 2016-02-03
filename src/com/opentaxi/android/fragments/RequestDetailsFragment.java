@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -13,6 +14,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.opentaxi.android.R;
 import com.opentaxi.android.TaxiApplication;
 import com.opentaxi.models.NewCRequestDetails;
@@ -20,8 +23,8 @@ import com.opentaxi.rest.RestClient;
 import com.stil.generated.mysql.tables.pojos.Feedback;
 import com.stil.generated.mysql.tables.pojos.Groups;
 import com.stil.generated.mysql.tables.pojos.Regions;
-import com.taxibulgaria.enums.RegionsType;
 import com.taxibulgaria.enums.RequestStatus;
+import it.sephiroth.android.library.tooltip.Tooltip;
 import org.androidannotations.annotations.*;
 import org.androidannotations.api.BackgroundExecutor;
 
@@ -146,6 +149,7 @@ public class RequestDetailsFragment extends Fragment {
 
     @AfterViews
     void afterRequestsActivity() {
+        showDetails();
         scheduleChangesNow();
     }
 
@@ -153,10 +157,10 @@ public class RequestDetailsFragment extends Fragment {
     void scheduleChangesNow() {
         NewCRequestDetails cRequest = RestClient.getInstance().getRequestDetails(newCRequest.getRequestsId());
         if (cRequest != null) newCRequest = cRequest;
-        regions = RestClient.getInstance().getRegions(RegionsType.BURGAS_STATE.getCode());
+        regions = RestClient.getInstance().getRegions(); //RegionsType.BURGAS_STATE.getCode());
     }
 
-    @Background(delay = 1000, id = "cancel_sec")
+    @Background(delay = 2000, id = "cancel_sec")
     void scheduleChangesSec() {
         try {
             if (TaxiApplication.isRequestsDetailsVisible()) {
@@ -184,11 +188,17 @@ public class RequestDetailsFragment extends Fragment {
 
     @UiThread
     void showDetails() {
-        if (TaxiApplication.isRequestsDetailsVisible()) {
+        if (isVisible() && TaxiApplication.isRequestsDetailsVisible()) {
             if (newCRequest != null && newCRequest.getRequestsId() != null) {
                 if (requestNumber != null) {
                     requestNumber.setText(newCRequest.getRequestsId().toString());
-                    datecreated.setText(DateFormat.getDateInstance(DateFormat.SHORT).format(newCRequest.getDatecreated()));
+
+                    if (newCRequest.getDatecreated() != null) {
+                        DateFormat df = android.text.format.DateFormat.getLongDateFormat(mActivity);
+                        DateFormat tf = android.text.format.DateFormat.getTimeFormat(mActivity);
+                        datecreated.setText(df.format(newCRequest.getDatecreated()) + " " + tf.format(newCRequest.getDatecreated()));
+                    }
+
                     StringBuilder adr = new StringBuilder();
                     String destination = null;
                     if (newCRequest.getDetails() != null && newCRequest.getDetails().getFromCity() != null) {
@@ -202,43 +212,50 @@ public class RequestDetailsFragment extends Fragment {
                         if (region != null) adr.append(region.getDescription()).append(" ");
                     }
 
-                    adr.append(newCRequest.getFullAddress());
+                    if (newCRequest.getFullAddress() != null) adr.append(newCRequest.getFullAddress());
                     if (destination != null) adr.append(" \\").append(destination).append("\\");
                     address.setText(adr.toString());
 
-                    if (newCRequest.getCarNumber() != null && !newCRequest.getCarNumber().equals("")) {
+                    if (newCRequest.getCarNumber() != null && !newCRequest.getCarNumber().isEmpty()) {
                         car.setText((newCRequest.getNotes() != null ? newCRequest.getNotes() : "") + " №" + newCRequest.getCarNumber());
-
+                        Drawable icon = new IconicsDrawable(mActivity, GoogleMaterial.Icon.gmd_info).actionBar().colorRes(R.color.transparent_blue);
+                        car.setCompoundDrawablesWithIntrinsicBounds(null, null, icon, null);
                         car.setOnClickListener(new View.OnClickListener() {
                             public void onClick(View v) {
-                                if(mListener!=null) mListener.startCarDetails(newCRequest.getCarNumber());
-                                /*Intent requestsIntent = new Intent(RequestDetailsFragment.this, CarDetailsActivity_.class);
-                                requestsIntent.putExtra("carNumber", newCRequest.getCarNumber());
-                                RequestDetailsFragment.this.startActivityForResult(requestsIntent, CAR_DETAILS);*/
+                                if (mListener != null) mListener.startCarDetails(newCRequest.getCarId());
+                                // else Log.i(TAG, "mListener=null");
                             }
                         });
+                        Tooltip.make(mActivity,
+                                new Tooltip.Builder(102)
+                                        .anchor(car, Tooltip.Gravity.BOTTOM)
+                                        .closePolicy(new Tooltip.ClosePolicy()
+                                                .insidePolicy(true, false)
+                                                .outsidePolicy(true, false), 10000)
+                                        //.activateDelay(1800)
+                                        .showDelay(2000)
+                                        .text(mActivity.getString(R.string.private_request, newCRequest.getCarNumber()))
+                                        //.maxWidth(500)
+                                        .withArrow(true)
+                                        .withOverlay(true)
+                                        //.floatingAnimation(Tooltip.AnimationBuilder.SLOW)
+                                        .withStyleId(R.style.ToolTipLayoutCustomStyle)
+                                        .build()
+                        ).show();
+                    } //else Log.i(TAG, "newCRequest.getCarNumber:" + newCRequest.getCarNumber());
+
+                    if (newCRequest.getPriceGroup() != null && newCRequest.getPriceGroup().getDescription() != null) {
+                        price_group.setText(newCRequest.getPriceGroup().getDescription().replace(" ", "\n"));
                     }
+
                     Map<String, List<Groups>> groupsMap = newCRequest.getRequestGroups();
-                    if (groupsMap != null) {
-                        if (groupsMap.containsKey("PRICE_GROUPS")) {
-                            List<Groups> priceGroups = groupsMap.get("PRICE_GROUPS");
-                            if (priceGroups.size() > 0) {
-                                Groups priceGroup = priceGroups.get(0);
-                                if (priceGroup != null)
-                                    price_group.setText(priceGroup.getDescription());
-                            }
-                        }
+                    if (groupsMap != null && groupsMap.size() > 0) {
                         StringBuilder groupChosen = new StringBuilder();
-                        for (Map.Entry<String, List<Groups>> groups : groupsMap.entrySet()) {
-                            List<Groups> priceGroups = groups.getValue();
-                            if (priceGroups != null) {
-                                Groups priceGroup = priceGroups.get(0);
-                                if (priceGroup != null) {
-                                    if (groups.getKey().equals("PRICE_GROUPS")) {
-                                        price_group.setText(priceGroup.getDescription());
-                                    } else {
-                                        groupChosen.append(priceGroup.getDescription()).append(",");
-                                    }
+                        for (List<Groups> groups : groupsMap.values()) {
+                            if (groups != null) {
+                                for (Groups group : groups) {
+                                    if (group.getDescription() != null && !group.getDescription().isEmpty())
+                                        groupChosen.append(group.getDescription()).append(", ");
                                 }
                             }
                         }
@@ -270,7 +287,8 @@ public class RequestDetailsFragment extends Fragment {
                             feedBackButton.setVisibility(View.GONE);
                         } else if (newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_BEGIN.getCode()) || newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_DONE.getCode())) {
                             rejectButton.setVisibility(View.GONE);
-                            editButton.setVisibility(View.GONE);
+                            editButton.setText(R.string.resend);
+                            editButton.setVisibility(View.VISIBLE);
                             feedBackButton.setVisibility(View.VISIBLE);
                         } else {
                             rejectButton.setVisibility(View.VISIBLE);
@@ -282,6 +300,7 @@ public class RequestDetailsFragment extends Fragment {
                 } else scheduleChangesSec();
             } else {
                 Log.e(TAG, "No newCRequest or newCRequest.getRequestsId=null");
+                if (mListener != null) mListener.startHome();
                 //finish(); its close after server error
             }
         }
@@ -298,11 +317,16 @@ public class RequestDetailsFragment extends Fragment {
         return null;
     }
 
-    /*@Click
+    @Click
     void okButton() {
         TaxiApplication.requestsDetailsPaused();
-        finish();
-    }*/
+        if (mListener != null) {
+            //mListener.startHome();
+            if (newCRequest != null && RequestStatus.NEW_REQUEST_BEGIN.getCode().equals(newCRequest.getStatus()) || RequestStatus.NEW_REQUEST_DONE.getCode().equals(newCRequest.getStatus()) || RequestStatus.NEW_REQUEST_DELETE.getCode().equals(newCRequest.getStatus())) {
+                mListener.startRequests(true);
+            } else mListener.startRequests(false);
+        }
+    }
 
     @Click
     void rejectButton() {
@@ -320,7 +344,7 @@ public class RequestDetailsFragment extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 rejectRequest(input.getText().toString());
-                if(mListener!=null) mListener.startRequests(false);
+                if (mListener != null) mListener.startRequests(false);
             }
         });
 
@@ -345,7 +369,13 @@ public class RequestDetailsFragment extends Fragment {
     @Click
     void editButton() {
         TaxiApplication.requestsDetailsPaused();
-        if(mListener!=null) mListener.startEditRequest(newCRequest);
+        if (mListener != null) {
+            mListener.startEditRequest(newCRequest);
+            if (newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_BEGIN.getCode()) || newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_DONE.getCode())) {
+                newCRequest.setRequestsId(null);
+                mListener.startEditRequest(newCRequest);
+            } else mListener.startEditRequest(newCRequest);
+        }
         /*Intent requestsIntent = new Intent(RequestDetailsFragment.this, EditRequestActivity_.class);
         requestsIntent.putExtra("newCRequest", newCRequest);
         RequestDetailsFragment.this.startActivityForResult(requestsIntent, EDIT_REQUEST);

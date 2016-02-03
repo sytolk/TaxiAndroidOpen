@@ -120,9 +120,9 @@ public class BubbleOverlay extends LocationOverlayMapViewer {
     }
 
     @Background
-    void showCar(String carsNumber) {
+    void showCar(Integer carsId) {
         if (TaxiApplication.isMapVisible()) {
-            showCarPosition(RestClient.getInstance().getCarsInfo(carsNumber));
+            showCarPosition(RestClient.getInstance().getCarsInfo(carsId));
         }
     }
 
@@ -194,7 +194,7 @@ public class BubbleOverlay extends LocationOverlayMapViewer {
                         }
                         if (newCRequest.getCarNumber() != null) {
                             //Log.i(TAG, "CarNumber:" + newCRequest.getCarNumber());
-                            showCar(newCRequest.getCarNumber());
+                            showCar(newCRequest.getCarId());
                         }
                     }
                 }

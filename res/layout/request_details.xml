@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:divider="?android:dividerHorizontal"
+              android:showDividers="middle">
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -14,6 +16,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_margin="10dp">
+
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -25,6 +28,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
                     android:text="@string/request_number"/>
+
                 <TextView
                     android:id="@+id/requestNumber"
                     android:layout_width="0dp"
@@ -81,7 +85,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
-                    android:editable = "true"
                     android:clickable="true"
                     android:layout_weight=".5"/>
             </LinearLayout>
@@ -173,44 +176,45 @@
         </LinearLayout>
     </ScrollView>
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="10dp">
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:gravity="center_vertical"
+                  style="?android:buttonBarStyle"
+                  android:divider="?android:dividerVertical"
+                  android:showDividers="middle">
 
-        <Button
-            android:id="@+id/okButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:minHeight="80dp"
-            android:text="@string/back"
-            android:layout_weight=".3"
-            android:singleLine="true"/>
-        <Button
-            android:id="@+id/rejectButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:minHeight="80dp"
-            android:text="@string/reject"
-            android:layout_weight=".3"
-            android:singleLine="true"/>
-        <Button
-            android:id="@+id/editButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:minHeight="80dp"
-            android:text="@string/change"
-            android:layout_weight=".3"
-            android:singleLine="true"/>
-        <Button
-            android:id="@+id/feedBackButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:minHeight="80dp"
-            android:text="@string/feedback"
-            android:layout_weight=".3"
-            android:singleLine="true"
-            android:visibility="gone"/>
+        <Button android:id="@+id/okButton"
+                android:layout_width="0dp"
+                android:layout_weight=".3"
+                android:layout_height="wrap_content"
+                android:text="@string/okbutton"
+                android:textSize="@dimen/main_button"
+                style="?android:attr/buttonBarButtonStyle"
+                android:textStyle="bold"/>
+        <Button android:id="@+id/rejectButton"
+                android:layout_width="0dp"
+                android:layout_weight=".3"
+                android:layout_height="wrap_content"
+                android:text="@string/reject"
+                android:textSize="@dimen/main_button"
+                style="?android:attr/buttonBarButtonStyle"
+                android:textStyle="bold"/>
+        <Button android:id="@+id/editButton"
+                android:layout_width="0dp"
+                android:layout_weight=".3"
+                android:layout_height="wrap_content"
+                android:text="@string/change"
+                android:textSize="@dimen/main_button"
+                style="?android:attr/buttonBarButtonStyle"
+                android:textStyle="bold"/>
+        <Button android:id="@+id/feedBackButton"
+                android:layout_width="0dp"
+                android:layout_weight=".3"
+                android:layout_height="wrap_content"
+                android:text="@string/feedback"
+                android:textSize="@dimen/main_button"
+                style="?android:attr/buttonBarButtonStyle"
+                android:textStyle="bold"/>
     </LinearLayout>
 </LinearLayout>

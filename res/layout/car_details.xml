@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:divider="?android:dividerHorizontal"
+              android:showDividers="middle">
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -25,13 +27,15 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
-                    android:text="@string/car"/>
+                    android:text="@string/car"
+                    android:textSize="@dimen/main_button"/>
 
                 <TextView
                     android:id="@+id/carNumberView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".5"/>
+                    android:layout_weight=".5"
+                    android:textSize="@dimen/main_button"/>
             </LinearLayout>
 
             <LinearLayout
@@ -44,13 +48,15 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
-                    android:text="@string/driver"/>
+                    android:text="@string/driver"
+                    android:textSize="@dimen/main_button"/>
 
                 <TextView
                     android:id="@+id/driver"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".5"/>
+                    android:layout_weight=".5"
+                    android:textSize="@dimen/main_button"/>
             </LinearLayout>
 
             <LinearLayout
@@ -63,7 +69,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".4"
-                    android:text="Рейтинг:"/>
+                    android:text="@string/rating"
+                    android:textSize="@dimen/main_button"/>
 
                 <RatingBar
                     android:id="@+id/rating"
@@ -81,30 +88,30 @@
         </LinearLayout>
     </ScrollView>
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="10dp">
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:gravity="center_vertical"
+                  style="?android:buttonBarStyle"
+                  android:divider="?android:dividerVertical"
+                  android:showDividers="middle">
 
-        <Button
-            android:id="@+id/okButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:minHeight="80dp"
-            android:text="@string/back"
-            android:layout_weight=".5"
-            android:textSize="20dp"
-            android:singleLine="true"/>
+        <Button android:id="@+id/okButton"
+                android:layout_width="0dp"
+                android:layout_weight=".5"
+                android:layout_height="wrap_content"
+                android:text="@string/okbutton"
+                android:textSize="@dimen/main_button"
+                style="?android:attr/buttonBarButtonStyle"
+                android:textStyle="bold"/>
 
-        <Button
-            android:id="@+id/requestButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:minHeight="80dp"
-            android:text="@string/call"
-            android:layout_weight=".5"
-            android:textSize="20dp"
-            android:singleLine="true"/>
+        <Button android:id="@+id/requestButton"
+                android:layout_width="0dp"
+                android:layout_weight=".5"
+                android:layout_height="wrap_content"
+                android:text="@string/call"
+                android:textSize="@dimen/main_button"
+                style="?android:attr/buttonBarButtonStyle"
+                android:textStyle="bold"/>
     </LinearLayout>
 </LinearLayout>

@@ -40,7 +40,10 @@ import com.opentaxi.android.asynctask.LogoutTask;
 import com.opentaxi.android.fragments.*;
 import com.opentaxi.android.service.CoordinatesService;
 import com.opentaxi.android.utils.AppPreferences;
-import com.opentaxi.models.*;
+import com.opentaxi.models.CoordinatesLight;
+import com.opentaxi.models.MapRequest;
+import com.opentaxi.models.NewCRequestDetails;
+import com.opentaxi.models.Users;
 import com.opentaxi.rest.RestClient;
 import com.stil.generated.mysql.tables.pojos.Cars;
 import de.greenrobot.event.EventBus;
@@ -194,7 +197,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
 
         mDrawerToggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                closeKeyboard();
+            }
+
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+            }
+        };
         drawer.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
@@ -205,21 +218,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             MenuItem navHome = navMenu.findItem(R.id.nav_home);
             if (navHome != null)
                 navHome.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_home).actionBar().color(Color.BLACK));
+
             MenuItem navMap = navMenu.findItem(R.id.nav_map);
             if (navMap != null)
                 navMap.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_map).actionBar().color(Color.BLUE));
+
             MenuItem navRequest = navMenu.findItem(R.id.nav_request);
             if (navRequest != null)
                 navRequest.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_local_taxi).actionBar().color(Color.RED));
+
             MenuItem navHistory = navMenu.findItem(R.id.nav_history);
             if (navHistory != null)
-                navHistory.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_info).actionBar().color(Color.GREEN));
+                navHistory.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_history).actionBar().color(Color.GREEN));
+
             MenuItem navServers = navMenu.findItem(R.id.nav_servers);
             if (navServers != null)
                 navServers.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_cloud).actionBar().color(Color.BLUE));
+
             MenuItem navLog = navMenu.findItem(R.id.nav_send_log);
             if (navLog != null)
                 navLog.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_bug_report).actionBar().color(Color.RED));
+
             MenuItem navExit = navMenu.findItem(R.id.nav_exit);
             if (navExit != null)
                 navExit.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_exit_to_app).actionBar().color(Color.BLACK));
@@ -443,7 +462,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             //TaxiApplication.requestsHistory(true);
             //RequestsActivity_.intent(this).startForResult(REQUEST_INFO);
         } else if (id == R.id.nav_servers) {
-            ServersActivity_.intent(this).startForResult(SERVER_CHANGE);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, ServersFragment_.builder().build())
+                    .addToBackStack(null)
+                    .commitAllowingStateLoss();
+            //ServersActivity_.intent(this).startForResult(SERVER_CHANGE);
         } //else if (id == R.id.nav_book_taxi) NewRequestActivity_.intent(this).start();
         else if (id == R.id.nav_send_log) {
             RestClient.getInstance().clearCache();
@@ -458,7 +481,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     // Define a DialogFragment that displays the error dialog
-    public static class MainDialogFragment extends android.support.v4.app.DialogFragment {
+    /*public static class MainDialogFragment extends android.support.v4.app.DialogFragment {
         // Global field to contain the error dialog
         private Dialog mDialog;
 
@@ -479,7 +502,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (mDialog == null) super.setShowsDialog(false);
             return mDialog;
         }
-    }
+    }*/
 
     @UiThread
     public void createNotification() {
@@ -559,9 +582,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         switch (item.getItemId()) {
-            case R.id.options_server:
+            /*case R.id.options_server:
                 ServersActivity_.intent(this).startForResult(SERVER_CHANGE);
-                return true;
+                return true;*/
             case R.id.options_help:
                 HelpActivity_.intent(this).startForResult(HELP);
                 return true;
@@ -569,21 +592,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 //RestClient.getInstance().clearCache();
                 finish();
                 return true;
-            case R.id.options_send_log:
+            /*case R.id.options_send_log:
 
                 RestClient.getInstance().clearCache();
-                /*String javaTmpDir = System.getProperty("java.io.tmpdir");
-                File cacheDir = new File(javaTmpDir, "DiskLruCacheDir");
-                if (cacheDir.exists()) {
-                    File[] files = cacheDir.listFiles();
-                    if (files != null)
-                        for (File file : files) {
-                            file.delete();
-                        }
-                }*/
                 ACRA.getErrorReporter().handleSilentException(new Exception("Developer Report"));
-                //int i = 2 / 0;
-                return true;
+                return true;*/
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -750,12 +763,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void startCarDetails(String carNumber) {
-        if (!isFinishing()) {
+    public void startCarDetails(Integer carsId) {
+        if (!isFinishing() && carsId != null) {
             android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             CarDetailsFragment fragment = CarDetailsFragment_.builder().build();
             Bundle bundle = new Bundle();
-            bundle.putString("carNumber", carNumber);
+            bundle.putInt("carsId", carsId);
             fragment.setArguments(bundle);
 // Replace whatever is in the fragment_container view with this fragment,
 // and add the transaction to the back stack so the user can navigate back
@@ -768,12 +781,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void startRequestDetails(NewCRequest newCRequest) {
+    public void startRequestDetails(NewCRequestDetails newRequest) {
         if (!isFinishing()) {
             android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             RequestDetailsFragment fragment = RequestDetailsFragment_.builder().build();
             Bundle bundle = new Bundle();
-            bundle.putSerializable("newCRequest", newCRequest);
+            bundle.putSerializable("newCRequest", newRequest);
             fragment.setArguments(bundle);
 // Replace whatever is in the fragment_container view with this fragment,
 // and add the transaction to the back stack so the user can navigate back

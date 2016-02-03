@@ -14,12 +14,12 @@
     <string name="facebook_app_id">550947981660612</string>
 
     <!--mapsforge rescue-->
-    <string name="cancelbutton">Cancel</string>
+    <!--<string name="cancelbutton">Cancel</string>
     <string name="preferences_scale">Display Scale</string>
     <string name="preferences_scale_desc">Adjust scale of the map display</string>
     <string name="dialog_location_title">Coordinates</string>
     <string name="okbutton">OK</string>
-    <string name="zoomlevel">Zoom Level</string>
+    <string name="zoomlevel">Zoom Level</string>-->
 
     <!--REQUEST STATUS-->
     <string name="NEW_REQUEST_NEW">New request</string>
@@ -68,8 +68,8 @@
     <string name="agreement">User agreement</string>
     <string name="accept_agreement">Accept agreement</string>
     <string name="send">SEND</string>
-    <string name="new_request">New request</string>
     <string name="private_request_question">Are you sure that you want to make private request to car number %1$s ?</string>
+    <string name="private_request">Private request to car number %1$s ?</string>
     <string name="yes">YES</string>
     <string name="no">NO</string>
     <string name="not_working">Sorry but car number %1$s not working</string>
@@ -77,8 +77,8 @@
     <string name="required_field">Required field</string>
     <string name="change_request">Change request</string>
     <string name="changed_request">Changed request</string>
-    <string name="request_changed_successful">Request %1$s was changed successful! You can see the real time request status and change/delete after close this dialog or from button REQUEST in the main page</string>
-    <string name="request_send_successful">Request %1$s was send successful! You can see the real time request status and change/delete after close this dialog or from button REQUEST in the main page</string>
+    <string name="request_changed_successful">Request %1$s was changed successful! You can see the real time request status and change/delete after close this dialog or from menu REQUEST</string>
+    <string name="request_send_successful">Request %1$s was send successful! You can see the real time request status and change/delete after close this dialog or from menu REQUEST</string>
     <string name="request_send_error">Request %1$s was not send! You can check your internet connection and try again</string>
     <string name="address_choose">Address choose</string>
     <string name="choose_from_map">Please click on the map and hold down for 1 second on the address</string>
@@ -125,10 +125,10 @@
     <string name="login_user">User/email:</string>
     <string name="lost_password">Forgot Password?</string>
     <string name="lost_pass_email">Enter the registration Email</string>
-    <string name="request_number">Request number:</string>
-    <string name="datetime">Date and time:</string>
-    <string name="car_arrive_time">Time to arrive car:</string>
-    <string name="time_remaining">Remaining time:</string>
+    <string name="request_number">Request number</string>
+    <string name="datetime">Date and time</string>
+    <string name="car_arrive_time">Time to arrive car</string>
+    <string name="time_remaining">Remaining time</string>
     <string name="reject">Reject</string>
     <string name="download">Download</string>
     <string name="history">History</string>
@@ -149,4 +149,7 @@
     <string name="user_preferences">User Preferences</string>
     <string name="home">Home</string>
     <string name="taxi_tooltip">Take a taxi with just one click</string>
+    <string name="default_preference">Default Prefferences</string>
+    <string name="resend">Resend</string>
+    <string name="rating">Rating:</string>
 </resources>

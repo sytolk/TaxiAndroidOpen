@@ -2,14 +2,16 @@ package com.opentaxi.android.adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.opentaxi.android.R;
 import com.opentaxi.models.NewCRequest;
-import com.opentaxi.models.NewCRequestDetails;
 import com.paging.listview.PagingBaseAdapter;
 import com.stil.generated.mysql.tables.pojos.Groups;
 import com.stil.generated.mysql.tables.pojos.Regions;
@@ -24,11 +26,13 @@ public class RequestPagingAdapter extends PagingBaseAdapter<NewCRequest> {
 
     private Context context;
     private Regions[] regions;
+    private boolean history;
 
-    public RequestPagingAdapter(Context context, Regions[] regions) {
+    public RequestPagingAdapter(Context context, Regions[] regions, boolean history) {
         super();
         this.context = context;
         this.regions = regions;
+        this.history = history;
     }
 
     @Override
@@ -36,13 +40,19 @@ public class RequestPagingAdapter extends PagingBaseAdapter<NewCRequest> {
         return items.size();
     }
 
+    public NewCRequest getRequest(int position) {
+        return items.get(position);
+    }
+
     @Override
     public String getItem(int position) {
         NewCRequest request = items.get(position);
         StringBuilder row = new StringBuilder();
 
-        row.append(context.getString(R.string.request_number)).append(": ").append(request.getRequestsId().toString()).append("\n")
-                .append(context.getString(R.string.datetime)).append(": ").append(DateFormat.getDateInstance(DateFormat.SHORT).format(request.getDatecreated())).append("\n")
+        //row.append(context.getString(R.string.request_number)).append(": ").append(request.getRequestsId().toString()).append("\n")
+        DateFormat df = android.text.format.DateFormat.getLongDateFormat(context);
+        DateFormat tf = android.text.format.DateFormat.getTimeFormat(context);
+        row.append(context.getString(R.string.datetime)).append(": ").append(df.format(request.getDatecreated())).append(" ").append(tf.format(request.getDatecreated())).append("\n")
                 //ADDRESS
                 .append(context.getString(R.string.address)).append(": ");
         /* String destination = null;
@@ -70,14 +80,13 @@ public class RequestPagingAdapter extends PagingBaseAdapter<NewCRequest> {
         }
 
         Map<String, List<Groups>> groupsMap = request.getRequestGroups();
-        if (groupsMap != null) {
+        if (groupsMap != null && groupsMap.size() > 0) {
             row.append(context.getString(R.string.filters)).append(": ");
-            for (Map.Entry<String, List<Groups>> groups : groupsMap.entrySet()) {
-                List<Groups> reqGroups = groups.getValue();
-                if (reqGroups != null) {
-                    Groups reqGroup = reqGroups.get(0);
-                    if (reqGroup != null) {
-                        row.append(reqGroup.getDescription()).append(", ");
+            for (List<Groups> groups : groupsMap.values()) {
+                if (groups != null) {
+                    for (Groups group : groups) {
+                        if (group.getDescription() != null && !group.getDescription().isEmpty())
+                            row.append(group.getDescription()).append(", ");
                     }
                 }
             }
@@ -87,15 +96,15 @@ public class RequestPagingAdapter extends PagingBaseAdapter<NewCRequest> {
         if (request.getDispTime() != null && request.getDispTime() > 0)
             row.append(context.getString(R.string.car_arrive_time)).append(": ").append(context.getResources().getQuantityString(R.plurals.minutes, request.getDispTime(), request.getDispTime())).append("\n");
 
-        if (request.getExecTime() != null)
-            row.append(context.getString(R.string.time_remaining)).append(": ").append(request.getExecTime()).append("\n");
+        /*if (request.getExecTime() != null)
+            row.append(context.getString(R.string.time_remaining)).append(": ").append(request.getExecTime()).append("\n");*/
 
         if (request.getStatus() != null) {
             String statusCode = RequestStatus.getByCode(request.getStatus()).toString();
             int resourceID = context.getResources().getIdentifier(statusCode, "string", context.getPackageName());
             if (resourceID > 0) {
                 try {
-                    row.append(context.getString(R.string.status)).append(": ").append(context.getString(resourceID)).append("\n");
+                    row.append(context.getString(R.string.status)).append(": ").append(context.getString(resourceID));
                 } catch (Resources.NotFoundException e) {
                     Log.e("RequestPagingAdapter", "Resources NotFoundException:" + resourceID);
                 }
@@ -107,7 +116,9 @@ public class RequestPagingAdapter extends PagingBaseAdapter<NewCRequest> {
 
     @Override
     public long getItemId(int position) {
-        return position;
+        NewCRequest request = items.get(position);
+        return request.getRequestsId();
+        // return position;
     }
 
     @Override
@@ -121,6 +132,12 @@ public class RequestPagingAdapter extends PagingBaseAdapter<NewCRequest> {
             textView = (TextView) LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, null);
         }
         textView.setText(text);
+        Drawable icon;
+        if (history)
+            icon = new IconicsDrawable(context, GoogleMaterial.Icon.gmd_feedback).actionBar().colorRes(R.color.transparent_blue);
+        else
+            icon = new IconicsDrawable(context, GoogleMaterial.Icon.gmd_mode_edit).actionBar().colorRes(R.color.timebase_color);
+        textView.setCompoundDrawablesWithIntrinsicBounds(null, null, icon, null);
         return textView;
     }
 
