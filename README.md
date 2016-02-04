@@ -1,4 +1,4 @@
-#Taxi Android Open <a href="https://play.google.com/store/apps/details?id=com.opentaxi.android" rel="Taxi Bulgaria">![Taxi Bulgaria](https://developer.android.com/images/brand/en_generic_rgb_wo_60.png)</a>
+#Taxi Android Open <a href="https://play.google.com/store/apps/details?id=com.opentaxi.android" rel="Taxi Bulgaria">![Taxi Bulgaria](http://steverichey.github.io/google-play-badge-svg/img/en_get.svg)</a>
 
 Don\`t have google play? You can download the app directly from [opera store](http://android.oms.apps.opera.com/en_bg/catalog.php?search=taxi+bulgaria)
 
