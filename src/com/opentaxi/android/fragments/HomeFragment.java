@@ -40,7 +40,7 @@ import java.net.URL;
  * developer STANIMIR MARINOV
  */
 @EFragment(R.layout.content_main)
-public class HomeFragment extends Fragment {
+public class HomeFragment extends BaseFragment {
 
     //private static final String TAG = "HomeFragment";
 
@@ -52,24 +52,6 @@ public class HomeFragment extends Fragment {
 
     @ViewById(R.id.bandwidth)
     TextView bandwidth;
-
-    Activity mActivity;
-
-    OnCommandListener mListener;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        if (context instanceof Activity) {
-            try {
-                mListener = (OnCommandListener) context;
-            } catch (ClassCastException e) {
-                throw new ClassCastException(context.toString() + " must implement OnRequestEventsListener");
-            }
-            mActivity = (Activity) context;
-        }
-    }
 
     /**
      * http://stackoverflow.com/questions/14177781/java-lang-illegalstateexception-can-not-perform-this-action-after-onsaveinstanc

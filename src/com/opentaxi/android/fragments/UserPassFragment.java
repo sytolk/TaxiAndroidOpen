@@ -59,7 +59,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 @EFragment(R.layout.login)
-public class UserPassFragment extends android.support.v4.app.Fragment implements
+public class UserPassFragment extends BaseFragment implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LoaderManager.LoaderCallbacks<Cursor>,
@@ -118,29 +118,6 @@ public class UserPassFragment extends android.support.v4.app.Fragment implements
     private boolean mShouldResolve = false;
 
     ProgressDialog ringProgressDialog;
-
-    Activity mActivity;
-
-    OnCommandListener mListener;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        if (context instanceof Activity) {
-            try {
-                mListener = (OnCommandListener) context;
-            } catch (ClassCastException e) {
-                throw new ClassCastException(context.toString() + " must implement OnRequestEventsListener");
-            }
-            mActivity = (Activity) context;
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

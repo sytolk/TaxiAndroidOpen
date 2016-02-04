@@ -34,38 +34,12 @@ import java.util.List;
  */
 //@WindowFeature(Window.FEATURE_NO_TITLE)
 @EFragment(R.layout.request_servers)
-public class ServersFragment extends Fragment {
+public class ServersFragment extends BaseFragment {
 
     private static final String TAG = "ServersActivity";
 
-    /*@ViewById(R.id.cancelButton)
-    Button cancelButton;*/
-
     @ViewById(R.id.serversContent)
     LinearLayout serversContent;
-
-    OnCommandListener mListener;
-
-    Activity mActivity;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        if (context instanceof Activity) {
-            try {
-                mListener = (OnCommandListener) context;
-            } catch (ClassCastException e) {
-                throw new ClassCastException(context.toString() + " must implement OnRequestEventsListener");
-            }
-            mActivity = (Activity) context;
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-
-    }
 
     @AfterViews
     void afterServers() {

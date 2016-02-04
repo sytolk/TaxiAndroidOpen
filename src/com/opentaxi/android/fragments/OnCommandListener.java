@@ -24,7 +24,7 @@ public interface OnCommandListener {
 
     void startNewRequest(Cars cars);
 
-    void startCarDetails(Integer carsId);
+    void startCarDetails(Integer requestId);
 
     void startRequestDetails(NewCRequestDetails newRequest);
 

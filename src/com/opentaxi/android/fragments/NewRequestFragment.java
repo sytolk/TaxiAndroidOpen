@@ -51,7 +51,7 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 @EFragment(R.layout.new_request)
-public class NewRequestFragment extends Fragment {
+public class NewRequestFragment extends BaseFragment {
 
     private static final String TAG = "NewRequestFragment";
     private static final int SHOW_ADDRESS_ON_MAP = 999;
@@ -104,29 +104,6 @@ public class NewRequestFragment extends Fragment {
 
     /*@ViewById(R.id.priceLayout)
     LinearLayout priceLayout;*/
-
-    Activity mActivity;
-
-    OnCommandListener mListener;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        if (context instanceof Activity) {
-            try {
-                mListener = (OnCommandListener) context;
-            } catch (ClassCastException e) {
-                throw new ClassCastException(context.toString() + " must implement OnRequestEventsListener");
-            }
-            mActivity = (Activity) context;
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

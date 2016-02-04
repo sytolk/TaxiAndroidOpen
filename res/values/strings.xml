@@ -72,7 +72,7 @@
     <string name="private_request">Private request to car number %1$s ?</string>
     <string name="yes">YES</string>
     <string name="no">NO</string>
-    <string name="not_working">Sorry but car number %1$s not working</string>
+    <string name="not_working">Sorry but car number %1$s not working. Do you want to call an other taxi?</string>
     <string name="ok">OK</string>
     <string name="required_field">Required field</string>
     <string name="change_request">Change request</string>
@@ -151,5 +151,6 @@
     <string name="taxi_tooltip">Take a taxi with just one click</string>
     <string name="default_preference">Default Prefferences</string>
     <string name="resend">Resend</string>
-    <string name="rating">Rating:</string>
+    <string name="driverRating">Driver Rating:</string>
+    <string name="carRating">Car Rating:</string>
 </resources>

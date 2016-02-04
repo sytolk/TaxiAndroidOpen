@@ -39,6 +39,35 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/carRatingLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:text="@string/carRating"
+                    android:textSize="@dimen/main_button"/>
+
+                <RatingBar
+                    android:id="@+id/carRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numStars="5"
+                    android:stepSize="0.1"
+                    android:isIndicator="true"
+                    style="?android:attr/ratingBarStyleSmall"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".2"/>
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -60,20 +89,22 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/driverRatingLayout"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_margin="10dp">
+                android:layout_margin="10dp"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".4"
-                    android:text="@string/rating"
+                    android:text="@string/driverRating"
                     android:textSize="@dimen/main_button"/>
 
                 <RatingBar
-                    android:id="@+id/rating"
+                    android:id="@+id/driverRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:numStars="5"

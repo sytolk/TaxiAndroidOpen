@@ -71,7 +71,7 @@
     </string>
     <string name="yes">ДА</string>
     <string name="no">НЕ</string>
-    <string name="not_working">Съжаляваме но автомобил %1$s в момента не работи</string>
+    <string name="not_working">Съжаляваме но автомобил %1$s в момента не работи. Искате ли да повикате друг работещ автомобил?</string>
     <string name="ok">OK</string>
     <string name="required_field">Задължително поле</string>
     <string name="change_request">Промени поръчката</string>
@@ -160,5 +160,6 @@
     <string name="taxi_tooltip">Намерете такси само с едно кликване</string>
     <string name="default_preference">Стандартни Настройки</string>
     <string name="resend">Изпрати Отново</string>
-    <string name="rating">Рейтинг:</string>
+    <string name="driverRating">Рейтинг на шофьора:</string>
+    <string name="carRating">Рейтинг на колата:</string>
 </resources>

@@ -8,7 +8,9 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import com.opentaxi.android.R;
@@ -26,12 +28,12 @@ import org.androidannotations.annotations.*;
  */
 //@WindowFeature(Window.FEATURE_NO_TITLE)
 @EFragment(R.layout.car_details)
-public class CarDetailsFragment extends Fragment {
+public class CarDetailsFragment extends BaseFragment {
 
     private static final String TAG = "CarDetailsFragment";
 
     //@Extra
-    int carsId;
+    int requestId;
 
     @ViewById
     TextView carNumberView;
@@ -40,36 +42,21 @@ public class CarDetailsFragment extends Fragment {
     TextView driver;
 
     @ViewById
-    RatingBar rating;
+    LinearLayout carRatingLayout;
+
+    @ViewById
+    LinearLayout driverRatingLayout;
+
+    @ViewById
+    RatingBar carRating;
+
+    @ViewById
+    RatingBar driverRating;
 
     @ViewById
     Button requestButton;
 
     private Cars cars;
-
-
-    Activity mActivity;
-
-    OnCommandListener mListener;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        if (context instanceof Activity) {
-            try {
-                mListener = (OnCommandListener) context;
-            } catch (ClassCastException e) {
-                throw new ClassCastException(context.toString() + " must implement OnRequestEventsListener");
-            }
-            mActivity = (Activity) context;
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,7 +64,7 @@ public class CarDetailsFragment extends Fragment {
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            carsId = bundle.getInt("carsId");
+            requestId = bundle.getInt("requestId");
         }
     }
 
@@ -88,7 +75,7 @@ public class CarDetailsFragment extends Fragment {
 
     @Background
     void setDetails() {
-        showDetails(RestClient.getInstance().getCarsInfo(carsId));
+        showDetails(RestClient.getInstance().getCarsInfo(requestId));
     }
 
     @UiThread
@@ -97,27 +84,22 @@ public class CarDetailsFragment extends Fragment {
             carNumberView.setText(cars.getNumber());
             //requestButton.append(" " + cars.getNumber());
             driver.setText(cars.getAuthKey());
-            if (cars.getDescription() != null && !cars.getDescription().equals("")) {
-               /* rating.setFocusable(false);
-                rating.setOnTouchListener(new View.OnTouchListener() {
-                    public boolean onTouch(View v, MotionEvent event) {
-                        return true;
-                    }
-                });*/
-                try {
-                    rating.setRating(Float.parseFloat(cars.getDescription()));
-                } catch (NumberFormatException e) {
-                    Log.e(TAG, "setRating");
-                }
+            if (cars.getCurrPosNorth() != null) {
+                carRating.setRating(cars.getCurrPosNorth().floatValue());
+                carRatingLayout.setVisibility(View.VISIBLE);
+            }
+            if (cars.getCurrPosEast() != null) {
+                driverRating.setRating(cars.getCurrPosEast().floatValue());
+                driverRatingLayout.setVisibility(View.VISIBLE);
             }
             this.cars = cars;
         }
     }
 
-    /*@Click
+    @Click
     void okButton() {
-        finish();
-    }*/
+        if (mListener != null) mListener.startRequests(true);
+    }
 
     @Click
     void requestButton() {
@@ -152,11 +134,18 @@ public class CarDetailsFragment extends Fragment {
             });
         } else {
             alertDialogBuilder.setMessage(mActivity.getString(R.string.not_working, carNumber));
-            alertDialogBuilder.setNeutralButton(mActivity.getString(R.string.ok), new DialogInterface.OnClickListener() {
+            alertDialogBuilder.setNegativeButton(mActivity.getString(R.string.no), new DialogInterface.OnClickListener() {
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
+                }
+            });
+            alertDialogBuilder.setPositiveButton(mActivity.getString(R.string.yes), new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (mListener != null) mListener.startNewRequest(null);
                 }
             });
         }

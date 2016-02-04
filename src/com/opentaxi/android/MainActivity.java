@@ -763,12 +763,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void startCarDetails(Integer carsId) {
-        if (!isFinishing() && carsId != null) {
+    public void startCarDetails(Integer requestId) {
+        if (!isFinishing() && requestId != null) {
             android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             CarDetailsFragment fragment = CarDetailsFragment_.builder().build();
             Bundle bundle = new Bundle();
-            bundle.putInt("carsId", carsId);
+            bundle.putInt("requestId", requestId);
             fragment.setArguments(bundle);
 // Replace whatever is in the fragment_container view with this fragment,
 // and add the transaction to the back stack so the user can navigate back

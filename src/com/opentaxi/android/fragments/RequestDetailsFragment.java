@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -23,13 +22,14 @@ import com.opentaxi.rest.RestClient;
 import com.stil.generated.mysql.tables.pojos.Feedback;
 import com.stil.generated.mysql.tables.pojos.Groups;
 import com.stil.generated.mysql.tables.pojos.Regions;
+import com.stil.generated.mysql.tables.pojos.RequestFeedback;
 import com.taxibulgaria.enums.RequestStatus;
 import it.sephiroth.android.library.tooltip.Tooltip;
 import org.androidannotations.annotations.*;
 import org.androidannotations.api.BackgroundExecutor;
 
 import java.text.DateFormat;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +42,7 @@ import java.util.Map;
  */
 //@WindowFeature(Window.FEATURE_NO_TITLE)
 @EFragment(R.layout.request_details)
-public class RequestDetailsFragment extends Fragment {
+public class RequestDetailsFragment extends BaseFragment {
 
     private static final String TAG = "RequestDetailsFragment";
 
@@ -86,32 +86,9 @@ public class RequestDetailsFragment extends Fragment {
     TextView state;
 
     //private static final int CAR_DETAILS = 9;
-    private static final int EDIT_REQUEST = 10;
+    //private static final int EDIT_REQUEST = 10;
 
     private Regions[] regions;
-
-    Activity mActivity;
-
-    OnCommandListener mListener;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        if (context instanceof Activity) {
-            try {
-                mListener = (OnCommandListener) context;
-            } catch (ClassCastException e) {
-                throw new ClassCastException(context.toString() + " must implement OnRequestEventsListener");
-            }
-            mActivity = (Activity) context;
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -222,7 +199,7 @@ public class RequestDetailsFragment extends Fragment {
                         car.setCompoundDrawablesWithIntrinsicBounds(null, null, icon, null);
                         car.setOnClickListener(new View.OnClickListener() {
                             public void onClick(View v) {
-                                if (mListener != null) mListener.startCarDetails(newCRequest.getCarId());
+                                if (mListener != null) mListener.startCarDetails(newCRequest.getRequestsId());
                                 // else Log.i(TAG, "mListener=null");
                             }
                         });
@@ -428,15 +405,25 @@ public class RequestDetailsFragment extends Fragment {
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    Map<Integer, Float> vote = new HashMap<Integer, Float>();
+                    //Map<Integer, Float> vote = new HashMap<Integer, Float>();
+                    List<RequestFeedback> requestFeedbackArr = new ArrayList<>();
                     for (Feedback feedback : feedbacks) {
                         RatingBar ratingBar = (RatingBar) parent.findViewById(feedback.getId());
-                        if (ratingBar != null) vote.put(feedback.getId(), ratingBar.getRating());
+                        if (ratingBar != null) {
+                            RequestFeedback requestFeedback = new RequestFeedback();
+                            requestFeedback.setRequestId(newCRequest.getRequestsId());
+                            requestFeedback.setFeedbackId(feedback.getId());
+                            requestFeedback.setStars((double) ratingBar.getRating());
+                            requestFeedback.setNotes(comment.getText().toString());
+                            requestFeedbackArr.add(requestFeedback);
+                            //vote.put(feedback.getId(), ratingBar.getRating());
+                        }
                         else Log.e(TAG, "no ratingBar found with id:" + feedback.getId());
                     }
 
-                    sendFeedBack(comment.getText().toString(), vote);
+                    sendFeedBack(requestFeedbackArr);
                     dialog.dismiss();
+                    if (mListener!=null) mListener.startCarDetails(newCRequest.getRequestsId());
                 }
             });
 
@@ -454,9 +441,8 @@ public class RequestDetailsFragment extends Fragment {
     }
 
     @Background
-    void sendFeedBack(String comment, Map<Integer, Float> vote) {
-        if (comment != null && !comment.equals(""))
-            RestClient.getInstance().RequestNotes(newCRequest.getRequestsId(), comment);
-        RestClient.getInstance().sendFeedBack(newCRequest.getRequestsId(), vote);
+    void sendFeedBack(List<RequestFeedback> requestFeedbackArr) {
+        //if (comment != null && !comment.equals("")) RestClient.getInstance().RequestNotes(newCRequest.getRequestsId(), comment);
+        RestClient.getInstance().sendFeedBack(requestFeedbackArr.toArray(new RequestFeedback[requestFeedbackArr.size()]));
     }
 }

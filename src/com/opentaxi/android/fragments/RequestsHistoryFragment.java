@@ -32,7 +32,7 @@ import java.util.List;
 //@WindowFeature(Window.FEATURE_NO_TITLE)
 //@Fullscreen
 @EFragment(R.layout.paging_list)
-public class RequestsHistoryFragment extends Fragment {
+public class RequestsHistoryFragment extends BaseFragment {
 
     private static final String TAG = "RequestsHistoryFragment";
     //private static final int REQUEST_DETAILS = 100;
@@ -52,30 +52,7 @@ public class RequestsHistoryFragment extends Fragment {
     @ViewById(R.id.history)
     Button buttonHistory;
 
-    Activity mActivity;
-
-    OnCommandListener mListener;
-
     private boolean history = false;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        if (context instanceof Activity) {
-            try {
-                mListener = (OnCommandListener) context;
-            } catch (ClassCastException e) {
-                throw new ClassCastException(context.toString() + " must implement OnRequestEventsListener");
-            }
-            mActivity = (Activity) context;
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

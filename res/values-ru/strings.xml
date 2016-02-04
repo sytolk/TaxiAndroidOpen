@@ -71,7 +71,7 @@
     <string name="private_request">Личной заказ к машине %1$s ?</string>
     <string name="yes">ДА</string>
     <string name="no">НЕТ</string>
-    <string name="not_working">К сожалению, но ездить %1$s в настоящее время не работает</string>
+    <string name="not_working">К сожалению, но такси %1$s в настоящее время не работает. Хотите вызвать другую машину?</string>
     <string name="ok">OK</string>
     <string name="required_field">Обязательное поле</string>
     <string name="change_request">Заказ на изменение</string>
@@ -159,5 +159,6 @@
     <string name="taxi_tooltip">Найти такси с только одним кликом</string>
     <string name="default_preference">Стандартные настройки</string>
     <string name="resend">Отправить Опять</string>
-    <string name="rating">Рейтинг:</string>
+    <string name="driverRating">Рейтинг водитель:</string>
+    <string name="carRating">Рейтинг машине:</string>
 </resources>
