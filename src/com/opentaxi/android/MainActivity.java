@@ -221,34 +221,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (navMenu != null) {
             MenuItem navHome = navMenu.findItem(R.id.nav_home);
             if (navHome != null)
-                navHome.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_home).actionBar().color(Color.BLACK));
+                navHome.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_home).actionBar().colorRes(R.color.material_deep_orange_700));
 
             MenuItem navMap = navMenu.findItem(R.id.nav_map);
             if (navMap != null)
-                navMap.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_map).actionBar().color(Color.BLUE));
+                navMap.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_map).actionBar().colorRes(R.color.app_primary_dark));
 
             MenuItem navRequest = navMenu.findItem(R.id.nav_request);
             if (navRequest != null)
-                navRequest.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_local_taxi).actionBar().color(Color.RED));
+                navRequest.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_local_taxi).actionBar().colorRes(R.color.timebase_color));
 
             MenuItem navHistory = navMenu.findItem(R.id.nav_history);
             if (navHistory != null)
-                navHistory.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_history).actionBar().color(Color.GREEN));
+                navHistory.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_history).actionBar().colorRes(R.color.app_primary));
 
             MenuItem navServers = navMenu.findItem(R.id.nav_servers);
             if (navServers != null)
-                navServers.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_cloud).actionBar().color(Color.BLUE));
+                navServers.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_cloud).actionBar().colorRes(R.color.transparent_blue));
 
             MenuItem navLog = navMenu.findItem(R.id.nav_send_log);
             if (navLog != null)
-                navLog.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_bug_report).actionBar().color(Color.RED));
+                navLog.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_bug_report).actionBar().colorRes(R.color.red_color));
 
             MenuItem navExit = navMenu.findItem(R.id.nav_exit);
             if (navExit != null)
-                navExit.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_exit_to_app).actionBar().color(Color.BLACK));
+                navExit.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_exit_to_app).actionBar().colorRes(R.color.black_color));
         }
 
-        fab.setIconDrawable(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_local_taxi).sizeDp(35).color(Color.GREEN));
+        fab.setIconDrawable(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_local_taxi).sizeDp(35).colorRes(R.color.label_color));
 
         AppPreferences appPreferences = AppPreferences.getInstance(this);
         RestClient.getInstance().setSocketsType(appPreferences.getSocketType());
@@ -532,6 +532,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void doObtainedLocation(Location location) {
         try {
+            EventBus.getDefault().postSticky(location);
+
             CoordinatesLight coordinates = new CoordinatesLight();
             coordinates.setN(location.getLatitude());
             coordinates.setE(location.getLongitude());
@@ -539,6 +541,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Intent i = new Intent(this, CoordinatesService.class);
             i.putExtra("coordinates", coordinates);
             startService(i);
+
+            //Log.i("doObtainedLocation", "onReceive:" + location);
 
             /*if (AppPreferences.getInstance() != null) {
 
@@ -710,24 +714,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Log.i(TAG, "showNewRequest");
         if (fab != null) {
             if (show) {
-                fab.setVisibility(View.VISIBLE);
-                Tooltip.make(this,
-                        new Tooltip.Builder(101)
-                                .anchor(fab, Tooltip.Gravity.LEFT)
-                                .closePolicy(new Tooltip.ClosePolicy()
-                                        .insidePolicy(true, false)
-                                        .outsidePolicy(true, false), 20000)
-                                //.activateDelay(1800)
-                                .showDelay(3000)
-                                .text(getResources(), R.string.taxi_tooltip) //"Поръчай такси с едно кликване"
-                                //.maxWidth(500)
-                                .withArrow(true)
-                                .withOverlay(true)
-                                //.floatingAnimation(Tooltip.AnimationBuilder.SLOW)
-                                .withStyleId(R.style.ToolTipLayoutCustomStyle)
-                                .build()
-                ).show();
-            } else fab.setVisibility(View.INVISIBLE);
+                if (fab.getVisibility() == View.INVISIBLE) {
+                    fab.setVisibility(View.VISIBLE);
+                    Tooltip.make(this,
+                            new Tooltip.Builder(101)
+                                    .anchor(fab, Tooltip.Gravity.LEFT)
+                                    .closePolicy(new Tooltip.ClosePolicy()
+                                            .insidePolicy(true, false)
+                                            .outsidePolicy(true, false), 60000)
+                                    //.activateDelay(1800)
+                                    .showDelay(2000)
+                                    .text(getResources(), R.string.taxi_tooltip) //"Поръчай такси с едно кликване"
+                                    //.maxWidth(500)
+                                    .withArrow(true)
+                                    .withOverlay(true)
+                                    //.floatingAnimation(Tooltip.AnimationBuilder.SLOW)
+                                    .withStyleId(R.style.ToolTipLayoutCustomStyle)
+                                    .build()
+                    ).show();
+                }
+            } else {
+                fab.setVisibility(View.INVISIBLE);
+                Tooltip.remove(this, 101);
+            }
         } else Log.e(TAG, "fab=null");
     }
 

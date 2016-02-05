@@ -21,18 +21,18 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/fragment_container" />
-        <!--<FrameLayout
-            android:id="@+id/fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <include layout="@layout/fragment_container"/>
+    <!--<FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-            &lt;!&ndash;<fragment
-                android:id="@+id/homeFragment"
-                android:name="com.opentaxi.android.fragments.HomeFragment_"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"/>&ndash;&gt;
-        </FrameLayout>-->
+        &lt;!&ndash;<fragment
+            android:id="@+id/homeFragment"
+            android:name="com.opentaxi.android.fragments.HomeFragment_"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"/>&ndash;&gt;
+    </FrameLayout>-->
 
 
     <!--<android.support.design.widget.FloatingActionButton android:id="@+id/fab"
@@ -62,6 +62,6 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:scaleType="centerCrop"
-        android:visibility="gone"/> <!--fab:fab_icon="@drawable/travel59"-->
+        android:visibility="invisible"/> <!--fab:fab_icon="@drawable/travel59"-->
 
 </android.support.design.widget.CoordinatorLayout>

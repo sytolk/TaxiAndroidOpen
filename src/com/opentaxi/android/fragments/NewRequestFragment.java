@@ -150,8 +150,9 @@ public class NewRequestFragment extends BaseFragment {
      * @param location
      */
     public void onEvent(Location location) {
+        //Log.i(TAG, "Location:" + location);
         setAddress(location);
-        if (location != null) BackgroundExecutor.cancelAll("addressTimer", true);
+        //if (location != null) BackgroundExecutor.cancelAll("addressTimer", true);
     }
 
     /*@Background(delay = 2000, id = "addressTimer")
@@ -504,9 +505,9 @@ public class NewRequestFragment extends BaseFragment {
     @Background
     void setAddress(Location location) {
         //Log.i(TAG, "setAddress");
-        if (this.mapRequest == null) {
-            if (location != null && location.getLatitude() > 0 && location.getLongitude() > 0) {
-                Date now = new Date();
+        if (this.mapRequest == null) { //to change address only first time
+            if (location != null) {
+               // Date now = new Date();
                 //if (AppPreferences.getInstance().getGpsLastTime() > (now.getTime() - 600000)) {  //if last coordinates time is from 5 min interval
                 com.stil.generated.mysql.tables.pojos.NewRequest newRequest = RestClient.getInstance().getAddressByCoordinates(location.getLatitude(), location.getLongitude());
                 if (newRequest != null) { //todo wrong for varna addresses

@@ -150,7 +150,7 @@
     <string name="stay_price">престой</string>
     <string name="options_help">Помощ</string>
     <string name="from_taxi">от такси номер: %1$s</string>
-    <string name="request_rejected">Съжаляваме но поръчка %1$s ( %2$s ) е отказана.</string>
+    <string name="request_rejected">Съжаляваме но поръчка №%1$s \nАдрес: %2$s  \nе отказана.</string>
     <string name="request_edited">Поръчка:%1$s ( %2$s ) е променена.</string>
     <string name="private_request_rejected">Съжаляваме но поръчка номер:%1$s ( %2$s ) е отказана %3$s. Желаете ли да получите друг автомобил?</string>
     <string name="request_aproved">Поръчка:%1$s ( %2$s ) е потвърдена %3$s</string>
