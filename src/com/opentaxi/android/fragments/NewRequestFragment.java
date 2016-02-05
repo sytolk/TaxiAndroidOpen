@@ -1,9 +1,7 @@
 package com.opentaxi.android.fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
@@ -11,7 +9,6 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.util.Log;
 import android.view.View;
@@ -831,6 +828,7 @@ public class NewRequestFragment extends BaseFragment {
                     newCRequestDetails.setRegionId(newRequest.getRegionId());
                     newCRequestDetails.setFullAddress(newRequest.getFullAddress());
                     newCRequestDetails.setDatecreated(newRequest.getDatecreated());
+                    newCRequestDetails.setCarId(newRequest.getCarId());
                     //newCRequestDetails.setRequestGroups(newRequest.getRequestGroups());
                     newCRequestDetails.setStatus(newRequest.getStatus());
                     mListener.startRequestDetails(newCRequestDetails);

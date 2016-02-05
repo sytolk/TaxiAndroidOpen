@@ -1,9 +1,6 @@
 package com.opentaxi.android.fragments;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -105,6 +102,7 @@ public class RequestsHistoryFragment extends BaseFragment {
                         newCRequestDetails.setFullAddress(newCRequest.getFullAddress());
                         newCRequestDetails.setDatecreated(newCRequest.getDatecreated());
                         newCRequestDetails.setRequestGroups(newCRequest.getRequestGroups());
+                        newCRequestDetails.setCarId(newCRequest.getCarId());
                         newCRequestDetails.setCarNumber(newCRequest.getCarNumber());
                         newCRequestDetails.setStatus(newCRequest.getStatus());
                         //Log.i(TAG, "setOnItemClickListener:" + newCRequest);

@@ -593,7 +593,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int com_facebook_search_bar_layout=0x7f03000e;
         public static final int com_facebook_tooltip_bubble=0x7f03000f;
         public static final int com_facebook_usersettingsfragment=0x7f030010;
-        public static final int confirm_layout=0x7f030011;
+        public static final int msg_layout =0x7f030011;
         public static final int dialog_enter_coordinates=0x7f030012;
         public static final int links_layout=0x7f030013;
         public static final int login=0x7f030014;

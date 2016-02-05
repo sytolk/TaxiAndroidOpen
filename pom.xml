@@ -96,7 +96,7 @@
                     <nativeLibrariesDirectory>ignored</nativeLibrariesDirectory>
                     <undeployBeforeDeploy>true</undeployBeforeDeploy>
                     <extractDuplicates>true</extractDuplicates>
-                    <includeLibsJarsFromAar>true</includeLibsJarsFromAar>
+                    <!--<includeLibsJarsFromAar>true</includeLibsJarsFromAar>-->
                 </configuration>
             </plugin>
         </plugins>

@@ -11,6 +11,8 @@ import com.opentaxi.models.CoordinatesLight;
 import com.opentaxi.rest.RestClient;
 import com.stil.generated.mysql.tables.pojos.Messages;
 
+import java.io.Serializable;
+
 
 public class CoordinatesService extends IntentService {
 
@@ -26,7 +28,7 @@ public class CoordinatesService extends IntentService {
         Integer cloudMessageId = RestClient.getInstance().sendCoordinates(coordinates);
 
         if (AppPreferences.getInstance() != null && cloudMessageId != null) {
-            AsyncTask<Context, Void, Messages> msgTask = new ProcessMessageTask(cloudMessageId);
+            AsyncTask<Context, Void, Serializable> msgTask = new ProcessMessageTask(cloudMessageId);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                 msgTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, this.getApplicationContext());

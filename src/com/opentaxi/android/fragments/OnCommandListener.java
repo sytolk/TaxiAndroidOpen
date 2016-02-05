@@ -1,8 +1,6 @@
 package com.opentaxi.android.fragments;
 
-import com.opentaxi.models.NewCRequest;
 import com.opentaxi.models.NewCRequestDetails;
-import com.opentaxi.models.NewRequestDetails;
 import com.stil.generated.mysql.tables.pojos.Cars;
 
 /**

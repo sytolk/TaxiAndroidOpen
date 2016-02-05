@@ -177,12 +177,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onNewIntent(Intent newIntent) {
         Bundle extras = newIntent.getExtras();
         if (extras != null) {
-            MapRequest mapRequest = extras.getParcelable("mapRequest");
-            if (mapRequest != null) {
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("mapRequest", mapRequest);
+            if (extras.containsKey("mapRequest")) {
+                MapRequest mapRequest = extras.getParcelable("mapRequest");
+                if (mapRequest != null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("mapRequest", mapRequest);
+                    redirectFragment = NewRequestFragment_.builder().build();
+                    redirectFragment.setArguments(bundle);
+                }
+            } else if (extras.containsKey("startNewRequest") && extras.getBoolean("startNewRequest")) {
                 redirectFragment = NewRequestFragment_.builder().build();
-                redirectFragment.setArguments(bundle);
             }
         }
         super.onNewIntent(newIntent);

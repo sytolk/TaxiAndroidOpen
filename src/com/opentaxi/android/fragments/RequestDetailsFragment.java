@@ -87,6 +87,7 @@ public class RequestDetailsFragment extends BaseFragment {
     //private static final int EDIT_REQUEST = 10;
 
     private Regions[] regions;
+    private boolean toolTipShown = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -201,22 +202,25 @@ public class RequestDetailsFragment extends BaseFragment {
                                 // else Log.i(TAG, "mListener=null");
                             }
                         });
-                        Tooltip.make(mActivity,
-                                new Tooltip.Builder(102)
-                                        .anchor(car, Tooltip.Gravity.BOTTOM)
-                                        .closePolicy(new Tooltip.ClosePolicy()
-                                                .insidePolicy(true, false)
-                                                .outsidePolicy(true, false), 10000)
-                                        //.activateDelay(1800)
-                                        .showDelay(2000)
-                                        .text(mActivity.getString(R.string.private_request, newCRequest.getCarNumber()))
-                                        //.maxWidth(500)
-                                        .withArrow(true)
-                                        .withOverlay(true)
-                                        //.floatingAnimation(Tooltip.AnimationBuilder.SLOW)
-                                        .withStyleId(R.style.ToolTipLayoutCustomStyle)
-                                        .build()
-                        ).show();
+                        if (!toolTipShown && newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_DONE.getCode())) {
+                            toolTipShown = true;
+                            Tooltip.make(mActivity,
+                                    new Tooltip.Builder(102)
+                                            .anchor(car, Tooltip.Gravity.BOTTOM)
+                                            .closePolicy(new Tooltip.ClosePolicy()
+                                                    .insidePolicy(true, false)
+                                                    .outsidePolicy(true, false), 10000)
+                                            //.activateDelay(1800)
+                                            .showDelay(2000)
+                                            .text(mActivity.getString(R.string.private_request, newCRequest.getCarNumber()))
+                                            //.maxWidth(500)
+                                            .withArrow(true)
+                                            .withOverlay(true)
+                                            //.floatingAnimation(Tooltip.AnimationBuilder.SLOW)
+                                            .withStyleId(R.style.ToolTipLayoutCustomStyle)
+                                            .build()
+                            ).show();
+                        }
                     } //else Log.i(TAG, "newCRequest.getCarNumber:" + newCRequest.getCarNumber());
 
                     if (newCRequest.getPriceGroup() != null && newCRequest.getPriceGroup().getDescription() != null) {
@@ -415,13 +419,12 @@ public class RequestDetailsFragment extends BaseFragment {
                             requestFeedback.setNotes(comment.getText().toString());
                             requestFeedbackArr.add(requestFeedback);
                             //vote.put(feedback.getId(), ratingBar.getRating());
-                        }
-                        else Log.e(TAG, "no ratingBar found with id:" + feedback.getId());
+                        } else Log.e(TAG, "no ratingBar found with id:" + feedback.getId());
                     }
 
                     sendFeedBack(requestFeedbackArr);
                     dialog.dismiss();
-                    if (mListener!=null) mListener.startCarDetails(newCRequest.getRequestsId());
+                    if (mListener != null) mListener.startCarDetails(newCRequest.getRequestsId());
                 }
             });
 

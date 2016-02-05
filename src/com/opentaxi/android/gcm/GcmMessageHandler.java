@@ -10,6 +10,8 @@ import com.opentaxi.android.asynctask.ProcessMessageTask;
 import com.stil.generated.mysql.tables.pojos.CloudMessages;
 import com.stil.generated.mysql.tables.pojos.Messages;
 
+import java.io.Serializable;
+
 /**
  * Created by stanimir on 12/31/15.
  */
@@ -31,7 +33,7 @@ public class GcmMessageHandler extends GcmListenerService {
         if (cloudMsgId > 0) {
             Log.i("GcmMessageHandler", "Message id:" + cloudMsgId);
             //AppPreferences.getInstance().setLastCloudMessage(cloudMsgId);
-            AsyncTask<Context, Void, Messages> msgTask = new ProcessMessageTask(cloudMsgId);
+            AsyncTask<Context, Void, Serializable> msgTask = new ProcessMessageTask(cloudMsgId);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                 msgTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, this);

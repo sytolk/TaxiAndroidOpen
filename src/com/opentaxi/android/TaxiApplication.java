@@ -27,6 +27,7 @@ public class TaxiApplication extends Application { //extends MultiDexApplication
     private static Integer lastRequestId;
     private static boolean versionSend = false;
     private static boolean serversUpdated = false;
+    private static boolean msgVisible = false;
     private static String GCMRegistrationId;
 
     /*public static void setHavePlayService(boolean havePlayService) {
@@ -107,6 +108,18 @@ public class TaxiApplication extends Application { //extends MultiDexApplication
 
     public static void setServersUpdated(boolean serversUpdated) {
         TaxiApplication.serversUpdated = serversUpdated;
+    }
+
+    public static boolean isMsgVisible() {
+        return msgVisible;
+    }
+
+    public static void msgResumed() {
+        msgVisible = true;
+    }
+
+    public static void msgPaused() {
+        msgVisible = false;
     }
 
     public static String getGCMRegistrationId() {

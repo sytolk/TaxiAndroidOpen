@@ -148,8 +148,12 @@
     <string name="start_price">първоначална</string>
     <string name="stay_price">престой</string>
     <string name="options_help">Помочь</string>
+    <string name="from_taxi">от такси: %1$s</string>
     <string name="request_rejected">К сожалению заказ %1$s ( %2$s ) аннулируется.</string>
-    <string name="request_edited">Заказ %1$s ( %2$s ) обновлен.</string>
+    <string name="request_edited">Заказ:%1$s ( %2$s ) обновлен.</string>
+    <string name="private_request_rejected">К сожалению, номер заказа:%1$s ( %2$s ) была отклонена %3$s. Хотите, чтобы получить другую машину?</string>
+    <string name="request_aproved">Заказ:%1$s ( %2$s ) подтверждается %3$s</string>
+    <string name="request_invalid">Заказ:%1$s ( %2$s ) является недействительным. Пожалуйста, измените адрес вашего заказу.</string>
     <string name="action_sign_in">Войти</string>
     <string name="different_login">или</string>
     <string name="navigation_drawer_open">Открой меню</string>

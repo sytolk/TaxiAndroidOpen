@@ -1,10 +1,5 @@
 package com.opentaxi.android.fragments;
 
-import android.app.Activity;
-import android.content.Context;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;

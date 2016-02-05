@@ -12,11 +12,11 @@ import android.os.AsyncTask;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import com.opentaxi.android.MessageActivity;
+import com.opentaxi.android.MessageActivity_;
 import com.opentaxi.android.R;
 import com.opentaxi.android.utils.AppPreferences;
 import com.opentaxi.models.NewRequestDetails;
 import com.opentaxi.rest.RestClient;
-import com.stil.generated.mysql.tables.pojos.Advertisement;
 import com.stil.generated.mysql.tables.pojos.CloudMessages;
 import com.stil.generated.mysql.tables.pojos.Messages;
 import com.taxibulgaria.enums.MessagePriority;
@@ -25,6 +25,7 @@ import com.taxibulgaria.enums.RequestAction;
 import com.taxibulgaria.enums.RequestStatus;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URLDecoder;
 
 /**
@@ -34,7 +35,7 @@ import java.net.URLDecoder;
  * Time: 3:22 PM
  * developer STANIMIR MARINOV
  */
-public class ProcessMessageTask extends AsyncTask<Context, Void, Messages> {
+public class ProcessMessageTask extends AsyncTask<Context, Void, Serializable> {
 
     private static final String TAG = "ProcessMessageTask";
     private int cloudMsgId;
@@ -45,17 +46,26 @@ public class ProcessMessageTask extends AsyncTask<Context, Void, Messages> {
     }
 
     @Override
-    protected void onPostExecute(Messages messages) {
+    protected void onPostExecute(Serializable obj) {
         //might want to change "executed" for the returned string passed into onPostExecute() but that is upto you
-        if (messages != null) {
-            if (messages.getPriority() != null && messages.getPriority().equals(MessagePriority.IMPORTANT.getCode())) {
-                msg(messages);
-            } else generateNotification(messages);
+        if (obj != null) {
+            if (obj instanceof Messages) {
+                Messages messages = (Messages) obj;
+                if (MessagePriority.IMPORTANT.getCode().equals(messages.getPriority())) {
+                    msg(messages);
+                } else {
+                    generateNotification(messages);
+                    //Log.e(TAG, "ProcessMessage unknown MessagePriority=" + messages.getPriority());
+                }
+            } else if (obj instanceof NewRequestDetails) {
+                NewRequestDetails requestDetails = (NewRequestDetails) obj;
+                request(requestDetails);
+            }
         } else Log.e(TAG, "ProcessMessage onPostExecute messages=null");
     }
 
     @Override
-    protected Messages doInBackground(Context... params) {
+    protected Serializable doInBackground(Context... params) {
         if (params.length == 1) context = params[0];
         //Log.i(TAG, "ProcessMessage:" + cloudMsgId);
         if (AppPreferences.getInstance() != null) {
@@ -64,7 +74,7 @@ public class ProcessMessageTask extends AsyncTask<Context, Void, Messages> {
                 CloudMessages cloudMessages = RestClient.getInstance().getCloudMessage(cloudMsgId);
                 if (cloudMessages != null) {
                     Log.i(TAG, "ProcessMessage:" + cloudMessages.getClassName() + " msg:" + cloudMessages.getMsg());
-                    if (cloudMessages.getClassName().equals(NewRequestDetails.class.getName()) || cloudMessages.getClassName().equals(NewRequestDetails.class.getSimpleName())) {
+                    if (NewRequestDetails.class.getName().equals(cloudMessages.getClassName()) || NewRequestDetails.class.getSimpleName().equals(cloudMessages.getClassName())) {
 
                         NewRequestDetails request = null;
                         try {
@@ -73,34 +83,8 @@ public class ProcessMessageTask extends AsyncTask<Context, Void, Messages> {
                             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                         }
 
-                        if (request != null) {
-                            if (request.getStatus().equals(RequestStatus.NEW_REQUEST_DELETE.getCode())) { //DELETE REQUEST
-                                // generateNotification("Taxi", "поръчка " + request.getRequestsId(), "Съжаляваме но поръчка " + request.getRequestsId() + " (" + request.getFullAddress() + ") е отказана!");
-                                Messages messages = new Messages();
-                                messages.setMsg(context.getString(R.string.request_rejected, request.getRequestsId(), request.getFullAddress()));
-                                //messages.setPriority(MessagePriority.IMPORTANT.getCode());
-                                return messages;
-                            } else if (request.getStatus().equals(RequestStatus.NEW_REQUEST_EDIT.getCode())) { //EDIT REQUEST
-                                //msg("Поръчка " + request.getRequestsId() + " (" + request.getFullAddress() + ") е променена!");
-                                Messages messages = new Messages();
-                                messages.setMsg(context.getString(R.string.request_edited, request.getRequestsId(), request.getFullAddress()));
-                                //messages.setPriority(MessagePriority.IMPORTANT.getCode());
-                                return messages;
-                            } else if (request.getAcceptType().equals(RequestAcceptStatus.RI_TRANSFER_SUCCESS.getCode())) { //TRANSFER SUCCESSFUL
-                                //deleteRequest(request.getRequestsId(), context.getString(R.string.transfer_success, request.getFullAddress()));
-                            } else if (request.getAcceptType().equals(RequestAcceptStatus.RI_TRANSFER.getCode())) { //TRANSFER FAILED
-                                //messages.setMsg("Трансфера е неуспешен! Моля изпълнете заявката (" + AppPreferences.getInstance().getRequestText(request) + ")");
-                            } else { //NEW REQUEST
-                                Log.i(TAG, "New REQUEST msg");
-                                    /*AppPreferences.getInstance().setCarState(CarState.STATE_PROPOSAL.getCode());
-                                    Intent proposalIntent = new Intent(context, ProposalBoxActivity.class);
-                                    proposalIntent.putExtra(NewRequest.class.getName(), request);
-                                    proposalIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    proposalIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    context.startActivity(proposalIntent);*/
-                            }
-                        }
-                    } else if (cloudMessages.getClassName().equals(Messages.class.getName()) || cloudMessages.getClassName().equals(Messages.class.getSimpleName())) {
+                        if (request != null) return request;
+                    } else if (Messages.class.getName().equals(cloudMessages.getClassName()) || Messages.class.getSimpleName().equals(cloudMessages.getClassName())) {
                         try {
                             Messages messages = AppPreferences.getInstance().getMapper().readValue(cloudMessages.getMsg(), Messages.class);
                             messages.setMsg(URLDecoder.decode(messages.getMsg(), "UTF-8"));
@@ -110,8 +94,8 @@ public class ProcessMessageTask extends AsyncTask<Context, Void, Messages> {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                    } else if (cloudMessages.getClassName().equals(Advertisement.class.getName())) {
-                        Log.i(TAG, "New advertisement available");
+                    /*} else if (Advertisement.class.getName().equals(cloudMessages.getClassName())) {
+                        Log.i(TAG, "New advertisement available");*/
                     } else Log.e(TAG, "Unknown class:" + cloudMessages.getClassName());
 
                     AppPreferences.getInstance().setLastCloudMessage(cloudMsgId);
@@ -130,8 +114,18 @@ public class ProcessMessageTask extends AsyncTask<Context, Void, Messages> {
 
     private void msg(Messages messages) {
         //Log.i(TAG, "msg:" + messages.getMsg());
-        Intent msgIntent = new Intent(context, MessageActivity.class);
-        msgIntent.putExtra(Messages.class.getName(), messages);
+        Intent msgIntent = new Intent(context, MessageActivity_.class);
+        msgIntent.putExtra("messages", messages);
+        msgIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        msgIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(msgIntent);
+        playSound();
+    }
+
+
+    private void request(NewRequestDetails requestDetails) {
+        Intent msgIntent = new Intent(context, MessageActivity_.class);
+        msgIntent.putExtra("requestDetails", requestDetails);
         msgIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         msgIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(msgIntent);
@@ -160,7 +154,7 @@ public class ProcessMessageTask extends AsyncTask<Context, Void, Messages> {
 
             builder.setContentIntent(contentIntent)
                     .setSmallIcon(R.drawable.icon)
-                            //.setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.some_big_img))
+                    //.setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.some_big_img))
                     .setTicker(ticker)
                     .setWhen(System.currentTimeMillis())
                     .setAutoCancel(true)

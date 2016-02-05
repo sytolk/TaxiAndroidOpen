@@ -127,7 +127,7 @@
         </activity>
 
         <activity
-            android:name=".MessageActivity"
+            android:name=".MessageActivity_"
             android:allowTaskReparenting="false"
             android:taskAffinity=""
             android:excludeFromRecents="true"
