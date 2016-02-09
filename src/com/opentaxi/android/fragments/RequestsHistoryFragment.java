@@ -77,42 +77,44 @@ public class RequestsHistoryFragment extends BaseFragment {
 
     @UiThread
     void setAdapterUI(Regions[] regions) {
-        adapter = new RequestPagingAdapter(mActivity, regions, history);
+        if (isVisible()) {
+            adapter = new RequestPagingAdapter(mActivity, regions, history);
 
-        listView.setAdapter(adapter);
-        listView.setHasMoreItems(true);
-        listView.setPagingableListener(new PagingListView.Pagingable() {
-            @Override
-            public void onLoadMoreItems() {
-                loadMoreItems();
-            }
-        });
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Log.i(TAG, "setOnItemClickListener:" + parent.getItemAtPosition(position));
-                if (mListener != null) {
-                    NewCRequestDetails newCRequestDetails = new NewCRequestDetails();
-                    newCRequestDetails.setRequestsId((int) id);
-                    if (adapter != null) {
-                        NewCRequest newCRequest = adapter.getRequest(position);
-                        newCRequestDetails.setRegionId(newCRequest.getRegionId());
-                        newCRequestDetails.setFullAddress(newCRequest.getFullAddress());
-                        newCRequestDetails.setDatecreated(newCRequest.getDatecreated());
-                        newCRequestDetails.setRequestGroups(newCRequest.getRequestGroups());
-                        newCRequestDetails.setCarId(newCRequest.getCarId());
-                        newCRequestDetails.setCarNumber(newCRequest.getCarNumber());
-                        newCRequestDetails.setStatus(newCRequest.getStatus());
-                        //Log.i(TAG, "setOnItemClickListener:" + newCRequest);
-                    }
-
-                    mListener.startRequestDetails(newCRequestDetails);
+            listView.setAdapter(adapter);
+            listView.setHasMoreItems(true);
+            listView.setPagingableListener(new PagingListView.Pagingable() {
+                @Override
+                public void onLoadMoreItems() {
+                    loadMoreItems();
                 }
-            }
-        });
-        listView.setItemsCanFocus(true);
+            });
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    //Log.i(TAG, "setOnItemClickListener:" + parent.getItemAtPosition(position));
+                    if (mListener != null) {
+                        NewCRequestDetails newCRequestDetails = new NewCRequestDetails();
+                        newCRequestDetails.setRequestsId((int) id);
+                        if (adapter != null) {
+                            NewCRequest newCRequest = adapter.getRequest(position);
+                            newCRequestDetails.setRegionId(newCRequest.getRegionId());
+                            newCRequestDetails.setFullAddress(newCRequest.getFullAddress());
+                            newCRequestDetails.setDatecreated(newCRequest.getDatecreated());
+                            newCRequestDetails.setRequestGroups(newCRequest.getRequestGroups());
+                            newCRequestDetails.setCarId(newCRequest.getCarId());
+                            newCRequestDetails.setCarNumber(newCRequest.getCarNumber());
+                            newCRequestDetails.setStatus(newCRequest.getStatus());
+                            //Log.i(TAG, "setOnItemClickListener:" + newCRequest);
+                        }
+
+                        mListener.startRequestDetails(newCRequestDetails);
+                    }
+                }
+            });
+            listView.setItemsCanFocus(true);
+        }
     }
 
     @Background

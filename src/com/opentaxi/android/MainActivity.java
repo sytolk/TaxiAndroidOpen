@@ -185,9 +185,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     redirectFragment = NewRequestFragment_.builder().build();
                     redirectFragment.setArguments(bundle);
                 }
-            } else if (extras.containsKey("startNewRequest") && extras.getBoolean("startNewRequest")) {
-                redirectFragment = NewRequestFragment_.builder().build();
+            } else if (extras.containsKey("startRequestDetails")) {
+                NewCRequestDetails requestDetails = (NewCRequestDetails) extras.getSerializable("startRequestDetails");
+                if (requestDetails != null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("newCRequest", requestDetails);
+                    redirectFragment = RequestDetailsFragment_.builder().build();
+                    redirectFragment.setArguments(bundle);
+                }
             }
+            /*else if (extras.containsKey("startNewRequest") && extras.getBoolean("startNewRequest")) {
+                redirectFragment = NewRequestFragment_.builder().build();
+            }*/
         }
         super.onNewIntent(newIntent);
     }
@@ -296,7 +305,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onStart() {
         super.onStart();
-        EventBus.getDefault().register(this);
+        //EventBus.getDefault().register(this);
 
         if (lastKnownLocationObservable != null) {
             lastKnownLocationSubscription = lastKnownLocationObservable
@@ -340,7 +349,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onStop() {
-        EventBus.getDefault().unregister(this);
+        //EventBus.getDefault().unregister(this);
 
         if (updatableLocationSubscription != null) updatableLocationSubscription.unsubscribe();
         if (lastKnownLocationSubscription != null) lastKnownLocationSubscription.unsubscribe();
@@ -351,11 +360,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**
      * greenEvent after user login
      *
-     * @param users
      */
-    public void onEvent(Users users) {
+    /*public void onEvent(Users users) {
         //setServers();
-    }
+    }*/
 
     /*@Background
     void beforeStartUserPass() {

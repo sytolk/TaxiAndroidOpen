@@ -81,6 +81,9 @@ public class RequestDetailsFragment extends BaseFragment {
     Button feedBackButton;
 
     @ViewById
+    Button okButton;
+
+    @ViewById
     TextView state;
 
     //private static final int CAR_DETAILS = 9;
@@ -260,11 +263,13 @@ public class RequestDetailsFragment extends BaseFragment {
                         } else state.setText(statusCode);
 
 
-                        if (newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_DELETE.getCode())) {
+                        if (RequestStatus.NEW_REQUEST_DELETE.getCode().equals(newCRequest.getStatus())) {
                             rejectButton.setVisibility(View.GONE);
                             editButton.setVisibility(View.GONE);
                             feedBackButton.setVisibility(View.GONE);
-                        } else if (newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_BEGIN.getCode()) || newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_DONE.getCode())) {
+                        } else if (RequestStatus.NEW_REQUEST_BEGIN.getCode().equals(newCRequest.getStatus())
+                                || RequestStatus.NEW_REQUEST_DONE.getCode().equals(newCRequest.getStatus())
+                                || RequestStatus.ERROR_NO_FREE_CARS.getCode().equals(newCRequest.getStatus())) {
                             rejectButton.setVisibility(View.GONE);
                             editButton.setText(R.string.resend);
                             editButton.setVisibility(View.VISIBLE);
@@ -349,8 +354,10 @@ public class RequestDetailsFragment extends BaseFragment {
     void editButton() {
         TaxiApplication.requestsDetailsPaused();
         if (mListener != null) {
-            mListener.startEditRequest(newCRequest);
-            if (newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_BEGIN.getCode()) || newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_DONE.getCode())) {
+            if (RequestStatus.ERROR_NO_FREE_CARS.getCode().equals(newCRequest.getStatus())) {
+                refreshRequest(newCRequest.getRequestsId());
+                scheduleChangesSec();
+            } else if (RequestStatus.NEW_REQUEST_BEGIN.getCode().equals(newCRequest.getStatus()) || RequestStatus.NEW_REQUEST_DONE.getCode().equals(newCRequest.getStatus())) {
                 newCRequest.setRequestsId(null);
                 mListener.startEditRequest(newCRequest);
             } else mListener.startEditRequest(newCRequest);
@@ -359,6 +366,11 @@ public class RequestDetailsFragment extends BaseFragment {
         requestsIntent.putExtra("newCRequest", newCRequest);
         RequestDetailsFragment.this.startActivityForResult(requestsIntent, EDIT_REQUEST);
         finish();*/
+    }
+
+    @Background
+    void refreshRequest(Integer requestsId) {
+        RestClient.getInstance().refreshRequest(requestsId);
     }
 
     @Click

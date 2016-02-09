@@ -143,7 +143,7 @@
     <string name="from_taxi">from taxi number: %1$s</string>
     <string name="request_rejected">Sorry but request: %1$s ( %2$s ) is rejected.</string>
     <string name="request_edited">Request:%1$s ( %2$s ) is edited.</string>
-    <string name="private_request_rejected">Sorry but Request:%1$s ( %2$s ) is rejected for car. Do you want to call another taxi for this request?</string>
+    <string name="private_request_rejected">Sorry but Request:%1$s ( %2$s ) is rejected %3$s. Do you want to call another taxi for this request?</string>
     <string name="request_aproved">Request:%1$s ( %2$s ) is approved %3$s</string>
     <string name="request_invalid">Request:%1$s ( %2$s ) is invalid. Please change the address of you request.</string>
     <string name="action_sign_in">Sign In</string>

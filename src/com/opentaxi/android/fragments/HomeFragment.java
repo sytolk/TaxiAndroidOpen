@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.opentaxi.android.R;
 import com.opentaxi.android.TaxiApplication;
+import com.opentaxi.android.utils.AppPreferences;
 import com.opentaxi.android.utils.MessageEvent;
 import com.opentaxi.models.Users;
 import com.opentaxi.rest.RestClient;
@@ -64,6 +65,8 @@ public class HomeFragment extends BaseFragment {
     void afterViews() {
         PackageInfo packageInfo = getPackageInfo();
         if (packageInfo != null) version.setText(packageInfo.versionName);
+
+        showUser(AppPreferences.getInstance(mActivity).getUsers());
     }
 
     @Override
@@ -104,8 +107,25 @@ public class HomeFragment extends BaseFragment {
      * @param users
      */
     public void onEventMainThread(Users users) {
-        if (user != null && users != null) user.setText(users.getUsername());
+        EventBus.getDefault().removeStickyEvent(users);
+        showUser(users);
         updateServers();
+    }
+
+    private void showUser(Users users) {
+        if (user != null && users != null) {
+            StringBuilder userDetails = new StringBuilder();
+            if (users.getContact() != null) {
+                if (users.getContact().getFirstname() != null)
+                    userDetails.append(users.getContact().getFirstname());
+                if (users.getContact().getLastname() != null)
+                    userDetails.append(" ").append(users.getContact().getLastname());
+            }
+            if (userDetails.length() > 0)
+                user.setText(userDetails.toString());
+            else
+                user.setText(users.getUsername());
+        }
     }
 
     public void onEventMainThread(MessageEvent network) {

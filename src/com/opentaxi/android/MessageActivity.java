@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import com.opentaxi.models.NewCRequestDetails;
 import com.opentaxi.models.NewRequestDetails;
+import com.opentaxi.rest.RestClient;
 import com.stil.generated.mysql.tables.pojos.Messages;
 import com.taxibulgaria.enums.RequestAcceptStatus;
 import com.taxibulgaria.enums.RequestStatus;
@@ -56,6 +58,8 @@ public class MessageActivity extends Activity {
                     fromView.setText(fromTxt);
                 }
             }*/
+            okButton.setText(R.string.okbutton);
+            yesButton.setVisibility(View.GONE);
 
             dimDisplay();
         } else if (requestDetails != null) {
@@ -73,7 +77,7 @@ public class MessageActivity extends Activity {
                 msgText.setText(getString(R.string.request_invalid, requestDetails.getRequestsId(), requestDetails.getFullAddress()));
 
             } else if (RequestAcceptStatus.RI_PRIVATE_REQUEST.getCode().equals(requestDetails.getAcceptType())) { //Private rejected
-                msgText.setText(getString(R.string.private_request_rejected, requestDetails.getRequestsId(), requestDetails.getFullAddress()));
+                msgText.setText(getString(R.string.private_request_rejected, requestDetails.getRequestsId(), requestDetails.getFullAddress(), getTaxiNumber()));
 
                 okButton.setText(R.string.no);
                 yesButton.setVisibility(View.VISIBLE);
@@ -158,12 +162,29 @@ public class MessageActivity extends Activity {
         container();
         finish();
 
+        refreshRequest(requestDetails.getRequestsId());
+
+        NewCRequestDetails newCRequestDetails = new NewCRequestDetails();
+        newCRequestDetails.setRequestsId(requestDetails.getRequestsId());
+        newCRequestDetails.setRegionId(requestDetails.getRegionId());
+        newCRequestDetails.setFullAddress(requestDetails.getFullAddress());
+        newCRequestDetails.setDatecreated(requestDetails.getDatecreated());
+        //newCRequestDetails.setRequestGroups(requestDetails.getRequestGroups());
+        newCRequestDetails.setCarId(requestDetails.getCarId());
+        //newCRequestDetails.setCarNumber(requestDetails.getCarNumber());
+        newCRequestDetails.setStatus(requestDetails.getStatus());
+
         Intent i = new Intent(this, MainActivity_.class);
-        i.putExtra("startNewRequest", true);
+        i.putExtra("startRequestDetails", newCRequestDetails);
         i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
+    }
+
+    @Background
+    void refreshRequest(Integer requestsId) {
+        RestClient.getInstance().refreshRequest(requestsId);
     }
 
     @Touch

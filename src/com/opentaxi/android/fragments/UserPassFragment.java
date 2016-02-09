@@ -311,7 +311,7 @@ public class UserPassFragment extends BaseFragment implements
                 if (AppPreferences.getInstance() != null)
                     AppPreferences.getInstance().setUsers(user);
 
-                EventBus.getDefault().post(user);
+                EventBus.getDefault().postSticky(user);
                 if (mListener != null) mListener.startHome();
             } //else ActivationDialog();
         } else overFacebookLoginTime("Error");
@@ -524,7 +524,7 @@ public class UserPassFragment extends BaseFragment implements
                     if (e.getMessage() != null) Log.e(TAG, "Exception:" + e.getMessage());
                 }
                 //}
-                EventBus.getDefault().post(user);
+                EventBus.getDefault().postSticky(user);
                 startHome();
                 //Toast.makeText(UserPassActivity.this, "Влязохте в системата успешно!", Toast.LENGTH_LONG).show();
                 //finish();
