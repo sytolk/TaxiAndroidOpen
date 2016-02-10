@@ -11,8 +11,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.iconics.IconicsDrawable;
+import com.joanzapata.iconify.IconDrawable;
+import com.joanzapata.iconify.fonts.MaterialIcons;
 import com.opentaxi.android.R;
 import com.opentaxi.android.TaxiApplication;
 import com.opentaxi.models.NewCRequestDetails;
@@ -197,7 +197,8 @@ public class RequestDetailsFragment extends BaseFragment {
 
                     if (newCRequest.getCarNumber() != null && !newCRequest.getCarNumber().isEmpty()) {
                         car.setText((newCRequest.getNotes() != null ? newCRequest.getNotes() : "") + " №" + newCRequest.getCarNumber());
-                        Drawable icon = new IconicsDrawable(mActivity, GoogleMaterial.Icon.gmd_info).actionBar().colorRes(R.color.transparent_blue);
+                        Drawable icon = new IconDrawable(mActivity, MaterialIcons.md_info).colorRes(R.color.transparent_blue).sizeDp(30);
+                        //Drawable icon = new IconicsDrawable(mActivity, GoogleMaterial.Icon.gmd_info).actionBar().colorRes(R.color.transparent_blue);
                         car.setCompoundDrawablesWithIntrinsicBounds(null, null, icon, null);
                         car.setOnClickListener(new View.OnClickListener() {
                             public void onClick(View v) {

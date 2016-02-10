@@ -4,7 +4,6 @@
 
     <string name="show_map_text">Карта</string>
     <string name="exit">Выход</string>
-    <string name="request">Заказы</string>
 
     <string name="options_update">Обновление</string>
     <string name="options_exit">Выход</string>
@@ -165,4 +164,6 @@
     <string name="resend">Отправить Опять</string>
     <string name="driverRating">Рейтинг водитель:</string>
     <string name="carRating">Рейтинг машине:</string>
+    <string name="no_active_request">Нет активных заказов</string>
+    <string name="contactText">Ваше мнение очень важно для нас. Мы ценим ваше мнение и будет использовать его, чтобы сделать улучшения в нашем сервисе.</string>
 </resources>

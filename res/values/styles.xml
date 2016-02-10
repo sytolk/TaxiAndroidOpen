@@ -17,6 +17,11 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="BlackTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/black_color</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="ToolTipLayoutCustomStyle">
         <item name="ttlm_padding">20dip</item>
         <item name="ttlm_strokeColor">@color/timebase_color</item>

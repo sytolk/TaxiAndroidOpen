@@ -14,7 +14,9 @@ public class InstanceIdListener extends InstanceIDListenerService {
      */
     @Override
     public void onTokenRefresh() {
-        if (TaxiApplication.getGCMRegistrationId() == null)
+        //Log.i("onTokenRefresh", "Token:" + TaxiApplication.getGCMRegistrationId());
+        if (TaxiApplication.getGCMRegistrationId() == null) {
             startService(new Intent(this, GCMRegisterService.class));
+        }
     }
 }

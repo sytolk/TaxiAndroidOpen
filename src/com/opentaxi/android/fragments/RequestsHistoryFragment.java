@@ -1,10 +1,10 @@
 package com.opentaxi.android.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.TextView;
 import com.opentaxi.android.R;
 import com.opentaxi.android.TaxiApplication;
 import com.opentaxi.android.adapters.RequestPagingAdapter;
@@ -34,8 +34,8 @@ public class RequestsHistoryFragment extends BaseFragment {
     private static final String TAG = "RequestsHistoryFragment";
     //private static final int REQUEST_DETAILS = 100;
 
-    /*@ViewById(R.id.list_title)
-    TextView title;*/
+    @ViewById(R.id.list_title)
+    TextView title;
 
     @ViewById(R.id.paging_list_view)
     PagingListView listView;
@@ -78,10 +78,12 @@ public class RequestsHistoryFragment extends BaseFragment {
     @UiThread
     void setAdapterUI(Regions[] regions) {
         if (isVisible()) {
-            adapter = new RequestPagingAdapter(mActivity, regions, history);
-
-            listView.setAdapter(adapter);
+            title.setVisibility(View.VISIBLE);
+            /*if (!listView.hasMoreItems())*/
             listView.setHasMoreItems(true);
+
+            adapter = new RequestPagingAdapter(mActivity, regions, history);
+            listView.setAdapter(adapter);
             listView.setPagingableListener(new PagingListView.Pagingable() {
                 @Override
                 public void onLoadMoreItems() {
@@ -138,14 +140,15 @@ public class RequestsHistoryFragment extends BaseFragment {
     void showItems(RequestCView newItems) {
         //pbProgress.setVisibility(View.GONE);
         if (newItems != null) {
-            Log.i(TAG, "newItems page:" + pager);
+            //Log.i(TAG, "newItems page:" + pager);
             List<NewCRequest> newCRequest = newItems.getGridModel();
             if (newCRequest != null && newCRequest.size() > 0) {
                 pager++;
                 boolean hasMoreItems = newCRequest.size() == newItems.getRows();
                 listView.onFinishLoading(hasMoreItems, newCRequest);
+                title.setVisibility(View.GONE);
             } else {
-                Log.i(TAG, "newItems size=0");
+                //Log.i(TAG, "newItems size=0");
                 listView.onFinishLoading(false, null);
             }
         } //else Log.i(TAG, "newItems==null");

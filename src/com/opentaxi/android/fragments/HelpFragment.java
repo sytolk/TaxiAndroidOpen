@@ -1,12 +1,10 @@
-package com.opentaxi.android;
+package com.opentaxi.android.fragments;
 
 import android.app.Activity;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ViewById;
+import com.opentaxi.android.R;
+import org.androidannotations.annotations.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,8 +13,8 @@ import org.androidannotations.annotations.ViewById;
  * Time: 10:03 AM
  * To change this template use File | Settings | File Templates.
  */
-@EActivity(R.layout.links_layout)
-public class HelpActivity extends Activity {
+@EFragment(R.layout.links_layout)
+public class HelpFragment extends BaseFragment {
 
     //private static final String TAG = "LinksActivity";
 
@@ -59,7 +57,7 @@ public class HelpActivity extends Activity {
     }
 
     @Click
-    void backButton() {
-        finish();
+    void okButton() {
+        if(mListener!=null) mListener.startHome();
     }
 }

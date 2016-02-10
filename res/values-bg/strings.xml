@@ -4,7 +4,6 @@
 
     <string name="show_map_text">Карта</string>
     <string name="exit">Изход</string>
-    <string name="request">Активни Поръчки</string>
 
     <string name="options_update">Обновяване</string>
     <string name="options_exit">Изход</string>
@@ -116,7 +115,7 @@
     <string name="feedback">Обратна Връзка</string>
     <string name="feedback_request">Как оценявате вашете пътуване от ( %1$s )</string>
     <string name="request_history">История на поръчките</string>
-    <string name="active_requests">Активни поръчки</string>
+    <string name="active_requests">Активни Поръчки</string>
     <string name="execution_time">Време за изпълнение</string>
     <string name="car">Автомобил</string>
     <string name="filters">Филтри</string>
@@ -166,4 +165,6 @@
     <string name="resend">Изпрати Отново</string>
     <string name="driverRating">Рейтинг на шофьора:</string>
     <string name="carRating">Рейтинг на колата:</string>
+    <string name="no_active_request">Нямате активни поръчки</string>
+    <string name="contactText">Вашето мнение е много важно за нас. Ние ценим Вашето мнение и ще го използваме за да направим подобрения в нашата услуга.</string>
 </resources>

@@ -2,6 +2,8 @@ package com.opentaxi.android;
 
 import android.app.Application;
 import com.facebook.FacebookSdk;
+import com.joanzapata.iconify.Iconify;
+import com.joanzapata.iconify.fonts.MaterialModule;
 import com.opentaxi.android.utils.CrashReportSender;
 import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;
@@ -140,6 +142,8 @@ public class TaxiApplication extends Application { //extends MultiDexApplication
         }
 
         super.onCreate();
+
+        Iconify.with(new MaterialModule());
 
         FacebookSdk.sdkInitialize(getApplicationContext()); //this must be here! its have usage in MainActivity and UserPass
 

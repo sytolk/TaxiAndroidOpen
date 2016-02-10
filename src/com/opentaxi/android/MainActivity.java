@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -34,8 +33,8 @@ import com.google.android.gms.common.ErrorDialogFragment;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.*;
-import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.iconics.IconicsDrawable;
+import com.joanzapata.iconify.IconDrawable;
+import com.joanzapata.iconify.fonts.MaterialIcons;
 import com.opentaxi.android.asynctask.LogoutTask;
 import com.opentaxi.android.fragments.*;
 import com.opentaxi.android.service.CoordinatesService;
@@ -226,38 +225,57 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         navigationView.setNavigationItemSelectedListener(this);
 
+        navigationView.setItemIconTintList(null);
+
         Menu navMenu = navigationView.getMenu();
         if (navMenu != null) {
             MenuItem navHome = navMenu.findItem(R.id.nav_home);
             if (navHome != null)
-                navHome.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_home).actionBar().colorRes(R.color.material_deep_orange_700));
+                navHome.setIcon(new IconDrawable(this, MaterialIcons.md_home).colorRes(R.color.material_deep_orange_700).sizeDp(30));
+                //navHome.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_home).actionBar().colorRes(R.color.material_deep_orange_700));
 
             MenuItem navMap = navMenu.findItem(R.id.nav_map);
             if (navMap != null)
-                navMap.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_map).actionBar().colorRes(R.color.app_primary_dark));
+                navMap.setIcon(new IconDrawable(this, MaterialIcons.md_map).colorRes(R.color.app_primary_dark).sizeDp(30));
+                //navMap.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_map).actionBar().colorRes(R.color.app_primary_dark));
 
             MenuItem navRequest = navMenu.findItem(R.id.nav_request);
             if (navRequest != null)
-                navRequest.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_local_taxi).actionBar().colorRes(R.color.timebase_color));
+                navRequest.setIcon(new IconDrawable(this, MaterialIcons.md_local_taxi).colorRes(R.color.timebase_color).sizeDp(30));
+                //navRequest.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_local_taxi).actionBar().colorRes(R.color.timebase_color));
 
             MenuItem navHistory = navMenu.findItem(R.id.nav_history);
             if (navHistory != null)
-                navHistory.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_history).actionBar().colorRes(R.color.app_primary));
+                navHistory.setIcon(new IconDrawable(this, MaterialIcons.md_history).colorRes(R.color.app_primary).sizeDp(30));
+                //navHistory.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_history).actionBar().colorRes(R.color.app_primary));
 
             MenuItem navServers = navMenu.findItem(R.id.nav_servers);
             if (navServers != null)
-                navServers.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_cloud).actionBar().colorRes(R.color.transparent_blue));
+                navServers.setIcon(new IconDrawable(this, MaterialIcons.md_cloud).colorRes(R.color.transparent_blue).sizeDp(30));
+                //navServers.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_cloud).actionBar().colorRes(R.color.transparent_blue));
+
+            MenuItem navHelp = navMenu.findItem(R.id.options_help);
+            if (navHelp != null)
+                navHelp.setIcon(new IconDrawable(this, MaterialIcons.md_help).colorRes(R.color.app_primary_dark).sizeDp(30));
+                //navHelp.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_help).actionBar().colorRes(R.color.app_primary_dark));
+
+            MenuItem navFeedBack = navMenu.findItem(R.id.options_feedback);
+            if (navFeedBack != null)
+                navFeedBack.setIcon(new IconDrawable(this, MaterialIcons.md_contacts).colorRes(R.color.timebase_color).sizeDp(30));
 
             MenuItem navLog = navMenu.findItem(R.id.nav_send_log);
             if (navLog != null)
-                navLog.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_bug_report).actionBar().colorRes(R.color.red_color));
+                navLog.setIcon(new IconDrawable(this, MaterialIcons.md_bug_report).colorRes(R.color.red_color).sizeDp(30));
+               // navLog.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_bug_report).actionBar().colorRes(R.color.red_color));
 
             MenuItem navExit = navMenu.findItem(R.id.nav_exit);
             if (navExit != null)
-                navExit.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_exit_to_app).actionBar().colorRes(R.color.black_color));
+                navExit.setIcon(new IconDrawable(this, MaterialIcons.md_exit_to_app).colorRes(R.color.black_color).sizeDp(30));
+                //navExit.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_exit_to_app).actionBar().colorRes(R.color.black_color));
         }
 
-        fab.setIconDrawable(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_local_taxi).sizeDp(35).colorRes(R.color.label_color));
+        fab.setIconDrawable(new IconDrawable(this, MaterialIcons.md_local_taxi).colorRes(R.color.label_color).sizeDp(35));
+        //fab.setIconDrawable(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_local_taxi).sizeDp(35).colorRes(R.color.label_color));
 
         AppPreferences appPreferences = AppPreferences.getInstance(this);
         RestClient.getInstance().setSocketsType(appPreferences.getSocketType());
@@ -483,6 +501,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else if (id == R.id.nav_send_log) {
             RestClient.getInstance().clearCache();
             ACRA.getErrorReporter().handleSilentException(new Exception("Developer Report"));
+        } else if (id == R.id.options_help) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, HelpFragment_.builder().build())
+                    .addToBackStack(null)
+                    .commitAllowingStateLoss();
+        } else if (id == R.id.options_feedback) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, ContactsFragment_.builder().build())
+                    .addToBackStack(null)
+                    .commitAllowingStateLoss();
         } else if (id == R.id.nav_exit) {
             exitButton();
         }
@@ -601,9 +629,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             /*case R.id.options_server:
                 ServersActivity_.intent(this).startForResult(SERVER_CHANGE);
                 return true;*/
-            case R.id.options_help:
+           /* case R.id.options_help:
                 HelpActivity_.intent(this).startForResult(HELP);
-                return true;
+                return true;*/
             case R.id.options_exit:
                 //RestClient.getInstance().clearCache();
                 finish();

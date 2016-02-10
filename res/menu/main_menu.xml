@@ -5,9 +5,9 @@
           android:title="@string/options_server">
         &lt;!&ndash; app:showAsAction="always"&ndash;&gt;
     </item>-->
-    <item android:id="@+id/options_help"
+    <!--<item android:id="@+id/options_help"
           android:title="@string/options_help">
-    </item>
+    </item>-->
     <item android:id="@+id/options_exit"
           android:title="@string/options_exit">
     </item>

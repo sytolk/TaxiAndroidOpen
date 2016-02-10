@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:divider="?android:dividerHorizontal"
+              android:showDividers="middle"
+              android:theme="@style/BlackTextViewStyle">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/contactText"/>
+
+    <EditText
+        android:id="@+id/contactForm"
+        android:layout_width="fill_parent"
+        android:layout_height="0px"
+        android:layout_weight="1"
+        android:inputType="textMultiLine"
+        android:lines="5">
+        <requestFocus/>
+    </EditText>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:gravity="center_vertical"
+                  style="?android:buttonBarStyle">
+
+        <Button android:id="@+id/sendButton"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/send"
+                android:textSize="@dimen/main_button"
+                style="?android:attr/buttonBarButtonStyle"
+                android:textStyle="bold"/>
+    </LinearLayout>
+</LinearLayout>

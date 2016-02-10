@@ -8,8 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.iconics.IconicsDrawable;
+import com.joanzapata.iconify.IconDrawable;
+import com.joanzapata.iconify.fonts.MaterialIcons;
 import com.opentaxi.android.R;
 import com.opentaxi.models.NewCRequest;
 import com.paging.listview.PagingBaseAdapter;
@@ -134,9 +134,13 @@ public class RequestPagingAdapter extends PagingBaseAdapter<NewCRequest> {
         textView.setText(text);
         Drawable icon;
         if (history)
-            icon = new IconicsDrawable(context, GoogleMaterial.Icon.gmd_feedback).actionBar().colorRes(R.color.transparent_blue);
-        else
-            icon = new IconicsDrawable(context, GoogleMaterial.Icon.gmd_mode_edit).actionBar().colorRes(R.color.timebase_color);
+            icon = new IconDrawable(context, MaterialIcons.md_feedback).colorRes(R.color.transparent_blue).sizeDp(25);
+            //icon = new IconicsDrawable(context, GoogleMaterial.Icon.gmd_feedback).actionBar().colorRes(R.color.transparent_blue);
+        else {
+            icon = new IconDrawable(context, MaterialIcons.md_mode_edit).colorRes(R.color.timebase_color).sizeDp(25);
+            textView.setTextColor(R.color.black_color);
+        }
+            //icon = new IconicsDrawable(context, GoogleMaterial.Icon.gmd_mode_edit).actionBar().colorRes(R.color.timebase_color);
         textView.setCompoundDrawablesWithIntrinsicBounds(null, null, icon, null);
         return textView;
     }

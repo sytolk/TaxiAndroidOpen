@@ -171,12 +171,12 @@
             android:taskAffinity=""
             android:excludeFromRecents="true">
         </activity>-->
-        <activity
+        <!--<activity
             android:name=".HelpActivity_"
             android:allowTaskReparenting="false"
             android:taskAffinity=""
             android:excludeFromRecents="true">
-        </activity>
+        </activity>-->
 
         <!--osmap-->
         <!--<activity
@@ -275,6 +275,7 @@
             </intent-filter>
         </service>
         <service android:name=".service.CoordinatesService"/>
+        <service android:name=".gcm.GCMRegisterService"/>
 
         <!--<service android:name="com.littlefluffytoys.littlefluffylocationlibrary.LocationBroadcastService"/>
 

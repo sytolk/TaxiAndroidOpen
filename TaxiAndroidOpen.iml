@@ -36,6 +36,7 @@
       <sourceFolder url="file://$MODULE_DIR$/gen" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/annotations" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/r" isTestSource="false" generated="true" />
       <excludeFolder url="file://$MODULE_DIR$/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/target/generated-sources/aidl" />
       <excludeFolder url="file://$MODULE_DIR$/target/generated-sources/combined-assets" />
@@ -97,8 +98,8 @@
     <orderEntry type="library" name="Maven: com.parse.bolts:bolts-android:1.2.0" level="project" />
     <orderEntry type="library" name="Maven: com.github.nicolasjafelle:paginglistview:aar:1.3" level="project" />
     <orderEntry type="library" name="Maven: it.sephiroth.android.library.targettooltip:target-tooltip-library:aar:1.3.11" level="project" />
-    <orderEntry type="library" name="Maven: com.mikepenz:iconics-core:aar:2.5.5" level="project" />
-    <orderEntry type="library" name="Maven: com.mikepenz:google-material-typeface:aar:2.1.0.1.original" level="project" />
+    <orderEntry type="library" name="Maven: com.joanzapata.iconify:android-iconify:aar:2.1.1" level="project" />
+    <orderEntry type="library" name="Maven: com.joanzapata.iconify:android-iconify-material:aar:2.1.1" level="project" />
   </component>
   <component name="org.twodividedbyzero.idea.findbugs">
     <option name="_basePreferences">

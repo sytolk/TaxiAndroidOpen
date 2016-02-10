@@ -1,3 +1,4 @@
+/*
 package com.opentaxi.android.service;
 
 import android.app.IntentService;
@@ -21,3 +22,4 @@ public class GCMRegisterService extends IntentService {
         if (!success) Log.e("GCMRegisterService", "gcm not registered on server regId:" + regId);
     }
 }
+*/

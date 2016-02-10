@@ -4,7 +4,6 @@
 
     <string name="show_map_text">Map</string>
     <string name="exit">Exit</string>
-    <string name="request">Request</string>
 
     <string name="options_update">Update</string>
     <string name="options_exit">Exit</string>
@@ -157,4 +156,6 @@
     <string name="resend">Resend</string>
     <string name="driverRating">Driver Rating:</string>
     <string name="carRating">Car Rating:</string>
+    <string name="no_active_request">No Active Requests</string>
+    <string name="contactText">Your opinion is very important to us. We appreciate your feedback and will use it to make improvements in our service.</string>
 </resources>

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:divider="?android:dividerHorizontal"
+    android:showDividers="middle">
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -16,13 +18,20 @@
             />
     </ScrollView>
 
-    <Button
-        android:gravity="center"
-        android:id="@+id/backButton"
-        android:layout_width="250dp"
-        android:layout_height="65dp"
-        android:layout_marginLeft="10dp"
-        android:text="@string/back"
-        android:layout_gravity="center_horizontal"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        style="?android:buttonBarStyle">
 
+        <Button
+            android:id="@+id/okButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/okbutton"
+            android:textSize="@dimen/main_button"
+            style="?android:attr/buttonBarButtonStyle"/>
+
+    </LinearLayout>
 </LinearLayout>

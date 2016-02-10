@@ -30,13 +30,11 @@ import com.taxibulgaria.enums.RegionsType;
 import com.taxibulgaria.enums.RequestSource;
 import de.greenrobot.event.EventBus;
 import org.androidannotations.annotations.*;
-import org.androidannotations.api.BackgroundExecutor;
 
 import java.io.IOException;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -507,7 +505,7 @@ public class NewRequestFragment extends BaseFragment {
         //Log.i(TAG, "setAddress");
         if (this.mapRequest == null) { //to change address only first time
             if (location != null) {
-               // Date now = new Date();
+                // Date now = new Date();
                 //if (AppPreferences.getInstance().getGpsLastTime() > (now.getTime() - 600000)) {  //if last coordinates time is from 5 min interval
                 com.stil.generated.mysql.tables.pojos.NewRequest newRequest = RestClient.getInstance().getAddressByCoordinates(location.getLatitude(), location.getLongitude());
                 if (newRequest != null) { //todo wrong for varna addresses
@@ -664,6 +662,11 @@ public class NewRequestFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
         if (mListener != null) mListener.fabVisible(true);
+    }
+
+    @Click
+    void history() {
+        if (mListener != null) mListener.startRequests(true);
     }
 
     @Click

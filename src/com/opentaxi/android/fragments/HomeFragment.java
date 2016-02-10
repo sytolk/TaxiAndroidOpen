@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.opentaxi.android.R;
 import com.opentaxi.android.TaxiApplication;
+import com.opentaxi.android.gcm.GCMRegisterService;
 import com.opentaxi.android.utils.AppPreferences;
 import com.opentaxi.android.utils.MessageEvent;
 import com.opentaxi.models.Users;
@@ -107,9 +108,15 @@ public class HomeFragment extends BaseFragment {
      * @param users
      */
     public void onEventMainThread(Users users) {
-        EventBus.getDefault().removeStickyEvent(users);
+        //Log.i("onEventMainThread", "users:" + users.getUsername());
+
+        if (TaxiApplication.getGCMRegistrationId() == null) {
+            mActivity.startService(new Intent(mActivity, GCMRegisterService.class));
+            //Log.i("onEventMainThread", "startService:GCMRegisterService");
+        }// else Log.i("onEventMainThread", "getGCMRegistrationId:" + TaxiApplication.getGCMRegistrationId());
         showUser(users);
         updateServers();
+        EventBus.getDefault().removeStickyEvent(users);
     }
 
     private void showUser(Users users) {
