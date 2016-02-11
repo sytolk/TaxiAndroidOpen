@@ -236,7 +236,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             MenuItem navMap = navMenu.findItem(R.id.nav_map);
             if (navMap != null)
-                navMap.setIcon(new IconDrawable(this, MaterialIcons.md_map).colorRes(R.color.app_primary_dark).sizeDp(30));
+                navMap.setIcon(new IconDrawable(this, MaterialIcons.md_map).colorRes(R.color.label_color).sizeDp(30));
                 //navMap.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_map).actionBar().colorRes(R.color.app_primary_dark));
 
             MenuItem navRequest = navMenu.findItem(R.id.nav_request);
@@ -261,7 +261,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             MenuItem navFeedBack = navMenu.findItem(R.id.options_feedback);
             if (navFeedBack != null)
-                navFeedBack.setIcon(new IconDrawable(this, MaterialIcons.md_contacts).colorRes(R.color.timebase_color).sizeDp(30));
+                navFeedBack.setIcon(new IconDrawable(this, MaterialIcons.md_contacts).colorRes(R.color.blue_color).sizeDp(30));
 
             MenuItem navLog = navMenu.findItem(R.id.nav_send_log);
             if (navLog != null)

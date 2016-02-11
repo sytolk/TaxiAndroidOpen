@@ -741,6 +741,7 @@ public class NewRequestFragment extends BaseFragment {
 
             newRequest.setRequestGroups(filterGroups);
             newRequest.setSource(RequestSource.ANDROID.getCode());
+            newRequest.setStatus(newCRequest.getStatus());
 
             sendRequest(newRequest);
         } else {

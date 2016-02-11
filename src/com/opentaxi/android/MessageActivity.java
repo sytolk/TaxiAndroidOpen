@@ -61,7 +61,7 @@ public class MessageActivity extends Activity {
             okButton.setText(R.string.okbutton);
             yesButton.setVisibility(View.GONE);
 
-            dimDisplay();
+            //dimDisplay();
         } else if (requestDetails != null) {
 
             if (RequestStatus.NEW_REQUEST_DELETE.getCode().equals(requestDetails.getStatus())) { //DELETE REQUEST

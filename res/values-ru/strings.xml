@@ -30,6 +30,7 @@
     <string name="NEW_REQUEST_DELETE">Удаленные</string>
     <string name="NEW_REQUEST_SCHEDULED">Запланированные запрос</string>
     <string name="ERROR_NO_FREE_CARS">Нет доступных такси</string>
+    <string name="ERROR_INVALID_REQUEST">Ошибка неверный адрес</string>
 
     <string name="new_version">Новая версия</string>
 
@@ -166,4 +167,5 @@
     <string name="carRating">Рейтинг машине:</string>
     <string name="no_active_request">Нет активных заказов</string>
     <string name="contactText">Ваше мнение очень важно для нас. Мы ценим ваше мнение и будет использовать его, чтобы сделать улучшения в нашем сервисе.</string>
+    <string name="for_contacts">Контакт</string>
 </resources>

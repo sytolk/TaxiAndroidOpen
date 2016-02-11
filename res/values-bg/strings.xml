@@ -30,6 +30,7 @@
     <string name="NEW_REQUEST_DELETE">Изтрита</string>
     <string name="NEW_REQUEST_SCHEDULED">Планирана поръчка</string>
     <string name="ERROR_NO_FREE_CARS">Няма свободни коли</string>
+    <string name="ERROR_INVALID_REQUEST">Грешка невалиден адрес</string>
 
     <string name="new_version">Налична нова версия</string>
 
@@ -167,4 +168,5 @@
     <string name="carRating">Рейтинг на колата:</string>
     <string name="no_active_request">Нямате активни поръчки</string>
     <string name="contactText">Вашето мнение е много важно за нас. Ние ценим Вашето мнение и ще го използваме за да направим подобрения в нашата услуга.</string>
+    <string name="for_contacts">За контакти</string>
 </resources>

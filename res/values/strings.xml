@@ -40,6 +40,7 @@
     <string name="NEW_REQUEST_DELETE">Deleted</string>
     <string name="NEW_REQUEST_SCHEDULED">Scheduled request</string>
     <string name="ERROR_NO_FREE_CARS">No free cars</string>
+    <string name="ERROR_INVALID_REQUEST">Error invalid address</string>
 
     <string name="new_version">New version available</string>
 
@@ -158,4 +159,5 @@
     <string name="carRating">Car Rating:</string>
     <string name="no_active_request">No Active Requests</string>
     <string name="contactText">Your opinion is very important to us. We appreciate your feedback and will use it to make improvements in our service.</string>
+    <string name="for_contacts">Feedback</string>
 </resources>

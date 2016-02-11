@@ -14,7 +14,6 @@ import android.widget.*;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.MaterialIcons;
 import com.opentaxi.android.R;
-import com.opentaxi.android.TaxiApplication;
 import com.opentaxi.models.NewCRequestDetails;
 import com.opentaxi.rest.RestClient;
 import com.stil.generated.mysql.tables.pojos.Feedback;
@@ -104,7 +103,7 @@ public class RequestDetailsFragment extends BaseFragment {
 
     public void onPause() {
         super.onPause();
-        TaxiApplication.requestsDetailsPaused();
+        //TaxiApplication.requestsDetailsPaused();
         BackgroundExecutor.cancelAll("cancel_sec", true);
         BackgroundExecutor.cancelAll("cancel_changes", true);
         //finish();
@@ -113,7 +112,7 @@ public class RequestDetailsFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        TaxiApplication.requestsDetailsResumed();
+        //TaxiApplication.requestsDetailsResumed();
         scheduleChangesSec();
     }
 
@@ -142,7 +141,7 @@ public class RequestDetailsFragment extends BaseFragment {
     @Background(delay = 2000, id = "cancel_sec")
     void scheduleChangesSec() {
         try {
-            if (TaxiApplication.isRequestsDetailsVisible()) {
+            if (isVisible()) {//TaxiApplication.isRequestsDetailsVisible()) {
                 NewCRequestDetails cRequest = RestClient.getInstance().getRequestDetails(newCRequest.getRequestsId());
                 if (cRequest != null) newCRequest = cRequest;
                 showDetails();
@@ -155,7 +154,7 @@ public class RequestDetailsFragment extends BaseFragment {
     @Background(delay = 10000, id = "cancel_changes")
     void scheduleChanges() {
         try {
-            if (TaxiApplication.isRequestsDetailsVisible()) {
+            if (isVisible()) { //TaxiApplication.isRequestsDetailsVisible()) {
                 NewCRequestDetails cRequest = RestClient.getInstance().getRequestDetails(newCRequest.getRequestsId());
                 if (cRequest != null) newCRequest = cRequest;
                 showDetails();
@@ -167,7 +166,7 @@ public class RequestDetailsFragment extends BaseFragment {
 
     @UiThread
     void showDetails() {
-        if (isVisible() && TaxiApplication.isRequestsDetailsVisible()) {
+        if (isVisible()) { //&& TaxiApplication.isRequestsDetailsVisible()) {
             if (newCRequest != null && newCRequest.getRequestsId() != null) {
                 if (requestNumber != null) {
                     requestNumber.setText(newCRequest.getRequestsId().toString());
@@ -269,14 +268,24 @@ public class RequestDetailsFragment extends BaseFragment {
                             editButton.setVisibility(View.GONE);
                             feedBackButton.setVisibility(View.GONE);
                         } else if (RequestStatus.NEW_REQUEST_BEGIN.getCode().equals(newCRequest.getStatus())
-                                || RequestStatus.NEW_REQUEST_DONE.getCode().equals(newCRequest.getStatus())
-                                || RequestStatus.ERROR_NO_FREE_CARS.getCode().equals(newCRequest.getStatus())) {
+                                || RequestStatus.NEW_REQUEST_DONE.getCode().equals(newCRequest.getStatus())) {
                             rejectButton.setVisibility(View.GONE);
                             editButton.setText(R.string.resend);
                             editButton.setVisibility(View.VISIBLE);
                             feedBackButton.setVisibility(View.VISIBLE);
+                        } else if (RequestStatus.ERROR_NO_FREE_CARS.getCode().equals(newCRequest.getStatus())) {
+                            rejectButton.setVisibility(View.VISIBLE);
+                            editButton.setText(R.string.resend);
+                            editButton.setVisibility(View.VISIBLE);
+                            feedBackButton.setVisibility(View.GONE);
+                        } else if (RequestStatus.ERROR_INVALID_REQUEST.getCode().equals(newCRequest.getStatus())) {
+                            rejectButton.setVisibility(View.GONE);
+                            editButton.setText(R.string.change);
+                            editButton.setVisibility(View.VISIBLE);
+                            feedBackButton.setVisibility(View.GONE);
                         } else {
                             rejectButton.setVisibility(View.VISIBLE);
+                            editButton.setText(R.string.change);
                             editButton.setVisibility(View.VISIBLE);
                             feedBackButton.setVisibility(View.GONE);
                             scheduleChanges();
@@ -304,7 +313,7 @@ public class RequestDetailsFragment extends BaseFragment {
 
     @Click
     void okButton() {
-        TaxiApplication.requestsDetailsPaused();
+        //TaxiApplication.requestsDetailsPaused();
         if (mListener != null) {
             //mListener.startHome();
             if (newCRequest != null && RequestStatus.NEW_REQUEST_BEGIN.getCode().equals(newCRequest.getStatus()) || RequestStatus.NEW_REQUEST_DONE.getCode().equals(newCRequest.getStatus()) || RequestStatus.NEW_REQUEST_DELETE.getCode().equals(newCRequest.getStatus())) {
@@ -347,21 +356,26 @@ public class RequestDetailsFragment extends BaseFragment {
 
     @Background
     void rejectRequest(String reason) {
-        TaxiApplication.requestsDetailsPaused();
+        //TaxiApplication.requestsDetailsPaused();
         RestClient.getInstance().rejectRequest(newCRequest.getRequestsId(), reason);
     }
 
     @Click
     void editButton() {
-        TaxiApplication.requestsDetailsPaused();
+        //TaxiApplication.requestsDetailsPaused();
         if (mListener != null) {
             if (RequestStatus.ERROR_NO_FREE_CARS.getCode().equals(newCRequest.getStatus())) {
                 refreshRequest(newCRequest.getRequestsId());
-                scheduleChangesSec();
-            } else if (RequestStatus.NEW_REQUEST_BEGIN.getCode().equals(newCRequest.getStatus()) || RequestStatus.NEW_REQUEST_DONE.getCode().equals(newCRequest.getStatus())) {
+                //scheduleChangesSec();
+                mListener.startRequests(false);
+            } else if (RequestStatus.ERROR_INVALID_REQUEST.getCode().equals(newCRequest.getStatus())) {
+                Log.i(TAG, "ERROR_INVALID_REQUEST:" + newCRequest.getStatus());
+                mListener.startEditRequest(newCRequest);
+            } else { //RequestStatus.NEW_REQUEST_BEGIN.getCode().equals(newCRequest.getStatus()) || RequestStatus.NEW_REQUEST_DONE.getCode().equals(newCRequest.getStatus()
+                Log.i(TAG, "newCRequest.getStatus:" + newCRequest.getStatus());
                 newCRequest.setRequestsId(null);
                 mListener.startEditRequest(newCRequest);
-            } else mListener.startEditRequest(newCRequest);
+            }
         }
         /*Intent requestsIntent = new Intent(RequestDetailsFragment.this, EditRequestActivity_.class);
         requestsIntent.putExtra("newCRequest", newCRequest);

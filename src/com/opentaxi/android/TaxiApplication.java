@@ -23,7 +23,7 @@ public class TaxiApplication extends Application { //extends MultiDexApplication
     //private static boolean havePlayService = true;
     private static boolean requestsVisible = false;
     //private static boolean requestsHistory = false;
-    private static boolean requestsDetailsVisible = false;
+    //private static boolean requestsDetailsVisible = false;
     private static boolean userPassVisible = false;
     private static boolean mapVisible = false;
     private static Integer lastRequestId;
@@ -52,7 +52,7 @@ public class TaxiApplication extends Application { //extends MultiDexApplication
         requestsVisible = false;
     }
 
-    public static boolean isRequestsDetailsVisible() {
+    /*public static boolean isRequestsDetailsVisible() {
         return requestsDetailsVisible;
     }
 
@@ -62,7 +62,7 @@ public class TaxiApplication extends Application { //extends MultiDexApplication
 
     public static void requestsDetailsPaused() {
         requestsDetailsVisible = false;
-    }
+    }*/
 
     public static boolean isUserPassVisible() {
         return userPassVisible;
