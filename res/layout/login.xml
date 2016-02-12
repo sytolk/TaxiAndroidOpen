@@ -130,11 +130,11 @@
                     android:textColor="@color/black_color"
                     android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-                <com.google.android.gms.common.SignInButton
+                <!--<com.google.android.gms.common.SignInButton
                     android:id="@+id/g_sign_in_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="5dp"/>
+                    android:padding="5dp"/>-->
 
                 <com.facebook.login.widget.LoginButton
                     xmlns:fb="http://schemas.android.com/apk/res-auto"

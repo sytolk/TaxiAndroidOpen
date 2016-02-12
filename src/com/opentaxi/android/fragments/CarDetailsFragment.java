@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -89,7 +90,7 @@ public class CarDetailsFragment extends BaseFragment {
                 driverRatingLayout.setVisibility(View.VISIBLE);
             }
             this.cars = cars;
-        }
+        } else Log.i(TAG, "cars = null requestId:" + requestId);
     }
 
     @Click

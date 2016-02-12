@@ -33,4 +33,8 @@ public interface OnCommandListener {
     boolean playServicesConnected();
 
     void setBarTitle(String string);
+
+    void reloadMenu();
+
+    void startLostPassword();
 }

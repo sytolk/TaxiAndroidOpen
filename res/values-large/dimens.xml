@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="main_button">25sp</dimen>
+    <dimen name="fab_size_normal">65dp</dimen>
+    <dimen name="fab_icon_size">50dp</dimen>
 </resources>

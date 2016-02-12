@@ -194,37 +194,39 @@ public class RequestDetailsFragment extends BaseFragment {
                     if (destination != null) adr.append(" \\").append(destination).append("\\");
                     address.setText(adr.toString());
 
-                    if (newCRequest.getCarNumber() != null && !newCRequest.getCarNumber().isEmpty()) {
-                        car.setText((newCRequest.getNotes() != null ? newCRequest.getNotes() : "") + " №" + newCRequest.getCarNumber());
-                        Drawable icon = new IconDrawable(mActivity, MaterialIcons.md_info).colorRes(R.color.transparent_blue).sizeDp(30);
-                        //Drawable icon = new IconicsDrawable(mActivity, GoogleMaterial.Icon.gmd_info).actionBar().colorRes(R.color.transparent_blue);
-                        car.setCompoundDrawablesWithIntrinsicBounds(null, null, icon, null);
-                        car.setOnClickListener(new View.OnClickListener() {
-                            public void onClick(View v) {
-                                if (mListener != null) mListener.startCarDetails(newCRequest.getRequestsId());
-                                // else Log.i(TAG, "mListener=null");
+                    if (newCRequest.getCarId() != null) {
+                        if (newCRequest.getCarNumber() != null && !newCRequest.getCarNumber().isEmpty()) {
+                            car.setText((newCRequest.getNotes() != null ? newCRequest.getNotes() : "") + " №" + newCRequest.getCarNumber());
+                            Drawable icon = new IconDrawable(mActivity, MaterialIcons.md_info).colorRes(R.color.transparent_blue).sizeDp(30);
+                            //Drawable icon = new IconicsDrawable(mActivity, GoogleMaterial.Icon.gmd_info).actionBar().colorRes(R.color.transparent_blue);
+                            car.setCompoundDrawablesWithIntrinsicBounds(null, null, icon, null);
+                            car.setOnClickListener(new View.OnClickListener() {
+                                public void onClick(View v) {
+                                    if (mListener != null) mListener.startCarDetails(newCRequest.getRequestsId());
+                                    // else Log.i(TAG, "mListener=null");
+                                }
+                            });
+                            if (!toolTipShown && newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_DONE.getCode())) {
+                                toolTipShown = true;
+                                Tooltip.make(mActivity,
+                                        new Tooltip.Builder(102)
+                                                .anchor(car, Tooltip.Gravity.BOTTOM)
+                                                .closePolicy(new Tooltip.ClosePolicy()
+                                                        .insidePolicy(true, false)
+                                                        .outsidePolicy(true, false), 10000)
+                                                //.activateDelay(1800)
+                                                .showDelay(2000)
+                                                .text(mActivity.getString(R.string.private_request, newCRequest.getCarNumber()))
+                                                //.maxWidth(500)
+                                                .withArrow(true)
+                                                .withOverlay(true)
+                                                //.floatingAnimation(Tooltip.AnimationBuilder.SLOW)
+                                                .withStyleId(R.style.ToolTipLayoutCustomStyle)
+                                                .build()
+                                ).show();
                             }
-                        });
-                        if (!toolTipShown && newCRequest.getStatus().equals(RequestStatus.NEW_REQUEST_DONE.getCode())) {
-                            toolTipShown = true;
-                            Tooltip.make(mActivity,
-                                    new Tooltip.Builder(102)
-                                            .anchor(car, Tooltip.Gravity.BOTTOM)
-                                            .closePolicy(new Tooltip.ClosePolicy()
-                                                    .insidePolicy(true, false)
-                                                    .outsidePolicy(true, false), 10000)
-                                            //.activateDelay(1800)
-                                            .showDelay(2000)
-                                            .text(mActivity.getString(R.string.private_request, newCRequest.getCarNumber()))
-                                            //.maxWidth(500)
-                                            .withArrow(true)
-                                            .withOverlay(true)
-                                            //.floatingAnimation(Tooltip.AnimationBuilder.SLOW)
-                                            .withStyleId(R.style.ToolTipLayoutCustomStyle)
-                                            .build()
-                            ).show();
-                        }
-                    } //else Log.i(TAG, "newCRequest.getCarNumber:" + newCRequest.getCarNumber());
+                        } //else Log.i(TAG, "newCRequest.getCarNumber:" + newCRequest.getCarNumber());
+                    }
 
                     if (newCRequest.getPriceGroup() != null && newCRequest.getPriceGroup().getDescription() != null) {
                         price_group.setText(newCRequest.getPriceGroup().getDescription().replace(" ", "\n"));

@@ -155,12 +155,12 @@
             <type>aar</type>
         </dependency>
 
-        <dependency>
+        <!--<dependency>
             <groupId>com.google.android.gms</groupId>
             <artifactId>play-services-plus</artifactId>
             <version>${play-service-version}</version>
             <type>aar</type>
-        </dependency>
+        </dependency>-->
 
         <!--<dependency>
             <groupId>com.android.support</groupId>

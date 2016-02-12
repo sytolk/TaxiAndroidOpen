@@ -116,6 +116,7 @@ public class HomeFragment extends BaseFragment {
         }// else Log.i("onEventMainThread", "getGCMRegistrationId:" + TaxiApplication.getGCMRegistrationId());
         showUser(users);
         updateServers();
+        if (mListener != null) mListener.reloadMenu();
         EventBus.getDefault().removeStickyEvent(users);
     }
 

@@ -551,7 +551,7 @@ public class UserPassActivity extends AppCompatActivity implements
     void lostPassword() {
         //Log.i("lostPassword", "lostPassword");
 
-        LostPasswordActivity_.intent(this).startForResult(RESULT_LOST_PASSWORD);
+        LostPasswordFragment_.intent(this).startForResult(RESULT_LOST_PASSWORD);
     }
 
     @Background

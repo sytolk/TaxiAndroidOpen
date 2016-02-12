@@ -21,10 +21,12 @@ import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.FrameLayout;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -37,8 +39,10 @@ import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.MaterialIcons;
 import com.opentaxi.android.asynctask.LogoutTask;
 import com.opentaxi.android.fragments.*;
+import com.opentaxi.android.listeners.StatusDragListener;
 import com.opentaxi.android.service.CoordinatesService;
 import com.opentaxi.android.utils.AppPreferences;
+import com.opentaxi.android.utils.ViewTools;
 import com.opentaxi.models.CoordinatesLight;
 import com.opentaxi.models.MapRequest;
 import com.opentaxi.models.NewCRequestDetails;
@@ -65,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mTitle;
 
-    @ViewById(R.id.toolbar)
+    @ViewById(R.id.action_bar)
     Toolbar toolbar;
 
     @ViewById(R.id.drawer_layout)
@@ -76,6 +80,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @ViewById(R.id.fab)
     FloatingActionButton fab;
+
+    @ViewById(R.id.status_drop)
+    FrameLayout status_drop;
 
     private static final String TAG = "MainActivity";
 
@@ -208,6 +215,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setSupportActionBar(toolbar);
 
+        View titleView = ViewTools.findActionBarTitle(toolbar); //getWindow().getDecorView());
+        if (titleView != null) {
+            titleView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    drawer.openDrawer(Gravity.START);
+                }
+            });
+        } //else Log.w("MainActivity", "ActionBar's not found.");
+
         mDrawerToggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
 
@@ -232,32 +249,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             MenuItem navHome = navMenu.findItem(R.id.nav_home);
             if (navHome != null)
                 navHome.setIcon(new IconDrawable(this, MaterialIcons.md_home).colorRes(R.color.material_deep_orange_700).sizeDp(30));
-                //navHome.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_home).actionBar().colorRes(R.color.material_deep_orange_700));
+            //navHome.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_home).actionBar().colorRes(R.color.material_deep_orange_700));
 
             MenuItem navMap = navMenu.findItem(R.id.nav_map);
             if (navMap != null)
                 navMap.setIcon(new IconDrawable(this, MaterialIcons.md_map).colorRes(R.color.label_color).sizeDp(30));
-                //navMap.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_map).actionBar().colorRes(R.color.app_primary_dark));
+            //navMap.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_map).actionBar().colorRes(R.color.app_primary_dark));
 
             MenuItem navRequest = navMenu.findItem(R.id.nav_request);
             if (navRequest != null)
                 navRequest.setIcon(new IconDrawable(this, MaterialIcons.md_local_taxi).colorRes(R.color.timebase_color).sizeDp(30));
-                //navRequest.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_local_taxi).actionBar().colorRes(R.color.timebase_color));
+            //navRequest.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_local_taxi).actionBar().colorRes(R.color.timebase_color));
 
             MenuItem navHistory = navMenu.findItem(R.id.nav_history);
             if (navHistory != null)
                 navHistory.setIcon(new IconDrawable(this, MaterialIcons.md_history).colorRes(R.color.app_primary).sizeDp(30));
-                //navHistory.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_history).actionBar().colorRes(R.color.app_primary));
+            //navHistory.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_history).actionBar().colorRes(R.color.app_primary));
 
             MenuItem navServers = navMenu.findItem(R.id.nav_servers);
             if (navServers != null)
                 navServers.setIcon(new IconDrawable(this, MaterialIcons.md_cloud).colorRes(R.color.transparent_blue).sizeDp(30));
-                //navServers.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_cloud).actionBar().colorRes(R.color.transparent_blue));
+            //navServers.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_cloud).actionBar().colorRes(R.color.transparent_blue));
 
             MenuItem navHelp = navMenu.findItem(R.id.options_help);
             if (navHelp != null)
                 navHelp.setIcon(new IconDrawable(this, MaterialIcons.md_help).colorRes(R.color.app_primary_dark).sizeDp(30));
-                //navHelp.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_help).actionBar().colorRes(R.color.app_primary_dark));
+            //navHelp.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_help).actionBar().colorRes(R.color.app_primary_dark));
 
             MenuItem navFeedBack = navMenu.findItem(R.id.options_feedback);
             if (navFeedBack != null)
@@ -266,16 +283,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             MenuItem navLog = navMenu.findItem(R.id.nav_send_log);
             if (navLog != null)
                 navLog.setIcon(new IconDrawable(this, MaterialIcons.md_bug_report).colorRes(R.color.red_color).sizeDp(30));
-               // navLog.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_bug_report).actionBar().colorRes(R.color.red_color));
+            // navLog.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_bug_report).actionBar().colorRes(R.color.red_color));
 
             MenuItem navExit = navMenu.findItem(R.id.nav_exit);
             if (navExit != null)
                 navExit.setIcon(new IconDrawable(this, MaterialIcons.md_exit_to_app).colorRes(R.color.black_color).sizeDp(30));
-                //navExit.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_exit_to_app).actionBar().colorRes(R.color.black_color));
+            //navExit.setIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_exit_to_app).actionBar().colorRes(R.color.black_color));
+
+            reloadMenu();
         }
 
-        fab.setIconDrawable(new IconDrawable(this, MaterialIcons.md_local_taxi).colorRes(R.color.label_color).sizeDp(35));
+        fab.setIconDrawable(new IconDrawable(this, MaterialIcons.md_local_taxi).colorRes(R.color.label_color).sizeDp(45));
         //fab.setIconDrawable(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_local_taxi).sizeDp(35).colorRes(R.color.label_color));
+        status_drop.setOnDragListener(new StatusDragListener());
 
         AppPreferences appPreferences = AppPreferences.getInstance(this);
         RestClient.getInstance().setSocketsType(appPreferences.getSocketType());
@@ -284,6 +304,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (!checkUserLogin()) checkFbLogin();
     }
+
+    @LongClick(R.id.fab)
+    void statusLongClick(View clickedView) {
+        //Log.i(TAG,"LONG click");
+        clickedView.startDrag(null, new View.DragShadowBuilder(clickedView), fab, 0);
+        fab.setVisibility(View.INVISIBLE);
+    }
+
 
     /*private void checkUser() {
         if (AppPreferences.getInstance() != null) {
@@ -377,7 +405,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     /**
      * greenEvent after user login
-     *
      */
     /*public void onEvent(Users users) {
         //setServers();
@@ -436,7 +463,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Log.i("playServicesConnected", "No valid Google Play Services APK found.");
         }
     }*/
-
     public boolean playServicesConnected() {
         try {
             // Check that Google Play services is available
@@ -727,6 +753,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             //checkFbLogin();
             // Log.i(TAG, "startHome no user");
+            reloadMenu();
             fragment = UserPassFragment_.builder().build();
         }
 
@@ -888,6 +915,42 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setTitle(title);
     }
 
+    /**
+     * call it from UI
+     */
+    @Override
+    public void reloadMenu() {
+
+        if (navigationView != null) {
+            Menu navMenu = navigationView.getMenu();
+            if (navMenu != null) {
+                MenuItem navRequest = navMenu.findItem(R.id.nav_request);
+                MenuItem navHistory = navMenu.findItem(R.id.nav_history);
+                MenuItem navFeedBack = navMenu.findItem(R.id.options_feedback);
+                if (checkUserLogin()) {
+                    if (navRequest != null) navRequest.setVisible(true);
+                    if (navHistory != null) navHistory.setVisible(true);
+                    if (navFeedBack != null) navFeedBack.setVisible(true);
+                } else {
+                    if (navRequest != null) navRequest.setVisible(false);
+                    if (navHistory != null) navHistory.setVisible(false);
+                    if (navFeedBack != null) navFeedBack.setVisible(false);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void startLostPassword() {
+        if (!isFinishing()) {
+            android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            LostPasswordFragment fragment = LostPasswordFragment_.builder().build();
+            transaction.replace(R.id.fragment_container, fragment);
+            transaction.addToBackStack(null);
+            transaction.commitAllowingStateLoss();
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -1043,7 +1106,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void setTitle(CharSequence title) {
         mTitle = title;
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) actionBar.setTitle(mTitle);
+        if (actionBar != null) {
+            actionBar.setTitle(mTitle);
+            //actionBar.setIcon(R.drawable.icon);
+        }
     }
 
     @Override

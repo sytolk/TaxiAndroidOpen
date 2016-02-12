@@ -1,9 +1,9 @@
-package com.opentaxi.android;
+package com.opentaxi.android.fragments;
 
-import android.app.Activity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import com.opentaxi.android.R;
 import com.opentaxi.rest.RestClient;
 import org.androidannotations.annotations.*;
 
@@ -14,8 +14,8 @@ import org.androidannotations.annotations.*;
  * Time: 8:02 PM
  * To change this template use File | Settings | File Templates.
  */
-@EActivity(R.layout.lostpassword)
-public class LostPasswordActivity extends Activity {
+@EFragment(R.layout.lostpassword)
+public class LostPasswordFragment extends BaseFragment {
 
     @ViewById
     EditText userEmailField;
@@ -45,7 +45,13 @@ public class LostPasswordActivity extends Activity {
     @UiThread
     void result(Boolean result) {
         if (result == null) userEmailField.setError(getString(R.string.check_internet));
-        else if (result) finish();
-        else userEmailField.setError(getString(R.string.user_not_exist, userEmailField.getText().toString()));
+        else if (result) {
+            if (mListener != null) mListener.startHome();
+        } else userEmailField.setError(getString(R.string.user_not_exist, userEmailField.getText().toString()));
+    }
+
+    @Click
+    void sendButton(){
+        lostPass(userEmailField.getText().toString());
     }
 }

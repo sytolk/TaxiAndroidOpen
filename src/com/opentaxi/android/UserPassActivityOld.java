@@ -457,7 +457,7 @@ public class UserPassActivityOld extends Activity implements Validator.Validatio
     void lostPassword() {
         Log.i("lostPassword", "lostPassword");
 
-        LostPasswordActivity_.intent(this).startForResult(RESULT_LOST_PASSWORD);
+        LostPasswordFragment_.intent(this).startForResult(RESULT_LOST_PASSWORD);
     }
 
     @Background

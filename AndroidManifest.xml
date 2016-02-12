@@ -120,7 +120,7 @@
             android:excludeFromRecents="true">
         </activity>
         <activity
-            android:name=".LostPasswordActivity_"
+            android:name=".LostPasswordFragment_"
             android:allowTaskReparenting="false"
             android:taskAffinity=""
             android:excludeFromRecents="true">

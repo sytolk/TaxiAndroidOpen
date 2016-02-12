@@ -7,13 +7,15 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.LoaderManager;
 import android.app.ProgressDialog;
-import android.content.*;
+import android.content.CursorLoader;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -23,17 +25,9 @@ import android.widget.*;
 import com.facebook.*;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.Scopes;
-import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Scope;
-import com.google.android.gms.plus.Plus;
-import com.google.android.gms.plus.model.people.Person;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.TextRule;
-import com.opentaxi.android.LostPasswordActivity_;
 import com.opentaxi.android.NewClientActivity_;
 import com.opentaxi.android.R;
 import com.opentaxi.android.TaxiApplication;
@@ -62,8 +56,8 @@ import java.util.List;
  */
 @EFragment(R.layout.login)
 public class UserPassFragment extends BaseFragment implements
-        GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
+        //GoogleApiClient.ConnectionCallbacks,
+        //GoogleApiClient.OnConnectionFailedListener,
         LoaderManager.LoaderCallbacks<Cursor>,
         Validator.ValidationListener {
 
@@ -101,8 +95,8 @@ public class UserPassFragment extends BaseFragment implements
     /*@ViewById(R.id.clientLoginButton)
     Button clientLoginButton;*/
 
-    @ViewById(R.id.g_sign_in_button)
-    SignInButton mPlusSignInButton;
+    /*@ViewById(R.id.g_sign_in_button)
+    SignInButton mPlusSignInButton;*/
 
     @ViewById(R.id.facebookLoginButton)
     LoginButton facebookLoginButton;
@@ -111,7 +105,7 @@ public class UserPassFragment extends BaseFragment implements
     private CallbackManager callbackManager;
 
     /* Client used to interact with Google APIs. */
-    private GoogleApiClient mGoogleApiClient;
+    //private GoogleApiClient mGoogleApiClient;
     /* Request code used to invoke sign in user interactions. */
     private static final int RC_SIGN_IN = 0;
     /* Is there a ConnectionResult resolution in progress? */
@@ -158,15 +152,15 @@ public class UserPassFragment extends BaseFragment implements
         //clientLoginButton.setOnClickListener(this);
 
         //Google+ Login
-        mPlusSignInButton.setSize(SignInButton.SIZE_WIDE);
+        //mPlusSignInButton.setSize(SignInButton.SIZE_WIDE);
         //mPlusSignInButton.setOnClickListener(this);
 
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+        /*mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(Plus.API)
                 .addScope(new Scope(Scopes.PROFILE))
-                .build();
+                .build();*/
 
         List<String> fPermissions = new ArrayList<>();
         fPermissions.add("public_profile");
@@ -494,8 +488,8 @@ public class UserPassFragment extends BaseFragment implements
     @Click
     void lostPassword() {
         //Log.i("lostPassword", "lostPassword");
-
-        LostPasswordActivity_.intent(this).startForResult(RESULT_LOST_PASSWORD);
+        if (mListener != null) mListener.startLostPassword();
+        //LostPasswordFragment_.intent(this).startForResult(RESULT_LOST_PASSWORD);
     }
 
     @Background
@@ -580,7 +574,7 @@ public class UserPassFragment extends BaseFragment implements
     }
 
 
-    @Override
+    /*@Override
     public void onConnected(Bundle bundle) {
         mShouldResolve = false;
         getProfileInformation();
@@ -590,12 +584,12 @@ public class UserPassFragment extends BaseFragment implements
     public void onConnectionSuspended(int arg0) {
         ringProgressDialog.dismiss();
         mGoogleApiClient.connect();
-    }
+    }*/
 
     /**
      * Fetching user's information name, email, profile pic
      */
-    private void getProfileInformation() {
+    /*private void getProfileInformation() {
         ringProgressDialog.dismiss();
         if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
             Person currentPerson = Plus.PeopleApi
@@ -618,8 +612,7 @@ public class UserPassFragment extends BaseFragment implements
         } else {
             Toast.makeText(mActivity, "Person information is null", Toast.LENGTH_LONG).show();
         }
-    }
-
+    }*/
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
@@ -673,7 +666,7 @@ public class UserPassFragment extends BaseFragment implements
         userName.setAdapter(adapter);
     }
 
-    @Click
+    /*@Click
     void g_sign_in_button() {
 //        toastLoading.show();
         // User clicked the sign-in button, so begin the sign-in process and automatically
@@ -692,9 +685,9 @@ public class UserPassFragment extends BaseFragment implements
                 }
             }
         }).start();
-    }
+    }*/
 
-    @Override
+    /*@Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         // Could not connect to Google Play Services.  The user needs to select an account,
         // grant permissions or resolve an error in order to sign in. Refer to the javadoc for
@@ -720,6 +713,6 @@ public class UserPassFragment extends BaseFragment implements
         } else {
             // Show the signed-out UI
         }
-    }
+    }*/
 
 }

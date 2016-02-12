@@ -1,32 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group android:id="@+id/grpHome" android:checkableBehavior="single">
         <item android:id="@+id/nav_home"
-              android:title="@string/home"/>
+              android:title="@string/home"
+              android:checked="true"/>
+    </group>
+    <group android:id="@+id/grpMap" android:checkableBehavior="single">
         <item android:id="@+id/nav_map"
               android:title="@string/show_map_text"/>
+    </group>
+    <group android:id="@+id/grpReq" android:checkableBehavior="single">
         <item android:id="@+id/nav_request"
               android:title="@string/active_requests"/>
+    </group>
+    <group android:id="@+id/grpHistory" android:checkableBehavior="single">
         <item android:id="@+id/nav_history"
               android:title="@string/history"/>
+    </group>
+    <group android:id="@+id/grpServers" android:checkableBehavior="single">
         <item android:id="@+id/nav_servers"
               android:title="@string/options_server"/>
-        <!--<item android:id="@+id/nav_book_taxi" android:icon="@android:drawable/ic_menu_send"
-              android:title="@string/request_taxi"/>-->
     </group>
 
-    <item android:title="@string/user_preferences">
-        <menu>
-            <item android:id="@+id/options_help"
-                  android:title="@string/options_help"/>
-            <item android:id="@+id/options_feedback"
-                  android:title="@string/for_contacts"/>
-            <item android:id="@+id/nav_send_log"
-                  android:title="@string/options_send_log"/>
-            <item android:id="@+id/nav_exit"
-                  android:title="@string/exit"/>
-        </menu>
-    </item>
+    <!--<item android:title="@string/user_preferences">
+        <menu>-->
+    <group android:id="@+id/grpHelp" android:checkableBehavior="single">
+        <item android:id="@+id/options_help"
+              android:title="@string/options_help"/>
+    </group>
+    <group android:id="@+id/grpFeedback" android:checkableBehavior="single">
+        <item android:id="@+id/options_feedback"
+              android:title="@string/for_contacts"/>
+    </group>
+    <group android:id="@+id/grpLog" android:checkableBehavior="single">
+        <item android:id="@+id/nav_send_log"
+              android:title="@string/options_send_log"/>
+    </group>
+    <group android:id="@+id/grpExit" android:checkableBehavior="single">
+        <item android:id="@+id/nav_exit"
+              android:title="@string/exit"/>
+    </group>
+    <!--   </menu>
+   </item>-->
 
 </menu>

@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -9,6 +9,7 @@
         <!--<item name="colorAccent" tools:ignore="NewApi">#0092ff</item>
         <item name="colorPrimary" tools:ignore="NewApi">#ffcc00</item>
         <item name="colorPrimaryDark" tools:ignore="NewApi">#ff6600</item>-->
+        <!--<item name="android:actionBarSize">64dp</item>-->
     </style>
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
@@ -20,6 +21,12 @@
     <style name="BlackTextViewStyle" parent="android:Widget.TextView">
         <item name="android:textColor">@color/black_color</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="NavigationDrawerStyle">
+        <item name="android:textSize">20sp</item><!-- text size in menu-->
+        <item name="android:listPreferredItemHeightSmall">40dp</item><!-- item size in menu-->
+        <!--<item name="android:textStyle">bold</item>-->
     </style>
 
     <style name="ToolTipLayoutCustomStyle">

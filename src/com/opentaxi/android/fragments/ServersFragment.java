@@ -167,13 +167,19 @@ public class ServersFragment extends BaseFragment {
         if (user != null) {
             if (user.getId() != null && user.getId() > 0) {
                 AppPreferences.getInstance(mActivity).setUsers(user);
-                if (mListener != null) {
-                    mListener.startHome();
-                }
+                startHome();
             } else loginError("Грешно потребителско име или парола!");
             // Toast.makeText(UserPassActivity.this, "Грешно потребителско име или парола!", Toast.LENGTH_LONG).show();
 
         } else loginError("Грешка! Сигурни ли сте че имате връзка с интернет?");
+    }
+
+    @UiThread
+    void startHome() {
+        if (mListener != null) {
+            mListener.reloadMenu();
+            mListener.startHome();
+        }
     }
 
     @UiThread

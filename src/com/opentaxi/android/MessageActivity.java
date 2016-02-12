@@ -61,7 +61,7 @@ public class MessageActivity extends Activity {
             okButton.setText(R.string.okbutton);
             yesButton.setVisibility(View.GONE);
 
-            //dimDisplay();
+            dimDisplay();
         } else if (requestDetails != null) {
 
             if (RequestStatus.NEW_REQUEST_DELETE.getCode().equals(requestDetails.getStatus())) { //DELETE REQUEST
@@ -127,11 +127,12 @@ public class MessageActivity extends Activity {
 
     @UiThread(delay = 15000)
     void dimDisplay() {
-        if (!isFinishing() && TaxiApplication.isMsgVisible()) {
+        clearFlags();
+        /*if (!isFinishing() && TaxiApplication.isMsgVisible()) {
             WindowManager.LayoutParams params = getWindow().getAttributes();
             params.screenBrightness = 0.0f;// i needed to dim the display
             getWindow().setAttributes(params);
-        }
+        }*/
     }
 
     @Override
@@ -150,7 +151,7 @@ public class MessageActivity extends Activity {
     @Click
     void okButton() {
         clearFlags();
-        container();
+        //container();
         finish();
         //Intent intent = new Intent(MessageActivity.this, StilActivity.class);
         //MessageActivity.this.startActivityIfNeeded(intent, -1);
@@ -159,7 +160,7 @@ public class MessageActivity extends Activity {
     @Click
     void yesButton() {
         clearFlags();
-        container();
+        //container();
         finish();
 
         refreshRequest(requestDetails.getRequestsId());
@@ -187,7 +188,7 @@ public class MessageActivity extends Activity {
         RestClient.getInstance().refreshRequest(requestsId);
     }
 
-    @Touch
+    /*@Touch
     void container() {
         //Log.i("container","Click");
         if (!isFinishing() && TaxiApplication.isMsgVisible()) {
@@ -195,5 +196,5 @@ public class MessageActivity extends Activity {
             params.screenBrightness = 1f;
             getWindow().setAttributes(params);
         }
-    }
+    }*/
 }

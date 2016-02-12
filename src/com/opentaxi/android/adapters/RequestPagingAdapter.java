@@ -73,10 +73,12 @@ public class RequestPagingAdapter extends PagingBaseAdapter<NewCRequest> {
         row.append("\n");
 
         //CAR NUMBER
-        if (request.getCarNumber() != null && !request.getCarNumber().isEmpty()) {
-            row.append(context.getString(R.string.car)).append(": ");
-            if (request.getNotes() != null) row.append(request.getNotes());
-            row.append(" №").append(request.getCarNumber()).append("\n");
+        if (request.getCarId() != null) { //no car founded yet
+            if (request.getCarNumber() != null && !request.getCarNumber().isEmpty()) {
+                row.append(context.getString(R.string.car)).append(": ");
+                if (request.getNotes() != null) row.append(request.getNotes());
+                row.append(" №").append(request.getCarNumber()).append("\n");
+            }
         }
 
         Map<String, List<Groups>> groupsMap = request.getRequestGroups();
@@ -140,7 +142,7 @@ public class RequestPagingAdapter extends PagingBaseAdapter<NewCRequest> {
             icon = new IconDrawable(context, MaterialIcons.md_mode_edit).colorRes(R.color.timebase_color).sizeDp(25);
             textView.setTextColor(R.color.black_color);
         }
-            //icon = new IconicsDrawable(context, GoogleMaterial.Icon.gmd_mode_edit).actionBar().colorRes(R.color.timebase_color);
+        //icon = new IconicsDrawable(context, GoogleMaterial.Icon.gmd_mode_edit).actionBar().colorRes(R.color.timebase_color);
         textView.setCompoundDrawablesWithIntrinsicBounds(null, null, icon, null);
         return textView;
     }

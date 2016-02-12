@@ -13,7 +13,7 @@
                                                 android:layout_width="match_parent"
                                                 android:theme="@style/AppTheme.AppBarOverlay">
 
-        <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
+        <android.support.v7.widget.Toolbar android:id="@+id/action_bar"
                                            android:layout_width="match_parent" android:layout_height="wrap_content"
                                            android:minHeight="?attr/actionBarSize"
                                            android:background="?attr/colorPrimary"
@@ -52,16 +52,22 @@
         app:ico_size="48dp"
         android:layout_gravity="center|end"/>-->
 
-    <com.getbase.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        fab:fab_colorNormal="@color/yellow_color"
-        fab:fab_colorPressed="@color/white_color"
-        fab:fab_size="normal"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:scaleType="centerCrop"
-        android:visibility="invisible"/> <!--fab:fab_icon="@drawable/travel59"-->
+    <FrameLayout
+        android:id="@+id/status_drop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/yellow_color"
+            fab:fab_colorPressed="@color/white_color"
+            fab:fab_size="normal"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:scaleType="centerCrop"
+            android:visibility="invisible"/> <!--fab:fab_icon="@drawable/travel59"-->
+    </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>
