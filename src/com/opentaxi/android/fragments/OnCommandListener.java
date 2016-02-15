@@ -37,4 +37,6 @@ public interface OnCommandListener {
     void reloadMenu();
 
     void startLostPassword();
+
+    void startNewClient();
 }

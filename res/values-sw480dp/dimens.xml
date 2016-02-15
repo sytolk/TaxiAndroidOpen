@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="main_button">18sp</dimen>
+    <dimen name="title_size">28sp</dimen>
 </resources>

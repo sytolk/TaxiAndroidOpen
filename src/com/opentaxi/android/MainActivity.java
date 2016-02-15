@@ -21,12 +21,15 @@ import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -49,6 +52,7 @@ import com.opentaxi.models.NewCRequestDetails;
 import com.opentaxi.models.Users;
 import com.opentaxi.rest.RestClient;
 import com.stil.generated.mysql.tables.pojos.Cars;
+import com.taxibulgaria.enums.SecurityLevel;
 import de.greenrobot.event.EventBus;
 import it.sephiroth.android.library.tooltip.Tooltip;
 import org.acra.ACRA;
@@ -525,8 +529,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             //ServersActivity_.intent(this).startForResult(SERVER_CHANGE);
         } //else if (id == R.id.nav_book_taxi) NewRequestActivity_.intent(this).start();
         else if (id == R.id.nav_send_log) {
-            RestClient.getInstance().clearCache();
-            ACRA.getErrorReporter().handleSilentException(new Exception("Developer Report"));
+            buildAlertDebug();
         } else if (id == R.id.options_help) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, HelpFragment_.builder().build())
@@ -544,6 +547,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void buildAlertDebug() {
+        final android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+        builder.setMessage(R.string.send_log_title)
+                .setCancelable(true)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        RestClient.getInstance().clearCache();
+                        ACRA.getErrorReporter().handleSilentException(new Exception("Client Report"));
+                    }
+                })
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        dialog.dismiss();
+                    }
+                });
+        final android.support.v7.app.AlertDialog alert = builder.create();
+        alert.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button btnPositive = alert.getButton(Dialog.BUTTON_POSITIVE);
+                btnPositive.setTextSize(TypedValue.COMPLEX_UNIT_SP, 35);
+
+                Button btnNegative = alert.getButton(Dialog.BUTTON_NEGATIVE);
+                btnNegative.setTextSize(TypedValue.COMPLEX_UNIT_SP, 35);
+            }
+        });
+        alert.show();
+        TextView textView = (TextView) alert.findViewById(android.R.id.message);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 35);
     }
 
     // Define a DialogFragment that displays the error dialog
@@ -700,10 +734,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             if (!RestClient.getInstance().haveAuthorization()) { //autologin
                 try {
-                    /*if (SecurityLevel.HIGH.getCode().equals(AppPreferences.getInstance().getUsers().getCookieexpire()))
-                        RestClient.getInstance().setAuthHeadersSecure(user, pass);
-                    else*/
-                    RestClient.getInstance().setAuthHeaders(user, pass);
+                    if (SecurityLevel.HIGH.getCode().equals(AppPreferences.getInstance().getUsers().getCookieexpire()))
+                        RestClient.getInstance().setAuthHeadersEncoded(user, pass);
+                    else RestClient.getInstance().setAuthHeaders(user, pass);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -945,6 +978,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (!isFinishing()) {
             android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             LostPasswordFragment fragment = LostPasswordFragment_.builder().build();
+            transaction.replace(R.id.fragment_container, fragment);
+            transaction.addToBackStack(null);
+            transaction.commitAllowingStateLoss();
+        }
+    }
+
+    @Override
+    public void startNewClient() {
+        if (!isFinishing()) {
+            android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            NewClientFragment fragment = NewClientFragment_.builder().build();
             transaction.replace(R.id.fragment_container, fragment);
             transaction.addToBackStack(null);
             transaction.commitAllowingStateLoss();

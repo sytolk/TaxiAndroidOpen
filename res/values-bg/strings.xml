@@ -95,9 +95,7 @@
         ?
     </string>
     <string name="email_confirmation">Потвърждение на имейл</string>
-    <string name="new_account_confirmation">Вашият акунт е създаден успешно но е нужно да потвърдите имейла си ( %1$s ).
-        Това може да стане като кликнете на линка който ви изпратихме.
-    </string>
+    <string name="new_account_confirmation">Вашият акунт е създаден успешно но е нужно да потвърдите имейла си ( %1$s ).Това може да стане като кликнете на линка който ви изпратихме.</string>
     <string name="email_exist">Този имейл съществува</string>
     <string name="city_required">Града е задължително поле.</string>
     <string name="phone_required">Телефона е задължително поле.</string>
@@ -169,4 +167,5 @@
     <string name="no_active_request">Нямате активни поръчки</string>
     <string name="contactText">Вашето мнение е много важно за нас. Ние ценим Вашето мнение и ще го използваме за да направим подобрения в нашата услуга.</string>
     <string name="for_contacts">За контакти</string>
+    <string name="send_log_title">Изпращане на лог файла до програмистите?</string>
 </resources>

@@ -28,7 +28,6 @@ import com.facebook.login.widget.LoginButton;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.TextRule;
-import com.opentaxi.android.NewClientActivity_;
 import com.opentaxi.android.R;
 import com.opentaxi.android.TaxiApplication;
 import com.opentaxi.android.utils.AppPreferences;
@@ -481,8 +480,8 @@ public class UserPassFragment extends BaseFragment implements
     @Click
     void newClient() {
         //Log.i("newClient", "newClient");
-
-        NewClientActivity_.intent(this).startForResult(RESULT_NEW_CLIENT);
+        //NewClientActivity_.intent(this).startForResult(RESULT_NEW_CLIENT);
+        if (mListener != null) mListener.startNewClient();
     }
 
     @Click

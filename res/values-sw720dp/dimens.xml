@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="main_button">30sp</dimen>
+    <dimen name="title_size">48sp</dimen>
     <dimen name="activity_horizontal_margin">64dp</dimen>
     <dimen name="loginactivity_logo_from_login">50dp</dimen>
     <dimen name="fab_size_normal">90dp</dimen>

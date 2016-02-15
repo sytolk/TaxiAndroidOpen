@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:divider="?android:dividerHorizontal"
+    android:showDividers="middle">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/newClientsLayout"
-              android:layout_width="fill_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    <ProgressBar android:id="@+id/lost_progress" style="?android:attr/progressBarStyleLarge"
+                 android:layout_width="wrap_content" android:layout_height="wrap_content"
+                 android:layout_marginBottom="8dp" android:visibility="gone"/>
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -12,301 +17,188 @@
         android:layout_weight="1">
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin">
 
             <TextView
-                android:textSize="30dp"
+                android:textSize="@dimen/title_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/new_user"
-                android:layout_marginTop="30dp"
-                android:layout_alignParentRight="false"
                 android:layout_gravity="center"
-                android:layout_marginBottom="30dp"/>
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_margin="10dp">
-
-                <TextView
-                    android:id="@+id/newClientUserLabel"
-                    android:clickable="false"
-                    android:layout_width="0dip"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".5"
-                    android:text="@string/username"
-                    android:textStyle="bold"
-                    android:gravity="right"
-                    android:layout_marginRight="10dp"/>
-
+            <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+                                                           android:layout_height="wrap_content">
                 <EditText
-                    android:id="@id/userNameField"
-                    android:layout_width="0dip"
+                    android:id="@+id/userNameField"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawSelectorOnTop="true"
-                    android:layout_weight=".5"
-                    android:layout_marginRight="40dp"
-                    android:inputType="textPersonName">
-
+                    android:hint="@string/username"
+                    android:inputType="textPersonName"
+                    android:maxLines="1"
+                    android:padding="8dp"
+                    android:singleLine="true"
+                    android:textSize="@dimen/main_button"
+                    android:textColorHint="@color/white_color">
                     <requestFocus/>
                 </EditText>
-            </LinearLayout>
+            </android.support.design.widget.TextInputLayout>
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_margin="10dp">
-
-                <TextView
-                    android:id="@+id/passwordLabel"
-                    android:clickable="false"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".5"
-                    android:text="@string/password"
-                    android:textStyle="bold"
-                    android:gravity="right"
-                    android:layout_marginRight="10dp"/>
-
+            <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+                                                           android:layout_height="wrap_content">
                 <EditText
-                    android:id="@id/passwordField"
-                    android:layout_width="0dp"
+                    android:id="@+id/passwordField"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=""
-                    android:password="true"
-                    android:layout_weight=".5"
-                    android:layout_marginRight="40dp"
-                    android:inputType="textPassword"/>
-            </LinearLayout>
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:padding="8dp"
+                    android:singleLine="true"
+                    android:textSize="@dimen/main_button"
+                    android:textColorHint="@color/white_color">
+                </EditText>
+            </android.support.design.widget.TextInputLayout>
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_margin="10dp">
-
-                <TextView
-                    android:id="@+id/password2Label"
-                    android:clickable="false"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".5"
-                    android:text="@string/re_password"
-                    android:textStyle="bold"
-                    android:gravity="right"
-                    android:layout_marginRight="10dp"/>
-
+            <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+                                                           android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/password2Field"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=""
-                    android:password="true"
-                    android:layout_weight=".5"
-                    android:layout_marginRight="40dp"
-                    android:inputType="textPassword"/>
-            </LinearLayout>
+                    android:hint="@string/re_password"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:padding="8dp"
+                    android:singleLine="true"
+                    android:textSize="@dimen/main_button"
+                    android:textColorHint="@color/white_color">
+                </EditText>
+            </android.support.design.widget.TextInputLayout>
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_margin="10dp">
-
-                <TextView
-                    android:id="@+id/hintLabel"
-                    android:clickable="false"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".5"
-                    android:text="@string/password_hint"
-                    android:textStyle="bold"
-                    android:gravity="right"
-                    android:layout_marginRight="10dp"/>
-
+            <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+                                                           android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/passwordHint"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=""
-                    android:layout_weight=".5"
-                    android:layout_marginRight="40dp"
-                    android:inputType="textAutoCorrect"/>
-            </LinearLayout>
+                    android:hint="@string/password_hint"
+                    android:inputType="textAutoCorrect"
+                    android:maxLines="1"
+                    android:padding="8dp"
+                    android:singleLine="true"
+                    android:textSize="@dimen/main_button"
+                    android:textColorHint="@color/white_color">
+                </EditText>
+            </android.support.design.widget.TextInputLayout>
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_margin="10dp">
-
-                <TextView
-                    android:id="@+id/emailLabel"
-                    android:clickable="false"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".5"
-                    android:text="@string/email"
-                    android:textStyle="bold"
-                    android:gravity="right"
-                    android:layout_marginRight="10dp"/>
-
+            <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+                                                           android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/emailField"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=""
-                    android:layout_weight=".5"
-                    android:layout_marginRight="40dp"
-                    android:inputType="textEmailAddress"/>
-            </LinearLayout>
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:padding="8dp"
+                    android:singleLine="true"
+                    android:textSize="@dimen/main_button"
+                    android:textColorHint="@color/white_color">
+                </EditText>
+            </android.support.design.widget.TextInputLayout>
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_margin="10dp">
-
-                <TextView
-                    android:id="@+id/nameLabel"
-                    android:clickable="false"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".5"
-                    android:text="@string/firstname"
-                    android:textStyle="bold"
-                    android:gravity="right"
-                    android:layout_marginRight="10dp"/>
-
+            <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+                                                           android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/nameField"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=""
-                    android:layout_weight=".5"
-                    android:layout_marginRight="40dp"
-                    android:inputType="textPersonName"/>
-            </LinearLayout>
+                    android:hint="@string/firstname"
+                    android:inputType="textPersonName"
+                    android:maxLines="1"
+                    android:padding="8dp"
+                    android:singleLine="true"
+                    android:textSize="@dimen/main_button"
+                    android:textColorHint="@color/white_color">
+                </EditText>
+            </android.support.design.widget.TextInputLayout>
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_margin="10dp">
-
-                <TextView
-                    android:id="@+id/middleNameLabel"
-                    android:clickable="false"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".5"
-                    android:text="@string/surname"
-                    android:textStyle="bold"
-                    android:gravity="right"
-                    android:layout_marginRight="10dp"/>
-
+            <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+                                                           android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/middleName"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=""
-                    android:layout_weight=".5"
-                    android:layout_marginRight="40dp"
-                    android:inputType="textPersonName"/>
-            </LinearLayout>
+                    android:hint="@string/surname"
+                    android:inputType="textPersonName"
+                    android:maxLines="1"
+                    android:padding="8dp"
+                    android:singleLine="true"
+                    android:textSize="@dimen/main_button"
+                    android:textColorHint="@color/white_color">
+                </EditText>
+            </android.support.design.widget.TextInputLayout>
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_margin="10dp">
-
-                <TextView
-                    android:id="@+id/lastNameLabel"
-                    android:clickable="false"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".5"
-                    android:text="@string/family"
-                    android:textStyle="bold"
-                    android:gravity="right"
-                    android:layout_marginRight="10dp"/>
-
+            <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+                                                           android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/lastName"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=""
-                    android:layout_weight=".5"
-                    android:layout_marginRight="40dp"
-                    android:inputType="textPersonName"/>
-            </LinearLayout>
+                    android:hint="@string/family"
+                    android:inputType="textPersonName"
+                    android:maxLines="1"
+                    android:padding="8dp"
+                    android:singleLine="true"
+                    android:textSize="@dimen/main_button"
+                    android:textColorHint="@color/white_color">
+                </EditText>
+            </android.support.design.widget.TextInputLayout>
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_margin="10dp">
-
-                <TextView
-                    android:id="@+id/phoneLabel"
-                    android:clickable="false"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".5"
-                    android:text="@string/phone"
-                    android:textStyle="bold"
-                    android:gravity="right"
-                    android:layout_marginRight="10dp"/>
-
+            <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+                                                           android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/phoneNumber"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=""
-                    android:layout_weight=".5"
-                    android:layout_marginRight="40dp"
-                    android:inputType="phone"/>
-            </LinearLayout>
+                    android:hint="@string/phone"
+                    android:inputType="phone"
+                    android:maxLines="1"
+                    android:padding="8dp"
+                    android:singleLine="true"
+                    android:textSize="@dimen/main_button"
+                    android:textColorHint="@color/white_color">
+                </EditText>
+            </android.support.design.widget.TextInputLayout>
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_margin="10dp">
-
-                <TextView
-                    android:id="@+id/cityLabel"
-                    android:clickable="false"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".5"
-                    android:text="@string/city"
-                    android:textStyle="bold"
-                    android:gravity="right"
-                    android:layout_marginRight="10dp"/>
-
+            <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+                                                           android:layout_height="wrap_content">
                 <AutoCompleteTextView
                     android:id="@+id/cityName"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=""
-                    android:layout_weight=".5"
-                    android:layout_marginRight="40dp"
+                    android:hint="@string/city"
+                    android:inputType="textAutoComplete"
+                    android:maxLines="1"
+                    android:padding="8dp"
+                    android:singleLine="true"
+                    android:textSize="@dimen/main_button"
                     android:completionThreshold="1"
-                    android:inputType="textAutoComplete"/>
-            </LinearLayout>
+                    android:textColorHint="@color/white_color">
+                </AutoCompleteTextView>
+            </android.support.design.widget.TextInputLayout>
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:orientation="horizontal"
-                android:layout_margin="10dp">
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/userAgreement"
@@ -315,46 +207,34 @@
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
                     android:text="@string/agreement"
-                    android:gravity="right"/>
+                    android:gravity="end"/>
 
                 <CheckBox
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight=".5"
                     android:text="@string/accept_agreement"
                     android:id="@+id/iAgreeCheckBox"
-                    android:textColor="#ffffff"
-                    android:gravity="left"/>
+                    android:gravity="start"/>
 
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="90dp"
         android:orientation="horizontal"
-        android:layout_margin="10dp"
-        android:gravity="center_vertical">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight=".3"/>
+        android:gravity="center_vertical"
+        style="?android:buttonBarStyle">
 
         <Button
-            android:enabled="true"
             android:id="@+id/sendButton"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/send"
-            android:layout_weight=".3"
-            android:layout_marginRight="40dp"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight=".3"/>
+            android:textSize="@dimen/main_button"
+            style="?android:attr/buttonBarButtonStyle"/>
 
     </LinearLayout>
 </LinearLayout>

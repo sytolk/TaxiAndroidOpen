@@ -31,7 +31,7 @@
                 android:textColor="@color/app_primary"
                 android:textStyle="bold"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textSize="40sp"/>
+                android:textSize="@dimen/title_size"/>
 
             <LinearLayout
                 android:id="@+id/email_login_form"

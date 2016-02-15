@@ -94,8 +94,7 @@
     <string name="fb_login">Войти с Facebook</string>
     <string name="new_account_question">Хотите создать учетную запись пользователя в системе такси Болгарии?</string>
     <string name="email_confirmation">Подтверждение по электронной почте</string>
-    <string name="new_account_confirmation">Ваш аккаунт был успешно создан, но нужно подтвердить адрес электронной почты
-        ( %1$s ).Это может быть сделано, нажав на ссылку на который вы отправили.
+    <string name="new_account_confirmation">Ваш аккаунт был успешно создан, но нужно подтвердить адрес электронной почты ( %1$s ).Это может быть сделано, нажав на ссылку на который вы отправили.
     </string>
     <string name="email_exist">Этот адрес электронной существует</string>
     <string name="city_required">Город является обязательным полем.</string>
@@ -168,4 +167,5 @@
     <string name="no_active_request">Нет активных заказов</string>
     <string name="contactText">Ваше мнение очень важно для нас. Мы ценим ваше мнение и будет использовать его, чтобы сделать улучшения в нашем сервисе.</string>
     <string name="for_contacts">Контакт</string>
+    <string name="send_log_title">Отправить лог файл для разработчика?</string>
 </resources>
