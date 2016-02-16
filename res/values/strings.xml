@@ -161,4 +161,5 @@
     <string name="contactText">Your opinion is very important to us. We appreciate your feedback and will use it to make improvements in our service.</string>
     <string name="for_contacts">Feedback</string>
     <string name="send_log_title">Send log files?</string>
+    <string name="canceled">canceled</string>
 </resources>

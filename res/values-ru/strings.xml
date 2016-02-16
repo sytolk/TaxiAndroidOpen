@@ -168,4 +168,5 @@
     <string name="contactText">Ваше мнение очень важно для нас. Мы ценим ваше мнение и будет использовать его, чтобы сделать улучшения в нашем сервисе.</string>
     <string name="for_contacts">Контакт</string>
     <string name="send_log_title">Отправить лог файл для разработчика?</string>
+    <string name="canceled">отменен</string>
 </resources>

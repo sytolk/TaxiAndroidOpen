@@ -125,6 +125,9 @@ public class UserPassFragment extends BaseFragment implements
 
     @AfterViews
     void afterLoad() {
+
+        checkFbLogin();
+
         submitButton.setClickable(true);
         validator = new Validator(this);
         validator.setValidationListener(this);
@@ -181,11 +184,13 @@ public class UserPassFragment extends BaseFragment implements
             public void onCancel() {
                 Log.i(TAG, "facebookLoginButton onCancel");
                 //Toast.makeText(UserPassActivity.this, "User cancelled", Toast.LENGTH_SHORT).show();
+                overFacebookLoginTime(mActivity.getString(R.string.canceled));
             }
 
             @Override
             public void onError(FacebookException exception) {
                 Log.i(TAG, "facebookLoginButton onError", exception);
+                overFacebookLoginTime(mActivity.getString(R.string.exception));
                 //Toast.makeText(UserPassActivity.this, "Error on Login, check your facebook app_id", Toast.LENGTH_LONG).show();
             }
         });
@@ -193,8 +198,33 @@ public class UserPassFragment extends BaseFragment implements
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
+    @Background
+    void checkFbLogin() {
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        if (accessToken != null) {
+            showProgress(true);
+            Users user = RestClient.getInstance().FacebookLogin(accessToken.getToken());
+            if (user != null) { //user already exist
+                if (user.getId() != null && user.getId() > 0) {
+                    RestClient.getInstance().setAuthHeadersEncoded(user.getUsername(), user.getPassword());
+                    //showProgress(false);
+                    startHomeUI();
+                }
+            }
+        }
+    }
+
+    @UiThread
+    void startHomeUI() {
+        if (mListener != null) {
+            mListener.reloadMenu();
+            mListener.startHome();
+        }
+    }
+
     private void fbLoggedId(AccessToken accessToken) {
         final String token = accessToken.getToken();
+        showProgress(true);
         //AppPreferences.getInstance(getApplicationContext()).setAccessToken(token);
         GraphRequest request = GraphRequest.newMeRequest(accessToken,
                 new GraphRequest.GraphJSONObjectCallback() {
@@ -276,7 +306,7 @@ public class UserPassFragment extends BaseFragment implements
                             e.printStackTrace();
                         }
                         users.setfUsers(facebookUsers);
-                        showProgress(true);
+                        //showProgress(true);
                         createNewUser(users);
                                 /*Intent newClient = new Intent(UserPassActivity.this, NewClientActivity_.class);
                                 newClient.putExtra("newCUsers", users);
@@ -307,7 +337,7 @@ public class UserPassFragment extends BaseFragment implements
                 EventBus.getDefault().postSticky(user);
                 if (mListener != null) mListener.startHome();
             } //else ActivationDialog();
-        } else overFacebookLoginTime("Error");
+        } else overFacebookLoginTime(mActivity.getString(R.string.exception));
     }
 
     /*@UiThread
@@ -326,8 +356,9 @@ public class UserPassFragment extends BaseFragment implements
     /**
      * Shows the progress UI and hides the login form.
      */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private void showProgress(final boolean show) {
+    //@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    @UiThread
+    void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.

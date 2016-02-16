@@ -306,7 +306,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //checkUser();
         //playServicesConnected();
 
-        if (!checkUserLogin()) checkFbLogin();
+        //if (!checkUserLogin()) checkFbLogin();
     }
 
     @LongClick(R.id.fab)
@@ -752,7 +752,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    @Background
+    /*@Background
     void checkFbLogin() {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         if (accessToken != null) {
@@ -774,7 +774,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     void startHomeUI() {
         startHome();
         reloadMenu();
-    }
+    }*/
 
     @Override
     public void startHome() {
