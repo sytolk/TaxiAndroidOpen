@@ -31,7 +31,7 @@ Using project dependencies:
 
 [ACRA](https://github.com/ACRA/acra)
 
-![Package Dependency](https://github.com/sytolk/TaxiAndroidOpen/blob/master/doc/dependency.png)
+![Package Dependency](https://github.com/sytolk/TaxiAndroidOpen/blob/API14/doc/dependency.png)
 
 for map export view osmosis.txt in doc.
 
