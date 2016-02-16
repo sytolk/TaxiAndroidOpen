@@ -732,13 +732,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (user == null || user.isEmpty() || pass == null || pass.isEmpty()) {
             return false;
         } else {
+            /*Log.i(TAG, "user:" + user);
+            Log.i(TAG, "pass:" + pass);
+            Log.i(TAG, "getCookieexpire:" + AppPreferences.getInstance().getUsers().getCookieexpire());*/
             if (!RestClient.getInstance().haveAuthorization()) { //autologin
                 try {
-                    if (SecurityLevel.HIGH.getCode().equals(AppPreferences.getInstance().getUsers().getCookieexpire()))
+                    /*if (SecurityLevel.HIGH.getCode().equals(AppPreferences.getInstance().getUsers().getCookieexpire()))
                         RestClient.getInstance().setAuthHeadersEncoded(user, pass);
-                    else RestClient.getInstance().setAuthHeaders(user, pass);
+                    else */
+                    if (SecurityLevel.LOW.getCode().equals(AppPreferences.getInstance().getUsers().getCookieexpire()))
+                        RestClient.getInstance().setAuthHeaders(user, pass);
+                    else return false;
                 } catch (Exception e) {
                     e.printStackTrace();
+                    return false;
                 }
             }
             return true;
@@ -756,7 +763,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Users user = RestClient.getInstance().FacebookLogin(accessToken.getToken());
             if (user != null) { //user already exist
                 if (user.getId() != null && user.getId() > 0) {
-                    RestClient.getInstance().setAuthHeaders(user.getUsername(), user.getPassword());
+                    RestClient.getInstance().setAuthHeadersEncoded(user.getUsername(), user.getPassword());
                     startHomeUI();
                 }
             }
@@ -766,6 +773,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @UiThread
     void startHomeUI() {
         startHome();
+        reloadMenu();
     }
 
     @Override

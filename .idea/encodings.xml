@@ -4,7 +4,6 @@
     <file url="file://$PROJECT_DIR$/assets/patterns" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/assets/renderthemes" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/proguard.cfg" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/proguard.cfg.old" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/res/layout/show_address.xml" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/BubbleOverlay.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/com/opentaxi/android/LongPressMapAction.java" charset="UTF-8" />

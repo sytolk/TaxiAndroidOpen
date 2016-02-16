@@ -43,7 +43,7 @@ About translating, please visit https://hosted.weblate.org/projects/taxi-android
 
 ##License
 
-Copyright [2013] [Stanimir Marinov]
+Copyright [2016] [Stanimir Marinov]
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
