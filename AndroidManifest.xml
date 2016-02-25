@@ -236,20 +236,21 @@
             </intent-filter>
         </receiver>-->
 
+        <receiver android:name=".NetworkStateReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
+
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
 
                 <category android:name="com.opentaxi.android"/>
-            </intent-filter>
-        </receiver>
-
-        <receiver android:name=".NetworkStateReceiver">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
             </intent-filter>
         </receiver>
 
@@ -268,8 +269,8 @@
                 <action android:name="com.google.android.gms.iid.InstanceID"/>
             </intent-filter>
         </service>
-        <service android:name=".service.CoordinatesService"/>
-        <service android:name=".gcm.GCMRegisterService"/>
+        <service android:exported="false" android:name=".service.CoordinatesService"/>
+        <service android:exported="false" android:name=".gcm.GCMRegisterService"/>
 
         <!--<service android:name="com.littlefluffytoys.littlefluffylocationlibrary.LocationBroadcastService"/>
 
