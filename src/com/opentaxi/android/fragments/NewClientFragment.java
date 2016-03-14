@@ -57,21 +57,21 @@ public class NewClientFragment extends BaseFragment implements Validator.Validat
     @ViewById
     EditText lastName;
 
-    @TextRule(order = 5, minLength = 1, messageResId = R.string.city_required)
+    @TextRule(order = 7, minLength = 1, messageResId = R.string.city_required)
     @ViewById
     AutoCompleteTextView cityName;
 
-    @TextRule(order = 6, minLength = 1, messageResId = R.string.phone_required)
+    @TextRule(order = 8, minLength = 1, messageResId = R.string.phone_required)
     @ViewById
     EditText phoneNumber;
 
-    //@Required(order = 5)
-    @Email(order = 7, messageResId = R.string.email_not_valid)
+    @Required(order = 5)
+    @Email(order = 6, messageResId = R.string.email_not_valid)
     @ViewById(R.id.emailField)
     EditText email;
 
     //You must agree to the terms
-    @Checked(order = 8, messageResId = R.string.agree_required)
+    @Checked(order = 9, messageResId = R.string.agree_required)
     @ViewById
     CheckBox iAgreeCheckBox;
 
