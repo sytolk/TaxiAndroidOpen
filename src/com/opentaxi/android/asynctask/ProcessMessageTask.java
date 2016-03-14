@@ -73,7 +73,7 @@ public class ProcessMessageTask extends AsyncTask<Context, Void, Serializable> {
             if (lastCloudMessage == null || lastCloudMessage < cloudMsgId) {
                 CloudMessages cloudMessages = RestClient.getInstance().getCloudMessage(cloudMsgId);
                 if (cloudMessages != null) {
-                    Log.i(TAG, "ProcessMessage:" + cloudMessages.getClassName() + " msg:" + cloudMessages.getMsg());
+                    //Log.i(TAG, "ProcessMessage:" + cloudMessages.getClassName() + " msg:" + cloudMessages.getMsg());
                     if (NewRequestDetails.class.getName().equals(cloudMessages.getClassName()) || NewRequestDetails.class.getSimpleName().equals(cloudMessages.getClassName())) {
 
                         NewRequestDetails request = null;

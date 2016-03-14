@@ -25,6 +25,7 @@
         <option name="UPDATE_PROPERTY_FILES" value="true" />
         <option name="COMPILE_CUSTOM_GENERATED_SOURCES" value="false" />
         <option name="MAIN_DEX_LIST" value="$MODULE_DIR$/mainDexClasses.txt" />
+        <includeAssetsFromLibraries>true</includeAssetsFromLibraries>
         <resOverlayFolders>
           <path>/res-overlay</path>
         </resOverlayFolders>
@@ -38,7 +39,6 @@
       <sourceFolder url="file://$MODULE_DIR$/gen" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/annotations" isTestSource="false" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/r" isTestSource="false" generated="true" />
       <excludeFolder url="file://$MODULE_DIR$/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/target/generated-sources/aidl" />
       <excludeFolder url="file://$MODULE_DIR$/target/generated-sources/combined-assets" />
@@ -73,10 +73,12 @@
     <orderEntry type="library" name="Maven: com.google.android.gms:play-services-basement:aar:8.4.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.android.gms:play-services-gcm:aar:8.4.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.android.gms:play-services-measurement:aar:8.4.0" level="project" />
-    <orderEntry type="library" name="Maven: com.android.support:appcompat-v7:aar:23.1.1" level="project" />
-    <orderEntry type="library" name="Maven: com.android.support:support-v4:aar:23.1.1" level="project" />
-    <orderEntry type="library" name="Maven: com.android.support:design:aar:23.1.1" level="project" />
-    <orderEntry type="library" name="Maven: com.android.support:recyclerview-v7:aar:23.1.1" level="project" />
+    <orderEntry type="library" name="Maven: com.android.support:appcompat-v7:aar:23.2.1" level="project" />
+    <orderEntry type="library" name="Maven: com.android.support:support-v4:aar:23.2.1" level="project" />
+    <orderEntry type="library" name="Maven: com.android.support:animated-vector-drawable:aar:23.2.1" level="project" />
+    <orderEntry type="library" name="Maven: com.android.support:support-vector-drawable:aar:23.2.1" level="project" />
+    <orderEntry type="library" name="Maven: com.android.support:design:aar:23.2.1" level="project" />
+    <orderEntry type="library" name="Maven: com.android.support:recyclerview-v7:aar:23.2.1" level="project" />
     <orderEntry type="library" name="Maven: pl.charmas.android:android-reactive-location:aar:0.8" level="project" />
     <orderEntry type="library" name="Maven: io.reactivex:rxjava:1.0.14" level="project" />
     <orderEntry type="library" name="Maven: com.taxi-bulgaria.map:mapsforge:aar:0.6.0" level="project" />

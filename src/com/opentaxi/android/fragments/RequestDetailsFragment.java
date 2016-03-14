@@ -327,8 +327,8 @@ public class RequestDetailsFragment extends BaseFragment {
     @Click
     void rejectButton() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mActivity);
-        alertDialogBuilder.setTitle(getString(R.string.request_rejection));
-        alertDialogBuilder.setMessage(getString(R.string.request_reject_confirm, newCRequest.getFullAddress()));
+        alertDialogBuilder.setTitle(mActivity.getString(R.string.request_rejection));
+        alertDialogBuilder.setMessage(mActivity.getString(R.string.request_reject_confirm, newCRequest.getFullAddress()));
 
         // Set an EditText view to get user input
         final EditText input = new EditText(mActivity);
@@ -404,8 +404,8 @@ public class RequestDetailsFragment extends BaseFragment {
     void showFeedBack(final Feedback[] feedbacks) {
         if (feedbacks != null && newCRequest != null) {
             final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mActivity);
-            alertDialogBuilder.setTitle(getString(R.string.feedback));
-            alertDialogBuilder.setMessage(getString(R.string.feedback_request, newCRequest.getFullAddress()));
+            alertDialogBuilder.setTitle(mActivity.getString(R.string.feedback));
+            alertDialogBuilder.setMessage(mActivity.getString(R.string.feedback_request, newCRequest.getFullAddress()));
 
             final LinearLayout parent = new LinearLayout(mActivity);
             parent.setOrientation(LinearLayout.VERTICAL);
@@ -425,7 +425,7 @@ public class RequestDetailsFragment extends BaseFragment {
             }
 
             final TextView commentLabel = new TextView(mActivity);
-            commentLabel.setText(getString(R.string.your_comment));
+            commentLabel.setText(mActivity.getString(R.string.your_comment));
             parent.addView(commentLabel);
             final EditText comment = new EditText(mActivity);
             parent.addView(comment);
@@ -457,7 +457,7 @@ public class RequestDetailsFragment extends BaseFragment {
                 }
             });
 
-            alertDialogBuilder.setNeutralButton(getString(R.string.later), new DialogInterface.OnClickListener() {
+            alertDialogBuilder.setNeutralButton(mActivity.getString(R.string.later), new DialogInterface.OnClickListener() {
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {

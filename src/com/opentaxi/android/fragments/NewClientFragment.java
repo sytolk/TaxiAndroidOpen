@@ -134,7 +134,7 @@ public class NewClientFragment extends BaseFragment implements Validator.Validat
     @Background
     void checkUsername(String username) {
         Boolean exist = RestClient.getInstance().checkUserExist(username);
-        if (exist != null && exist) setUserError(getString(R.string.username_exist));
+        if (exist != null && exist) setUserError(mActivity.getString(R.string.username_exist));
         else {
             haveErrors = false;
         }
@@ -151,7 +151,7 @@ public class NewClientFragment extends BaseFragment implements Validator.Validat
     @Background
     void checkEmail(String emailCheck) {
         Boolean exist = RestClient.getInstance().checkEmailExist(emailCheck);
-        if (exist != null && exist) setEmailError(getString(R.string.email_exist));
+        if (exist != null && exist) setEmailError(mActivity.getString(R.string.email_exist));
         else {
             haveErrors = false;
         }
@@ -241,8 +241,8 @@ public class NewClientFragment extends BaseFragment implements Validator.Validat
     @UiThread
     void ActivationDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mActivity);
-        alertDialogBuilder.setTitle(getString(R.string.email_confirmation));
-        alertDialogBuilder.setMessage(getString(R.string.new_account_confirmation, email.getText().toString()));
+        alertDialogBuilder.setTitle(mActivity.getString(R.string.email_confirmation));
+        alertDialogBuilder.setMessage(mActivity.getString(R.string.new_account_confirmation, email.getText().toString()));
 
         alertDialogBuilder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
 

@@ -44,10 +44,10 @@ public class LostPasswordFragment extends BaseFragment {
 
     @UiThread
     void result(Boolean result) {
-        if (result == null) userEmailField.setError(getString(R.string.check_internet));
+        if (result == null) userEmailField.setError(mActivity.getString(R.string.check_internet));
         else if (result) {
             if (mListener != null) mListener.startHome();
-        } else userEmailField.setError(getString(R.string.user_not_exist, userEmailField.getText().toString()));
+        } else userEmailField.setError(mActivity.getString(R.string.user_not_exist, userEmailField.getText().toString()));
     }
 
     @Click
