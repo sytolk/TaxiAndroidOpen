@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Maven: pl.charmas.android:android-reactive-location:aar:0.8">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/gen-external-apklibs/pl.charmas.android_android-reactive-location_0.8/res" />
       <root url="jar://$PROJECT_DIR$/gen-external-apklibs/pl.charmas.android_android-reactive-location_0.8/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/gen-external-apklibs/pl.charmas.android_android-reactive-location_0.8/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$MAVEN_REPOSITORY$/pl/charmas/android/android-reactive-location/0.8/android-reactive-location-0.8-javadoc.jar!/" />

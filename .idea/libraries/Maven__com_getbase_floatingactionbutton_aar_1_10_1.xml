@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Maven: com.getbase:floatingactionbutton:aar:1.10.1">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/gen-external-apklibs/com.getbase_floatingactionbutton_1.10.1/res" />
       <root url="jar://$PROJECT_DIR$/gen-external-apklibs/com.getbase_floatingactionbutton_1.10.1/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/gen-external-apklibs/com.getbase_floatingactionbutton_1.10.1/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$MAVEN_REPOSITORY$/com/getbase/floatingactionbutton/1.10.1/floatingactionbutton-1.10.1-javadoc.jar!/" />

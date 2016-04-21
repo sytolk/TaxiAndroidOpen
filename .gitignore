@@ -35,9 +35,10 @@ captures/
 
 # Intellij
 *.iml
-.idea
+.idea/
 
 # Keystore files
 *.jks
 
-target
+target/
+gen-external-apklibs/
