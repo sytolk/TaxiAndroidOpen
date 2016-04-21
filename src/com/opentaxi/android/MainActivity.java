@@ -620,6 +620,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         // hide the notification after its selected
         noti.flags |= Notification.FLAG_AUTO_CANCEL;
+        noti.defaults |= Notification.DEFAULT_SOUND;
+        noti.defaults |= Notification.DEFAULT_VIBRATE;
 
         notificationManager.notify(0, noti);
     }
