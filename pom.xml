@@ -36,7 +36,7 @@
             <plugin>
                 <groupId>com.simpligility.maven.plugins</groupId>
                 <artifactId>android-maven-plugin</artifactId>
-                <version>4.4.1</version>
+                <version>4.4.2</version>
                 <extensions>true</extensions>
 
                 <executions>
@@ -46,6 +46,7 @@
                             <goal>manifest-merger</goal>
                         </goals>
                         <configuration>
+                            <release>true</release>
                             <manifestMerger>
                                 <versionName>1.0.35</versionName>
                                 <versionCode>35</versionCode>
@@ -107,7 +108,7 @@
         <dependency>
             <groupId>android</groupId>
             <artifactId>android</artifactId>
-            <version>6.0_r2</version>
+            <version>6.0_r3</version>
             <scope>provided</scope>
         </dependency>
 

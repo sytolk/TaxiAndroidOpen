@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Maven: com.github.nicolasjafelle:paginglistview:aar:1.3">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/gen-external-apklibs/com.github.nicolasjafelle_paginglistview_1.3/res" />
       <root url="jar://$PROJECT_DIR$/gen-external-apklibs/com.github.nicolasjafelle_paginglistview_1.3/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/gen-external-apklibs/com.github.nicolasjafelle_paginglistview_1.3/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$MAVEN_REPOSITORY$/com/github/nicolasjafelle/paginglistview/1.3/paginglistview-1.3-javadoc.jar!/" />

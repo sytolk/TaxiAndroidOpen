@@ -39,6 +39,7 @@
       <sourceFolder url="file://$MODULE_DIR$/gen" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/annotations" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/r" isTestSource="false" generated="true" />
       <excludeFolder url="file://$MODULE_DIR$/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/target/generated-sources/aidl" />
       <excludeFolder url="file://$MODULE_DIR$/target/generated-sources/combined-assets" />
@@ -54,9 +55,10 @@
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="jdk" jdkName="Maven Android API 23 Platform (1)" jdkType="Android SDK" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: android:android:6.0_r2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: android:android:6.0_r3" level="project" />
     <orderEntry type="library" name="Maven: com.taxi-bulgaria.rest:open-rest-client-a:1.0.5" level="project" />
     <orderEntry type="library" name="Maven: com.taxi-bulgaria.rest:open-rest-client:1.0.5" level="project" />
+    <orderEntry type="library" name="Maven: com.taxi-bulgaria.rest:pojos:1.0.4" level="project" />
     <orderEntry type="library" name="Maven: com.taxi-bulgaria.common:common:1.0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.android:spring-android-rest-template:2.0.0.M3" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.android:spring-android-core:2.0.0.M3" level="project" />
@@ -82,13 +84,13 @@
     <orderEntry type="library" name="Maven: pl.charmas.android:android-reactive-location:aar:0.8" level="project" />
     <orderEntry type="library" name="Maven: io.reactivex:rxjava:1.0.14" level="project" />
     <orderEntry type="library" name="Maven: com.taxi-bulgaria.map:mapsforge:aar:0.6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-map-android:master-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-map-reader:master-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-map:master-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-core:master-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-map-android-extras:0.6.1-rc2" level="project" />
+    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-map-android:0.6.1-rc2" level="project" />
+    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-map-reader:0.6.1-rc2" level="project" />
+    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-map:0.6.1-rc2" level="project" />
+    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-core:0.6.1-rc2" level="project" />
     <orderEntry type="library" name="Maven: net.sf.kxml:kxml2:2.3.0" level="project" />
     <orderEntry type="library" name="Maven: com.caverock:androidsvg:1.2.2-beta-1" level="project" />
-    <orderEntry type="library" name="Maven: org.mapsforge:mapsforge-map-android-extras:master-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.mobsandgeeks:android-saripaar:1.0.7-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.androidannotations:androidannotations:3.3.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.sun.codemodel:codemodel:2.6" level="project" />

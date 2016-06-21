@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Maven: it.sephiroth.android.library.targettooltip:target-tooltip-library:aar:1.3.11">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/gen-external-apklibs/it.sephiroth.android.library.targettooltip_target-tooltip-library_1.3.11/res" />
       <root url="jar://$PROJECT_DIR$/gen-external-apklibs/it.sephiroth.android.library.targettooltip_target-tooltip-library_1.3.11/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/gen-external-apklibs/it.sephiroth.android.library.targettooltip_target-tooltip-library_1.3.11/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$MAVEN_REPOSITORY$/it/sephiroth/android/library/targettooltip/target-tooltip-library/1.3.11/target-tooltip-library-1.3.11-javadoc.jar!/" />
