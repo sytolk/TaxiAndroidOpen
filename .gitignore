@@ -43,3 +43,4 @@ captures/
 
 target/
 gen-external-apklibs/
+.idea
