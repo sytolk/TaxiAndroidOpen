@@ -18,10 +18,10 @@ import com.opentaxi.android.TaxiApplication;
 import com.opentaxi.android.gcm.GCMRegisterService;
 import com.opentaxi.android.utils.AppPreferences;
 import com.opentaxi.android.utils.MessageEvent;
-import com.opentaxi.models.Users;
 import com.opentaxi.rest.RestClient;
 import com.stil.generated.mysql.tables.pojos.Servers;
 import com.taxibulgaria.enums.Applications;
+import com.taxibulgaria.rest.models.Users;
 import de.greenrobot.event.EventBus;
 import org.androidannotations.annotations.*;
 

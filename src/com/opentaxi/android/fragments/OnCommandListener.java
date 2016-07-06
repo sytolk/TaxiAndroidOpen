@@ -1,7 +1,7 @@
 package com.opentaxi.android.fragments;
 
-import com.opentaxi.models.NewCRequestDetails;
 import com.stil.generated.mysql.tables.pojos.Cars;
+import com.taxibulgaria.rest.models.NewCRequestDetails;
 
 /**
  * Created with IntelliJ IDEA.

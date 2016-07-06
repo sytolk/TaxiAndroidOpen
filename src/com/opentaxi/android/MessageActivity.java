@@ -7,12 +7,12 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-import com.opentaxi.models.NewCRequestDetails;
-import com.opentaxi.models.NewRequestDetails;
 import com.opentaxi.rest.RestClient;
 import com.stil.generated.mysql.tables.pojos.Messages;
 import com.taxibulgaria.enums.RequestAcceptStatus;
 import com.taxibulgaria.enums.RequestStatus;
+import com.taxibulgaria.rest.models.NewCRequestDetails;
+import com.taxibulgaria.rest.models.NewRequestDetails;
 import org.androidannotations.annotations.*;
 
 /**

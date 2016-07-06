@@ -21,13 +21,13 @@ import com.opentaxi.android.adapters.RegionsAdapter;
 import com.opentaxi.android.adapters.TaxiClientPricesAdapter;
 import com.opentaxi.android.utils.MyGeocoder;
 import com.opentaxi.models.MapRequest;
-import com.opentaxi.models.NewCRequestDetails;
-import com.opentaxi.models.NewRequestDetails;
 import com.opentaxi.rest.RestClient;
 import com.opentaxi.rest.RestClientBase;
 import com.stil.generated.mysql.tables.pojos.*;
 import com.taxibulgaria.enums.RegionsType;
 import com.taxibulgaria.enums.RequestSource;
+import com.taxibulgaria.rest.models.NewCRequestDetails;
+import com.taxibulgaria.rest.models.NewRequestDetails;
 import de.greenrobot.event.EventBus;
 import org.androidannotations.annotations.*;
 

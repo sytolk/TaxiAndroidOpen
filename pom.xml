@@ -88,6 +88,7 @@
                     <resourceDirectory>${project.basedir}/res</resourceDirectory>
                     <sdk>
                         <platform>${android-platform}</platform>
+                        <buildTools>23.0.3</buildTools>
                         <path>/home/stanimir/android-sdk-linux</path>
                     </sdk>
                     <emulator>
@@ -187,7 +188,7 @@
         <dependency>
             <groupId>pl.charmas.android</groupId>
             <artifactId>android-reactive-location</artifactId>
-            <version>0.8</version>
+            <version>0.9</version>
             <type>aar</type>
             <exclusions>
                 <exclusion>
@@ -201,7 +202,7 @@
             <groupId>com.taxi-bulgaria.map</groupId>
             <artifactId>mapsforge</artifactId>
             <type>aar</type>
-            <version>0.6.0</version>
+            <version>0.6.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>android.support</groupId>
@@ -219,14 +220,15 @@
         <dependency>
             <groupId>org.androidannotations</groupId>
             <artifactId>androidannotations</artifactId>
-            <version>3.3.2</version>
+            <version>4.0.0</version>
+            <!--<version>3.3.2</version>-->
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.androidannotations</groupId>
             <artifactId>androidannotations-api</artifactId>
-            <version>3.3.2</version>
+            <version>4.0.0</version>
         </dependency>
 
         <dependency>

@@ -9,7 +9,6 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 import com.opentaxi.android.R;
 import com.opentaxi.android.utils.AppPreferences;
-import com.opentaxi.models.Users;
 import com.opentaxi.rest.RestClient;
 import com.stil.generated.mysql.tables.pojos.Servers;
 import com.taxibulgaria.enums.UsersGroupEnum;
@@ -162,7 +161,7 @@ public class ServersFragment extends BaseFragment {
 
     @Background
     void login() {
-        Users user = RestClient.getInstance().Login();
+        com.taxibulgaria.rest.models.Users user = RestClient.getInstance().Login();
 
         if (user != null) {
             if (user.getId() != null && user.getId() > 0) {

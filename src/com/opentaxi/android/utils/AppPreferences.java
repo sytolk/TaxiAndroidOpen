@@ -7,7 +7,7 @@ import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.opentaxi.models.Users;
+import com.taxibulgaria.rest.models.Users;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;

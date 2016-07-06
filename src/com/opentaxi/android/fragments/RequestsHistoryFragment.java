@@ -8,13 +8,13 @@ import android.widget.TextView;
 import com.opentaxi.android.R;
 import com.opentaxi.android.TaxiApplication;
 import com.opentaxi.android.adapters.RequestPagingAdapter;
-import com.opentaxi.models.NewCRequest;
-import com.opentaxi.models.NewCRequestDetails;
-import com.opentaxi.models.RequestCView;
 import com.opentaxi.rest.RestClient;
 import com.paging.listview.PagingListView;
 import com.stil.generated.mysql.tables.pojos.Regions;
 import com.taxibulgaria.enums.RequestStatus;
+import com.taxibulgaria.rest.models.NewCRequest;
+import com.taxibulgaria.rest.models.NewCRequestDetails;
+import com.taxibulgaria.rest.models.RequestCView;
 import org.androidannotations.annotations.*;
 
 import java.util.List;

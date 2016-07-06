@@ -11,12 +11,12 @@ import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.*;
 import com.opentaxi.android.R;
 import com.opentaxi.android.utils.AppPreferences;
-import com.opentaxi.models.NewCUsers;
 import com.opentaxi.rest.RestClient;
 import com.stil.generated.mysql.tables.pojos.Contact;
 import com.stil.generated.mysql.tables.pojos.Contactaddress;
 import com.stil.generated.mysql.tables.pojos.Users;
 import com.taxibulgaria.enums.CommunicationMethod;
+import com.taxibulgaria.rest.models.NewCUsers;
 import org.androidannotations.annotations.*;
 
 /**
@@ -166,7 +166,7 @@ public class NewClientFragment extends BaseFragment implements Validator.Validat
                 RestClient.getInstance().setAuthHeaders(userPojo.getUsername(), userPojo.getPassword());
                 //facebook user exist
                 if (AppPreferences.getInstance() != null)
-                    AppPreferences.getInstance().setUsers(new com.opentaxi.models.Users(userPojo));
+                    AppPreferences.getInstance().setUsers(new com.taxibulgaria.rest.models.Users(userPojo));
                 finishThis();
             } else ActivationDialog();
         } else setUserError("Error, check you internet connection and try again.");

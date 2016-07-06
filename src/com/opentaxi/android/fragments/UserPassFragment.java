@@ -31,13 +31,13 @@ import com.mobsandgeeks.saripaar.annotation.TextRule;
 import com.opentaxi.android.R;
 import com.opentaxi.android.TaxiApplication;
 import com.opentaxi.android.utils.AppPreferences;
-import com.opentaxi.models.NewCUsers;
-import com.opentaxi.models.Users;
 import com.opentaxi.rest.RestClient;
 import com.stil.generated.mysql.tables.pojos.Contact;
 import com.stil.generated.mysql.tables.pojos.Contactaddress;
 import com.stil.generated.mysql.tables.pojos.FacebookUsers;
+import com.stil.generated.mysql.tables.pojos.Users;
 import com.taxibulgaria.enums.Gender;
+import com.taxibulgaria.rest.models.NewCUsers;
 import de.greenrobot.event.EventBus;
 import org.androidannotations.annotations.*;
 import org.json.JSONException;
@@ -329,7 +329,7 @@ public class UserPassFragment extends BaseFragment implements
         if (userPojo != null) {
             if (userPojo.getRecordstatus() != null && userPojo.getRecordstatus()) {  //account is already active (facebook)
                 RestClient.getInstance().setAuthHeadersEncoded(userPojo.getUsername(), userPojo.getPassword());
-                Users user = new Users(userPojo);
+                com.taxibulgaria.rest.models.Users user = new com.taxibulgaria.rest.models.Users(userPojo);
                 //facebook user exist
                 if (AppPreferences.getInstance() != null)
                     AppPreferences.getInstance().setUsers(user);
@@ -526,7 +526,7 @@ public class UserPassFragment extends BaseFragment implements
     void login(String username, String password) {
 
         Log.i("Login", "user:" + username + " pass:" + password);
-        Users user = RestClient.getInstance().Login(username, password);
+        com.taxibulgaria.rest.models.Users user = RestClient.getInstance().Login(username, password);
 
         if (user != null) {
             if (user.getId() != null && user.getId() > 0) {

@@ -11,11 +11,11 @@ import android.widget.TextView;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.MaterialIcons;
 import com.opentaxi.android.R;
-import com.opentaxi.models.NewCRequest;
 import com.paging.listview.PagingBaseAdapter;
 import com.stil.generated.mysql.tables.pojos.Groups;
 import com.stil.generated.mysql.tables.pojos.Regions;
 import com.taxibulgaria.enums.RequestStatus;
+import com.taxibulgaria.rest.models.NewCRequest;
 
 import java.text.DateFormat;
 import java.util.List;
