@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.location.Location;
 import android.net.ConnectivityManager;
@@ -13,6 +14,7 @@ import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -55,6 +57,7 @@ import de.greenrobot.event.EventBus;
 import it.sephiroth.android.library.tooltip.Tooltip;
 import org.acra.ACRA;
 import org.androidannotations.annotations.*;
+import org.mapsforge.map.android.util.AndroidSupportUtil;
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 import rx.Observable;
 import rx.Subscription;
@@ -62,7 +65,7 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 
 @EActivity(R.layout.main)
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnCommandListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnCommandListener, ActivityCompat.OnRequestPermissionsResultCallback  {
 
     private static final int REQUEST_USER_PASS_CODE = 10;
     public static final int HELP = 11;
@@ -104,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     //private boolean havePlayService = true;
+    private final byte PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +119,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Tell the activity we have menu items to contribute to the toolbar
         //setHasOptionsMenu(true);
 
+        if (AndroidSupportUtil.runtimePermissionRequiredForAccessFineLocation(getApplicationContext())) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        } else startLocationProvider();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+
+        //Log.i(TAG, "onRequestPermissionsResult requestCode:" + requestCode);
+
+        if (PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION == requestCode) {
+            if (grantResults.length == 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                startLocationProvider();
+                Log.i(TAG, "PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: PERMISSION_GRANTED");
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+    }
+
+    private void startLocationProvider() {
         try {
             if (playServicesConnected()) {
 

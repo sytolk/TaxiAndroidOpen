@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
+import com.google.gson.JsonSyntaxException;
 import com.opentaxi.android.MessageActivity_;
 import com.opentaxi.android.R;
 import com.opentaxi.android.utils.AppPreferences;
@@ -74,16 +75,17 @@ public class ProcessMessageTask extends AsyncTask<Context, Void, Serializable> {
                     if (NewRequestDetails.class.getName().equals(cloudMessages.getClassName()) || NewRequestDetails.class.getSimpleName().equals(cloudMessages.getClassName())) {
 
                         NewRequestDetails request = null;
+
                         try {
-                            request = AppPreferences.getInstance().getMapper().readValue(cloudMessages.getMsg(), NewRequestDetails.class);
+                            request = RestClient.getInstance().getObjectMapper().readValue(cloudMessages.getMsg(), NewRequestDetails.class); //fromJson
                         } catch (IOException e) {
-                            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                            e.printStackTrace();
                         }
 
                         if (request != null) return request;
                     } else if (Messages.class.getName().equals(cloudMessages.getClassName()) || Messages.class.getSimpleName().equals(cloudMessages.getClassName())) {
                         try {
-                            Messages messages = AppPreferences.getInstance().getMapper().readValue(cloudMessages.getMsg(), Messages.class);
+                            Messages messages = RestClient.getInstance().getObjectMapper().readValue(cloudMessages.getMsg(), Messages.class); //fromJson
                             messages.setMsg(URLDecoder.decode(messages.getMsg(), "UTF-8"));
                             return messages;
                         } catch (IOException e) {

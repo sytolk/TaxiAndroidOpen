@@ -6,7 +6,9 @@ import android.content.SharedPreferences;
 import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.gson.JsonSyntaxException;
+import com.opentaxi.rest.RestClient;
 import com.taxibulgaria.rest.models.Users;
 
 import javax.crypto.Cipher;
@@ -28,7 +30,7 @@ public class AppPreferences {
     private SharedPreferences appSharedPrefs;
     private SharedPreferences.Editor prefsEditor;
 
-    ObjectMapper mapper = new ObjectMapper();
+    //ObjectMapper mapper = new ObjectMapper();
 
     private static final String SOCKET_TYPE = "SOCKET_TYPE";
     private static final String MAP_FILE = "MAP_FILE";
@@ -81,7 +83,8 @@ public class AppPreferences {
             if (users == null) {
                 try {
                     String usersJson = appSharedPrefs.getString(Users.class.getSimpleName(), "");
-                    if (!usersJson.equals("")) users = mapper.readValue(usersJson, Users.class);
+                    if (!usersJson.equals(""))
+                        users = RestClient.getInstance().getObjectMapper().readValue(usersJson, Users.class); //.fromJson(usersJson, Users.class);
                     if (users == null) users = new Users();
                 } catch (IOException e) {
                     users = new Users();
@@ -102,10 +105,10 @@ public class AppPreferences {
             //if(getCarState().equals(CarState.STATE_INEFFICIENT.getCode())) setCarState(CarState.STATE_FREE.getCode());
             try {
                 this.prefsEditor = appSharedPrefs.edit();
-                prefsEditor.putString(Users.class.getSimpleName(), mapper.writeValueAsString(users));
+                prefsEditor.putString(Users.class.getSimpleName(), RestClient.getInstance().getObjectMapper().writeValueAsString(users)); //.toJson(users));
                 prefsEditor.apply();
                 //return !(this.users.getCurrCars() == null);
-            } catch (IOException e) {
+            } catch (JsonProcessingException e){ //IOException e) {
                 e.printStackTrace();
             }
             //}
@@ -182,9 +185,9 @@ public class AppPreferences {
         }*/
     }
 
-    public ObjectMapper getMapper() {
+    /*public ObjectMapper getMapper() {
         return mapper;
-    }
+    }*/
 
     public String getMapFile() {
         if (mapFile == null) {

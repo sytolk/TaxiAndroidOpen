@@ -399,7 +399,8 @@ public class NewRequestFragment extends BaseFragment {
                         cb.setChecked(true);
                         //Log.i(TAG, "checked:" + group.getName());
                     } //else Log.i(TAG, "groupsMap:" + groupsMap + " not contains:" + group.getName());
-                    llFilters.addView(cb);
+                    if (llFilters != null)
+                        llFilters.addView(cb);
                 }
             }
         }
@@ -453,51 +454,53 @@ public class NewRequestFragment extends BaseFragment {
 
     @UiThread
     void showPrices(TaxiClientPrices[] prices) {
-        TaxiClientPricesAdapter[] pricesAdapters;
-        if (prices != null && prices.length > 0) {
-            pricesPicker.setVisibility(View.VISIBLE);
-            pricesAdapters = new TaxiClientPricesAdapter[prices.length + 1];
+        if (pricesPicker != null) {
+            TaxiClientPricesAdapter[] pricesAdapters;
+            if (prices != null && prices.length > 0) {
+                pricesPicker.setVisibility(View.VISIBLE);
+                pricesAdapters = new TaxiClientPricesAdapter[prices.length + 1];
 
-            TaxiClientPrices all_prices = new TaxiClientPrices();
-            all_prices.setGroupsId(0);
-            all_prices.setShortname(mActivity.getString(R.string.all_prices));
-            pricesAdapters[0] = new TaxiClientPricesAdapter(all_prices);
+                TaxiClientPrices all_prices = new TaxiClientPrices();
+                all_prices.setGroupsId(0);
+                all_prices.setShortname(mActivity.getString(R.string.all_prices));
+                pricesAdapters[0] = new TaxiClientPricesAdapter(all_prices);
 
-            DecimalFormat df = new DecimalFormat();
-            df.setMaximumFractionDigits(2);
-            df.setMinimumFractionDigits(0);
-            df.setGroupingUsed(false);
+                DecimalFormat df = new DecimalFormat();
+                df.setMaximumFractionDigits(2);
+                df.setMinimumFractionDigits(0);
+                df.setGroupingUsed(false);
 
-            int i = 1;
-            for (TaxiClientPrices price : prices) {
-                StringBuilder priceString = new StringBuilder();
-                if (price.getShortname() != null) priceString.append(price.getShortname());
-                if (price.getDayPrice() != null)
-                    priceString.append(" ").append(mActivity.getString(R.string.day_price)).append(":").append(df.format(price.getDayPrice().setScale(2, RoundingMode.HALF_UP)));
-                if (price.getNightPrice() != null)
-                    priceString.append(" ").append(mActivity.getString(R.string.night_price)).append(":").append(df.format(price.getNightPrice().setScale(2, RoundingMode.HALF_UP)));
-                if (price.getStartPrice() != null)
-                    priceString.append(" ").append(mActivity.getString(R.string.start_price)).append(":").append(df.format(price.getStartPrice().setScale(2, RoundingMode.HALF_UP)));
-                if (price.getStayPrice() != null)
-                    priceString.append(" ").append(mActivity.getString(R.string.stay_price)).append(":").append(df.format(price.getStayPrice().setScale(2, RoundingMode.HALF_UP)));
-                price.setShortname(priceString.toString());
-                pricesAdapters[i] = new TaxiClientPricesAdapter(price);
-                i++;
+                int i = 1;
+                for (TaxiClientPrices price : prices) {
+                    StringBuilder priceString = new StringBuilder();
+                    if (price.getShortname() != null) priceString.append(price.getShortname());
+                    if (price.getDayPrice() != null)
+                        priceString.append(" ").append(mActivity.getString(R.string.day_price)).append(":").append(df.format(price.getDayPrice().setScale(2, RoundingMode.HALF_UP)));
+                    if (price.getNightPrice() != null)
+                        priceString.append(" ").append(mActivity.getString(R.string.night_price)).append(":").append(df.format(price.getNightPrice().setScale(2, RoundingMode.HALF_UP)));
+                    if (price.getStartPrice() != null)
+                        priceString.append(" ").append(mActivity.getString(R.string.start_price)).append(":").append(df.format(price.getStartPrice().setScale(2, RoundingMode.HALF_UP)));
+                    if (price.getStayPrice() != null)
+                        priceString.append(" ").append(mActivity.getString(R.string.stay_price)).append(":").append(df.format(price.getStayPrice().setScale(2, RoundingMode.HALF_UP)));
+                    price.setShortname(priceString.toString());
+                    pricesAdapters[i] = new TaxiClientPricesAdapter(price);
+                    i++;
+                }
+            } else {
+                pricesPicker.setVisibility(View.GONE);
+                Log.e(TAG, "prices=null");
+                pricesAdapters = new TaxiClientPricesAdapter[1];
+
+                TaxiClientPrices all_prices = new TaxiClientPrices();
+                all_prices.setGroupsId(0);
+                all_prices.setShortname(mActivity.getString(R.string.all_prices));
+                pricesAdapters[0] = new TaxiClientPricesAdapter(all_prices);
             }
-        } else {
-            pricesPicker.setVisibility(View.GONE);
-            Log.e(TAG, "prices=null");
-            pricesAdapters = new TaxiClientPricesAdapter[1];
 
-            TaxiClientPrices all_prices = new TaxiClientPrices();
-            all_prices.setGroupsId(0);
-            all_prices.setShortname(mActivity.getString(R.string.all_prices));
-            pricesAdapters[0] = new TaxiClientPricesAdapter(all_prices);
+            ArrayAdapter<TaxiClientPricesAdapter> adapter2 = new ArrayAdapter<TaxiClientPricesAdapter>(mActivity, R.layout.spinner_layout, pricesAdapters);
+            adapter2.setDropDownViewResource(R.layout.multiline_spinner_layout);
+            pricesPicker.setAdapter(adapter2);
         }
-
-        ArrayAdapter<TaxiClientPricesAdapter> adapter2 = new ArrayAdapter<TaxiClientPricesAdapter>(mActivity, R.layout.spinner_layout, pricesAdapters);
-        adapter2.setDropDownViewResource(R.layout.multiline_spinner_layout);
-        pricesPicker.setAdapter(adapter2);
     }
 
     @Background
@@ -705,19 +708,25 @@ public class NewRequestFragment extends BaseFragment {
                 Integer regionsId = null;
 
                 //if (city.equalsIgnoreCase("бургас") || city.equalsIgnoreCase("burgas") || city.equalsIgnoreCase("bourgas")) {
+                boolean foundRegion = false;
                 Regions[] regions = RestClient.getInstance().getRegions();//RegionsType.BURGAS_STATE.getCode()); //todo in background
                 if (regions != null) {
                     for (Regions regionObj : regions) {
                         if (regionObj.getDescription() != null && regionObj.getDescription().equalsIgnoreCase(regionsPicker.getText().toString().trim())) {
                             regionsId = regionObj.getId();
+                            foundRegion = true;
                             break;
-                        }
+                        } else if (regionObj.getParentId() != null) regionsId = regionObj.getParentId();
                     }
+                } else Log.e(TAG, "no regions");
+
+
+                if (regionsId != null) {
+                    newRequest.setRegionId(regionsId);
+                    if (!foundRegion) txt = regionsPicker.getText().toString() + " " + txt;
+                } else {
+                    txt = regionsPicker.getText().toString() + " " + txt;
                 }
-
-
-                if (regionsId != null) newRequest.setRegionId(regionsId);
-                else txt = regionsPicker.getText().toString() + " " + txt;
             }
 
             newRequest.setFullAddress(txt);

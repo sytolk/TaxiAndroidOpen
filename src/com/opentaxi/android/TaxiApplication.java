@@ -5,6 +5,7 @@ import com.facebook.FacebookSdk;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.MaterialModule;
 import com.opentaxi.android.utils.CrashReportSender;
+import com.opentaxi.rest.RestClient;
 import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;
 
@@ -158,6 +159,7 @@ public class TaxiApplication extends Application { //extends MultiDexApplication
         CrashReportSender mySender = new CrashReportSender();
         ACRA.getErrorReporter().setReportSender(mySender);
 
+        RestClient.getInstance().enableCache(getApplicationContext(), 1024L * 1024L * 5L); //5MB
         //Iconics.registerFont(new GoogleMaterial());
 
         /*// output debug to LogCat, with tag LittleFluffyLocationLibrary

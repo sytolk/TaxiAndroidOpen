@@ -365,28 +365,34 @@ public class UserPassFragment extends BaseFragment implements
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
+            if (mLoginFormView != null) {
+                mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+                mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+                        show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        if (mLoginFormView != null)
+                            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+                    }
+                });
+            }
 
-            pbProgress.setVisibility(show ? View.VISIBLE : View.GONE);
-            pbProgress.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    pbProgress.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
+            if (pbProgress != null) {
+                pbProgress.setVisibility(show ? View.VISIBLE : View.GONE);
+                pbProgress.animate().setDuration(shortAnimTime).alpha(
+                        show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        if (pbProgress != null)
+                            pbProgress.setVisibility(show ? View.VISIBLE : View.GONE);
+                    }
+                });
+            }
         } else {
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
-            pbProgress.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            if (pbProgress != null) pbProgress.setVisibility(show ? View.VISIBLE : View.GONE);
+            if (mLoginFormView != null) mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
 
@@ -525,15 +531,15 @@ public class UserPassFragment extends BaseFragment implements
     @Background
     void login(String username, String password) {
 
-        Log.i("Login", "user:" + username + " pass:" + password);
+        //Log.i("Login", "user:" + username + " pass:" + password);
         com.taxibulgaria.rest.models.Users user = RestClient.getInstance().Login(username, password);
 
         if (user != null) {
             if (user.getId() != null && user.getId() > 0) {
                 //users = user;
                 AppPreferences.getInstance(mActivity).setUsers(user);
-                //if (AppPreferences.getInstance() != null) {
-                try {
+
+                /*try {
                     String userEncrypt = AppPreferences.getInstance().encrypt(username, "user_salt");
                     String passEncrypt = AppPreferences.getInstance().encrypt(password, username);
                     if (userEncrypt != null && passEncrypt != null) {
@@ -546,8 +552,8 @@ public class UserPassFragment extends BaseFragment implements
                     }
                 } catch (Exception e) {
                     if (e.getMessage() != null) Log.e(TAG, "Exception:" + e.getMessage());
-                }
-                //}
+                }*/
+
                 EventBus.getDefault().postSticky(user);
                 startHome();
                 //Toast.makeText(UserPassActivity.this, "Влязохте в системата успешно!", Toast.LENGTH_LONG).show();

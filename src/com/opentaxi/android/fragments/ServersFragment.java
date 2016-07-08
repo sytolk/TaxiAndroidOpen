@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+import com.google.gson.JsonSyntaxException;
 import com.opentaxi.android.R;
 import com.opentaxi.android.utils.AppPreferences;
 import com.opentaxi.rest.RestClient;
@@ -124,11 +125,11 @@ public class ServersFragment extends BaseFragment {
             String strUsersGroup = AppPreferences.getInstance().getUsers().getUrllogin();
             if (strUsersGroup != null && !strUsersGroup.equals("") && AppPreferences.getInstance() != null) {
                 try {
-                    Integer[] usersGroup = AppPreferences.getInstance().getMapper().readValue(strUsersGroup, Integer[].class);
+                    Integer[] usersGroup = RestClient.getInstance().getObjectMapper().readValue(strUsersGroup, Integer[].class); //fromJson
                     if (usersGroup != null) {
                         if (Arrays.asList(usersGroup).contains(UsersGroupEnum.ADMINISTRATORS.getCode())) return true;
                     }
-                } catch (IOException e) {
+                } catch (JsonSyntaxException e){//IOException e) {
                     e.printStackTrace();
                 }
             }

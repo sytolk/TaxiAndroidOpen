@@ -116,8 +116,8 @@
         <dependency>
             <groupId>com.taxi-bulgaria.rest</groupId>
             <artifactId>open-rest-client-a</artifactId>
-            <version>1.0.5</version>
-            <!--<type>jar</type>-->
+            <version>1.0.6</version>
+            <type>aar</type>
         </dependency>
 
         <dependency>

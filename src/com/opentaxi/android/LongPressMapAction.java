@@ -86,12 +86,12 @@ public class LongPressMapAction extends LocationOverlayMapViewer {
 
     @Override
     protected void createLayers() {
-        try {
+        /*try {
             super.createLayers();
         } catch (Exception e) {
             if (e.getMessage() != null) Log.e(TAG, "Invalid map file? " + e.getMessage());
             startMapFilePicker();
-        }
+        }*/
 
         MapDataStore mapFile = this.getMapFile();
         if (mapFile != null) {
@@ -116,7 +116,7 @@ public class LongPressMapAction extends LocationOverlayMapViewer {
 
             if (mapRequest != null) showTextCircle(mapRequest);
             else showAlert();
-        }
+        } else startMapFilePicker();
     }
 
     void showAlert() {

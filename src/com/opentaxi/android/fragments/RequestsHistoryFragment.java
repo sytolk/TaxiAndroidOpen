@@ -1,6 +1,7 @@
 package com.opentaxi.android.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -116,7 +117,7 @@ public class RequestsHistoryFragment extends BaseFragment {
                 }
             });
             listView.setItemsCanFocus(true);
-        }
+        } //else Log.i(TAG,"setAdapterUI not visible");
     }
 
     @Background
@@ -148,7 +149,7 @@ public class RequestsHistoryFragment extends BaseFragment {
                 listView.onFinishLoading(hasMoreItems, newCRequest);
                 title.setVisibility(View.GONE);
             } else {
-                //Log.i(TAG, "newItems size=0");
+                //Log.i(TAG, "newCRequest:" + newCRequest + " size=0");
                 listView.onFinishLoading(false, null);
             }
         } //else Log.i(TAG, "newItems==null");
