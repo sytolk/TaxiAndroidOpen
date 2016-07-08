@@ -627,7 +627,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }*/
 
-    @UiThread
+    /*@UiThread
     public void createNotification() {
         // Prepare intent which is triggered if the
         // notification is selected
@@ -649,7 +649,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         noti.defaults |= Notification.DEFAULT_VIBRATE;
 
         notificationManager.notify(0, noti);
-    }
+    }*/
 
     private void doObtainedLocation(Location location) {
         try {

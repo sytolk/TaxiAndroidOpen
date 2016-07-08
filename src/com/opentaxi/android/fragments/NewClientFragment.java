@@ -125,7 +125,7 @@ public class NewClientFragment extends BaseFragment implements Validator.Validat
 
     @FocusChange({R.id.userNameField})
     void focusChangedOnUserNameField(View userField, boolean hasFocus) {
-        if (!hasFocus) {
+        if (!hasFocus && userName!=null) {
             userName.setError(null);
             checkUsername(userName.getText().toString());
         }
