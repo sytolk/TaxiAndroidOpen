@@ -1,0 +1,140 @@
+apply plugin: 'maven'
+apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
+
+buildscript {
+    repositories {
+        //jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.1.2'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+    }
+}
+
+group = 'com.opentaxi.android'
+version = '1.0.0.BUILD-SNAPSHOT'
+
+description = """taxi-android-open"""
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+repositories {
+
+    mavenCentral()
+    mavenLocal()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    maven { url "https://repo.spring.io/libs-milestone" }
+    maven { url "https://jitpack.io" }
+    maven { url "http://repo.maven.apache.org/maven2" }
+}
+
+def AAVersion = '4.0.0'
+
+dependencies {
+    compile group: 'com.taxi-bulgaria.rest', name: 'open-rest-client-a', version: '1.0.6-SNAPSHOT'
+    compile 'com.google.android.gms:play-services-location:8.4.0'
+    compile 'com.google.android.gms:play-services-gcm:8.4.0'
+
+    /*compile(group: 'com.google.android.gms', name: 'play-services-location', version: '8.4.0') {
+        exclude(module: 'play-services-base')
+        exclude(module: 'play-services-maps')
+    }*/
+    /*compile(group: 'com.google.android.gms', name: 'play-services-base', version: '8.4.0') {
+        exclude(module: 'support-v4')
+    }*/
+    /*compile group: 'com.google.android.gms', name: 'play-services-gcm', version: '8.4.0'*/
+    compile 'com.android.support:appcompat-v7:23.2.1'
+    compile group: 'com.android.support', name: 'design', version: '23.2.1'
+
+    compile 'pl.charmas.android:android-reactive-location:0.9@aar'
+    compile 'io.reactivex:rxjava:1.1.5'
+
+    compile(group: 'com.taxi-bulgaria.map', name: 'mapsforge', version: '0.6.1-SNAPSHOT') {
+        exclude(module: 'compatibility-v4')
+    }
+    compile 'com.mobsandgeeks:android-saripaar:1.0.7-SNAPSHOT'
+    /*compile 'com.mobsandgeeks:android-saripaar:2.0.3'*/
+
+    apt "org.androidannotations:androidannotations:$AAVersion"
+    compile "org.androidannotations:androidannotations-api:$AAVersion"
+
+    compile group: 'ch.acra', name: 'acra', version: '4.7.0'
+    /*compile 'org.greenrobot:eventbus:3.0.0'*/
+    compile group: 'de.greenrobot', name: 'eventbus', version: '2.4.1'
+    compile group: 'com.getbase', name: 'floatingactionbutton', version: '1.10.1'
+    compile 'com.facebook.android:facebook-android-sdk:4.5.0'
+    /*compile(group: 'com.facebook.android', name: 'facebook-android-sdk', version: '4.5.0') {
+        exclude(module: 'support-v4')
+        exclude(module: 'multidex')
+    }*/
+    compile group: 'com.github.nicolasjafelle', name: 'paginglistview', version: '1.3'
+    compile(group: 'it.sephiroth.android.library.targettooltip', name: 'target-tooltip-library', version: '1.3.11') {
+        exclude(module: 'appcompat-v7')
+    }
+    compile(group: 'com.joanzapata.iconify', name: 'android-iconify', version: '2.1.1') {
+        exclude(module: 'support-v4')
+    }
+    compile 'com.joanzapata.iconify:android-iconify-material:2.2.2'
+}
+
+apt {
+    arguments {
+        androidManifestFile variant.outputs[0]?.processResources?.manifestFile
+        // if you have multiple outputs (when using splits), you may want to have other index than 0
+
+        // you should set your package name here if you are using different application IDs
+        // resourcePackageName "your.package.name"
+
+        // You can set optional annotation processing options here, like these commented options:
+        // logLevel 'INFO'
+        // logFile '/var/log/aa.log'
+    }
+}
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
+
+    defaultConfig {
+        applicationId "com.opentaxi.android"
+        minSdkVersion 14
+        targetSdkVersion 23
+        versionCode 40
+        versionName "1.0.40"
+    }
+    buildTypes {
+        debug {
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard.cfg', 'proguard-rx-java.pro', 'proguard-jackson-2.pro', 'proguard-acra.pro', 'proguard-eventbus.pro'
+        }
+
+        release {
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard.cfg', 'proguard-rx-java.pro', 'proguard-jackson-2.pro', 'proguard-acra.pro', 'proguard-eventbus.pro'
+            //'proguard-google-play-services.pro', 'proguard-support-v7-appcompat.pro', 'proguard-support_design.pro',
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt' //Workaround for https://code.google.com/p/android/issues/detail?id=61573
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/notice.txt'
+    }
+}

@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
-import com.google.gson.JsonSyntaxException;
 import com.opentaxi.android.MessageActivity_;
 import com.opentaxi.android.R;
 import com.opentaxi.android.utils.AppPreferences;
