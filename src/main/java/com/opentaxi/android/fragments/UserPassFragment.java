@@ -26,8 +26,12 @@ import com.facebook.*;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.mobsandgeeks.saripaar.Rule;
+import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
-import com.mobsandgeeks.saripaar.annotation.TextRule;
+import com.mobsandgeeks.saripaar.annotation.Length;
+import com.mobsandgeeks.saripaar.annotation.Min;
+import com.mobsandgeeks.saripaar.annotation.Order;
+import com.mobsandgeeks.saripaar.annotation.Password;
 import com.opentaxi.android.R;
 import com.opentaxi.android.TaxiApplication;
 import com.opentaxi.android.utils.AppPreferences;
@@ -68,11 +72,15 @@ public class UserPassFragment extends BaseFragment implements
     @ViewById(R.id.clientLoginButton)
     Button submitButton;
 
-    @TextRule(order = 1, minLength = 3, message = "Username is too short.Enter at least 3 characters.")
+    @Order(1)
+    @Length(min = 3, message = "Username is too short.Enter at least 3 characters.")
+    //@TextRule(order = 1, minLength = 3, message = "Username is too short.Enter at least 3 characters.")
     @ViewById(R.id.userNameField)
     AutoCompleteTextView userName;
 
-    @TextRule(order = 2, minLength = 6, message = "Password is too short.Enter at least 6 characters.")
+    @Order(1)
+    @Password(min = 6, message = "Password is too short.Enter at least 6 characters.")
+    //@TextRule(order = 2, minLength = 6, message = "Password is too short.Enter at least 6 characters.")
     @ViewById(R.id.passwordField)
     EditText pass;
 
@@ -100,7 +108,7 @@ public class UserPassFragment extends BaseFragment implements
     @ViewById(R.id.facebookLoginButton)
     LoginButton facebookLoginButton;
 
-    Validator validator;
+    private Validator validator;
     private CallbackManager callbackManager;
 
     /* Client used to interact with Google APIs. */
@@ -117,10 +125,12 @@ public class UserPassFragment extends BaseFragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (mActivity == null) mActivity = getActivity();
+        // if (mActivity == null) mActivity = getActivity();
         //FacebookSdk.sdkInitialize(mActivity.getApplicationContext());
         //AccessToken accessToken = AccessToken.getCurrentAccessToken();
         //if (accessToken != null) fbLoggedId(accessToken);
+        validator = new Validator(this);
+        validator.setValidationListener(this);
     }
 
     @AfterViews
@@ -129,8 +139,6 @@ public class UserPassFragment extends BaseFragment implements
         checkFbLogin();
 
         submitButton.setClickable(true);
-        validator = new Validator(this);
-        validator.setValidationListener(this);
 
         //populateAutoComplete();
 
@@ -141,7 +149,7 @@ public class UserPassFragment extends BaseFragment implements
                     Log.i(TAG, "OnEditorActionListener id:" + id + " keyEvent" + keyEvent.toString());
                     userName.setError(null);
                     pass.setError(null);
-                    validator.validateAsync();
+                    validator.validate(); //Async();
 
                     // return true;  //this will keep keyboard open
                 }
@@ -597,6 +605,37 @@ public class UserPassFragment extends BaseFragment implements
     }
 
     @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+        if (errors != null) {
+            StringBuilder toastMessage = new StringBuilder();
+            for (ValidationError error : errors) {
+                if (error != null && error.getView() != null) {
+
+                    error.getView().requestFocus();
+                    List<Rule> failedRules = error.getFailedRules();
+                    if (failedRules != null) {
+                        for (Rule rule : failedRules) {
+                            if (error.getView() instanceof EditText) {
+                                ((EditText) error.getView()).setError(rule.getMessage(mActivity));
+                            } else if (error.getView() instanceof AutoCompleteTextView) {
+                                ((AutoCompleteTextView) error.getView()).setError(rule.getMessage(mActivity));
+                            } else {
+                                toastMessage.append(rule.getMessage(mActivity)).append("\n");
+                            }
+                        }
+
+                    }
+
+                }
+            }
+            if (toastMessage.length() > 0)
+                Toast.makeText(mActivity, toastMessage.toString(), Toast.LENGTH_SHORT).show();
+        }
+        submitButton.setClickable(true);
+    }
+
+
+    /*@Override
     public void onValidationFailed(View failedView, Rule<?> failedRule) {
         String message = failedRule.getFailureMessage();
 
@@ -607,7 +646,7 @@ public class UserPassFragment extends BaseFragment implements
             Toast.makeText(mActivity, message, Toast.LENGTH_SHORT).show();
         }
         submitButton.setClickable(true);
-    }
+    }*/
 
 
     /*@Override

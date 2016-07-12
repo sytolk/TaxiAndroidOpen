@@ -18,13 +18,13 @@ version = '1.0.0.BUILD-SNAPSHOT'
 
 description = """taxi-android-open"""
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+//sourceCompatibility = 1.7
+//targetCompatibility = 1.7
 
 repositories {
 
     mavenCentral()
-    mavenLocal()
+    //mavenLocal()
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
     maven { url "https://repo.spring.io/libs-milestone" }
     maven { url "https://jitpack.io" }
@@ -32,11 +32,12 @@ repositories {
 }
 
 def AAVersion = '4.0.0'
+def GMSVersion = '8.4.0'
 
 dependencies {
-    compile group: 'com.taxi-bulgaria.rest', name: 'open-rest-client-a', version: '1.0.6-SNAPSHOT'
-    compile 'com.google.android.gms:play-services-location:8.4.0'
-    compile 'com.google.android.gms:play-services-gcm:8.4.0'
+    compile 'com.taxi-bulgaria.rest:open-rest-client-a:1.0.6-SNAPSHOT'
+    compile "com.google.android.gms:play-services-location:$GMSVersion"
+    compile "com.google.android.gms:play-services-gcm:$GMSVersion"
 
     /*compile(group: 'com.google.android.gms', name: 'play-services-location', version: '8.4.0') {
         exclude(module: 'play-services-base')
@@ -55,8 +56,8 @@ dependencies {
     compile(group: 'com.taxi-bulgaria.map', name: 'mapsforge', version: '0.6.1-SNAPSHOT') {
         exclude(module: 'compatibility-v4')
     }
-    compile 'com.mobsandgeeks:android-saripaar:1.0.7-SNAPSHOT'
-    /*compile 'com.mobsandgeeks:android-saripaar:2.0.3'*/
+    /*compile 'com.mobsandgeeks:android-saripaar:1.0.7-SNAPSHOT'*/
+    compile 'com.mobsandgeeks:android-saripaar:2.0.3'
 
     apt "org.androidannotations:androidannotations:$AAVersion"
     compile "org.androidannotations:androidannotations-api:$AAVersion"
@@ -102,8 +103,8 @@ android {
         applicationId "com.opentaxi.android"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 40
-        versionName "1.0.40"
+        versionCode 41
+        versionName "1.0.41"
     }
     buildTypes {
         debug {

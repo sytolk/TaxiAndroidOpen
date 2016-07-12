@@ -10,7 +10,7 @@
     <string name="options_server">Server</string>
     <string name="options_send_log">Send Log</string>
 
-    <string name="facebook_app_id">550947981660612</string>
+    <string name="facebook_app_id" translatable="false">550947981660612</string>
 
     <!--mapsforge rescue-->
     <!--<string name="cancelbutton">Cancel</string>

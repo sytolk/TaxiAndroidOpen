@@ -3,10 +3,12 @@ package com.opentaxi.android.fragments;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import com.mobsandgeeks.saripaar.Rule;
+import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.*;
 import com.opentaxi.android.R;
@@ -19,12 +21,14 @@ import com.taxibulgaria.enums.CommunicationMethod;
 import com.taxibulgaria.rest.models.NewCUsers;
 import org.androidannotations.annotations.*;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: stanimir
  * Date: 4/17/13
  * Time: 10:18 AM
- * developer STANIMIR MARINOV
+ * developer STANISLAV MECHEV
  */
 //@WindowFeature(Window.FEATURE_NO_TITLE)
 @EFragment(R.layout.new_client)
@@ -32,16 +36,22 @@ public class NewClientFragment extends BaseFragment implements Validator.Validat
 
     private static final String TAG = "NewClientFragment";
 
-    @TextRule(order = 1, minLength = 3, message = "Username is too short.Enter at least 3 characters.")
+    @Order(1)
+    @NotEmpty
+    @Length(min = 3, message = "Username is too short.Enter at least 3 characters.")
+    //@TextRule(order = 1, minLength = 3, message = "Username is too short.Enter at least 3 characters.")
     @ViewById(R.id.userNameField)
     EditText userName;
 
-    @Password(order = 2)
-    @TextRule(order = 3, minLength = 6, message = "Password is too short.Enter at least 6 characters.")
+    @Order(2)
+    @Password(min = 6, message = "Enter at least 6 characters.")
+    //@Password(order = 2)
+    //@TextRule(order = 3, minLength = 6, message = "Enter at least 6 characters.")
     @ViewById(R.id.passwordField)
     EditText pass;
 
-    @ConfirmPassword(order = 4)
+    @Order(3)
+    @ConfirmPassword
     @ViewById(R.id.password2Field)
     EditText pass2;
 
@@ -57,30 +67,47 @@ public class NewClientFragment extends BaseFragment implements Validator.Validat
     @ViewById
     EditText lastName;
 
-    @TextRule(order = 7, minLength = 1, messageResId = R.string.city_required)
+    @Order(7)
+    @NotEmpty(messageResId = R.string.city_required)
+    //@TextRule(order = 7, minLength = 1, messageResId = R.string.city_required)
     @ViewById
     AutoCompleteTextView cityName;
 
-    @TextRule(order = 8, minLength = 1, messageResId = R.string.phone_required)
+    @Order(8)
+    @NotEmpty(messageResId = R.string.phone_required)
+    //@TextRule(order = 8, minLength = 1, messageResId = R.string.phone_required)
     @ViewById
     EditText phoneNumber;
 
-    @Required(order = 5)
-    @Email(order = 6, messageResId = R.string.email_not_valid)
+    @Order(5)
+    //@Required(order = 5)
+    @Email(messageResId = R.string.email_not_valid)
     @ViewById(R.id.emailField)
     EditText email;
 
     //You must agree to the terms
-    @Checked(order = 9, messageResId = R.string.agree_required)
+    @Order(9)
+    @Checked(messageResId = R.string.agree_required)
     @ViewById
     CheckBox iAgreeCheckBox;
 
     /* @Extra
      NewCUsers newCUsers;*/
     //private Users users;
-    Validator validator;
+    private Validator validator;
 
     private boolean haveErrors = false;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //if (mActivity == null) mActivity = getActivity();
+        //FacebookSdk.sdkInitialize(mActivity.getApplicationContext());
+        //AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        //if (accessToken != null) fbLoggedId(accessToken);
+        validator = new Validator(this);
+        validator.setValidationListener(this);
+    }
 
     @AfterViews
     void afterLoad() {
@@ -90,9 +117,6 @@ public class NewClientFragment extends BaseFragment implements Validator.Validat
             email.setText(newCUsers.getEmail());
             createNewUser(newCUsers);
         } else {*/
-        validator = new Validator(this);
-        //validator.put();
-        validator.setValidationListener(this);
 
         String[] cities = new String[]{
                 "Бургас", "София", "Варна", "Пловдив", "Burgas", "Sofia", "Varna", "Plovdiv", "Несебър", "Nesebar", "Слънчев бряг", "Sunny beach", "Приморско", "Primorsko", "Царево", "Carevo", "Созопол", "Sozopol", "Разград", "Razgrad", "Монтана", "Montana", "Враца", "Vratsa", "Добрич", "Dobrich", "Русе", "Ruse", "Плевен", "Pleven", "Перник", "Pernik", "Пазарджик", "Pazardzhik", "Ловеч", "Lovech", "Хасково", "Haskovo", "Благоевград", "Blagoevgrad", "Габрово", "Gabrovo", "Кърджали", "Kurdzhali", "Кюстендил", "Kyustendil", "Шумен", "Shumen", "Силистра", "Silistra", "Сливен", "Sliven", "Смолян", "Smolyan", "Стара Загора", "Stara Zagora", "Търговище", "Turgovishte", "Велико Търново", "Veliko Turnovo", "Видин", "Vidin", "Ямбол", "Yambol"
@@ -227,6 +251,35 @@ public class NewClientFragment extends BaseFragment implements Validator.Validat
     }
 
     @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+        if (errors != null) {
+            StringBuilder toastMessage = new StringBuilder();
+            for (ValidationError error : errors) {
+                if (error != null && error.getView() != null) {
+
+                    error.getView().requestFocus();
+                    List<Rule> failedRules = error.getFailedRules();
+                    if (failedRules != null) {
+                        for (Rule rule : failedRules) {
+                            if (error.getView() instanceof EditText) {
+                                ((EditText) error.getView()).setError(rule.getMessage(mActivity));
+                            } else if(error.getView() instanceof AutoCompleteTextView){
+                                ((AutoCompleteTextView) error.getView()).setError(rule.getMessage(mActivity));
+                            } else {
+                                toastMessage.append(rule.getMessage(mActivity)).append("\n");
+                            }
+                        }
+
+                    }
+
+                }
+            }
+            if (toastMessage.length() > 0)
+                Toast.makeText(mActivity, toastMessage.toString(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /*@Override
     public void onValidationFailed(View failedView, Rule<?> failedRule) {
         String message = failedRule.getFailureMessage();
 
@@ -236,7 +289,7 @@ public class NewClientFragment extends BaseFragment implements Validator.Validat
         } else {
             Toast.makeText(mActivity, message, Toast.LENGTH_SHORT).show();
         }
-    }
+    }*/
 
     @UiThread
     void ActivationDialog() {
