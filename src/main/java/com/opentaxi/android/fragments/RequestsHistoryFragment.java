@@ -1,7 +1,6 @@
 package com.opentaxi.android.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -140,7 +139,7 @@ public class RequestsHistoryFragment extends BaseFragment {
     @UiThread
     void showItems(RequestCView newItems) {
         //pbProgress.setVisibility(View.GONE);
-        if (newItems != null) {
+        if (newItems != null && listView != null) {
             //Log.i(TAG, "newItems page:" + pager);
             List<NewCRequest> newCRequest = newItems.getGridModel();
             if (newCRequest != null && newCRequest.size() > 0) {

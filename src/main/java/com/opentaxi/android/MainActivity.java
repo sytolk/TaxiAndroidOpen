@@ -1,6 +1,8 @@
 package com.opentaxi.android;
 
-import android.app.*;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,7 +12,6 @@ import android.content.res.Configuration;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -19,7 +20,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -33,7 +33,6 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import com.facebook.login.LoginManager;
-import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.ErrorDialogFragment;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -55,6 +54,7 @@ import com.taxibulgaria.enums.SecurityLevel;
 import com.taxibulgaria.rest.models.NewCRequestDetails;
 import de.greenrobot.event.EventBus;
 import it.sephiroth.android.library.tooltip.Tooltip;
+import net.i2p.android.ext.floatingactionbutton.FloatingActionButton;
 import org.acra.ACRA;
 import org.androidannotations.annotations.*;
 import org.mapsforge.map.android.util.AndroidSupportUtil;
@@ -247,7 +247,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             titleView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    drawer.openDrawer(Gravity.START);
+                    drawer.openDrawer(Gravity.LEFT);
                 }
             });
         } //else Log.w("MainActivity", "ActionBar's not found.");

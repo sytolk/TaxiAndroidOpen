@@ -288,12 +288,14 @@ public class NewRequestFragment extends BaseFragment {
 
     @UiThread
     void showCities(String city) {
-        if (city != null) {
+        if (city != null && citiesPicker != null) {
             if (citiesPicker.getText().length() == 0) citiesPicker.setText(city);
         }
-        addressText.setFocusable(true);
-        addressText.setFocusableInTouchMode(true);
-        addressText.requestFocus();
+        if (addressText != null) {
+            addressText.setFocusable(true);
+            addressText.setFocusableInTouchMode(true);
+            addressText.requestFocus();
+        }
     }
 
 
@@ -313,37 +315,39 @@ public class NewRequestFragment extends BaseFragment {
 
     @UiThread
     void showRegions(Regions[] regions, Integer selRegionId) {
-        Log.i(TAG, "showRegions");
-        if (regions != null && regions.length > 0) {
-            RegionsAdapter[] regionsAdapter = new RegionsAdapter[regions.length];// + 1];
+        //Log.i(TAG, "showRegions");
+        if (regionsPicker != null) {
+            if (regions != null && regions.length > 0) {
+                RegionsAdapter[] regionsAdapter = new RegionsAdapter[regions.length];// + 1];
             /*Regions emptyRegion = new Regions();
             emptyRegion.setId(0);
             emptyRegion.setDescription("");
             regionsAdapter[0] = new RegionsAdapter(emptyRegion);*/
-            boolean cityChanged = true;
-            String selRegion = "";
-            int i = 0;
-            for (Regions regionObj : regions) {
-                regionsAdapter[i] = new RegionsAdapter(regionObj);
-                i++;
-                if (regionsPicker.getText() != null) {
-                    if (regionObj.getDescription().equals(regionsPicker.getText().toString())) cityChanged = false;
+                boolean cityChanged = true;
+                String selRegion = "";
+                int i = 0;
+                for (Regions regionObj : regions) {
+                    regionsAdapter[i] = new RegionsAdapter(regionObj);
+                    i++;
+                    if (regionsPicker.getText() != null) {
+                        if (regionObj.getDescription().equals(regionsPicker.getText().toString())) cityChanged = false;
+                    }
+                    if (regionObj.getId().equals(selRegionId)) selRegion = regionObj.getDescription();
                 }
-                if (regionObj.getId().equals(selRegionId)) selRegion = regionObj.getDescription();
+                if (cityChanged) regionsPicker.setText(selRegion);
+                ArrayAdapter<RegionsAdapter> adapter = new ArrayAdapter<>(mActivity, R.layout.spinner_layout, regionsAdapter); //android.R.layout.simple_dropdown_item_1line
+                regionsPicker.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+
+                //adapter2.setDropDownViewResource(R.layout.spinner_layout);
+
+                regionsPicker.setVisibility(View.VISIBLE);
+
+                //destination.setVisibility(View.GONE);
+            } else {
+                regionsPicker.setVisibility(View.GONE);
+                //destination.setVisibility(View.VISIBLE);
             }
-            if (cityChanged) regionsPicker.setText(selRegion);
-            ArrayAdapter<RegionsAdapter> adapter = new ArrayAdapter<>(mActivity, R.layout.spinner_layout, regionsAdapter); //android.R.layout.simple_dropdown_item_1line
-            regionsPicker.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
-
-            //adapter2.setDropDownViewResource(R.layout.spinner_layout);
-
-            regionsPicker.setVisibility(View.VISIBLE);
-
-            //destination.setVisibility(View.GONE);
-        } else {
-            regionsPicker.setVisibility(View.GONE);
-            //destination.setVisibility(View.VISIBLE);
         }
         //setAddress();
     }

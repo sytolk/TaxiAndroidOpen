@@ -28,9 +28,7 @@ import java.util.List;
  * User: stanimir
  * Date: 4/17/13
  * Time: 10:18 AM
- * developer STANISLAV MECHEV
  */
-//@WindowFeature(Window.FEATURE_NO_TITLE)
 @EFragment(R.layout.new_client)
 public class NewClientFragment extends BaseFragment implements Validator.ValidationListener {
 
@@ -166,7 +164,7 @@ public class NewClientFragment extends BaseFragment implements Validator.Validat
 
     @FocusChange({R.id.emailField})
     void focusChangedOnEmailField(View emailField, boolean hasFocus) {
-        if (!hasFocus) {
+        if (!hasFocus && email != null) {
             email.setError(null);
             checkEmail(email.getText().toString());
         }
@@ -263,7 +261,7 @@ public class NewClientFragment extends BaseFragment implements Validator.Validat
                         for (Rule rule : failedRules) {
                             if (error.getView() instanceof EditText) {
                                 ((EditText) error.getView()).setError(rule.getMessage(mActivity));
-                            } else if(error.getView() instanceof AutoCompleteTextView){
+                            } else if (error.getView() instanceof AutoCompleteTextView) {
                                 ((AutoCompleteTextView) error.getView()).setError(rule.getMessage(mActivity));
                             } else {
                                 toastMessage.append(rule.getMessage(mActivity)).append("\n");

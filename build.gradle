@@ -1,8 +1,10 @@
-apply plugin: 'maven'
-apply plugin: 'com.android.application'
-apply plugin: 'android-apt'
-
 buildscript {
+    ext {
+        AAVersion = '4.0.0'
+        GMSVersion = '9.2.0'
+        supportVersion = '24.0.0' //23.2.1
+    }
+
     repositories {
         //jcenter()
         mavenCentral()
@@ -13,13 +15,17 @@ buildscript {
     }
 }
 
-group = 'com.opentaxi.android'
+//apply plugin: 'maven'
+apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
+
+/*group = 'com.opentaxi.android'
 version = '1.0.0.BUILD-SNAPSHOT'
 
 description = """taxi-android-open"""
 
-//sourceCompatibility = 1.7
-//targetCompatibility = 1.7
+sourceCompatibility = 1.7
+targetCompatibility = 1.7*/
 
 repositories {
 
@@ -31,30 +37,21 @@ repositories {
     maven { url "http://repo.maven.apache.org/maven2" }
 }
 
-def AAVersion = '4.0.0'
-def GMSVersion = '8.4.0'
-
 dependencies {
     compile 'com.taxi-bulgaria.rest:open-rest-client-a:1.0.6-SNAPSHOT'
     compile "com.google.android.gms:play-services-location:$GMSVersion"
     compile "com.google.android.gms:play-services-gcm:$GMSVersion"
 
-    /*compile(group: 'com.google.android.gms', name: 'play-services-location', version: '8.4.0') {
-        exclude(module: 'play-services-base')
-        exclude(module: 'play-services-maps')
-    }*/
-    /*compile(group: 'com.google.android.gms', name: 'play-services-base', version: '8.4.0') {
-        exclude(module: 'support-v4')
-    }*/
-    /*compile group: 'com.google.android.gms', name: 'play-services-gcm', version: '8.4.0'*/
-    compile 'com.android.support:appcompat-v7:23.2.1'
-    compile group: 'com.android.support', name: 'design', version: '23.2.1'
+    compile "com.android.support:support-v4:$supportVersion"
+    compile "com.android.support:appcompat-v7:$supportVersion"
+    compile "com.android.support:design:$supportVersion"
 
     compile 'pl.charmas.android:android-reactive-location:0.9@aar'
     compile 'io.reactivex:rxjava:1.1.5'
 
     compile(group: 'com.taxi-bulgaria.map', name: 'mapsforge', version: '0.6.1-SNAPSHOT') {
         exclude(module: 'compatibility-v4')
+        exclude(group: 'com.android.support', module: 'support-v4')
     }
     /*compile 'com.mobsandgeeks:android-saripaar:1.0.7-SNAPSHOT'*/
     compile 'com.mobsandgeeks:android-saripaar:2.0.3'
@@ -65,7 +62,8 @@ dependencies {
     compile group: 'ch.acra', name: 'acra', version: '4.7.0'
     /*compile 'org.greenrobot:eventbus:3.0.0'*/
     compile group: 'de.greenrobot', name: 'eventbus', version: '2.4.1'
-    compile group: 'com.getbase', name: 'floatingactionbutton', version: '1.10.1'
+    //compile group: 'com.getbase', name: 'floatingactionbutton', version: '1.10.1'
+    compile 'net.i2p.android.ext:floatingactionbutton:1.10.1'
     compile 'com.facebook.android:facebook-android-sdk:4.5.0'
     /*compile(group: 'com.facebook.android', name: 'facebook-android-sdk', version: '4.5.0') {
         exclude(module: 'support-v4')
@@ -104,7 +102,8 @@ android {
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 41
-        versionName "1.0.41"
+        versionName "1.0.42"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         debug {
