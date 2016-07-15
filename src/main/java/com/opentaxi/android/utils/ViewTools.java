@@ -58,9 +58,9 @@ public class ViewTools {
         try {
             Field field = object.getClass().getDeclaredField(fieldName);
             field.setAccessible(true);
-            return (T)field.get(object);
+            return (T) field.get(object);
         } catch (Exception ex) {
-            Log.w("HACK", "Cannot read " + fieldName + " in " + object, ex);
+            Log.w("HACK", "Cannot read " + fieldName + " in " + object + ":" + ex.getMessage());
         }
         return null;
     }

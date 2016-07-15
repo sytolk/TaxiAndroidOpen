@@ -4,7 +4,7 @@
 
 This open source application is for clients of taxi companies. It`s using array of Taxi web services for communication with cars. The client can change the primary server or the server can be changed automatically if no connection.
 With this application its easy to send request, view request status and can help clients to find taxi.
-Supported Android from 2.2 and up.
+Supported Android from 4.0 and up.
 
 Currently the cloud web services (they are private) provide taxi support for city of Burgas and Blagoevgrad.
 
@@ -37,4 +37,4 @@ About translating, please visit https://hosted.weblate.org/projects/taxi-android
 
 ##Support
 
-[![PayPayl donate button](https://img.shields.io/badge/paypal-donate-yellow.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2W5ZTX3VEH9D2 "Donate once-off to this project using Paypal")
+[![PayPal donate button](https://img.shields.io/badge/paypal-donate-yellow.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2W5ZTX3VEH9D2 "Donate once-off to this project using Paypal")
