@@ -200,7 +200,7 @@ public class AppPreferences {
         this.mapFile = file;
         this.prefsEditor = appSharedPrefs.edit();
         prefsEditor.putString(MAP_FILE, file);
-        prefsEditor.commit();
+        prefsEditor.apply();
     }
 
     /*public String getAccessToken() {
@@ -229,7 +229,7 @@ public class AppPreferences {
             this.socketType = type;
             this.prefsEditor = appSharedPrefs.edit();
             prefsEditor.putInt(SOCKET_TYPE, type);
-            prefsEditor.commit();
+            prefsEditor.apply();
         }
     }
 }

@@ -36,6 +36,7 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -434,12 +435,12 @@ public class NewRequestFragment extends BaseFragment {
             GeonameAdmin1[] admin1Cities = RestClient.getInstance().getAdmin1Cities();
             if (admin1Cities != null) {
                 for (GeonameAdmin1 geonameAdmin1 : admin1Cities) {
-                    if (geonameAdmin1.getName().toLowerCase().contains(city.toLowerCase())) {
+                    if (geonameAdmin1.getName().toLowerCase(Locale.getDefault()).contains(city.toLowerCase(Locale.getDefault()))) {
                         showRegions(RestClient.getInstance().getRegionsByGN(geonameAdmin1.getGeonameid()), null);
                         showPrices(RestClient.getInstance().getPrices(geonameAdmin1.getGeonameid()));
                         setCitiesAdapter(admin1Cities, false);
                         break;
-                    } else if (geonameAdmin1.getNameascii().toLowerCase().contains(city.toLowerCase())) {
+                    } else if (geonameAdmin1.getNameascii().toLowerCase(Locale.getDefault()).contains(city.toLowerCase(Locale.getDefault()))) {
                         showRegions(RestClient.getInstance().getRegionsByGN(geonameAdmin1.getGeonameid()), null);
                         showPrices(RestClient.getInstance().getPrices(geonameAdmin1.getGeonameid()));
                         setCitiesAdapter(admin1Cities, true);

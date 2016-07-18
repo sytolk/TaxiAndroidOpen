@@ -3,6 +3,7 @@ package com.opentaxi.android.adapters;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -140,7 +141,7 @@ public class RequestPagingAdapter extends PagingBaseAdapter<NewCRequest> {
             //icon = new IconicsDrawable(context, GoogleMaterial.Icon.gmd_feedback).actionBar().colorRes(R.color.transparent_blue);
         else {
             icon = new IconDrawable(context, MaterialIcons.md_mode_edit).colorRes(R.color.timebase_color).sizeDp(25);
-            textView.setTextColor(R.color.black_color);
+            textView.setTextColor(ContextCompat.getColor(context, R.color.black_color));
         }
         //icon = new IconicsDrawable(context, GoogleMaterial.Icon.gmd_mode_edit).actionBar().colorRes(R.color.timebase_color);
         textView.setCompoundDrawablesWithIntrinsicBounds(null, null, icon, null);
