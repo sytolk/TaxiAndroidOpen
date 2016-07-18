@@ -4,19 +4,18 @@
 <!---
 <a href="http://apps.opera.com/badge.php?a=c&v=dark&did=88615&pid=408287" rel="Opera Mobile Store">![Opera Mobile Store](https://apps.opera.com/badge.php?a=s&v=white&did=88615&pid=408287)</a>
 --->
----
 
 This open source application is for clients of taxi companies. It`s using array of Taxi web services for communication with cars. The client can change the primary server or the server can be changed automatically if no connection.
 With this application its easy to send request, view request status and can help clients to find taxi.
 Supported Android from 4.0 and up.
 
-Currently the cloud web services (they are private) provide taxi support for city of Burgas and Blagoevgrad.
+Currently the cloud web services (they are private) provide taxi support for city of Burgas, Varna and Blagoevgrad.
 
 [taxi-bulgaria](http://taxi-bulgaria.com)
 
 ##Development
 
-Project is [maven](http://maven.apache.org/) to build source first its need to install the libraries necessary to build Android applications with Maven from your local Android SDK installation.
+Project have two build systems [Gradle](https://gradle.org/) and [Maven](http://maven.apache.org/). To build project with Maven first it\`s need to install the libraries necessary to build Android applications with Maven from your local Android SDK installation.
 Read description of this project [maven-android-sdk-deployer](https://github.com/mosabua/maven-android-sdk-deployer) for details.
 
 Using project dependencies:
