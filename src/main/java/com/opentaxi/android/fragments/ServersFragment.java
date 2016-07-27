@@ -59,10 +59,10 @@ public class ServersFragment extends BaseFragment {
         RadioGroup rg = new RadioGroup(mActivity); //create the RadioGroup
         rg.setOrientation(RadioGroup.VERTICAL);
         int i = 0;
-        for (final Servers socket : sockets) {
-            if (socket.getDescription() != null) {
+        for (final Servers server : sockets) {
+            if (server.getDescription() != null) {
                 //Log.i(TAG, socket.getServerHost() + " " + socket.getDescription());
-                if (socket.getDescription().toLowerCase().contains("cloud")) {
+                if (server.getDescription().toLowerCase().contains("cloud")) {
                     if (!isAdmin()) continue;
                 } //else Log.i(TAG, "not contains " + socket.getDescription());
 
@@ -71,8 +71,8 @@ public class ServersFragment extends BaseFragment {
 
                 //CheckBox ch = new CheckBox(this);
                 StringBuilder title = new StringBuilder();
-                title.append(socket.getDescription()).append(" "); //.append(socket.getServerHost());
-                if (socket.getRecordstatus()) {
+                title.append(server.getDescription()).append(" "); //.append(socket.getServerHost());
+                if (server.getRecordstatus()) {
                     title.append("UP");
                     rb[i].setBackgroundColor(ContextCompat.getColor(mActivity, R.color.label_color));
                 } else {
@@ -81,7 +81,10 @@ public class ServersFragment extends BaseFragment {
                 }
                 rb[i].setText(title.toString());
 
-                if (currSocket.equals(socket.getServerHost())) {
+                String hostSecure = server.getServerDomain() + (server.getSecurePort() != null ? ":" + server.getSecurePort() : "");
+                String host = server.getServerDomain() + (server.getServerPort() != null ? ":" + server.getServerPort() : "");
+
+                if (currSocket.equals(hostSecure) || currSocket.equals(host) || currSocket.equals(server.getServerHost())) {
                     rb[i].setChecked(true);
                 }
 
@@ -89,16 +92,16 @@ public class ServersFragment extends BaseFragment {
                     @Override
                     public void onClick(View v) {
                         Integer oldType = AppPreferences.getInstance(mActivity).getSocketType();
-                        AppPreferences.getInstance(mActivity).setSocketType(socket.getServerType());
-                        if (RestClient.getInstance().changeServerSockets(socket)) {
-                            if (oldType == null || !oldType.equals(socket.getServerType())) login();
+                        AppPreferences.getInstance(mActivity).setSocketType(server.getServerType());
+                        if (RestClient.getInstance().changeServerSockets(server)) {
+                            if (oldType == null || !oldType.equals(server.getServerType())) login();
                             showServers(false);
                         }
                     }
                 });
 
-                if (testing && socket.getServerType().equals(AppPreferences.getInstance(mActivity).getSocketType()))
-                    testServer(socket.getServerHost());
+                if (testing && server.getServerType().equals(AppPreferences.getInstance(mActivity).getSocketType()))
+                    testServer(server.getServerHost());
 
                 i++;
             }
