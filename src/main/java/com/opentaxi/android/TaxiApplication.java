@@ -136,13 +136,14 @@ public class TaxiApplication extends Application { //extends MultiDexApplication
     @Override
     public void onCreate() {
 
-        try {
+        /*try {
             Class.forName("android.os.AsyncTask");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        }
+        }*/
 
         super.onCreate();
+        //LeakCanary.install(this);
 
         Iconify.with(new MaterialModule());
 

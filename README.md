@@ -1,18 +1,21 @@
-#Taxi Android Open <a href="https://play.google.com/store/apps/details?id=com.opentaxi.android" rel="Taxi Bulgaria">![Taxi Bulgaria](http://steverichey.github.io/google-play-badge-svg/img/en_get.svg)</a> <a href="http://apps.opera.com/badge.php?a=c&v=dark&did=88615&pid=408287" rel="Opera Mobile Store">![Opera Mobile Store](https://apps.opera.com/badge.php?a=s&v=white&did=88615&pid=408287)</a>
+[![tip for next commit](https://tip4commit.com/projects/43147.svg)](https://tip4commit.com/github/sytolk/TaxiAndroidOpen)
 
----
+#Taxi Android Open <a href="https://play.google.com/store/apps/details?id=com.opentaxi.android" rel="Taxi Bulgaria">![Taxi Bulgaria](http://steverichey.github.io/google-play-badge-svg/img/en_get.svg)</a> 
+<!---
+<a href="http://apps.opera.com/badge.php?a=c&v=dark&did=88615&pid=408287" rel="Opera Mobile Store">![Opera Mobile Store](https://apps.opera.com/badge.php?a=s&v=white&did=88615&pid=408287)</a>
+--->
 
 This open source application is for clients of taxi companies. It`s using array of Taxi web services for communication with cars. The client can change the primary server or the server can be changed automatically if no connection.
 With this application its easy to send request, view request status and can help clients to find taxi.
 Supported Android from 4.0 and up.
 
-Currently the cloud web services (they are private) provide taxi support for city of Burgas and Blagoevgrad.
+Currently the cloud web services (they are private) provide taxi support for city of Burgas, Varna and Blagoevgrad.
 
 [taxi-bulgaria](http://taxi-bulgaria.com)
 
 ##Development
 
-Project is [maven](http://maven.apache.org/) to build source first its need to install the libraries necessary to build Android applications with Maven from your local Android SDK installation.
+Project have two build systems [Gradle](https://gradle.org/) and [Maven](http://maven.apache.org/). To build project with Maven first it\`s need to install the libraries necessary to build Android applications with Maven from your local Android SDK installation.
 Read description of this project [maven-android-sdk-deployer](https://github.com/mosabua/maven-android-sdk-deployer) for details.
 
 Using project dependencies:
@@ -35,8 +38,8 @@ for map export view osmosis.txt in doc.
 
 About translating, please visit https://hosted.weblate.org/projects/taxi-android-open/strings/ 
 
+<!---
 ##Support
 
-http://code4cabs.devpost.com/
-
 [![PayPal donate button](https://img.shields.io/badge/paypal-donate-yellow.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2W5ZTX3VEH9D2 "Donate once-off to this project using Paypal")
+--->
