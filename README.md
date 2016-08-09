@@ -37,4 +37,6 @@ About translating, please visit https://hosted.weblate.org/projects/taxi-android
 
 ##Support
 
+http://code4cabs.devpost.com/
+
 [![PayPal donate button](https://img.shields.io/badge/paypal-donate-yellow.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2W5ZTX3VEH9D2 "Donate once-off to this project using Paypal")
