@@ -109,7 +109,7 @@ android {
         applicationId "com.opentaxi.android"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 43
+        versionCode 44
         versionName "1.0.44"
         vectorDrawables.useSupportLibrary = true
 
