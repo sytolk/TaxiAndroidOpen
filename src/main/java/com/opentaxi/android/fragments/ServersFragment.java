@@ -16,7 +16,6 @@ import com.taxibulgaria.enums.UsersGroupEnum;
 import org.androidannotations.annotations.*;
 import org.androidannotations.api.BackgroundExecutor;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -50,64 +49,66 @@ public class ServersFragment extends BaseFragment {
     @UiThread
     void showServers(boolean testing) {
         //Log.i(TAG, "showServers testing:" + testing);
-        serversContent.removeAllViews();
+        if (serversContent != null) {
+            serversContent.removeAllViews();
 
-        List<Servers> sockets = RestClient.getInstance().getSockets();
-        String currSocket = RestClient.getInstance().getCurrentSocket();
+            List<Servers> sockets = RestClient.getInstance().getSockets();
+            String currSocket = RestClient.getInstance().getCurrentSocket();
 
-        final RadioButton[] rb = new RadioButton[sockets.size()];
-        RadioGroup rg = new RadioGroup(mActivity); //create the RadioGroup
-        rg.setOrientation(RadioGroup.VERTICAL);
-        int i = 0;
-        for (final Servers server : sockets) {
-            if (server.getDescription() != null) {
-                //Log.i(TAG, socket.getServerHost() + " " + socket.getDescription());
-                if (server.getDescription().toLowerCase().contains("cloud")) {
-                    if (!isAdmin()) continue;
-                } //else Log.i(TAG, "not contains " + socket.getDescription());
+            final RadioButton[] rb = new RadioButton[sockets.size()];
+            RadioGroup rg = new RadioGroup(mActivity); //create the RadioGroup
+            rg.setOrientation(RadioGroup.VERTICAL);
+            int i = 0;
+            for (final Servers server : sockets) {
+                if (server.getDescription() != null) {
+                    //Log.i(TAG, socket.getServerHost() + " " + socket.getDescription());
+                    if (server.getDescription().toLowerCase().contains("cloud")) {
+                        if (!isAdmin()) continue;
+                    } //else Log.i(TAG, "not contains " + socket.getDescription());
 
-                rb[i] = new RadioButton(mActivity);
-                rg.addView(rb[i]); //the RadioButtons are added to the radioGroup instead of the layout
+                    rb[i] = new RadioButton(mActivity);
+                    rg.addView(rb[i]); //the RadioButtons are added to the radioGroup instead of the layout
 
-                //CheckBox ch = new CheckBox(this);
-                StringBuilder title = new StringBuilder();
-                title.append(server.getDescription()).append(" "); //.append(socket.getServerHost());
-                if (server.getRecordstatus()) {
-                    title.append("UP");
-                    rb[i].setBackgroundColor(ContextCompat.getColor(mActivity, R.color.label_color));
-                } else {
-                    title.append("DOWN");
-                    rb[i].setBackgroundColor(ContextCompat.getColor(mActivity, R.color.red_color));
-                }
-                rb[i].setText(title.toString());
-
-                String hostSecure = server.getServerDomain() + (server.getSecurePort() != null ? ":" + server.getSecurePort() : "");
-                String host = server.getServerDomain() + (server.getServerPort() != null ? ":" + server.getServerPort() : "");
-
-                if (currSocket.equals(hostSecure) || currSocket.equals(host) || currSocket.equals(server.getServerHost())) {
-                    rb[i].setChecked(true);
-                }
-
-                rb[i].setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Integer oldType = AppPreferences.getInstance(mActivity).getSocketType();
-                        AppPreferences.getInstance(mActivity).setSocketType(server.getServerType());
-                        if (RestClient.getInstance().changeServerSockets(server)) {
-                            if (oldType == null || !oldType.equals(server.getServerType())) login();
-                            showServers(false);
-                        }
+                    //CheckBox ch = new CheckBox(this);
+                    StringBuilder title = new StringBuilder();
+                    title.append(server.getDescription()).append(" "); //.append(socket.getServerHost());
+                    if (server.getRecordstatus()) {
+                        title.append("UP");
+                        rb[i].setBackgroundColor(ContextCompat.getColor(mActivity, R.color.label_color));
+                    } else {
+                        title.append("DOWN");
+                        rb[i].setBackgroundColor(ContextCompat.getColor(mActivity, R.color.red_color));
                     }
-                });
+                    rb[i].setText(title.toString());
 
-                if (testing && server.getServerType().equals(AppPreferences.getInstance(mActivity).getSocketType()))
-                    testServer(server.getServerHost());
+                    String hostSecure = server.getServerDomain() + (server.getSecurePort() != null ? ":" + server.getSecurePort() : "");
+                    String host = server.getServerDomain() + (server.getServerPort() != null ? ":" + server.getServerPort() : "");
 
-                i++;
+                    if (currSocket.equals(hostSecure) || currSocket.equals(host) || currSocket.equals(server.getServerHost())) {
+                        rb[i].setChecked(true);
+                    }
+
+                    rb[i].setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Integer oldType = AppPreferences.getInstance(mActivity).getSocketType();
+                            AppPreferences.getInstance(mActivity).setSocketType(server.getServerType());
+                            if (RestClient.getInstance().changeServerSockets(server)) {
+                                if (oldType == null || !oldType.equals(server.getServerType())) login();
+                                showServers(false);
+                            }
+                        }
+                    });
+
+                    if (testing && server.getServerType().equals(AppPreferences.getInstance(mActivity).getSocketType()))
+                        testServer(server.getServerHost());
+
+                    i++;
+                }
             }
+            serversContent.addView(rg);
+            scheduleTimeoutCheck();
         }
-        serversContent.addView(rg);
-        scheduleTimeoutCheck();
         //serversContent.invalidate();
     }
 
@@ -132,7 +133,7 @@ public class ServersFragment extends BaseFragment {
                     if (usersGroup != null) {
                         if (Arrays.asList(usersGroup).contains(UsersGroupEnum.ADMINISTRATORS.getCode())) return true;
                     }
-                } catch (JsonSyntaxException e){//IOException e) {
+                } catch (JsonSyntaxException e) {//IOException e) {
                     e.printStackTrace();
                 }
             }

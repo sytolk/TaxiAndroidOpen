@@ -32,7 +32,7 @@ public class GCMRegisterService extends IntentService {
                     if (success != null && !success) {
                         TaxiApplication.setGCMRegistrationId(token);
                         Log.e("GCMRegisterService", "gcm not registered on server regId:" + token);
-                    } else Log.i("GCMRegisterService", "gcm registered regId:" + token);
+                    } //else Log.i("GCMRegisterService", "gcm registered regId:" + token);
                 }
             } else Log.i("GCMRegisterService", "not loged in");
         } catch (IOException e) {
