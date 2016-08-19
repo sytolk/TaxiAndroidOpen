@@ -192,6 +192,23 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"/>
+
+            <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+                                                           android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/personsNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:hint="@string/persons"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:padding="8dp"
+
+                    android:singleLine="true"
+                    android:textColorHint="@color/white_color"
+                    android:visibility="gone"/>
+            </android.support.design.widget.TextInputLayout>
         </LinearLayout>
     </ScrollView>
 

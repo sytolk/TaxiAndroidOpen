@@ -169,4 +169,11 @@
     <string name="for_contacts">За контакти</string>
     <string name="send_log_title">Изпращане на лог файла до програмистите?</string>
     <string name="canceled">отменен</string>
+    <string name="persons">Колко човека ще пътуват</string>
+
+    <string name="Delivery">Доставка</string>
+    <string name="combi">Голям багажник</string>
+    <string name="english_speaking">Англоговорящ шофьор</string>
+    <string name="russian_speaking">Рускоговорящ шофьор</string>
+    <string name="wallet_payment">Плати от портфейла ми</string>
 </resources>

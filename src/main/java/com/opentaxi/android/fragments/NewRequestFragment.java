@@ -26,6 +26,7 @@ import com.opentaxi.rest.RestClientBase;
 import com.stil.generated.mysql.tables.pojos.*;
 import com.taxibulgaria.enums.RegionsType;
 import com.taxibulgaria.enums.RequestSource;
+import com.taxibulgaria.enums.UsersGroupEnum;
 import com.taxibulgaria.rest.models.NewCRequestDetails;
 import com.taxibulgaria.rest.models.NewRequestDetails;
 import de.greenrobot.event.EventBus;
@@ -94,6 +95,9 @@ public class NewRequestFragment extends BaseFragment {
 
     @ViewById(R.id.requestSend)
     Button requestSend;
+
+    @ViewById(R.id.personsNumber)
+    EditText personsNumber;
 
     /*@ViewById(R.id.destLayout)
     LinearLayout destLayout;*/
@@ -398,12 +402,30 @@ public class NewRequestFragment extends BaseFragment {
                 //Log.i(TAG, "showGroups:" + group.getGroupsId() + " " + group.getDescription());
                 if (group.getGroupsId() != null && group.getDescription() != null) {
                     CheckBox cb = new CheckBox(mActivity);
-                    cb.setText(group.getDescription());
+                    int groupID = mActivity.getResources().getIdentifier(group.getName(), "string", mActivity.getPackageName());
+                    if (groupID > 0) { //localized string
+                        cb.setText(mActivity.getString(groupID));
+                    } else cb.setText(group.getDescription());
+
                     cb.setId(group.getGroupsId());
                     if (groupsMap != null && containsGroup(groupsMap, group.getGroupsId())) {
                         cb.setChecked(true);
                         //Log.i(TAG, "checked:" + group.getName());
                     } //else Log.i(TAG, "groupsMap:" + groupsMap + " not contains:" + group.getName());
+                    if (UsersGroupEnum.SHARED_RIDE.getCode().equals(group.getGroupsId())) {
+                        cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+                            @Override
+                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                if (personsNumber != null)
+                                    if (isChecked) {
+                                        personsNumber.setVisibility(View.VISIBLE);
+                                    } else {
+                                        personsNumber.setVisibility(View.GONE);
+                                    }
+                            }
+                        });
+                    }
                     if (llFilters != null)
                         llFilters.addView(cb);
                 }
@@ -694,7 +716,7 @@ public class NewRequestFragment extends BaseFragment {
             pbProgress.setVisibility(View.VISIBLE);
 
             NewRequestDetails newRequest = new NewRequestDetails();
-            if (newCRequest != null) newRequest.setRequestsId(newCRequest.getRequestsId());//edit
+            if (newCRequest != null) newRequest.setRequestsId(newCRequest.getRequestsId()); //edit
 
             if (this.mapRequest != null) {
                 newRequest.setNorth(this.mapRequest.getNorth());
@@ -706,6 +728,18 @@ public class NewRequestFragment extends BaseFragment {
             requestsDetails.setFromCity(city);
             if (destination.getText() != null && !destination.getText().toString().isEmpty())
                 requestsDetails.setDestination(destination.getText().toString());
+
+            if (personsNumber != null && personsNumber.getText() != null) {
+                Byte persons = 1;
+                try {
+                    persons = Byte.parseByte(personsNumber.getText().toString());
+                } catch (NumberFormatException e) {
+                    Log.e(TAG, "NumberFormatException persons:", e);
+                }
+                if (persons <= 0) persons = 1;
+                requestsDetails.setPassengers(persons);
+            }
+
             newRequest.setDetails(requestsDetails);
 
             //RegionsAdapter regionsAdapter = (RegionsAdapter) regionsPicker.getSelectedItem();

@@ -110,7 +110,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 44
-        versionName "1.0.44"
+        versionName "1.0.45"
         vectorDrawables.useSupportLibrary = true
 
         /*jackOptions {
