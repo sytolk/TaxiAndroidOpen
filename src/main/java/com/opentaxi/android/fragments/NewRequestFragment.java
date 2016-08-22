@@ -600,9 +600,9 @@ public class NewRequestFragment extends BaseFragment {
 
     @UiThread
     void showAddress(String city, String region, String adr) {
-        Log.i(TAG, city + " " + region + " " + adr);
-        if (city != null) citiesPicker.setText(city);
-        if (region != null) {
+        //Log.i(TAG, city + " " + region + " " + adr);
+        if (city != null && citiesPicker != null) citiesPicker.setText(city);
+        if (region != null && regionsPicker != null) {
             regionsPicker.setText(region);
             regionsPicker.setVisibility(View.VISIBLE);
             //destination.setVisibility(View.GONE);
@@ -610,13 +610,14 @@ public class NewRequestFragment extends BaseFragment {
             //regionsPicker.setVisibility(View.GONE);
             //destination.setVisibility(View.VISIBLE);
         }*/
-
-        if (adr != null && !adr.equals("Unnamed Rd")) {
-            addressText.setText(adr);
-            // addressText.setVisibility(View.GONE);
-        } else { //unknown address
-            addressText.setHint(""); //R.string.address);
-            //addressText.setVisibility(View.VISIBLE);
+        if (addressText != null) {
+            if (adr != null && !adr.equals("Unnamed Rd")) {
+                addressText.setText(adr);
+                // addressText.setVisibility(View.GONE);
+            } else { //unknown address
+                addressText.setHint(""); //R.string.address);
+                //addressText.setVisibility(View.VISIBLE);
+            }
         }
     }
 
