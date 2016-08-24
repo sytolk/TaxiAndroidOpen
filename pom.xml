@@ -202,7 +202,7 @@
             <groupId>com.taxi-bulgaria.map</groupId>
             <artifactId>mapsforge</artifactId>
             <type>aar</type>
-            <version>0.6.1</version>
+            <version>0.6.1-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>android.support</groupId>

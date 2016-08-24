@@ -163,6 +163,7 @@
     <string name="send_log_title">Send log files?</string>
     <string name="canceled">canceled</string>
     <string name="persons">How many people will travel?</string>
+    <string name="passengers">Passengers</string>
 
     <string name="Delivery">DELIVERY</string>
     <string name="combi">Combi (Large trunk)</string>

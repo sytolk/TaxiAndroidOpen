@@ -20,6 +20,7 @@ import com.stil.generated.mysql.tables.pojos.Groups;
 import com.stil.generated.mysql.tables.pojos.Regions;
 import com.stil.generated.mysql.tables.pojos.RequestFeedback;
 import com.taxibulgaria.enums.RequestStatus;
+import com.taxibulgaria.enums.UsersGroupEnum;
 import com.taxibulgaria.rest.models.NewCRequestDetails;
 import it.sephiroth.android.library.tooltip.Tooltip;
 import org.androidannotations.annotations.*;
@@ -239,7 +240,11 @@ public class RequestDetailsFragment extends BaseFragment {
                             if (groups != null) {
                                 for (Groups group : groups) {
                                     if (group.getDescription() != null && !group.getDescription().isEmpty())
-                                        groupChosen.append(group.getDescription()).append(", ");
+                                        groupChosen.append(group.getDescription());
+                                    if (UsersGroupEnum.SHARED_RIDE.getCode().equals(group.getGroupsId()) && newCRequest.getDetails() != null && newCRequest.getDetails().getPassengers() != null) {
+                                        groupChosen.append(" (").append(mActivity.getString(R.string.passengers)).append(":").append(newCRequest.getDetails().getPassengers()).append(")");
+                                    }
+                                    groupChosen.append(", ");
                                 }
                             }
                         }

@@ -170,6 +170,7 @@
     <string name="send_log_title">Изпращане на лог файла до програмистите?</string>
     <string name="canceled">отменен</string>
     <string name="persons">Колко човека ще пътуват</string>
+    <string name="passengers">Пътници</string>
 
     <string name="Delivery">Доставка</string>
     <string name="combi">Голям багажник</string>
