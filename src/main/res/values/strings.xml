@@ -169,5 +169,6 @@
     <string name="combi">Combi (Large trunk)</string>
     <string name="english_speaking">English speaking driver</string>
     <string name="russian_speaking">Russian speaking driver</string>
+    <string name="women_riders">Women Riders</string>
     <string name="wallet_payment">Wallet payment</string>
 </resources>

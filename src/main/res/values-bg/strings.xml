@@ -176,5 +176,6 @@
     <string name="combi">Голям багажник</string>
     <string name="english_speaking">Англоговорящ шофьор</string>
     <string name="russian_speaking">Рускоговорящ шофьор</string>
+    <string name="women_riders">Женско пътуване</string>
     <string name="wallet_payment">Плати от портфейла ми</string>
 </resources>
