@@ -139,7 +139,7 @@ android {
     }
 
     lintOptions {
-        //abortOnError false
+        abortOnError false
         warning 'MissingTranslation'
         warning 'InvalidPackage'
     }
