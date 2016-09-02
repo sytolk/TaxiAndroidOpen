@@ -10,7 +10,7 @@ android:
     - extra-android-m2repository
 
 script:
-  ./gradlew :TaxiAndroidOpen:testDebug :TaxiAndroidOpen:connectedAndroidTest -PtravisCi -PdisablePreDex
+  ./gradlew :taxi-android-open:build :taxi-android-open:testDebug :taxi-android-open:connectedAndroidTest -PtravisCi -PdisablePreDex
 
 # blacklist
 branches:
