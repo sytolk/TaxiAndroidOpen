@@ -11,3 +11,14 @@ android:
 
 script:
   ./gradlew :app:testDebug :app:connectedAndroidTest -PtravisCi -PdisablePreDex
+
+# blacklist
+branches:
+      except:
+        - master
+
+# whitelist
+branches:
+      only:
+        - API14
+        - Morocco
