@@ -1,4 +1,5 @@
 [![tip for next commit](https://tip4commit.com/projects/43147.svg)](https://tip4commit.com/github/sytolk/TaxiAndroidOpen)
+[![Build Status](https://travis-ci.org/sytolk/TaxiAndroidOpen.svg?branch=API14)](https://travis-ci.org/sytolk/TaxiAndroidOpen)
 
 #Taxi Android Open <a href="https://play.google.com/store/apps/details?id=com.opentaxi.android" rel="Taxi Bulgaria">![Taxi Bulgaria](http://steverichey.github.io/google-play-badge-svg/img/en_get.svg)</a> 
 <!---
