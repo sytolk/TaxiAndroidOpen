@@ -10,15 +10,15 @@ android:
     - extra-android-m2repository
 
 script:
-  ./gradlew :app:testDebug :app:connectedAndroidTest -PtravisCi -PdisablePreDex
+  ./gradlew :TaxiAndroidOpen:testDebug :TaxiAndroidOpen:connectedAndroidTest -PtravisCi -PdisablePreDex
 
 # blacklist
 branches:
-      except:
-        - master
+    except:
+      - master
 
 # whitelist
 branches:
-      only:
-        - API14
-        - Morocco
+    only:
+      - API14
+      - Morocco
