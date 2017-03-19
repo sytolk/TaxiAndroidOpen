@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        AAVersion = '4.0.0'
+        AAVersion = '4.2.0'
         GMSVersion = '9.2.0'
         supportVersion = '23.2.1'
         //supportVersion = '24.0.0'
@@ -11,7 +11,7 @@ buildscript {
         //mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.2'
+        classpath 'com.android.tools.build:gradle:2.2.0'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     }
 }
