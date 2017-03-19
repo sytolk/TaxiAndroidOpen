@@ -1,7 +1,7 @@
 [![tip for next commit](https://tip4commit.com/projects/43147.svg)](https://tip4commit.com/github/sytolk/TaxiAndroidOpen)
 [![Build Status](https://travis-ci.org/sytolk/TaxiAndroidOpen.svg?branch=Morocco)](https://travis-ci.org/sytolk/TaxiAndroidOpen)
 
-#Taxi Android Open <a href="https://play.google.com/store/apps/details?id=com.opentaxi.android" rel="Taxi Bulgaria">![Taxi Bulgaria](http://steverichey.github.io/google-play-badge-svg/img/en_get.svg)</a> 
+#Taxi Android Open <a href="https://play.google.com/store/apps/details?id=com.opentaxi.android" rel="Taxi Bulgaria"><img src="https://cdn.rawgit.com/steverichey/google-play-badge-svg/master/img/en_get.svg" alt="Taxi Bulgaria" width="40%"/></a>
 <!---
 <a href="http://apps.opera.com/badge.php?a=c&v=dark&did=88615&pid=408287" rel="Opera Mobile Store">![Opera Mobile Store](https://apps.opera.com/badge.php?a=s&v=white&did=88615&pid=408287)</a>
 --->
