@@ -102,7 +102,7 @@ apt {
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "24.0.3"
+    buildToolsVersion "24.0.1"
 
     defaultConfig {
         applicationId "com.opentaxi.android"
