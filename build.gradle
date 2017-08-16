@@ -11,7 +11,7 @@ buildscript {
         //mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.2'
+        classpath 'com.android.tools.build:gradle:2.3.3'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     }
 }
@@ -32,13 +32,13 @@ repositories {
     jcenter()
     //mavenLocal()
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
-    maven { url "https://repo.spring.io/libs-milestone" }
+    maven { url "https://repo.spring.io/milestone" }
     maven { url "https://jitpack.io" }
     //maven { url "http://repo.maven.apache.org/maven2" }
 }
 
 dependencies {
-    compile 'com.taxi-bulgaria.rest:open-rest-client-a:1.0.6-SNAPSHOT'
+    compile 'com.taxi-bulgaria.rest:open-rest-client-a:1.0.7-SNAPSHOT'
     compile "com.google.android.gms:play-services-location:$GMSVersion"
     compile "com.google.android.gms:play-services-gcm:$GMSVersion"
 
@@ -102,14 +102,14 @@ apt {
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "24.0.3"
+    buildToolsVersion "25.0.3"
 
     defaultConfig {
         applicationId "com.opentaxi.android"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 46
-        versionName "1.0.46"
+        versionCode 47
+        versionName "1.0.47"
         vectorDrawables.useSupportLibrary = true
 
         /*jackOptions {

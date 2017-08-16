@@ -1183,13 +1183,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private int isHighBandwidth() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo info = cm.getActiveNetworkInfo();
         if (info.getType() == ConnectivityManager.TYPE_WIFI) {
-            WifiManager wm = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+            WifiManager wm = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
             return wm.getConnectionInfo().getLinkSpeed();
         } else if (info.getType() == ConnectivityManager.TYPE_MOBILE) {
-            TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+            TelephonyManager tm = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
             return tm.getNetworkType();
         }
         return 0;
