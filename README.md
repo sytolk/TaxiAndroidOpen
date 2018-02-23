@@ -1,4 +1,3 @@
-[![tip for next commit](https://tip4commit.com/projects/43147.svg)](https://tip4commit.com/github/sytolk/TaxiAndroidOpen)
 [![Build Status](https://travis-ci.org/sytolk/TaxiAndroidOpen.svg?branch=Morocco)](https://travis-ci.org/sytolk/TaxiAndroidOpen)
 
 # Taxi Android Open <a href="https://play.google.com/store/apps/details?id=com.opentaxi.android" rel="Taxi Bulgaria"><img src="https://cdn.rawgit.com/steverichey/google-play-badge-svg/master/img/en_get.svg" alt="Taxi Bulgaria" width="40%"/></a>
